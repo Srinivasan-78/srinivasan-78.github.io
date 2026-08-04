@@ -3,379 +3,537 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jordan Reyes — Portfolio</title>
-<meta name="description" content="Portfolio of achievements, skills, and experience.">
+<title>Srinivasan Vijayaraghavan — DevOps Engineer</title>
+<meta name="description" content="Portfolio of Srinivasan Vijayaraghavan — DevOps Engineer, Cloud Infrastructure & Automation">
 <style>
   :root{
-    --bg: #0F141C;
-    --surface: #161D28;
-    --surface-2: #1D2534;
-    --ink: #E9E6DC;
-    --ink-dim: #9AA3B2;
-    --line: #2A3242;
-    --gold: #C9A227;
-    --teal: #4F8B8B;
-    --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    --bg: #0A0A0C;
+    --bg-elevated: #141417;
+    --card: #1C1C21;
+    --card-hover: #232329;
+    --ink: #F2F1EE;
+    --ink-dim: #A8A6A0;
+    --accent: #E0392B;
+    --accent-dim: #8C2620;
+    --line: #2C2C31;
+    --font-display: 'Bebas Neue', 'Archivo Black', Impact, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
-    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }
-
   *{box-sizing:border-box; margin:0; padding:0;}
-
   html{scroll-behavior:smooth;}
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
   }
-
   body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:var(--font-body);
-    line-height:1.6;
+    background:var(--bg); color:var(--ink);
+    font-family:var(--font-body); line-height:1.6;
+    overflow-x:hidden;
   }
-
   a{color:inherit;}
-  :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
-
-  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  img{max-width:100%; display:block;}
 
   /* ---------- NAV ---------- */
   nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(15,20,28,0.9);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
-  nav .wrap{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:22px 4vw;
     display:flex; justify-content:space-between; align-items:center;
-    height:64px;
+    background:linear-gradient(to bottom, rgba(10,10,12,0.95), transparent);
+    transition:background .3s;
   }
-  nav .brand{
-    font-family:var(--font-mono);
-    font-size:0.85rem;
-    letter-spacing:0.08em;
-    color:var(--gold);
+  nav.scrolled{background:rgba(10,10,12,0.97); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
+  .logo{
+    font-family:var(--font-display);
+    font-size:1.6rem; letter-spacing:0.04em;
+    color:var(--accent);
+    text-decoration:none;
   }
-  nav ul{
-    display:flex; gap:28px; list-style:none;
-    font-family:var(--font-mono);
-    font-size:0.78rem;
-    letter-spacing:0.05em;
-    text-transform:uppercase;
+  nav ul{list-style:none; display:flex; gap:30px;}
+  nav a.navlink{
+    font-size:0.85rem; text-decoration:none; color:var(--ink-dim);
+    font-weight:500; transition:color .15s;
   }
-  nav a{text-decoration:none; color:var(--ink-dim); transition:color .15s;}
-  nav a:hover{color:var(--ink);}
+  nav a.navlink:hover{color:var(--ink);}
 
   /* ---------- HERO ---------- */
-  header.hero{
-    padding:120px 0 90px;
-    border-bottom:1px solid var(--line);
+  .hero{
     position:relative;
+    min-height:92vh;
+    display:flex; align-items:flex-end;
+    padding:0 4vw 90px;
+    background:
+      radial-gradient(ellipse 90% 60% at 30% 20%, rgba(224,57,43,0.18), transparent 60%),
+      linear-gradient(180deg, #16141a 0%, #0A0A0C 75%);
   }
-  .eyebrow{
-    font-family:var(--font-mono);
-    font-size:0.78rem;
-    color:var(--teal);
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    margin-bottom:18px;
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,10,12,0) 0%, var(--bg) 100%);
+    pointer-events:none;
+  }
+  .hero-content{position:relative; z-index:2; max-width:760px;}
+  .hero-tag{
+    font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.1em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:18px;
     display:flex; align-items:center; gap:10px;
   }
-  .eyebrow::before{
-    content:"";
-    width:28px; height:1px; background:var(--teal);
-  }
-  h1{
+  .hero-tag::before{content:"●"; font-size:0.6rem;}
+  h1.hero-title{
     font-family:var(--font-display);
-    font-weight:400;
-    font-size:clamp(2.4rem, 6vw, 4rem);
-    line-height:1.05;
-    max-width:14ch;
+    font-size:clamp(3.2rem, 9vw, 6.5rem);
+    line-height:0.92;
+    letter-spacing:0.01em;
+    margin-bottom:20px;
   }
-  h1 em{color:var(--gold); font-style:normal;}
-  .hero-sub{
-    margin-top:24px;
-    max-width:52ch;
-    font-size:1.08rem;
-    color:var(--ink-dim);
+  .hero-role{
+    font-size:1.15rem; color:var(--ink-dim); max-width:56ch; margin-bottom:32px;
   }
-  .hero-links{
-    margin-top:36px;
-    display:flex; gap:16px; flex-wrap:wrap;
-  }
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
   .btn{
-    font-family:var(--font-mono);
-    font-size:0.8rem;
-    letter-spacing:0.04em;
-    padding:12px 22px;
+    font-size:0.92rem; font-weight:600;
+    padding:13px 28px; border-radius:4px;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    border:none; cursor:pointer; transition:transform .12s, background .15s;
+  }
+  .btn.primary{background:var(--ink); color:#0A0A0C;}
+  .btn.primary:hover{background:#d8d6d0;}
+  .btn.secondary{background:rgba(120,120,130,0.35); color:var(--ink);}
+  .btn.secondary:hover{background:rgba(120,120,130,0.5);}
+  .btn:active{transform:scale(0.97);}
+
+  /* ---------- ROWS ---------- */
+  .row-section{padding:52px 0 8px;}
+  .row-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:0 4vw; margin-bottom:18px;
+  }
+  .row-head h2{
+    font-family:var(--font-display);
+    font-size:1.7rem; letter-spacing:0.02em;
+  }
+  .row-head .hint{font-size:0.78rem; color:var(--ink-dim); font-family:var(--font-mono);}
+
+  .row-wrap{position:relative;}
+  .row-scroll{
+    display:flex; gap:16px;
+    overflow-x:auto; scroll-behavior:smooth;
+    padding:6px 4vw 30px;
+    scrollbar-width:none;
+  }
+  .row-scroll::-webkit-scrollbar{display:none;}
+
+  .card{
+    flex:0 0 auto;
+    width:300px;
+    background:var(--card);
+    border-radius:6px;
+    padding:22px;
     border:1px solid var(--line);
-    text-decoration:none;
-    display:inline-block;
-    transition:border-color .15s, background .15s;
-  }
-  .btn.primary{background:var(--gold); color:#141A24; border-color:var(--gold); font-weight:600;}
-  .btn.primary:hover{background:#dbb437;}
-  .btn.ghost:hover{border-color:var(--ink-dim);}
-
-  /* ---------- SECTION SHELL ---------- */
-  section{padding:80px 0; border-bottom:1px solid var(--line);}
-  .section-head{
-    display:flex; align-items:baseline; gap:16px;
-    margin-bottom:48px;
-  }
-  .section-num{
-    font-family:var(--font-mono);
-    color:var(--gold);
-    font-size:0.85rem;
-  }
-  h2{
-    font-family:var(--font-display);
-    font-weight:400;
-    font-size:1.9rem;
-  }
-
-  /* ---------- ACHIEVEMENTS (ledger timeline) ---------- */
-  .ledger{border-left:1px solid var(--line); margin-left:6px;}
-  .entry{
+    cursor:default;
+    transition:transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
     position:relative;
-    padding:0 0 42px 32px;
   }
-  .entry:last-child{padding-bottom:0;}
-  .entry::before{
-    content:"";
-    position:absolute; left:-6px; top:4px;
-    width:11px; height:11px;
-    background:var(--bg);
-    border:2px solid var(--gold);
-    border-radius:50%;
+  .card:hover, .card:focus-within{
+    transform:scale(1.06) translateY(-6px);
+    background:var(--card-hover);
+    border-color:var(--accent-dim);
+    box-shadow:0 20px 40px rgba(0,0,0,0.5);
+    z-index:5;
   }
-  .entry-meta{
-    font-family:var(--font-mono);
-    font-size:0.75rem;
-    color:var(--teal);
-    text-transform:uppercase;
-    letter-spacing:0.06em;
-    margin-bottom:6px;
+  .card .tag{
+    font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.06em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:10px; display:block;
   }
-  .entry h3{
-    font-family:var(--font-display);
-    font-weight:400;
-    font-size:1.25rem;
-    margin-bottom:8px;
+  .card h3{font-size:1.05rem; margin-bottom:10px; line-height:1.3;}
+  .card p{
+    font-size:0.85rem; color:var(--ink-dim);
+    max-height:0; opacity:0; overflow:hidden;
+    transition:max-height .3s ease, opacity .3s ease, margin-top .3s ease;
   }
-  .entry p{color:var(--ink-dim); max-width:60ch;}
-  .entry .stamp{
-    display:inline-block;
-    margin-top:10px;
-    font-family:var(--font-mono);
-    font-size:0.72rem;
-    color:var(--gold);
-    border:1px solid var(--gold);
-    padding:3px 9px;
-    letter-spacing:0.04em;
+  .card:hover p, .card:focus-within p{max-height:200px; opacity:1; margin-top:4px;}
+  .card .meta{
+    font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-dim);
+    margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;
   }
+  .card .meta span{border:1px solid var(--line); padding:2px 8px; border-radius:3px;}
+
+  .row-arrow{
+    position:absolute; top:0; bottom:30px; width:56px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(90deg, var(--bg), transparent);
+    z-index:6; border:none; color:var(--ink); cursor:pointer;
+    opacity:0; transition:opacity .2s; font-size:1.4rem;
+  }
+  .row-wrap:hover .row-arrow{opacity:1;}
+  .row-arrow.left{left:0;}
+  .row-arrow.right{right:0; background:linear-gradient(270deg, var(--bg), transparent);}
 
   /* ---------- SKILLS ---------- */
-  .skills-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-    gap:2px;
-    background:var(--line);
-    border:1px solid var(--line);
-  }
-  .skill-card{background:var(--surface); padding:26px;}
-  .skill-card h4{
-    font-family:var(--font-mono);
-    font-size:0.78rem;
-    text-transform:uppercase;
-    letter-spacing:0.06em;
-    color:var(--gold);
-    margin-bottom:14px;
-  }
-  .skill-list{list-style:none; display:flex; flex-wrap:wrap; gap:8px;}
-  .skill-list li{
-    font-size:0.85rem;
-    color:var(--ink-dim);
-    border:1px solid var(--line);
-    padding:5px 11px;
-  }
+  .skills-section{padding:60px 4vw; border-top:1px solid var(--line);}
+  .skills-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:28px;}
+  .skills-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .skill-block{background:var(--bg-elevated); padding:24px;}
+  .skill-block h4{font-family:var(--font-mono); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent); margin-bottom:14px;}
+  .skill-block ul{list-style:none; display:flex; flex-wrap:wrap; gap:7px;}
+  .skill-block li{font-size:0.8rem; color:var(--ink-dim); border:1px solid var(--line); padding:5px 10px; border-radius:3px;}
 
   /* ---------- EXPERIENCE ---------- */
-  .role{
-    display:grid;
-    grid-template-columns:160px 1fr;
-    gap:24px;
-    padding:28px 0;
-    border-top:1px solid var(--line);
-  }
+  .exp-section{padding:60px 4vw; border-top:1px solid var(--line);}
+  .exp-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:32px;}
+  .role{padding:30px 0; border-top:1px solid var(--line); display:grid; grid-template-columns:200px 1fr; gap:26px;}
   .role:first-of-type{border-top:none;}
-  .role-period{
-    font-family:var(--font-mono);
-    font-size:0.78rem;
-    color:var(--ink-dim);
-  }
-  .role h3{font-family:var(--font-display); font-weight:400; font-size:1.2rem; margin-bottom:6px;}
-  .role .company{color:var(--teal); font-size:0.92rem; margin-bottom:10px;}
-  .role ul{color:var(--ink-dim); padding-left:18px; font-size:0.95rem;}
-  .role li{margin-bottom:4px;}
+  .role-meta{font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-dim);}
+  .role-meta .company{color:var(--accent); font-weight:600; font-size:0.95rem; display:block; margin-top:6px; font-family:var(--font-body);}
+  .role h3{font-size:1.25rem; margin-bottom:6px; font-weight:700;}
+  .role-group{margin-top:14px;}
+  .role-group h5{font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); margin-bottom:6px;}
+  .role ul{padding-left:18px; font-size:0.92rem; color:var(--ink-dim);}
+  .role li{margin-bottom:5px;}
 
-  @media (max-width:600px){
-    .role{grid-template-columns:1fr; gap:8px;}
+  /* ---------- EDUCATION ---------- */
+  .edu-section{padding:60px 4vw; border-top:1px solid var(--line);}
+  .edu-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:24px;}
+  .edu-card{background:var(--bg-elevated); border:1px solid var(--line); border-radius:6px; padding:26px; max-width:520px;}
+  .edu-card h3{font-size:1.1rem; margin-bottom:6px;}
+  .edu-card .school{color:var(--accent); font-size:0.9rem; margin-bottom:4px;}
+  .edu-card .period{font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-dim);}
+
+  /* ---------- CONTACT ---------- */
+  .contact-section{padding:70px 4vw 90px; border-top:1px solid var(--line);}
+  .contact-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:10px;}
+  .contact-section p.lead{color:var(--ink-dim); max-width:56ch; margin-bottom:36px;}
+  form.contact-form{max-width:560px; display:flex; flex-direction:column; gap:16px;}
+  .contact-form label{font-family:var(--font-mono); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); margin-bottom:6px; display:block;}
+  .contact-form input, .contact-form textarea{
+    width:100%; background:var(--bg-elevated); border:1px solid var(--line); color:var(--ink);
+    padding:12px 14px; border-radius:4px; font-family:var(--font-body); font-size:0.92rem;
+  }
+  .contact-form input:focus, .contact-form textarea:focus{border-color:var(--accent);}
+  .contact-form textarea{min-height:120px; resize:vertical;}
+  .contact-form button{align-self:flex-start; margin-top:6px;}
+  .form-note{font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-dim); margin-top:14px;}
+  .direct-links{display:flex; gap:22px; margin-top:30px; flex-wrap:wrap; font-size:0.88rem;}
+  .direct-links a{text-decoration:none; color:var(--ink-dim); border-bottom:1px solid transparent; transition:.15s;}
+  .direct-links a:hover{color:var(--accent); border-color:var(--accent);}
+
+  footer{padding:30px 4vw 50px; border-top:1px solid var(--line); font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  @media (max-width:700px){
     nav ul{gap:16px;}
-    nav ul li:nth-child(4){display:none;}
+    nav ul li:nth-child(n+3){display:none;}
+    .card{width:250px;}
+    .role{grid-template-columns:1fr; gap:8px;}
   }
-
-  /* ---------- FOOTER ---------- */
-  footer{padding:60px 0 80px;}
-  footer .wrap{
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
-  }
-  footer .contact-links{display:flex; gap:22px; font-family:var(--font-mono); font-size:0.8rem;}
-  footer .contact-links a{text-decoration:none; color:var(--ink-dim); border-bottom:1px solid transparent; transition:.15s;}
-  footer .contact-links a:hover{color:var(--gold); border-color:var(--gold);}
-  footer .fine{color:var(--ink-dim); font-size:0.78rem; font-family:var(--font-mono);}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="wrap">
-    <div class="brand">J. REYES / PORTFOLIO</div>
-    <ul>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </div>
+<nav id="navbar">
+  <a href="#" class="logo">SV</a>
+  <ul>
+    <li><a href="#achievements" class="navlink">Achievements</a></li>
+    <li><a href="#certifications" class="navlink">Certifications</a></li>
+    <li><a href="#skills" class="navlink">Skills</a></li>
+    <li><a href="#experience" class="navlink">Experience</a></li>
+    <li><a href="#contact" class="navlink">Contact</a></li>
+  </ul>
 </nav>
 
 <header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">Product & Growth Engineering</div>
-    <h1>Building things people <em>actually</em> use, then proving it with numbers.</h1>
-    <p class="hero-sub">
-      I'm Jordan Reyes — a software engineer focused on shipping fast, measurable
-      improvements. This page collects the projects, metrics, and skills from my
-      time at <strong>Acme Corp</strong>.
+  <div class="hero-content">
+    <div class="hero-tag">Now streaming · DevOps Engineer</div>
+    <h1 class="hero-title">SRINIVASAN<br>VIJAYARAGHAVAN</h1>
+    <p class="hero-role">
+      5 years turning fragile, manual deployments into fast, reliable automation across
+      AWS and Azure. I build the pipelines, safety nets, and monitoring that let teams
+      ship confidently — now leveling up toward Cloud Solutions Architecture.
     </p>
-    <div class="hero-links">
-      <a href="#achievements" class="btn primary">View achievements</a>
-      <a href="/resume.pdf" class="btn ghost">Download résumé</a>
+    <div class="hero-actions">
+      <a href="/resume.pdf" class="btn primary">▸ Download Résumé</a>
+      <a href="#contact" class="btn secondary">More Info</a>
     </div>
   </div>
 </header>
 
-<section id="achievements">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-num">01</span>
-      <h2>Achievements</h2>
+<!-- ACHIEVEMENTS ROW -->
+<section class="row-section" id="achievements">
+  <div class="row-head">
+    <h2>Top Achievements</h2>
+    <span class="hint">hover for details →</span>
+  </div>
+  <div class="row-wrap">
+    <button class="row-arrow left" aria-label="Scroll left" onclick="scrollRow('achv',-1)">‹</button>
+    <div class="row-scroll" id="achv">
+
+      <div class="card" tabindex="0">
+        <span class="tag">Thomson Reuters</span>
+        <h3>Parallelized Migration Framework</h3>
+        <p>Built a large-scale data migration framework using Azure Storage, custom runners,
+           delta detection, and AzCopy — sped up large transfers and cut migration downtime.
+           My standout project on this team.</p>
+        <div class="meta"><span>Azure</span><span>AzCopy</span><span>Python</span></div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <span class="tag">Thomson Reuters</span>
+        <h3>Self-Service DR & CI/CD Suite</h3>
+        <p>Designed a full GitHub Actions automation suite covering provisioning, config
+           promotion, multi-instance operations, and DR failover/failback — replacing
+           manual runbooks entirely.</p>
+        <div class="meta"><span>GitHub Actions</span><span>DR Automation</span></div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <span class="tag">GraniteRiverLabs</span>
+        <h3>Project MATTER — CSA Protocol</h3>
+        <p>Implemented deployment pipelines for Project MATTER, the Connectivity Standards
+           Alliance's smart-home interoperability protocol, including Zigbee-related
+           automation for device interoperability testing.</p>
+        <div class="meta"><span>Matter / CSA</span><span>Zigbee</span></div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <span class="tag">GraniteRiverLabs</span>
+        <h3>One-Click Docker Release Pipeline</h3>
+        <p>Automated Docker image tagging, pushing, and deployment for frontend and backend
+           environments end to end, solo — turning a manual release process into a single click.</p>
+        <div class="meta"><span>Docker</span><span>Solo build</span></div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <span class="tag">GraniteRiverLabs</span>
+        <h3>Wireshark THREAD Installer</h3>
+        <p>Built a custom Windows Wireshark installer for THREAD protocol analysis, with
+           ongoing enhancements via GitLab CI. Publicly available as a merge request,
+           later adopted by the team.</p>
+        <div class="meta"><span>Public MR</span><span>GitLab CI</span></div>
+      </div>
+
+      <div class="card" tabindex="0">
+        <span class="tag">Thomson Reuters</span>
+        <h3>Fail-Fast Validation Framework</h3>
+        <p>Built an Apache validation framework checking service state, HTTP 200 responses,
+           NLB convergence, and healthchecks — stopping bad deployments before they reached users.</p>
+        <div class="meta"><span>Reliability</span><span>Apache</span></div>
+      </div>
+
     </div>
-    <div class="ledger">
+    <button class="row-arrow right" aria-label="Scroll right" onclick="scrollRow('achv',1)">›</button>
+  </div>
+</section>
 
-      <div class="entry">
-        <div class="entry-meta">2025 — Checkout Team</div>
-        <h3>Cut checkout latency by 38%</h3>
-        <p>Rebuilt the payment confirmation pipeline to remove three synchronous calls,
-           lowering p95 latency from 1.9s to 1.2s and reducing cart abandonment.</p>
-        <span class="stamp">Verified · Q3 2025</span>
+<!-- CERTIFICATIONS ROW -->
+<section class="row-section" id="certifications">
+  <div class="row-head">
+    <h2>Certifications & Learning</h2>
+  </div>
+  <div class="row-wrap">
+    <button class="row-arrow left" aria-label="Scroll left" onclick="scrollRow('cert',-1)">‹</button>
+    <div class="row-scroll" id="cert">
+
+      <div class="card" tabindex="0">
+        <span class="tag">Jul 2026</span>
+        <h3>Software Architecture Foundations</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Mar 2026</span>
+        <h3>Advanced GitHub Actions</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Mar 2026</span>
+        <h3>Infrastructure as Code with Azure Bicep, Part 1</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Mar 2026</span>
+        <h3>Learning GitLab</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Mar 2026</span>
+        <h3>Networking Foundations: Networking Basics</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Jul 2025</span>
+        <h3>Monitoring and Observability with Datadog</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Jun 2023</span>
+        <h3>Red Hat Certified Engineer (EX294) Prep Series</h3>
+        <p>Foundations, Playbooks, Managing Systems with Ansible — LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Jun 2023</span>
+        <h3>DevOps Foundations: CI/CD</h3>
+        <p>LinkedIn Learning</p>
+      </div>
+      <div class="card" tabindex="0">
+        <span class="tag">Jun 2023</span>
+        <h3>Azure Essential Training & Azure DevOps</h3>
+        <p>LinkedIn Learning</p>
       </div>
 
-      <div class="entry">
-        <div class="entry-meta">2024 — Platform Team</div>
-        <h3>Led migration of internal tooling to a shared design system</h3>
-        <p>Consolidated four separate front-end codebases into one component library,
-           cutting new-feature build time for internal tools by roughly a third.</p>
-        <span class="stamp">Verified · Q1 2024</span>
-      </div>
+    </div>
+    <button class="row-arrow right" aria-label="Scroll right" onclick="scrollRow('cert',1)">›</button>
+  </div>
+</section>
 
-      <div class="entry">
-        <div class="entry-meta">2023 — Hackathon</div>
-        <h3>1st place, company-wide hackathon</h3>
-        <p>Built a prototype for automated anomaly detection in support tickets,
-           later adopted as a permanent internal tool used by the support team.</p>
-        <span class="stamp">Award</span>
-      </div>
-
+<!-- SKILLS -->
+<section class="skills-section" id="skills">
+  <h2>Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-block">
+      <h4>CI/CD & Automation</h4>
+      <ul><li>GitHub Actions</li><li>GitLab CI</li><li>Pipeline design</li><li>Rollback/promotion workflows</li><li>Code quality gates</li></ul>
+    </div>
+    <div class="skill-block">
+      <h4>Cloud Platforms</h4>
+      <ul><li>AWS (EC2, Security Groups, Key Pairs)</li><li>Azure (Storage, NLB, App Config, ACR, AzCopy, Bicep)</li></ul>
+    </div>
+    <div class="skill-block">
+      <h4>Config & Containers</h4>
+      <ul><li>Ansible</li><li>Jinja2</li><li>vars/vault architecture</li><li>Docker</li><li>ARM images</li><li>WiX & dpkg packaging</li></ul>
+    </div>
+    <div class="skill-block">
+      <h4>Scripting & Languages</h4>
+      <ul><li>Python</li><li>Bash/Shell</li><li>Batch</li><li>YAML</li><li>C/C++</li><li>.NET deployment automation</li></ul>
+    </div>
+    <div class="skill-block">
+      <h4>Monitoring & Systems</h4>
+      <ul><li>Datadog</li><li>HTTP/service health validation</li><li>SSH</li><li>Wireshark</li><li>Linux/Ubuntu</li><li>Windows Server</li><li>RHEL</li></ul>
+    </div>
+    <div class="skill-block">
+      <h4>Microservices & Migrations</h4>
+      <ul><li>Service provisioning</li><li>DB scripting</li><li>Traffic routing</li><li>Azure migrations</li><li>DR operations</li></ul>
     </div>
   </div>
 </section>
 
-<section id="skills">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-num">02</span>
-      <h2>Skills</h2>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <h4>Languages</h4>
-        <ul class="skill-list">
-          <li>TypeScript</li><li>Python</li><li>Go</li><li>SQL</li>
-        </ul>
-      </div>
-      <div class="skill-card">
-        <h4>Frameworks & Tools</h4>
-        <ul class="skill-list">
-          <li>React</li><li>Node.js</li><li>Docker</li><li>PostgreSQL</li><li>AWS</li>
-        </ul>
-      </div>
-      <div class="skill-card">
-        <h4>Practices</h4>
-        <ul class="skill-list">
-          <li>System design</li><li>A/B testing</li><li>Code review</li><li>Mentoring</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- EXPERIENCE -->
+<section class="exp-section" id="experience">
+  <h2>Experience</h2>
 
-<section id="experience">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="section-num">03</span>
-      <h2>Experience</h2>
+  <div class="role">
+    <div class="role-meta">
+      Jun 2023 — Present
+      <span class="company">Thomson Reuters</span>
+      Bangalore, India
     </div>
+    <div>
+      <h3>DevOps Engineer</h3>
+      <p style="color:var(--ink-dim); font-size:0.92rem;">Own end-to-end CI/CD, configuration management, and disaster-recovery automation for a fleet of production microservices spanning AWS and Azure, on a team of ~7.</p>
 
-    <div class="role">
-      <div class="role-period">2023 — Present</div>
-      <div>
-        <h3>Senior Software Engineer</h3>
-        <div class="company">Acme Corp</div>
+      <div class="role-group">
+        <h5>Automation & Workflow Engineering</h5>
         <ul>
-          <li>Own the checkout and payments pipeline serving 2M+ monthly users</li>
-          <li>Mentor two junior engineers through structured 1:1s and code review</li>
+          <li>Designed a full GitHub Actions suite for provisioning, config promotion, multi-instance ops, and DR failover/failback</li>
+          <li>Hardened workflow security/observability with permission-based access controls and environment-aware validation gates</li>
+          <li>Built automated rollback/recovery pipelines — DB restoration, checkpoint cleanup, external system sync (Akamai, Pingdom)</li>
+          <li>Linked GitHub Actions to Azure Pipelines and Azure Table Storage with automated inventory and migration-summary reporting</li>
         </ul>
       </div>
-    </div>
-
-    <div class="role">
-      <div class="role-period">2021 — 2023</div>
-      <div>
-        <h3>Software Engineer</h3>
-        <div class="company">Acme Corp</div>
+      <div class="role-group">
+        <h5>Configuration Management & Ansible</h5>
         <ul>
-          <li>Built and shipped the internal tooling design system</li>
-          <li>Reduced average PR review time from 2 days to 6 hours</li>
+          <li>Architected a centralized vars.yml / vault.yml secret-management system, eliminating environment drift</li>
+          <li>Automated cross-environment config syncing and ID normalization</li>
+          <li>Built conditional BYOK configuration logic with Jinja2 templating and Azure App Config integration</li>
+        </ul>
+      </div>
+      <div class="role-group">
+        <h5>Monitoring & Reliability</h5>
+        <ul>
+          <li>Built a fail-fast Apache validation framework catching bad deployments before user impact</li>
+          <li>Integrated Datadog dashboards, alerting, and Teams notifications into deployment pipelines</li>
+          <li>Automated DNS cutovers via Python and the Akamai API</li>
         </ul>
       </div>
     </div>
+  </div>
 
+  <div class="role">
+    <div class="role-meta">
+      Sep 2021 — Jun 2023
+      <span class="company">GraniteRiverLabs</span>
+      Bangalore, India
+    </div>
+    <div>
+      <h3>DevOps Engineer</h3>
+      <p style="color:var(--ink-dim); font-size:0.92rem;">Built CI/CD pipelines and deployment tooling from the ground up, solo, across Linux, Windows, and cloud environments for embedded and enterprise applications. Earned two awards and a promotion within 6 months.</p>
+      <div class="role-group">
+        <ul>
+          <li>Automated Docker image pipelines end to end, cutting release steps from manual to one-click</li>
+          <li>Deployed and maintained .NET applications on AWS EC2 with full Security Group and Key Pair management</li>
+          <li>Built an automated testing pipeline for WiX-based installers in GitHub Actions, producing signed release-ready apps</li>
+          <li>Standardized Linux CI using dpkg across the team</li>
+          <li>Restructured GitHub repos to enforce linting, testing, formatting, and PR quality gates</li>
+          <li>Built automated ARM-based machine images and Bash/Shell monitoring scripts</li>
+          <li>Implemented deployment pipelines for Project MATTER (CSA), including Zigbee interoperability automation</li>
+          <li>Built a custom Windows Wireshark installer for THREAD protocol analysis, later adopted by the team</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
-<footer id="contact">
-  <div class="wrap">
-    <div class="contact-links">
-      <a href="mailto:jordan@example.com">jordan@example.com</a>
-      <a href="https://linkedin.com/in/jordanreyes">LinkedIn</a>
-      <a href="https://github.com/jordanreyes">GitHub</a>
-    </div>
-    <div class="fine">Last updated Aug 2026</div>
+<!-- EDUCATION -->
+<section class="edu-section" id="education">
+  <h2>Education</h2>
+  <div class="edu-card">
+    <h3>B.E., Electronics and Communication</h3>
+    <div class="school">MIT, Anna University — Chennai, India</div>
+    <div class="period">Graduated Aug 2021</div>
   </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <h2>Get in Touch</h2>
+  <p class="lead">Open to conversations about DevOps, cloud infrastructure, and automation roles. Send a message directly below.</p>
+
+  <form class="contact-form" action="https://formspree.io/f/yourFormID" method="POST">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+    </div>
+    <button type="submit" class="btn primary">Send Message</button>
+  </form>
+  <p class="form-note">Form powered by Formspree — replace "yourFormID" above with your own endpoint from formspree.io (free, takes ~2 minutes to set up).</p>
+
+  <div class="direct-links">
+    <a href="mailto:srinivasan.shyam2000@gmail.com">Email directly</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Srinivasan Vijayaraghavan</span>
+  <span>Built with GitHub Pages</span>
 </footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+  function scrollRow(id, dir){
+    document.getElementById(id).scrollBy({left: dir * 340, behavior: 'smooth'});
+  }
+</script>
 
 </body>
 </html>
