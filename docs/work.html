@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Srinivasan Vijayaraghavan</title>
+<meta name="description" content="Selected DevOps and automation projects across Thomson Reuters and GraniteRiverLabs.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="handle">@srinivasan.devops</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
+    <ul id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html" aria-current="page">Work</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="certifications.html">Certifications</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="wrap reveal">
+      <div class="page-eyebrow">01 — Work</div>
+      <h1>Selected work</h1>
+      <p class="lede">Six projects spanning CI/CD, disaster recovery, large-scale migration, and embedded protocol tooling. Tap any tile for the full story and the stack behind it.</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="grid" id="grid"></div>
+      <div class="legend reveal d1">
+        <span><i class="sage"></i> Thomson Reuters</span>
+        <span><i class="slate"></i> GraniteRiverLabs</span>
+        <span><i class="brass"></i> Publicly verifiable</span>
+      </div>
+
+      <div class="pager">
+        <a href="index.html">← Home</a>
+        <a href="experience.html">Experience →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Srinivasan Vijayaraghavan</span>
+    <span><a href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Srinivasan-78" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-card" id="lbCard">
+    <span class="lb-tag" id="lbTag"></span>
+    <h3 id="lbTitle"></h3>
+    <p id="lbBody"></p>
+    <div class="lb-stack" id="lbStack"></div>
+    <a class="lb-link" id="lbLink" target="_blank" rel="noopener"></a>
+    <button class="lb-close" id="lbClose">← close</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  var posts = [
+    { tag:"Thomson Reuters", accent:"sage", title:"Parallelized migration framework",
+      body:"Built a <strong>large-scale data migration framework</strong> using Azure Storage, custom runners, delta detection, and AzCopy — speeding up large transfers and cutting migration downtime. My standout project on this team.",
+      stack:["Azure Storage","AzCopy","Custom runners","Delta detection"] },
+    { tag:"Thomson Reuters", accent:"sage", title:"Self-service DR & CI/CD suite",
+      body:"Designed a full GitHub Actions automation suite covering provisioning, config promotion, multi-instance operations, and <strong>DR failover/failback</strong> — replacing manual runbooks entirely with self-service workflows.",
+      stack:["GitHub Actions","DR automation","Self-service"] },
+    { tag:"Thomson Reuters", accent:"sage", title:"Fail-fast validation framework",
+      body:"Built an Apache validation framework checking service state, HTTP 200 responses, <strong>NLB convergence</strong>, and healthchecks — stopping bad deployments before they ever reached users.",
+      stack:["Apache","NLB","Healthchecks","Datadog"] },
+    { tag:"GraniteRiverLabs", accent:"slate", title:"Project MATTER — CSA protocol",
+      body:"Implemented deployment pipelines for <strong>Project MATTER</strong>, the Connectivity Standards Alliance's smart-home interoperability protocol, including Zigbee-related automation for device interoperability testing.",
+      stack:["Matter / CSA","Zigbee","Embedded CI"] },
+    { tag:"GraniteRiverLabs", accent:"slate", title:"One-click Docker release pipeline",
+      body:"Automated Docker image tagging, pushing, and deployment for frontend and backend environments end to end, <strong>solo</strong> — turning a manual release process into a single click.",
+      stack:["Docker","Release automation","Solo build"] },
+    { tag:"GraniteRiverLabs", accent:"slate", title:"Wireshark THREAD installer",
+      body:"Built a custom Windows Wireshark installer for THREAD protocol analysis, with ongoing enhancements shipped through GitLab CI. <strong>Publicly available as a merge request</strong>, later adopted by the team.",
+      stack:["Wireshark","THREAD","GitLab CI","WiX"],
+      link:{ url:"https://gitlab.com/wireshark/wireshark/-/merge_requests/11008#note_1684405826", label:"View the merge request ↗" } }
+  ];
+
+  var grid = document.getElementById('grid');
+  posts.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.className = 'post ' + p.accent + (p.link ? ' has-link' : '') + ' reveal d' + ((i % 3) + 1);
+    b.innerHTML = '<span class="post-tag">' + p.tag + '</span>' +
+                  '<h3>' + p.title + '</h3>' +
+                  '<span class="post-open">' + (p.link ? 'public work ↗' : 'open ↗') + '</span>';
+    b.addEventListener('click', function(){ openLb(p); });
+    grid.appendChild(b);
+  });
+
+  var lb = document.getElementById('lb');
+  var lbCard = document.getElementById('lbCard');
+  var lastFocus = null;
+  function openLb(p){
+    lastFocus = document.activeElement;
+    lbCard.classList.toggle('slate', p.accent === 'slate');
+    document.getElementById('lbTag').textContent = p.tag;
+    document.getElementById('lbTitle').textContent = p.title;
+    document.getElementById('lbBody').innerHTML = p.body;
+    document.getElementById('lbStack').innerHTML = p.stack.map(function(s){ return '<span>' + s + '</span>'; }).join('');
+    var lnk = document.getElementById('lbLink');
+    if (p.link){ lnk.href = p.link.url; lnk.textContent = p.link.label; lnk.classList.add('show'); }
+    else { lnk.classList.remove('show'); lnk.removeAttribute('href'); }
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
+  }
+  function closeLb(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); });
+
+  /* re-observe dynamically created tiles */
+  if ('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.post.reveal').forEach(function(el){ io2.observe(el); });
+  } else {
+    document.querySelectorAll('.post.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
