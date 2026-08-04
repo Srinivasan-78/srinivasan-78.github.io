@@ -6,13 +6,20 @@
 <title>Certifications — Srinivasan Vijayaraghavan</title>
 <meta name="description" content="22 verified certifications in cloud, automation, infrastructure, and DevOps.">
 <link rel="stylesheet" href="styles.css">
+<script>
+/* Set theme before paint to avoid a flash of the wrong theme. */
+(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+</script>
 </head>
 <body>
 
 <nav id="nav">
   <div class="wrap">
     <a href="index.html" class="handle">@srinivasan.devops</a>
-    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="tt-icon">☾</span><span class="tt-text">Dark</span></button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
+    </div>
     <ul id="navMenu">
       <li><a href="index.html">Home</a></li>
       <li><a href="work.html">Work</a></li>
