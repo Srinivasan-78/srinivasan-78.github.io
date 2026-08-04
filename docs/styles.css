@@ -16,30 +16,41 @@
 
 :root{
   color-scheme: light;
-  --paper: #F6F3EC;
-  --paper-raised: #EFEBE1;
-  --ink: #2B2822;
-  --ink-70: rgba(43,40,34,0.70);
-  --ink-45: rgba(43,40,34,0.45);
-  --ink-15: rgba(43,40,34,0.15);
-  --ink-08: rgba(43,40,34,0.08);
+  /* Instagram light UI: white surface, near-black text, gray secondary,
+     and the #0095F6 action blue. Text-bearing accents are deepened a
+     step from the raw brand values, which sit near 3:1 and are too
+     faint for small type. */
+  --paper: #FFFFFF;
+  --paper-raised: #FAFAFA;
+  --ink: #262626;
+  --ink-70: #4B4B4B;
+  --ink-45: #6B6B6B;
+  --ink-15: #DBDBDB;
+  --ink-08: #EFEFEF;
 
-  --sage: #4D5D53;
-  --sage-mid: #68735A;
-  --sage-wash: #E8EAE0;
-  --sage-line: rgba(77,93,83,0.28);
+  /* IG blue — primary action colour */
+  --sage: #0074CC;
+  --sage-mid: #6B6B6B;
+  --sage-wash: #EAF4FD;
+  --sage-line: #B9DDFA;
 
-  --slate: #4A5D75;
-  --slate-wash: #E4E8ED;
-  --slate-line: rgba(74,93,117,0.28);
+  /* IG gradient purple — secondary */
+  --slate: #A0186F;
+  --slate-wash: #FBEAF4;
+  --slate-line: #F0C4DF;
 
-  --plum: #6B5570;
-  --plum-wash: #EBE5EC;
-  --plum-line: rgba(107,85,112,0.28);
+  /* IG gradient magenta — certifications */
+  --plum: #C13584;
+  --plum-wash: #FCEBF5;
+  --plum-line: #F2C9E2;
 
-  --brass: #7A5E28;
-  --brass-wash: #F0E9DA;
-  --brass-line: rgba(122,94,40,0.30);
+  /* IG gradient orange — awards / verified */
+  --brass: #B45F09;
+  --brass-wash: #FDF1E3;
+  --brass-line: #F5D3AC;
+
+  --ig-gradient: linear-gradient(45deg, #F09433 0%, #E6683C 25%, #DC2743 50%, #CC2366 75%, #BC1888 100%);
+  --ig-blue: #0095F6;
 
   --font-display: 'Iowan Old Style', 'Georgia', 'Palatino Linotype', serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -298,7 +309,7 @@ footer a:hover{border-color:var(--slate);}
 .legend i{width:11px; height:11px; display:inline-block;}
 .legend i.sage{background:var(--sage);}
 .legend i.slate{background:var(--slate);}
-.legend i.brass{background:var(--brass);}
+.legend i.brass{background:var(--ig-gradient);}
 
 /* lightbox */
 .lb{
@@ -475,30 +486,33 @@ form.contact-form{max-width:470px; display:flex; flex-direction:column; gap:15px
    ============================================================ */
 [data-theme="dark"]{
   color-scheme: dark;
-  --paper: #1C1B18;
-  --paper-raised: #26241F;
-  --ink: #DDD8CE;
-  --ink-70: rgba(221,216,206,0.72);
-  --ink-45: rgba(221,216,206,0.48);
-  --ink-15: rgba(221,216,206,0.16);
-  --ink-08: rgba(221,216,206,0.09);
+  /* Instagram dark UI: true black canvas with #121212 raised surfaces
+     and #FAFAFA text. Brand accents are lightened so they read against
+     black instead of glowing. */
+  --paper: #000000;
+  --paper-raised: #121212;
+  --ink: #FAFAFA;
+  --ink-70: #C7C7C7;
+  --ink-45: #A8A8A8;
+  --ink-15: #363636;
+  --ink-08: #262626;
 
-  --sage: #9BAE92;
-  --sage-mid: #8A9A81;
-  --sage-wash: #262B24;
-  --sage-line: rgba(155,174,146,0.30);
+  --sage: #0095F6;
+  --sage-mid: #A8A8A8;
+  --sage-wash: #0A1A26;
+  --sage-line: #1F3A4D;
 
-  --slate: #93AAC6;
-  --slate-wash: #22272E;
-  --slate-line: rgba(147,170,198,0.30);
+  --slate: #E56BAF;
+  --slate-wash: #1E1119;
+  --slate-line: #3D2130;
 
-  --plum: #B79BBD;
-  --plum-wash: #2A242C;
-  --plum-line: rgba(183,155,189,0.30);
+  --plum: #F075BE;
+  --plum-wash: #1E1119;
+  --plum-line: #3D2130;
 
-  --brass: #C9A461;
-  --brass-wash: #2B2519;
-  --brass-line: rgba(201,164,97,0.32);
+  --brass: #F09433;
+  --brass-wash: #211609;
+  --brass-line: #422C12;
 }
 [data-theme="dark"] nav{background:rgba(28,27,24,0.90);}
 [data-theme="dark"] .btn.primary{color:var(--paper);}
@@ -547,4 +561,74 @@ nav .wrap > ul{order:2; margin-left:auto;}
 nav .wrap > .nav-right{order:3;}
 @media (max-width:820px){
   nav .wrap > ul{margin-left:0;}
+}
+
+/* ============================================================
+   INSTAGRAM GRADIENT
+   Applied only where Instagram itself applies it — the avatar ring
+   and the story-highlight rings. Everywhere else stays neutral, which
+   is how the real app is built and what keeps long text readable.
+   ============================================================ */
+
+/* avatar: gradient ring around a neutral inner disc */
+.avatar{
+  background:var(--paper-raised);
+  border:none;
+  color:var(--ink);
+}
+.avatar::before{
+  content:""; position:absolute; inset:-4px; border-radius:50%;
+  background:var(--ig-gradient); z-index:-1;
+}
+.avatar::after{
+  content:""; position:absolute; inset:-4px; border-radius:50%;
+  background:var(--ig-gradient); opacity:.35;
+  animation:pulse 4.5s var(--ease) infinite; z-index:-2;
+}
+.profile-top{position:relative;}
+.avatar{isolation:isolate;}
+
+/* story-highlight rings */
+.hl-ring{
+  position:relative; border:none; background:var(--paper-raised);
+  color:var(--ink-70);
+}
+.hl-ring::before{
+  content:""; position:absolute; inset:-2px; border-radius:50%;
+  background:var(--ig-gradient); z-index:-1;
+}
+.hl{isolation:isolate;}
+.hl.active .hl-ring::before{inset:-3.5px;}
+.hl.active .hl-ring{background:var(--paper); color:var(--ink);}
+.hl:hover .hl-ring, .hl:focus-visible .hl-ring{transform:scale(1.09) translateY(-3px);}
+
+/* gradient accents on key interactive elements */
+.btn.primary{
+  background:var(--ig-blue); border-color:var(--ig-blue); color:#FFFFFF;
+  border-radius:8px; font-weight:600;
+}
+.btn.primary:hover{background:#0083DA; border-color:#0083DA; color:#FFFFFF;}
+.btn.ghost{border-radius:8px;}
+.contact-form input, .contact-form textarea{border-radius:8px;}
+.theme-toggle, .nav-toggle, .filter-btn{border-radius:8px;}
+.post, .explore-card, .contact-card, .lb-card{border-radius:10px;}
+
+/* gradient top edge on the lightbox, like a story header */
+.lb-card{position:relative; border-top:1px solid var(--ink-15); overflow:hidden;}
+.lb-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:4px;
+  background:var(--ig-gradient);
+}
+.lb-card.slate::before{background:var(--ig-gradient);}
+
+/* gradient underline on the active nav item */
+nav ul a[aria-current="page"]{
+  position:relative; border-color:transparent; color:var(--ink); font-weight:700;
+}
+nav ul a[aria-current="page"]::after{
+  content:""; position:absolute; left:13px; right:13px; bottom:2px; height:2px;
+  background:var(--ig-gradient);
+}
+@media (max-width:820px){
+  nav ul a[aria-current="page"]::after{left:24px; right:24px; bottom:8px;}
 }
