@@ -4,478 +4,430 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Srinivasan Vijayaraghavan — DevOps Engineer</title>
-<meta name="description" content="Portfolio of Srinivasan Vijayaraghavan — DevOps Engineer, Cloud Infrastructure & Automation">
+<meta name="description" content="Srinivasan Vijayaraghavan — DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.">
 <style>
+  /*
+    2-color palette, chosen for reduced eye strain:
+    — paper: warm off-white (low blue-light, softer than pure #FFF)
+    — ink: dark warm charcoal (softer than pure #000, ~9:1 contrast)
+    Every shade below is an opacity step of these two. No third hue.
+  */
   :root{
-    --bg: #0A0A0C;
-    --bg-elevated: #141417;
-    --card: #1C1C21;
-    --card-hover: #232329;
-    --ink: #F2F1EE;
-    --ink-dim: #A8A6A0;
-    --accent: #E0392B;
-    --accent-dim: #8C2620;
-    --line: #2C2C31;
-    --font-display: 'Bebas Neue', 'Archivo Black', Impact, sans-serif;
-    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', system-ui, sans-serif;
+    --paper: #F6F3EC;
+    --paper-raised: #EFEBE1;
+    --ink: #2B2822;
+    --ink-70: rgba(43,40,34,0.70);
+    --ink-45: rgba(43,40,34,0.45);
+    --ink-15: rgba(43,40,34,0.15);
+    --ink-08: rgba(43,40,34,0.08);
+    --font-display: 'Iowan Old Style', 'Georgia', 'Palatino Linotype', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+    --max: 860px;
+    --ease: cubic-bezier(.22,.61,.36,1);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
-  }
   body{
-    background:var(--bg); color:var(--ink);
-    font-family:var(--font-body); line-height:1.6;
+    background:var(--paper); color:var(--ink);
+    font-family:var(--font-body); line-height:1.65; font-size:16px;
     overflow-x:hidden;
   }
-  a{color:inherit;}
-  :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
-  img{max-width:100%; display:block;}
+  a{color:var(--ink);}
+  :focus-visible{outline:2px solid var(--ink); outline-offset:3px;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px;}
 
-  /* ---------- NAV ---------- */
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0; transform:translateY(22px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .reveal.in{opacity:1; transform:none;}
+  .reveal.d1{transition-delay:.06s} .reveal.d2{transition-delay:.12s}
+  .reveal.d3{transition-delay:.18s} .reveal.d4{transition-delay:.24s}
+  .reveal.d5{transition-delay:.30s} .reveal.d6{transition-delay:.36s}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1 !important; transform:none !important; transition:none !important;}
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  /* ---------- TOP BAR ---------- */
   nav{
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    padding:22px 4vw;
-    display:flex; justify-content:space-between; align-items:center;
-    background:linear-gradient(to bottom, rgba(10,10,12,0.95), transparent);
-    transition:background .3s;
+    position:sticky; top:0; z-index:60;
+    background:rgba(246,243,236,0.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--ink-15);
+    transition:box-shadow .3s var(--ease);
   }
-  nav.scrolled{background:rgba(10,10,12,0.97); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
-  .logo{
-    font-family:var(--font-display);
-    font-size:1.6rem; letter-spacing:0.04em;
-    color:var(--accent);
-    text-decoration:none;
-  }
-  nav ul{list-style:none; display:flex; gap:30px;}
-  nav a.navlink{
-    font-size:0.85rem; text-decoration:none; color:var(--ink-dim);
-    font-weight:500; transition:color .15s;
-  }
-  nav a.navlink:hover{color:var(--ink);}
+  nav.stuck{box-shadow:0 1px 14px rgba(43,40,34,0.06);}
+  nav .wrap{display:flex; justify-content:space-between; align-items:center; height:58px;}
+  nav .handle{font-family:var(--font-mono); font-size:0.82rem;}
+  nav ul{list-style:none; display:flex; gap:24px;}
+  nav a{font-size:0.82rem; text-decoration:none; color:var(--ink-45); transition:color .2s;}
+  nav a:hover{color:var(--ink);}
 
-  /* ---------- HERO ---------- */
-  .hero{
-    position:relative;
-    min-height:92vh;
-    display:flex; align-items:flex-end;
-    padding:0 4vw 90px;
-    background:
-      radial-gradient(ellipse 90% 60% at 30% 20%, rgba(224,57,43,0.18), transparent 60%),
-      linear-gradient(180deg, #16141a 0%, #0A0A0C 75%);
-  }
-  .hero::after{
-    content:"";
-    position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(10,10,12,0) 0%, var(--bg) 100%);
-    pointer-events:none;
-  }
-  .hero-content{position:relative; z-index:2; max-width:760px;}
-  .hero-tag{
-    font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.1em;
-    color:var(--accent); text-transform:uppercase; margin-bottom:18px;
-    display:flex; align-items:center; gap:10px;
-  }
-  .hero-tag::before{content:"●"; font-size:0.6rem;}
-  h1.hero-title{
-    font-family:var(--font-display);
-    font-size:clamp(3.2rem, 9vw, 6.5rem);
-    line-height:0.92;
-    letter-spacing:0.01em;
-    margin-bottom:20px;
-  }
-  .hero-role{
-    font-size:1.15rem; color:var(--ink-dim); max-width:56ch; margin-bottom:32px;
-  }
-  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
-  .btn{
-    font-size:0.92rem; font-weight:600;
-    padding:13px 28px; border-radius:4px;
-    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
-    border:none; cursor:pointer; transition:transform .12s, background .15s;
-  }
-  .btn.primary{background:var(--ink); color:#0A0A0C;}
-  .btn.primary:hover{background:#d8d6d0;}
-  .btn.secondary{background:rgba(120,120,130,0.35); color:var(--ink);}
-  .btn.secondary:hover{background:rgba(120,120,130,0.5);}
-  .btn:active{transform:scale(0.97);}
-
-  /* ---------- ROWS ---------- */
-  .row-section{padding:52px 0 8px;}
-  .row-head{
-    display:flex; justify-content:space-between; align-items:baseline;
-    padding:0 4vw; margin-bottom:18px;
-  }
-  .row-head h2{
-    font-family:var(--font-display);
-    font-size:1.7rem; letter-spacing:0.02em;
-  }
-  .row-head .hint{font-size:0.78rem; color:var(--ink-dim); font-family:var(--font-mono);}
-
-  .row-wrap{position:relative;}
-  .row-scroll{
-    display:flex; gap:16px;
-    overflow-x:auto; scroll-behavior:smooth;
-    padding:6px 4vw 30px;
-    scrollbar-width:none;
-  }
-  .row-scroll::-webkit-scrollbar{display:none;}
-
-  .card{
-    flex:0 0 auto;
-    width:300px;
-    background:var(--card);
-    border-radius:6px;
-    padding:22px;
-    border:1px solid var(--line);
-    cursor:default;
-    transition:transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
-    position:relative;
-  }
-  .card:hover, .card:focus-within{
-    transform:scale(1.06) translateY(-6px);
-    background:var(--card-hover);
-    border-color:var(--accent-dim);
-    box-shadow:0 20px 40px rgba(0,0,0,0.5);
-    z-index:5;
-  }
-  .card .tag{
-    font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.06em;
-    color:var(--accent); text-transform:uppercase; margin-bottom:10px; display:block;
-  }
-  .card h3{font-size:1.05rem; margin-bottom:10px; line-height:1.3;}
-  .card p{
-    font-size:0.85rem; color:var(--ink-dim);
-    max-height:0; opacity:0; overflow:hidden;
-    transition:max-height .3s ease, opacity .3s ease, margin-top .3s ease;
-  }
-  .card:hover p, .card:focus-within p{max-height:200px; opacity:1; margin-top:4px;}
-  .card .meta{
-    font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-dim);
-    margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;
-  }
-  .card .meta span{border:1px solid var(--line); padding:2px 8px; border-radius:3px;}
-
-  .row-arrow{
-    position:absolute; top:0; bottom:30px; width:56px;
+  /* ---------- PROFILE HEADER ---------- */
+  .profile{padding:52px 0 34px;}
+  .profile-top{display:flex; gap:34px; align-items:flex-start; flex-wrap:wrap;}
+  .avatar{
+    flex:0 0 auto; width:124px; height:124px; border-radius:50%;
+    border:1px solid var(--ink-15); background:var(--paper-raised);
     display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(90deg, var(--bg), transparent);
-    z-index:6; border:none; color:var(--ink); cursor:pointer;
-    opacity:0; transition:opacity .2s; font-size:1.4rem;
+    font-family:var(--font-display); font-size:2.6rem; letter-spacing:-0.02em;
+    position:relative;
   }
-  .row-wrap:hover .row-arrow{opacity:1;}
-  .row-arrow.left{left:0;}
-  .row-arrow.right{right:0; background:linear-gradient(270deg, var(--bg), transparent);}
+  .avatar::after{
+    content:""; position:absolute; inset:-7px; border-radius:50%;
+    border:1px solid var(--ink-15);
+    animation:pulse 4.5s var(--ease) infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1); opacity:.75;}
+    50%{transform:scale(1.045); opacity:.3;}
+  }
+  .profile-info{flex:1 1 320px; min-width:280px;}
+  .profile-name{
+    font-family:var(--font-display); font-weight:400;
+    font-size:1.75rem; margin-bottom:3px;
+  }
+  .profile-role{
+    font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--ink-45); margin-bottom:16px;
+  }
+  .stats{display:flex; gap:34px; margin-bottom:18px; flex-wrap:wrap;}
+  .stat b{
+    display:block; font-family:var(--font-display); font-size:1.5rem; line-height:1.1;
+  }
+  .stat span{font-size:0.78rem; color:var(--ink-45);}
+  .bio{font-size:0.95rem; color:var(--ink-70); max-width:52ch;}
+  .bio strong{color:var(--ink); font-weight:600;}
+  .profile-actions{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+  .btn{
+    font-size:0.85rem; font-weight:600; padding:10px 20px;
+    text-decoration:none; display:inline-block; cursor:pointer;
+    border:1px solid var(--ink); background:transparent; color:var(--ink);
+    transition:background .22s var(--ease), color .22s var(--ease), transform .12s;
+  }
+  .btn.primary{background:var(--ink); color:var(--paper);}
+  .btn.primary:hover{background:transparent; color:var(--ink);}
+  .btn.ghost:hover{background:var(--ink-08);}
+  .btn:active{transform:scale(.97);}
 
-  /* ---------- SKILLS ---------- */
-  .skills-section{padding:60px 4vw; border-top:1px solid var(--line);}
-  .skills-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:28px;}
-  .skills-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .skill-block{background:var(--bg-elevated); padding:24px;}
-  .skill-block h4{font-family:var(--font-mono); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent); margin-bottom:14px;}
-  .skill-block ul{list-style:none; display:flex; flex-wrap:wrap; gap:7px;}
-  .skill-block li{font-size:0.8rem; color:var(--ink-dim); border:1px solid var(--line); padding:5px 10px; border-radius:3px;}
+  /* ---------- HIGHLIGHTS (skills as story rings) ---------- */
+  .highlights{
+    display:flex; gap:26px; overflow-x:auto; padding:30px 0 34px;
+    border-bottom:1px solid var(--ink-15); scrollbar-width:none;
+  }
+  .highlights::-webkit-scrollbar{display:none;}
+  .hl{
+    flex:0 0 auto; width:92px; text-align:center;
+    background:none; border:none; cursor:pointer; font-family:inherit; color:inherit;
+  }
+  .hl-ring{
+    width:74px; height:74px; margin:0 auto 9px; border-radius:50%;
+    border:1.5px solid var(--ink-15); background:var(--paper-raised);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.02em;
+    color:var(--ink-70); padding:8px; line-height:1.25;
+    transition:transform .28s var(--ease), border-color .28s var(--ease), background .28s var(--ease);
+  }
+  .hl:hover .hl-ring, .hl:focus-visible .hl-ring{
+    transform:scale(1.09) translateY(-3px);
+    border-color:var(--ink); background:var(--paper);
+  }
+  .hl.active .hl-ring{border-color:var(--ink); border-width:2.5px;}
+  .hl-label{font-size:0.72rem; color:var(--ink-45); line-height:1.3;}
+
+  /* skill panel that opens under highlights */
+  .hl-panel{
+    max-height:0; overflow:hidden; opacity:0;
+    transition:max-height .45s var(--ease), opacity .35s var(--ease), padding .45s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  .hl-panel.open{
+    max-height:320px; opacity:1; padding:26px 0 30px;
+    border-bottom:1px solid var(--ink-15);
+  }
+  .hl-panel h4{
+    font-family:var(--font-mono); font-size:0.74rem; text-transform:uppercase;
+    letter-spacing:0.06em; margin-bottom:14px;
+  }
+  .hl-panel ul{list-style:none; display:flex; flex-wrap:wrap; gap:8px;}
+  .hl-panel li{
+    font-size:0.8rem; color:var(--ink-70);
+    border:1px solid var(--ink-15); padding:5px 12px; background:var(--paper-raised);
+  }
+
+  /* ---------- SECTION ---------- */
+  section{padding:52px 0;}
+  .section-head{margin-bottom:26px;}
+  .section-num{font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-45); display:block; margin-bottom:5px;}
+  h2{font-family:var(--font-display); font-weight:400; font-size:1.45rem;}
+  .section-hint{font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-45); margin-top:5px;}
+
+  /* ---------- POST GRID (achievements) ---------- */
+  .grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;}
+  .post{
+    position:relative; aspect-ratio:1/1;
+    background:var(--paper-raised); border:1px solid var(--ink-08);
+    padding:20px; cursor:pointer; text-align:left;
+    font-family:inherit; color:inherit;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:transform .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+    overflow:hidden;
+  }
+  .post:hover, .post:focus-visible{
+    transform:translateY(-4px);
+    background:var(--paper); border-color:var(--ink-15);
+    box-shadow:0 12px 28px rgba(43,40,34,0.09);
+  }
+  .post .post-tag{
+    font-family:var(--font-mono); font-size:0.66rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--ink-45);
+  }
+  .post h3{font-size:0.98rem; font-weight:700; line-height:1.35;}
+  .post .post-open{
+    font-family:var(--font-mono); font-size:0.68rem; color:var(--ink-45);
+    opacity:0; transform:translateY(6px);
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .post:hover .post-open, .post:focus-visible .post-open{opacity:1; transform:none;}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lb{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(43,40,34,0.42); backdrop-filter:blur(4px);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    opacity:0; pointer-events:none; transition:opacity .3s var(--ease);
+  }
+  .lb.open{opacity:1; pointer-events:auto;}
+  .lb-card{
+    background:var(--paper); border:1px solid var(--ink-15);
+    max-width:520px; width:100%; padding:34px;
+    transform:scale(.94) translateY(10px);
+    transition:transform .35s var(--ease);
+    max-height:85vh; overflow-y:auto;
+  }
+  .lb.open .lb-card{transform:none;}
+  .lb-tag{
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--ink-45); margin-bottom:8px; display:block;
+  }
+  .lb-card h3{font-family:var(--font-display); font-weight:400; font-size:1.35rem; margin-bottom:14px;}
+  .lb-card p{color:var(--ink-70); font-size:0.95rem; margin-bottom:18px;}
+  .lb-card p strong{color:var(--ink); font-weight:600;}
+  .lb-stack{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:22px;}
+  .lb-stack span{
+    font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-70);
+    border:1px solid var(--ink-15); padding:4px 10px;
+  }
+  .lb-close{
+    background:none; border:none; cursor:pointer; font-family:var(--font-mono);
+    font-size:0.78rem; color:var(--ink-45); padding:0;
+  }
+  .lb-close:hover{color:var(--ink);}
 
   /* ---------- EXPERIENCE ---------- */
-  .exp-section{padding:60px 4vw; border-top:1px solid var(--line);}
-  .exp-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:32px;}
-  .role{padding:30px 0; border-top:1px solid var(--line); display:grid; grid-template-columns:200px 1fr; gap:26px;}
+  .role{padding:28px 0; border-top:1px solid var(--ink-08);}
   .role:first-of-type{border-top:none;}
-  .role-meta{font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-dim);}
-  .role-meta .company{color:var(--accent); font-weight:600; font-size:0.95rem; display:block; margin-top:6px; font-family:var(--font-body);}
-  .role h3{font-size:1.25rem; margin-bottom:6px; font-weight:700;}
-  .role-group{margin-top:14px;}
-  .role-group h5{font-family:var(--font-mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); margin-bottom:6px;}
-  .role ul{padding-left:18px; font-size:0.92rem; color:var(--ink-dim);}
-  .role li{margin-bottom:5px;}
+  .role-top{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:5px;}
+  .role h3{font-family:var(--font-display); font-weight:400; font-size:1.18rem;}
+  .role-period{font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-45);}
+  .role .company{color:var(--ink-70); font-size:0.9rem; margin-bottom:13px;}
+  .role .summary{color:var(--ink-70); font-size:0.93rem;}
+  .role-group{margin-top:17px;}
+  .role-group h5{
+    font-family:var(--font-mono); font-size:0.69rem; text-transform:uppercase;
+    letter-spacing:0.04em; color:var(--ink-45); margin-bottom:8px;
+  }
+  .role ul{padding-left:18px; font-size:0.91rem; color:var(--ink-70);}
+  .role li{margin-bottom:7px;}
+  .role li strong{color:var(--ink); font-weight:600;}
 
-  /* ---------- EDUCATION ---------- */
-  .edu-section{padding:60px 4vw; border-top:1px solid var(--line);}
-  .edu-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:24px;}
-  .edu-card{background:var(--bg-elevated); border:1px solid var(--line); border-radius:6px; padding:26px; max-width:520px;}
-  .edu-card h3{font-size:1.1rem; margin-bottom:6px;}
-  .edu-card .school{color:var(--accent); font-size:0.9rem; margin-bottom:4px;}
-  .edu-card .period{font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-dim);}
+  /* ---------- EDUCATION / CERTS ---------- */
+  .edu h3{font-size:1.05rem; margin-bottom:4px;}
+  .edu .school{color:var(--ink-70); font-size:0.91rem; margin-bottom:4px;}
+  .edu .period{font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-45);}
+  .cert-list{list-style:none;}
+  .cert-item{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:11px 0; border-top:1px solid var(--ink-08);
+    transition:padding-left .25s var(--ease);
+  }
+  .cert-item:first-child{border-top:none;}
+  .cert-item:hover{padding-left:7px;}
+  .cert-item .cert-name{font-size:0.92rem; color:var(--ink-70);}
+  .cert-item .cert-date{font-family:var(--font-mono); font-size:0.77rem; color:var(--ink-45); white-space:nowrap;}
 
   /* ---------- CONTACT ---------- */
-  .contact-section{padding:70px 4vw 90px; border-top:1px solid var(--line);}
-  .contact-section h2{font-family:var(--font-display); font-size:1.7rem; margin-bottom:10px;}
-  .contact-section p.lead{color:var(--ink-dim); max-width:56ch; margin-bottom:36px;}
-  form.contact-form{max-width:560px; display:flex; flex-direction:column; gap:16px;}
-  .contact-form label{font-family:var(--font-mono); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-dim); margin-bottom:6px; display:block;}
-  .contact-form input, .contact-form textarea{
-    width:100%; background:var(--bg-elevated); border:1px solid var(--line); color:var(--ink);
-    padding:12px 14px; border-radius:4px; font-family:var(--font-body); font-size:0.92rem;
+  .contact-lead{color:var(--ink-70); max-width:54ch; margin-bottom:30px;}
+  form.contact-form{max-width:470px; display:flex; flex-direction:column; gap:15px;}
+  .contact-form label{
+    font-family:var(--font-mono); font-size:0.71rem; text-transform:uppercase;
+    letter-spacing:0.04em; color:var(--ink-45); margin-bottom:6px; display:block;
   }
-  .contact-form input:focus, .contact-form textarea:focus{border-color:var(--accent);}
-  .contact-form textarea{min-height:120px; resize:vertical;}
-  .contact-form button{align-self:flex-start; margin-top:6px;}
-  .form-note{font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-dim); margin-top:14px;}
-  .direct-links{display:flex; gap:22px; margin-top:30px; flex-wrap:wrap; font-size:0.88rem;}
-  .direct-links a{text-decoration:none; color:var(--ink-dim); border-bottom:1px solid transparent; transition:.15s;}
-  .direct-links a:hover{color:var(--accent); border-color:var(--accent);}
+  .contact-form input, .contact-form textarea{
+    width:100%; background:var(--paper-raised); border:1px solid var(--ink-15); color:var(--ink);
+    padding:11px 13px; font-family:var(--font-body); font-size:0.91rem;
+    transition:border-color .22s var(--ease), background .22s var(--ease);
+  }
+  .contact-form input:focus, .contact-form textarea:focus{border-color:var(--ink); background:var(--paper);}
+  .contact-form textarea{min-height:108px; resize:vertical;}
+  .contact-form button{align-self:flex-start; margin-top:4px;}
+  .direct-links{display:flex; gap:20px; margin-top:26px; flex-wrap:wrap; font-size:0.87rem;}
+  .direct-links a{text-decoration:none; border-bottom:1px solid var(--ink-15); transition:border-color .2s;}
+  .direct-links a:hover{border-color:var(--ink);}
 
-  footer{padding:30px 4vw 50px; border-top:1px solid var(--line); font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  footer{padding:34px 0 56px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-45);
+    border-top:1px solid var(--ink-15);}
 
-  @media (max-width:700px){
-    nav ul{gap:16px;}
-    nav ul li:nth-child(n+3){display:none;}
-    .card{width:250px;}
-    .role{grid-template-columns:1fr; gap:8px;}
+  @media (max-width:720px){
+    .grid{grid-template-columns:repeat(2, 1fr);}
+    nav ul{gap:14px;}
+    nav ul li:nth-child(n+4){display:none;}
+    .profile-top{gap:22px;}
+    .avatar{width:92px; height:92px; font-size:2rem;}
+    .role-top{flex-direction:column; gap:2px;}
+  }
+  @media (max-width:440px){
+    .grid{grid-template-columns:1fr;}
+    .post{aspect-ratio:auto; min-height:150px;}
   }
 </style>
 </head>
 <body>
 
-<nav id="navbar">
-  <a href="#" class="logo">SV</a>
-  <ul>
-    <li><a href="#achievements" class="navlink">Achievements</a></li>
-    <li><a href="#certifications" class="navlink">Certifications</a></li>
-    <li><a href="#skills" class="navlink">Skills</a></li>
-    <li><a href="#experience" class="navlink">Experience</a></li>
-    <li><a href="#contact" class="navlink">Contact</a></li>
-  </ul>
+<nav id="nav">
+  <div class="wrap">
+    <span class="handle">@srinivasan.devops</span>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 </nav>
 
-<header class="hero">
-  <div class="hero-content">
-    <div class="hero-tag">Now streaming · DevOps Engineer</div>
-    <h1 class="hero-title">SRINIVASAN<br>VIJAYARAGHAVAN</h1>
-    <p class="hero-role">
-      5 years turning fragile, manual deployments into fast, reliable automation across
-      AWS and Azure. I build the pipelines, safety nets, and monitoring that let teams
-      ship confidently — now leveling up toward Cloud Solutions Architecture.
-    </p>
-    <div class="hero-actions">
-      <a href="/resume.pdf" class="btn primary">▸ Download Résumé</a>
-      <a href="#contact" class="btn secondary">More Info</a>
+<!-- PROFILE -->
+<header class="profile">
+  <div class="wrap">
+    <div class="profile-top reveal">
+      <div class="avatar">SV</div>
+      <div class="profile-info">
+        <h1 class="profile-name">Srinivasan Vijayaraghavan</h1>
+        <div class="profile-role">DevOps Engineer · Cloud Infrastructure & Automation</div>
+        <div class="stats">
+          <div class="stat"><b>5</b><span>years shipping</span></div>
+          <div class="stat"><b>2</b><span>clouds (AWS · Azure)</span></div>
+          <div class="stat"><b>2</b><span>awards + promo</span></div>
+        </div>
+        <p class="bio">
+          I turn fragile, manual deployments into <strong>fast, reliable automation</strong> —
+          the pipelines, safety nets, and monitoring that let teams ship without holding
+          their breath. Currently leveling up toward Cloud Solutions Architecture.
+        </p>
+        <div class="profile-actions">
+          <a href="/resume.pdf" class="btn primary">Download résumé</a>
+          <a href="#contact" class="btn ghost">Message</a>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- ACHIEVEMENTS ROW -->
-<section class="row-section" id="achievements">
-  <div class="row-head">
-    <h2>Top Achievements</h2>
-    <span class="hint">hover for details →</span>
+<!-- SKILL HIGHLIGHTS -->
+<div class="wrap">
+  <div class="highlights reveal d1" id="highlights">
+    <button class="hl" data-hl="0"><div class="hl-ring">CI/CD</div><div class="hl-label">Pipelines</div></button>
+    <button class="hl" data-hl="1"><div class="hl-ring">Cloud</div><div class="hl-label">AWS · Azure</div></button>
+    <button class="hl" data-hl="2"><div class="hl-ring">Config</div><div class="hl-label">Ansible</div></button>
+    <button class="hl" data-hl="3"><div class="hl-ring">Scripts</div><div class="hl-label">Languages</div></button>
+    <button class="hl" data-hl="4"><div class="hl-ring">Observe</div><div class="hl-label">Monitoring</div></button>
+    <button class="hl" data-hl="5"><div class="hl-ring">Migrate</div><div class="hl-label">Microservices</div></button>
   </div>
-  <div class="row-wrap">
-    <button class="row-arrow left" aria-label="Scroll left" onclick="scrollRow('achv',-1)">‹</button>
-    <div class="row-scroll" id="achv">
-
-      <div class="card" tabindex="0">
-        <span class="tag">Thomson Reuters</span>
-        <h3>Parallelized Migration Framework</h3>
-        <p>Built a large-scale data migration framework using Azure Storage, custom runners,
-           delta detection, and AzCopy — sped up large transfers and cut migration downtime.
-           My standout project on this team.</p>
-        <div class="meta"><span>Azure</span><span>AzCopy</span><span>Python</span></div>
-      </div>
-
-      <div class="card" tabindex="0">
-        <span class="tag">Thomson Reuters</span>
-        <h3>Self-Service DR & CI/CD Suite</h3>
-        <p>Designed a full GitHub Actions automation suite covering provisioning, config
-           promotion, multi-instance operations, and DR failover/failback — replacing
-           manual runbooks entirely.</p>
-        <div class="meta"><span>GitHub Actions</span><span>DR Automation</span></div>
-      </div>
-
-      <div class="card" tabindex="0">
-        <span class="tag">GraniteRiverLabs</span>
-        <h3>Project MATTER — CSA Protocol</h3>
-        <p>Implemented deployment pipelines for Project MATTER, the Connectivity Standards
-           Alliance's smart-home interoperability protocol, including Zigbee-related
-           automation for device interoperability testing.</p>
-        <div class="meta"><span>Matter / CSA</span><span>Zigbee</span></div>
-      </div>
-
-      <div class="card" tabindex="0">
-        <span class="tag">GraniteRiverLabs</span>
-        <h3>One-Click Docker Release Pipeline</h3>
-        <p>Automated Docker image tagging, pushing, and deployment for frontend and backend
-           environments end to end, solo — turning a manual release process into a single click.</p>
-        <div class="meta"><span>Docker</span><span>Solo build</span></div>
-      </div>
-
-      <div class="card" tabindex="0">
-        <span class="tag">GraniteRiverLabs</span>
-        <h3>Wireshark THREAD Installer</h3>
-        <p>Built a custom Windows Wireshark installer for THREAD protocol analysis, with
-           ongoing enhancements via GitLab CI. Publicly available as a merge request,
-           later adopted by the team.</p>
-        <div class="meta"><span>Public MR</span><span>GitLab CI</span></div>
-      </div>
-
-      <div class="card" tabindex="0">
-        <span class="tag">Thomson Reuters</span>
-        <h3>Fail-Fast Validation Framework</h3>
-        <p>Built an Apache validation framework checking service state, HTTP 200 responses,
-           NLB convergence, and healthchecks — stopping bad deployments before they reached users.</p>
-        <div class="meta"><span>Reliability</span><span>Apache</span></div>
-      </div>
-
-    </div>
-    <button class="row-arrow right" aria-label="Scroll right" onclick="scrollRow('achv',1)">›</button>
+  <div class="hl-panel" id="hlPanel">
+    <h4 id="hlTitle"></h4>
+    <ul id="hlList"></ul>
   </div>
-</section>
+</div>
 
-<!-- CERTIFICATIONS ROW -->
-<section class="row-section" id="certifications">
-  <div class="row-head">
-    <h2>Certifications & Learning</h2>
-  </div>
-  <div class="row-wrap">
-    <button class="row-arrow left" aria-label="Scroll left" onclick="scrollRow('cert',-1)">‹</button>
-    <div class="row-scroll" id="cert">
-
-      <div class="card" tabindex="0">
-        <span class="tag">Jul 2026</span>
-        <h3>Software Architecture Foundations</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Mar 2026</span>
-        <h3>Advanced GitHub Actions</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Mar 2026</span>
-        <h3>Infrastructure as Code with Azure Bicep, Part 1</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Mar 2026</span>
-        <h3>Learning GitLab</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Mar 2026</span>
-        <h3>Networking Foundations: Networking Basics</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Jul 2025</span>
-        <h3>Monitoring and Observability with Datadog</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Jun 2023</span>
-        <h3>Red Hat Certified Engineer (EX294) Prep Series</h3>
-        <p>Foundations, Playbooks, Managing Systems with Ansible — LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Jun 2023</span>
-        <h3>DevOps Foundations: CI/CD</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-      <div class="card" tabindex="0">
-        <span class="tag">Jun 2023</span>
-        <h3>Azure Essential Training & Azure DevOps</h3>
-        <p>LinkedIn Learning</p>
-      </div>
-
+<!-- WORK GRID -->
+<section id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">01</span>
+      <h2>Selected work</h2>
+      <div class="section-hint">tap any tile to open →</div>
     </div>
-    <button class="row-arrow right" aria-label="Scroll right" onclick="scrollRow('cert',1)">›</button>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section class="skills-section" id="skills">
-  <h2>Skills</h2>
-  <div class="skills-grid">
-    <div class="skill-block">
-      <h4>CI/CD & Automation</h4>
-      <ul><li>GitHub Actions</li><li>GitLab CI</li><li>Pipeline design</li><li>Rollback/promotion workflows</li><li>Code quality gates</li></ul>
-    </div>
-    <div class="skill-block">
-      <h4>Cloud Platforms</h4>
-      <ul><li>AWS (EC2, Security Groups, Key Pairs)</li><li>Azure (Storage, NLB, App Config, ACR, AzCopy, Bicep)</li></ul>
-    </div>
-    <div class="skill-block">
-      <h4>Config & Containers</h4>
-      <ul><li>Ansible</li><li>Jinja2</li><li>vars/vault architecture</li><li>Docker</li><li>ARM images</li><li>WiX & dpkg packaging</li></ul>
-    </div>
-    <div class="skill-block">
-      <h4>Scripting & Languages</h4>
-      <ul><li>Python</li><li>Bash/Shell</li><li>Batch</li><li>YAML</li><li>C/C++</li><li>.NET deployment automation</li></ul>
-    </div>
-    <div class="skill-block">
-      <h4>Monitoring & Systems</h4>
-      <ul><li>Datadog</li><li>HTTP/service health validation</li><li>SSH</li><li>Wireshark</li><li>Linux/Ubuntu</li><li>Windows Server</li><li>RHEL</li></ul>
-    </div>
-    <div class="skill-block">
-      <h4>Microservices & Migrations</h4>
-      <ul><li>Service provisioning</li><li>DB scripting</li><li>Traffic routing</li><li>Azure migrations</li><li>DR operations</li></ul>
-    </div>
+    <div class="grid" id="grid"></div>
   </div>
 </section>
 
 <!-- EXPERIENCE -->
-<section class="exp-section" id="experience">
-  <h2>Experience</h2>
-
-  <div class="role">
-    <div class="role-meta">
-      Jun 2023 — Present
-      <span class="company">Thomson Reuters</span>
-      Bangalore, India
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">02</span>
+      <h2>Experience</h2>
     </div>
-    <div>
-      <h3>DevOps Engineer</h3>
-      <p style="color:var(--ink-dim); font-size:0.92rem;">Own end-to-end CI/CD, configuration management, and disaster-recovery automation for a fleet of production microservices spanning AWS and Azure, on a team of ~7.</p>
+
+    <div class="role reveal d1">
+      <div class="role-top">
+        <h3>DevOps Engineer, Thomson Reuters</h3>
+        <span class="role-period">Jun 2023 — Present</span>
+      </div>
+      <div class="company">Bangalore, India · team of ~7</div>
+      <p class="summary">Own end-to-end CI/CD, configuration management, and disaster-recovery automation for a fleet of production microservices spanning AWS and Azure.</p>
 
       <div class="role-group">
         <h5>Automation & Workflow Engineering</h5>
         <ul>
-          <li>Designed a full GitHub Actions suite for provisioning, config promotion, multi-instance ops, and DR failover/failback</li>
-          <li>Hardened workflow security/observability with permission-based access controls and environment-aware validation gates</li>
-          <li>Built automated rollback/recovery pipelines — DB restoration, checkpoint cleanup, external system sync (Akamai, Pingdom)</li>
-          <li>Linked GitHub Actions to Azure Pipelines and Azure Table Storage with automated inventory and migration-summary reporting</li>
+          <li>Designed a full <strong>GitHub Actions</strong> suite for provisioning, config promotion, multi-instance ops, and DR failover/failback</li>
+          <li>Hardened workflow security and observability with permission-based access controls and environment-aware validation gates</li>
+          <li>Built automated <strong>rollback and recovery pipelines</strong> — DB restoration, checkpoint cleanup, external system sync (Akamai, Pingdom)</li>
+          <li>Linked GitHub Actions to <strong>Azure Pipelines</strong> and Azure Table Storage with automated inventory and migration-summary reporting</li>
         </ul>
       </div>
       <div class="role-group">
         <h5>Configuration Management & Ansible</h5>
         <ul>
-          <li>Architected a centralized vars.yml / vault.yml secret-management system, eliminating environment drift</li>
-          <li>Automated cross-environment config syncing and ID normalization</li>
-          <li>Built conditional BYOK configuration logic with Jinja2 templating and Azure App Config integration</li>
+          <li>Architected a centralized <strong>vars.yml / vault.yml</strong> secret-management system, eliminating environment drift</li>
+          <li>Automated cross-environment config syncing, duplicate key cleanup, and ID normalization</li>
+          <li>Built conditional <strong>BYOK</strong> configuration logic with Jinja2 templating and Azure App Config integration</li>
+          <li>Modularized Apache deployment and restart workflows with enforced validation checks</li>
         </ul>
       </div>
       <div class="role-group">
-        <h5>Monitoring & Reliability</h5>
+        <h5>Monitoring, Networking & Migration</h5>
         <ul>
-          <li>Built a fail-fast Apache validation framework catching bad deployments before user impact</li>
-          <li>Integrated Datadog dashboards, alerting, and Teams notifications into deployment pipelines</li>
-          <li>Automated DNS cutovers via Python and the Akamai API</li>
+          <li>Built a <strong>fail-fast Apache validation framework</strong> catching bad deployments before user impact</li>
+          <li>Integrated <strong>Datadog</strong> dashboards, alerting, and Teams notifications into deployment pipelines</li>
+          <li>Automated DNS cutovers via <strong>Python and the Akamai API</strong> for MX and record updates</li>
+          <li>Designed shared-resource sync and migration frameworks for Solr and application servers</li>
         </ul>
       </div>
     </div>
-  </div>
 
-  <div class="role">
-    <div class="role-meta">
-      Sep 2021 — Jun 2023
-      <span class="company">GraniteRiverLabs</span>
-      Bangalore, India
-    </div>
-    <div>
-      <h3>DevOps Engineer</h3>
-      <p style="color:var(--ink-dim); font-size:0.92rem;">Built CI/CD pipelines and deployment tooling from the ground up, solo, across Linux, Windows, and cloud environments for embedded and enterprise applications. Earned two awards and a promotion within 6 months.</p>
+    <div class="role reveal d1">
+      <div class="role-top">
+        <h3>DevOps Engineer, GraniteRiverLabs</h3>
+        <span class="role-period">Sep 2021 — Jun 2023</span>
+      </div>
+      <div class="company">Bangalore, India · solo</div>
+      <p class="summary">Built CI/CD pipelines and deployment tooling from the ground up across Linux, Windows, and cloud environments for embedded and enterprise applications. Earned two awards and a promotion within 6 months.</p>
       <div class="role-group">
         <ul>
-          <li>Automated Docker image pipelines end to end, cutting release steps from manual to one-click</li>
-          <li>Deployed and maintained .NET applications on AWS EC2 with full Security Group and Key Pair management</li>
-          <li>Built an automated testing pipeline for WiX-based installers in GitHub Actions, producing signed release-ready apps</li>
-          <li>Standardized Linux CI using dpkg across the team</li>
-          <li>Restructured GitHub repos to enforce linting, testing, formatting, and PR quality gates</li>
-          <li>Built automated ARM-based machine images and Bash/Shell monitoring scripts</li>
-          <li>Implemented deployment pipelines for Project MATTER (CSA), including Zigbee interoperability automation</li>
-          <li>Built a custom Windows Wireshark installer for THREAD protocol analysis, later adopted by the team</li>
+          <li>Automated <strong>Docker image pipelines</strong> end to end, cutting release steps from manual to one-click</li>
+          <li>Deployed and maintained <strong>.NET applications on AWS EC2</strong> with full Security Group and Key Pair management</li>
+          <li>Built an automated testing pipeline for <strong>WiX-based installers</strong> in GitHub Actions, producing signed release-ready apps</li>
+          <li>Standardized Linux CI using <strong>dpkg</strong> across the team</li>
+          <li>Restructured GitHub repos to enforce linting, testing, formatting, and <strong>PR quality gates</strong></li>
+          <li>Built automated <strong>ARM-based machine images</strong> and Bash/Shell monitoring scripts</li>
+          <li>Implemented deployment pipelines for <strong>Project MATTER (CSA)</strong>, including Zigbee interoperability automation</li>
+          <li>Built a custom Windows <strong>Wireshark installer</strong> for THREAD protocol analysis, later adopted by the team</li>
         </ul>
       </div>
     </div>
@@ -483,56 +435,188 @@
 </section>
 
 <!-- EDUCATION -->
-<section class="edu-section" id="education">
-  <h2>Education</h2>
-  <div class="edu-card">
-    <h3>B.E., Electronics and Communication</h3>
-    <div class="school">MIT, Anna University — Chennai, India</div>
-    <div class="period">Graduated Aug 2021</div>
+<section id="education">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">03</span>
+      <h2>Education</h2>
+    </div>
+    <div class="edu reveal d1">
+      <h3>B.E., Electronics and Communication</h3>
+      <div class="school">MIT, Anna University — Chennai, India</div>
+      <div class="period">Graduated Aug 2021</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">04</span>
+      <h2>Certifications & learning</h2>
+    </div>
+    <ul class="cert-list reveal d1">
+      <li class="cert-item"><span class="cert-name">Software Architecture Foundations</span><span class="cert-date">Jul 2026</span></li>
+      <li class="cert-item"><span class="cert-name">Advanced GitHub Actions</span><span class="cert-date">Mar 2026</span></li>
+      <li class="cert-item"><span class="cert-name">Infrastructure as Code with Azure Bicep, Part 1</span><span class="cert-date">Mar 2026</span></li>
+      <li class="cert-item"><span class="cert-name">Learning GitLab</span><span class="cert-date">Mar 2026</span></li>
+      <li class="cert-item"><span class="cert-name">Networking Foundations: Networking Basics</span><span class="cert-date">Mar 2026</span></li>
+      <li class="cert-item"><span class="cert-name">Monitoring and Observability with Datadog</span><span class="cert-date">Jul 2025</span></li>
+      <li class="cert-item"><span class="cert-name">Red Hat Certified Engineer (EX294) Prep Series</span><span class="cert-date">Jun 2023</span></li>
+      <li class="cert-item"><span class="cert-name">DevOps Foundations: CI/CD</span><span class="cert-date">Jun 2023</span></li>
+      <li class="cert-item"><span class="cert-name">Azure Essential Training & Azure DevOps</span><span class="cert-date">Jun 2023</span></li>
+    </ul>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact-section" id="contact">
-  <h2>Get in Touch</h2>
-  <p class="lead">Open to conversations about DevOps, cloud infrastructure, and automation roles. Send a message directly below.</p>
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">05</span>
+      <h2>Get in touch</h2>
+    </div>
+    <p class="contact-lead reveal d1">Open to conversations about DevOps, cloud infrastructure, and automation roles.</p>
 
-  <form class="contact-form" action="https://formspree.io/f/yourFormID" method="POST">
-    <div>
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required>
-    </div>
-    <div>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-      <label for="message">Message</label>
-      <textarea id="message" name="message" required></textarea>
-    </div>
-    <button type="submit" class="btn primary">Send Message</button>
-  </form>
-  <p class="form-note">Form powered by Formspree — replace "yourFormID" above with your own endpoint from formspree.io (free, takes ~2 minutes to set up).</p>
+    <form class="contact-form reveal d2" action="https://formspree.io/f/xrpzzlaz" method="POST">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="btn primary">Send message</button>
+    </form>
 
-  <div class="direct-links">
-    <a href="mailto:srinivasan.shyam2000@gmail.com">Email directly</a>
-    <a href="#">LinkedIn</a>
-    <a href="#">GitHub</a>
+    <div class="direct-links reveal d3">
+      <a href="mailto:srinivasan.shyam2000@gmail.com">Email directly</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+    </div>
   </div>
 </section>
 
-<footer>
+<footer class="wrap">
   <span>© 2026 Srinivasan Vijayaraghavan</span>
   <span>Built with GitHub Pages</span>
 </footer>
 
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-card">
+    <span class="lb-tag" id="lbTag"></span>
+    <h3 id="lbTitle"></h3>
+    <p id="lbBody"></p>
+    <div class="lb-stack" id="lbStack"></div>
+    <button class="lb-close" id="lbClose">← close</button>
+  </div>
+</div>
+
 <script>
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  /* ---------- DATA ---------- */
+  const posts = [
+    { tag:"Thomson Reuters", title:"Parallelized migration framework",
+      body:"Built a <strong>large-scale data migration framework</strong> using Azure Storage, custom runners, delta detection, and AzCopy — speeding up large transfers and cutting migration downtime. My standout project on this team.",
+      stack:["Azure Storage","AzCopy","Custom runners","Delta detection"] },
+    { tag:"Thomson Reuters", title:"Self-service DR & CI/CD suite",
+      body:"Designed a full GitHub Actions automation suite covering provisioning, config promotion, multi-instance operations, and <strong>DR failover/failback</strong> — replacing manual runbooks entirely with self-service workflows.",
+      stack:["GitHub Actions","DR automation","Self-service"] },
+    { tag:"Thomson Reuters", title:"Fail-fast validation framework",
+      body:"Built an Apache validation framework checking service state, HTTP 200 responses, <strong>NLB convergence</strong>, and healthchecks — stopping bad deployments before they ever reached users.",
+      stack:["Apache","NLB","Healthchecks","Datadog"] },
+    { tag:"GraniteRiverLabs", title:"Project MATTER — CSA protocol",
+      body:"Implemented deployment pipelines for <strong>Project MATTER</strong>, the Connectivity Standards Alliance's smart-home interoperability protocol, including Zigbee-related automation for device interoperability testing.",
+      stack:["Matter / CSA","Zigbee","Embedded CI"] },
+    { tag:"GraniteRiverLabs", title:"One-click Docker release pipeline",
+      body:"Automated Docker image tagging, pushing, and deployment for frontend and backend environments end to end, <strong>solo</strong> — turning a manual release process into a single click.",
+      stack:["Docker","Release automation","Solo build"] },
+    { tag:"GraniteRiverLabs", title:"Wireshark THREAD installer",
+      body:"Built a custom Windows Wireshark installer for THREAD protocol analysis, with ongoing enhancements shipped through GitLab CI. <strong>Publicly available as a merge request</strong>, later adopted by the team.",
+      stack:["Wireshark","THREAD","GitLab CI","WiX"] }
+  ];
+
+  const skills = [
+    { title:"CI/CD & Automation", items:["GitHub Actions","GitLab CI","Azure Pipelines","Pipeline design","Rollback & promotion","Code quality gates"] },
+    { title:"Cloud Platforms", items:["AWS EC2","Security Groups","Key Pairs","Azure Storage","Azure NLB","Azure App Config","ACR","AzCopy","Bicep"] },
+    { title:"Config Management & Containers", items:["Ansible","Jinja2","vars/vault architecture","Docker","ARM images","WiX packaging","dpkg"] },
+    { title:"Scripting & Languages", items:["Python","Bash/Shell","Batch","YAML","C/C++",".NET deployment"] },
+    { title:"Monitoring & Reliability", items:["Datadog","Health validation","Fail-fast gates","SSH","Wireshark","Linux/Ubuntu","Windows Server","RHEL"] },
+    { title:"Microservices & Migrations", items:["Service provisioning","DB scripting","Traffic routing","Azure migrations","DR failover/failback","Solr sync"] }
+  ];
+
+  /* ---------- BUILD GRID ---------- */
+  const grid = document.getElementById('grid');
+  posts.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.className = 'post reveal d' + ((i % 3) + 1);
+    b.innerHTML = `<span class="post-tag">${p.tag}</span>
+                   <h3>${p.title}</h3>
+                   <span class="post-open">open ↗</span>`;
+    b.addEventListener('click', () => openLb(p));
+    grid.appendChild(b);
   });
-  function scrollRow(id, dir){
-    document.getElementById(id).scrollBy({left: dir * 340, behavior: 'smooth'});
+
+  /* ---------- LIGHTBOX ---------- */
+  const lb = document.getElementById('lb');
+  let lastFocus = null;
+  function openLb(p){
+    lastFocus = document.activeElement;
+    document.getElementById('lbTag').textContent = p.tag;
+    document.getElementById('lbTitle').textContent = p.title;
+    document.getElementById('lbBody').innerHTML = p.body;
+    document.getElementById('lbStack').innerHTML = p.stack.map(s => `<span>${s}</span>`).join('');
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
   }
+  function closeLb(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); });
+
+  /* ---------- SKILL HIGHLIGHTS ---------- */
+  const panel = document.getElementById('hlPanel');
+  const hlTitle = document.getElementById('hlTitle');
+  const hlList = document.getElementById('hlList');
+  let openHl = null;
+  document.querySelectorAll('.hl').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.hl;
+      if (openHl === i){
+        panel.classList.remove('open');
+        btn.classList.remove('active');
+        openHl = null;
+        return;
+      }
+      document.querySelectorAll('.hl').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      hlTitle.textContent = skills[i].title;
+      hlList.innerHTML = skills[i].items.map(s => `<li>${s}</li>`).join('');
+      panel.classList.add('open');
+      openHl = i;
+    });
+  });
+
+  /* ---------- SCROLL REVEAL ---------- */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ---------- NAV SHADOW ---------- */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 20));
 </script>
 
 </body>
