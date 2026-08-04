@@ -15,6 +15,7 @@
    ============================================================ */
 
 :root{
+  color-scheme: light;
   --paper: #F6F3EC;
   --paper-raised: #EFEBE1;
   --ink: #2B2822;
@@ -473,6 +474,7 @@ form.contact-form{max-width:470px; display:flex; flex-direction:column; gap:15px
      brass  #C9A461   7.4:1
    ============================================================ */
 [data-theme="dark"]{
+  color-scheme: dark;
   --paper: #1C1B18;
   --paper-raised: #26241F;
   --ink: #DDD8CE;

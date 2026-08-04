@@ -7,8 +7,35 @@
 <meta name="description" content="Srinivasan Vijayaraghavan — DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.">
 <link rel="stylesheet" href="styles.css">
 <script>
-/* Set theme before paint to avoid a flash of the wrong theme. */
-(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+/* Theme: applied before paint (no flash) and fully self-contained so
+   the toggle works even if app.js fails to load. */
+(function(){
+  var d = document.documentElement;
+  function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
+  function save(v){ try{ localStorage.setItem('theme', v); }catch(e){} }
+  var t = stored();
+  if (t !== 'dark' && t !== 'light'){
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  d.setAttribute('data-theme', t);
+  window.paintTheme = function(){
+    var dark = d.getAttribute('data-theme') === 'dark';
+    var b = document.getElementById('themeToggle');
+    if (!b) return;
+    var i = b.querySelector('.tt-icon'), x = b.querySelector('.tt-text');
+    if (i) i.textContent = dark ? '☀' : '☾';
+    if (x) x.textContent = dark ? 'Light' : 'Dark';
+    b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    b.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  window.toggleTheme = function(){
+    var next = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    d.setAttribute('data-theme', next);
+    save(next);
+    window.paintTheme();
+  };
+  document.addEventListener('DOMContentLoaded', function(){ window.paintTheme(); });
+})();
 </script>
 </head>
 <body>
@@ -17,7 +44,7 @@
   <div class="wrap">
     <a href="index.html" class="handle">@srinivasan.devops</a>
     <div class="nav-right">
-      <button class="theme-toggle" id="themeToggle" aria-pressed="false" aria-label="Switch to dark mode"><span class="tt-icon">☾</span><span class="tt-text">Dark</span></button>
+      <button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-pressed="false" aria-label="Switch to dark mode"><span class="tt-icon">☾</span><span class="tt-text">Dark</span></button>
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
     </div>
     <ul id="navMenu">
