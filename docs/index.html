@@ -11,6 +11,7 @@
    the toggle works even if app.js fails to load. */
 (function(){
   var d = document.documentElement;
+  d.classList.add('js');   /* reveal animations only hide content when JS is alive */
   function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
   function save(v){ try{ localStorage.setItem('theme', v); }catch(e){} }
   var t = stored();
@@ -101,11 +102,11 @@
 
   <section id="availability">
     <div class="wrap">
-      <div class="section-head reveal">
+      <div class="section-head">
         <span class="section-num">Availability</span>
         <h2>Deployment regions</h2>
       </div>
-      <div class="regions reveal d1">
+      <div class="regions">
         <div class="regions-head">
           <span class="regions-title">work authorization &mdash; health check</span>
           <span class="regions-badge">2/2 regions healthy</span>

@@ -73,15 +73,19 @@ main{flex:1 0 auto;}
 .wrap{max-width:var(--max); margin:0 auto; padding:0 24px; width:100%;}
 
 /* ---------- REVEAL ---------- */
-.reveal{opacity:0; transform:translateY(22px);
+/* Content is hidden for the reveal animation ONLY when scripting is
+   confirmed working (the inline head script sets html.js). If JS is
+   blocked or a file fails to load, everything stays visible instead of
+   disappearing. */
+html.js .reveal{opacity:0; transform:translateY(22px);
   transition:opacity .7s var(--ease), transform .7s var(--ease);}
-.reveal.in{opacity:1; transform:none;}
+html.js .reveal.in{opacity:1; transform:none;}
 .reveal.d1{transition-delay:.06s} .reveal.d2{transition-delay:.12s}
 .reveal.d3{transition-delay:.18s} .reveal.d4{transition-delay:.24s}
 
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto;}
-  .reveal{opacity:1 !important; transform:none !important; transition:none !important;}
+  html.js .reveal{opacity:1 !important; transform:none !important; transition:none !important;}
   *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
 }
 

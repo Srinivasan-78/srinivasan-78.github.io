@@ -11,6 +11,7 @@
    the toggle works even if app.js fails to load. */
 (function(){
   var d = document.documentElement;
+  d.classList.add('js');   /* reveal animations only hide content when JS is alive */
   function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
   function save(v){ try{ localStorage.setItem('theme', v); }catch(e){} }
   var t = stored();
