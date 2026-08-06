@@ -676,3 +676,65 @@ nav ul a[aria-current="page"]::after{
 }
 
 /* home explore cards keep their art-free look; nothing else changes */
+
+/* ============================================================
+   WORK AUTHORIZATION — framed as a multi-region availability check
+   ============================================================ */
+.regions{
+  border:1px solid var(--sage-line); background:var(--paper-raised);
+  padding:22px 24px; margin-top:8px;
+}
+.regions-head{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:14px; flex-wrap:wrap;
+  padding-bottom:14px; margin-bottom:16px;
+  border-bottom:1px solid var(--ink-08);
+}
+.regions-title{
+  font-family:var(--font-mono); font-size:0.76rem; letter-spacing:0.06em;
+  text-transform:uppercase; color:var(--sage);
+}
+.regions-badge{
+  font-family:var(--font-mono); font-size:0.7rem; color:var(--brass);
+  border:1px solid var(--brass-line); background:var(--brass-wash);
+  padding:4px 10px;
+}
+.region-row{
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  font-family:var(--font-mono); font-size:0.82rem;
+  padding:9px 0;
+}
+.region-dot{
+  width:9px; height:9px; border-radius:50%; background:var(--sage);
+  flex:0 0 auto; position:relative; top:-1px;
+}
+.region-dot::after{
+  content:""; position:absolute; inset:-5px; border-radius:50%;
+  border:1px solid var(--sage); opacity:0;
+  animation:ping 2.6s var(--ease) infinite;
+}
+.region-row:nth-of-type(2) .region-dot::after{animation-delay:1.3s;}
+@keyframes ping{
+  0%{transform:scale(0.7); opacity:0.85;}
+  70%{transform:scale(1.5); opacity:0;}
+  100%{opacity:0;}
+}
+.region-name{color:var(--ink); min-width:132px;}
+.region-fill{
+  flex:1 1 40px; border-bottom:1px dotted var(--ink-15);
+  position:relative; top:-4px; min-width:20px;
+}
+.region-status{color:var(--sage); font-weight:600;}
+.region-note{color:var(--ink-45);}
+.regions-foot{
+  margin-top:14px; padding-top:14px; border-top:1px solid var(--ink-08);
+  font-family:var(--font-mono); font-size:0.76rem; color:var(--ink-45);
+}
+.regions-foot b{color:var(--ink-70); font-weight:600;}
+@media (prefers-reduced-motion: reduce){
+  .region-dot::after{animation:none; opacity:0;}
+}
+@media (max-width:560px){
+  .region-fill{display:none;}
+  .region-name{min-width:0;}
+}
