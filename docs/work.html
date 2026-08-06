@@ -92,6 +92,7 @@
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
   <div class="lb-card" id="lbCard">
+    <img class="lb-cover" id="lbCover" src="" alt="">
     <span class="lb-tag" id="lbTag"></span>
     <h3 id="lbTitle"></h3>
     <p id="lbBody"></p>
@@ -104,22 +105,22 @@
 <script src="app.js"></script>
 <script>
   var posts = [
-    { tag:"Thomson Reuters", accent:"sage", title:"Parallelized migration framework",
+    { tag:"Thomson Reuters", accent:"sage", img:"images/work-migration.svg", title:"Parallelized migration framework",
       body:"Built a <strong>large-scale data migration framework</strong> using Azure Storage, custom runners, delta detection, and AzCopy — speeding up large transfers and cutting migration downtime. My standout project on this team.",
       stack:["Azure Storage","AzCopy","Custom runners","Delta detection"] },
-    { tag:"Thomson Reuters", accent:"sage", title:"Self-service DR & CI/CD suite",
+    { tag:"Thomson Reuters", accent:"sage", img:"images/work-pipeline.svg", title:"Self-service DR & CI/CD suite",
       body:"Designed a full GitHub Actions automation suite covering provisioning, config promotion, multi-instance operations, and <strong>DR failover/failback</strong> — replacing manual runbooks entirely with self-service workflows.",
       stack:["GitHub Actions","DR automation","Self-service"] },
-    { tag:"Thomson Reuters", accent:"sage", title:"Fail-fast validation framework",
+    { tag:"Thomson Reuters", accent:"sage", img:"images/work-validation.svg", title:"Fail-fast validation framework",
       body:"Built an Apache validation framework checking service state, HTTP 200 responses, <strong>NLB convergence</strong>, and healthchecks — stopping bad deployments before they ever reached users.",
       stack:["Apache","NLB","Healthchecks","Datadog"] },
-    { tag:"GraniteRiverLabs", accent:"slate", title:"Project MATTER — CSA protocol",
+    { tag:"GraniteRiverLabs", accent:"slate", img:"images/work-matter.svg", title:"Project MATTER — CSA protocol",
       body:"Implemented deployment pipelines for <strong>Project MATTER</strong>, the Connectivity Standards Alliance's smart-home interoperability protocol, including Zigbee-related automation for device interoperability testing.",
       stack:["Matter / CSA","Zigbee","Embedded CI"] },
-    { tag:"GraniteRiverLabs", accent:"slate", title:"One-click Docker release pipeline",
+    { tag:"GraniteRiverLabs", accent:"slate", img:"images/work-docker.svg", title:"One-click Docker release pipeline",
       body:"Automated Docker image tagging, pushing, and deployment for frontend and backend environments end to end, <strong>solo</strong> — turning a manual release process into a single click.",
       stack:["Docker","Release automation","Solo build"] },
-    { tag:"GraniteRiverLabs", accent:"slate", title:"Wireshark THREAD installer",
+    { tag:"GraniteRiverLabs", accent:"slate", img:"images/work-wireshark.svg", title:"Wireshark THREAD installer",
       body:"Built a custom Windows Wireshark installer for THREAD protocol analysis, with ongoing enhancements shipped through GitLab CI. <strong>Publicly available as a merge request</strong>, later adopted by the team.",
       stack:["Wireshark","THREAD","GitLab CI","WiX"],
       link:{ url:"https://gitlab.com/wireshark/wireshark/-/merge_requests/11008#note_1684405826", label:"View the merge request ↗" } }
@@ -129,9 +130,15 @@
   posts.forEach(function(p, i){
     var b = document.createElement('button');
     b.className = 'post ' + p.accent + (p.link ? ' has-link' : '') + ' reveal d' + ((i % 3) + 1);
-    b.innerHTML = '<span class="post-tag">' + p.tag + '</span>' +
-                  '<h3>' + p.title + '</h3>' +
-                  '<span class="post-open">' + (p.link ? 'public work ↗' : 'open ↗') + '</span>';
+    b.innerHTML = '<img class="post-img" src="' + p.img + '" alt="" loading="lazy">' +
+                  '<span class="post-accent"></span>' +
+                  '<span class="post-body">' +
+                    '<span class="post-tag">' + p.tag + '</span>' +
+                    '<span class="post-foot">' +
+                      '<h3>' + p.title + '</h3>' +
+                      '<span class="post-open">' + (p.link ? 'public work ↗' : 'open ↗') + '</span>' +
+                    '</span>' +
+                  '</span>';
     b.addEventListener('click', function(){ openLb(p); });
     grid.appendChild(b);
   });
@@ -142,6 +149,7 @@
   function openLb(p){
     lastFocus = document.activeElement;
     lbCard.classList.toggle('slate', p.accent === 'slate');
+    document.getElementById('lbCover').src = p.img;
     document.getElementById('lbTag').textContent = p.tag;
     document.getElementById('lbTitle').textContent = p.title;
     document.getElementById('lbBody').innerHTML = p.body;
