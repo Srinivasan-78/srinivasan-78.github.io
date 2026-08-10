@@ -742,3 +742,35 @@ nav ul a[aria-current="page"]::after{
   .region-fill{display:none;}
   .region-name{min-width:0;}
 }
+
+/* ============================================================
+   LIVE PROJECTS
+   ============================================================ */
+.projects{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:12px;}
+.project-card{
+  display:flex; flex-direction:column; text-decoration:none; padding:22px;
+  background:var(--paper-raised); border:1px solid var(--ink-08);
+  border-left:3px solid var(--sage);
+  transition:transform .28s var(--ease), background .28s var(--ease), box-shadow .28s var(--ease);
+}
+.project-card:nth-child(2){border-left-color:var(--slate);}
+.project-card:nth-child(3){border-left-color:var(--brass);}
+.project-card:hover{transform:translateY(-4px); background:var(--paper); box-shadow:0 12px 26px rgba(43,40,34,0.08);}
+.project-host{
+  font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.04em;
+  color:var(--ink-45); margin-bottom:9px; word-break:break-all;
+}
+.project-card h3{font-size:1rem; margin-bottom:6px;}
+.project-card p{font-size:0.85rem; color:var(--ink-70); flex:1 1 auto;}
+.project-tags{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 0;}
+.project-tags span{
+  font-family:var(--font-mono); font-size:0.68rem; color:var(--ink-45);
+  border:1px solid var(--ink-15); padding:2px 8px;
+}
+.project-go{
+  font-family:var(--font-mono); font-size:0.72rem; color:var(--sage);
+  margin-top:14px; display:block;
+}
+.project-card:nth-child(2) .project-go{color:var(--slate);}
+.project-card:nth-child(3) .project-go{color:var(--brass);}
+[data-theme="dark"] .project-card:hover{box-shadow:0 12px 26px rgba(0,0,0,0.4);}
