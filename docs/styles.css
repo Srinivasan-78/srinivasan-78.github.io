@@ -833,3 +833,16 @@ nav ul a[aria-current="page"]::after{
 .repo-item b{display:block; font-size:0.94rem; margin-bottom:3px; font-weight:600;}
 .repo-item span{font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-45);}
 [data-theme="dark"] .proj-card:hover{box-shadow:0 12px 26px rgba(0,0,0,0.4);}
+
+/* ---------- architecture diagram ---------- */
+.arch-wrap{
+  margin:16px 0 18px; padding:14px;
+  border:1px solid var(--ink-08); background:var(--paper);
+  overflow-x:auto;
+}
+.arch-wrap svg.arch{display:block; width:100%; min-width:640px; height:auto;}
+.arch-cap{
+  font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-45);
+  margin-top:8px;
+}
+[data-theme="dark"] .arch-wrap{background:#F6F3EC; border-color:var(--ink-15);}

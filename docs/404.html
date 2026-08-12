@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Srinivasan Vijayaraghavan</title>
+<title>Page not found — Srinivasan Vijayaraghavan</title>
 <meta name="description" content="Get in touch about DevOps, cloud infrastructure, and automation roles.">
 <link rel="canonical" href="https://srinidevops.com/contact.html">
 <meta name="author" content="Srinivasan Vijayaraghavan">
@@ -73,60 +73,56 @@
       <li><a href="work.html">Work</a></li>
       <li><a href="experience.html">Experience</a></li>
       <li><a href="certifications.html">Certifications</a></li>
-      <li><a href="contact.html" aria-current="page">Contact</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
   </div>
 </nav>
 
 <main>
   <header class="page-head">
-    <div class="wrap reveal">
-      <div class="page-eyebrow">04 — Contact</div>
-      <h1>Get in touch</h1>
-      <p class="lede">Open to conversations about DevOps, cloud infrastructure, and automation roles. Send a message below, or reach me directly on any channel.</p>
+    <div class="wrap">
+      <div class="page-eyebrow">404</div>
+      <h1>That page didn't resolve</h1>
+      <p class="lede">The URL you followed doesn't exist here. No rollback needed &mdash; just pick a working route below.</p>
     </div>
   </header>
 
   <section>
     <div class="wrap">
-      <form class="contact-form reveal d1" action="https://formspree.io/f/xrpzzlaz" method="POST">
-        <div>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+      <div class="regions">
+        <div class="regions-head">
+          <span class="regions-title">route lookup &mdash; failed</span>
+          <span class="regions-badge">404</span>
         </div>
-        <div>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+        <div class="region-row">
+          <span class="region-name">requested</span>
+          <span class="region-fill"></span>
+          <span class="region-note" id="badPath">unknown route</span>
         </div>
-        <div>
-          <label for="message">Message</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-        <button type="submit" class="btn primary">Send message</button>
-      </form>
-
-      <div class="contact-cards reveal d2">
-        <a class="contact-card" href="mailto:srinivasan.shyam2000@gmail.com">
-          <h3>Email</h3>
-          <p>srinivasan.shyam2000@gmail.com</p>
-        </a>
-        <a class="contact-card" href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener">
-          <h3>LinkedIn ↗</h3>
-          <p>Full profile, credentials, and recommendations</p>
-        </a>
-        <a class="contact-card" href="https://github.com/Srinivasan-78" target="_blank" rel="noopener">
-          <h3>GitHub ↗</h3>
-          <p>Repositories and open-source contributions</p>
-        </a>
+        <div class="regions-foot">status: <b>no matching page</b> &nbsp;&middot;&nbsp; suggested action: <b>see below</b></div>
       </div>
 
-      <div class="pager">
-        <a href="certifications.html">← Certifications</a>
-        <a href="index.html">Home →</a>
+      <div class="explore" style="margin-top:26px;">
+        <a href="index.html" class="explore-card">
+          <h3>Home</h3><p>Profile, skills, and availability.</p><span class="go">Go home &rarr;</span>
+        </a>
+        <a href="projects.html" class="explore-card">
+          <h3>Projects</h3><p>Live tools and platform engineering builds.</p><span class="go">View projects &rarr;</span>
+        </a>
+        <a href="work.html" class="explore-card">
+          <h3>Work</h3><p>Selected professional projects.</p><span class="go">View work &rarr;</span>
+        </a>
+        <a href="contact.html" class="explore-card">
+          <h3>Contact</h3><p>Send a message.</p><span class="go">Get in touch &rarr;</span>
+        </a>
       </div>
     </div>
   </section>
 </main>
+<script>
+  var el = document.getElementById('badPath');
+  if (el) el.textContent = window.location.pathname || 'unknown route';
+</script>
 
 <footer>
   <div class="wrap">
