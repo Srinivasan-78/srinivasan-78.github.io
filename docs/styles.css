@@ -281,6 +281,7 @@ footer a:hover{border-color:var(--slate);}
 .explore-card:nth-child(2){border-left-color:var(--slate);}
 .explore-card:nth-child(3){border-left-color:var(--plum);}
 .explore-card:nth-child(4){border-left-color:var(--brass);}
+.explore-card:nth-child(5){border-left-color:var(--sage);}
 .explore-card:hover{transform:translateY(-4px); background:var(--paper); box-shadow:0 12px 26px rgba(43,40,34,0.08);}
 .explore-card h3{font-size:1rem; margin-bottom:5px;}
 .explore-card p{font-size:0.84rem; color:var(--ink-45);}
@@ -288,6 +289,7 @@ footer a:hover{border-color:var(--slate);}
 .explore-card:nth-child(2) .go{color:var(--slate);}
 .explore-card:nth-child(3) .go{color:var(--plum);}
 .explore-card:nth-child(4) .go{color:var(--brass);}
+.explore-card:nth-child(5) .go{color:var(--sage);}
 
 /* ============================================================
    WORK
