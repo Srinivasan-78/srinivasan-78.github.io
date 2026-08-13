@@ -225,6 +225,28 @@
         </div>
       </div>
 
+        <div class="proj-card plum reveal">
+          <div class="proj-top">
+            <h3>Brainrot Study — automated video pipeline</h3>
+            <span class="proj-status wip">In progress</span>
+          </div>
+          <p class="proj-summary">Type a study topic into a workflow input, get back a finished short-form educational video. <strong>GitHub Actions is the entire runtime</strong> — no servers, no frontend, no backend to maintain.</p>
+          <div class="proj-detail">
+            <ul>
+              <li>Four-stage pipeline: research &rarr; script generation &rarr; TTS voiceover &rarr; FFmpeg assembly, run in sequence on a single runner</li>
+              <li><strong>Automatic LLM failover</strong> &mdash; retries on a secondary provider when the primary hits its quota, matching on specific rate-limit error types rather than blanket exception handling</li>
+              <li>Script generation returns <strong>strict JSON</strong> (8&ndash;12 concept chunks), so downstream stages parse rather than guess</li>
+              <li>Captions timed from the generated audio and overlaid on a background loop via FFmpeg; final MP4 published as a build artifact</li>
+              <li>Runs entirely on free tiers &mdash; two API keys held as GitHub secrets, and nothing else to provision</li>
+            </ul>
+          </div>
+          <div class="proj-stack"><span>GitHub Actions</span><span>Python</span><span>FFmpeg</span><span>Edge-TTS</span><span>LLM APIs</span><span>Failover logic</span><span>Zero infrastructure</span></div>
+          <div class="proj-links">
+            <a href="https://github.com/Srinivasan-78/Brainrot_Study" target="_blank" rel="noopener">View repo &#8599;</a>
+          </div>
+        </div>
+      </div>
+
       <div class="proj-group">
         <div class="proj-group-head reveal">Hardware &amp; image automation</div>
         <p class="proj-group-note reveal">Raspberry Pi provisioning for protocol certification testing.</p>
