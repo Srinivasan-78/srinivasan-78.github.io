@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Srinivasan Vijayaraghavan</title>
+<meta name="description" content="Get in touch about DevOps, cloud infrastructure, and automation roles.">
+<link rel="canonical" href="https://www.srinidevops.com/contact.html">
+<meta name="author" content="Srinivasan Vijayaraghavan">
+<meta name="theme-color" content="#4D5D53">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Srinivasan Vijayaraghavan">
+<meta property="og:url" content="https://www.srinidevops.com/contact.html">
+<meta property="og:title" content="Contact — Srinivasan Vijayaraghavan">
+<meta property="og:description" content="Get in touch about DevOps, cloud infrastructure, and automation roles.">
+<meta property="og:image" content="https://www.srinidevops.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Srinivasan Vijayaraghavan, DevOps Engineer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact — Srinivasan Vijayaraghavan">
+<meta name="twitter:description" content="Get in touch about DevOps, cloud infrastructure, and automation roles.">
+<meta name="twitter:image" content="https://www.srinidevops.com/og.png">
+<link rel="stylesheet" href="styles.css?v=6">
+<script>
+/* Theme: applied before paint (no flash) and fully self-contained so
+   the toggle works even if app.js fails to load. */
+(function(){
+  var d = document.documentElement;
+  d.classList.add('js');   /* reveal animations only hide content when JS is alive */
+  function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
+  function save(v){ try{ localStorage.setItem('theme', v); }catch(e){} }
+  var t = stored();
+  if (t !== 'dark' && t !== 'light'){
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  d.setAttribute('data-theme', t);
+  window.paintTheme = function(){
+    var dark = d.getAttribute('data-theme') === 'dark';
+    var b = document.getElementById('themeToggle');
+    if (!b) return;
+    var i = b.querySelector('.tt-icon'), x = b.querySelector('.tt-text');
+    if (i) i.textContent = dark ? '☀' : '☾';
+    if (x) x.textContent = dark ? 'Light' : 'Dark';
+    b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    b.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  window.toggleTheme = function(){
+    var next = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    d.setAttribute('data-theme', next);
+    save(next);
+    window.paintTheme();
+  };
+  document.addEventListener('DOMContentLoaded', function(){ window.paintTheme(); });
+})();
+</script>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="handle">@srinivasan.devops</a>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-pressed="false" aria-label="Switch to dark mode"><span class="tt-icon">☾</span><span class="tt-text">Dark</span></button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
+    </div>
+    <ul id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="certifications.html">Certifications</a></li>
+      <li><a href="resume.pdf" download>R&eacute;sum&eacute;</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="wrap">
+      <div class="page-eyebrow">404</div>
+      <h1>That page didn't resolve</h1>
+      <p class="lede">The URL you followed doesn't exist here. No rollback needed &mdash; just pick a working route below.</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="regions">
+        <div class="regions-head">
+          <span class="regions-title">route lookup &mdash; failed</span>
+          <span class="regions-badge">404</span>
+        </div>
+        <div class="region-row">
+          <span class="region-name">requested</span>
+          <span class="region-fill"></span>
+          <span class="region-note" id="badPath">unknown route</span>
+        </div>
+        <div class="regions-foot">status: <b>no matching page</b> &nbsp;&middot;&nbsp; suggested action: <b>see below</b></div>
+      </div>
+
+      <div class="explore" style="margin-top:26px;">
+        <a href="index.html" class="explore-card">
+          <h3>Home</h3><p>Profile, skills, and availability.</p><span class="go">Go home &rarr;</span>
+        </a>
+        <a href="projects.html" class="explore-card">
+          <h3>Projects</h3><p>Live tools and platform engineering builds.</p><span class="go">View projects &rarr;</span>
+        </a>
+        <a href="work.html" class="explore-card">
+          <h3>Work</h3><p>Selected professional projects.</p><span class="go">View work &rarr;</span>
+        </a>
+        <a href="contact.html" class="explore-card">
+          <h3>Contact</h3><p>Send a message.</p><span class="go">Get in touch &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  var el = document.getElementById('badPath');
+  if (el) el.textContent = window.location.pathname || 'unknown route';
+</script>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Srinivasan Vijayaraghavan</span>
+    <span><a href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Srinivasan-78" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+<script src="app.js?v=6"></script>
+</body>
+</html>

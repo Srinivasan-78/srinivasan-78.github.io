@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certifications — Srinivasan Vijayaraghavan</title>
+<meta name="description" content="22 verified credentials across cloud platforms, automation, infrastructure as code, and observability.">
+<link rel="canonical" href="https://www.srinidevops.com/certifications.html">
+<meta name="author" content="Srinivasan Vijayaraghavan">
+<meta name="theme-color" content="#4D5D53">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Srinivasan Vijayaraghavan">
+<meta property="og:url" content="https://www.srinidevops.com/certifications.html">
+<meta property="og:title" content="Certifications — Srinivasan Vijayaraghavan">
+<meta property="og:description" content="22 verified credentials across cloud platforms, automation, infrastructure as code, and observability.">
+<meta property="og:image" content="https://www.srinidevops.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Srinivasan Vijayaraghavan, DevOps Engineer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Certifications — Srinivasan Vijayaraghavan">
+<meta name="twitter:description" content="22 verified credentials across cloud platforms, automation, infrastructure as code, and observability.">
+<meta name="twitter:image" content="https://www.srinidevops.com/og.png">
+<link rel="stylesheet" href="styles.css?v=6">
+<script>
+/* Theme: applied before paint (no flash) and fully self-contained so
+   the toggle works even if app.js fails to load. */
+(function(){
+  var d = document.documentElement;
+  d.classList.add('js');   /* reveal animations only hide content when JS is alive */
+  function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
+  function save(v){ try{ localStorage.setItem('theme', v); }catch(e){} }
+  var t = stored();
+  if (t !== 'dark' && t !== 'light'){
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  d.setAttribute('data-theme', t);
+  window.paintTheme = function(){
+    var dark = d.getAttribute('data-theme') === 'dark';
+    var b = document.getElementById('themeToggle');
+    if (!b) return;
+    var i = b.querySelector('.tt-icon'), x = b.querySelector('.tt-text');
+    if (i) i.textContent = dark ? '☀' : '☾';
+    if (x) x.textContent = dark ? 'Light' : 'Dark';
+    b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    b.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  window.toggleTheme = function(){
+    var next = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    d.setAttribute('data-theme', next);
+    save(next);
+    window.paintTheme();
+  };
+  document.addEventListener('DOMContentLoaded', function(){ window.paintTheme(); });
+})();
+</script>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="handle">@srinivasan.devops</a>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-pressed="false" aria-label="Switch to dark mode"><span class="tt-icon">☾</span><span class="tt-text">Dark</span></button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
+    </div>
+    <ul id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="certifications.html" aria-current="page">Certifications</a></li>
+      <li><a href="resume.pdf" download>R&eacute;sum&eacute;</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="wrap reveal">
+      <div class="page-eyebrow">03 — Certifications</div>
+      <h1>Certifications &amp; learning</h1>
+      <p class="lede">Twenty-two credentials across cloud platforms, automation, infrastructure as code, and observability. Every one links to its verifiable credential.</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="cert-filters reveal" id="filters">
+        <button class="filter-btn active" data-filter="all">All 22</button>
+        <button class="filter-btn" data-filter="cloud">Cloud</button>
+        <button class="filter-btn" data-filter="automation">Automation &amp; IaC</button>
+        <button class="filter-btn" data-filter="systems">Systems &amp; Networking</button>
+      </div>
+      <div class="cert-count reveal d1" id="certCount"></div>
+      <div id="certList" class="reveal d1"></div>
+
+      <div class="pager">
+        <a href="experience.html">← Experience</a>
+        <a href="contact.html">Contact →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Srinivasan Vijayaraghavan</span>
+    <span><a href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Srinivasan-78" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+<script src="app.js?v=6"></script>
+<script>
+  var certs = [
+    { name:"Microsoft Azure: Networking Concepts", date:"Jul 2026", year:"2026", cat:["cloud","systems"],
+      skills:["Microsoft Azure"],
+      url:"https://www.linkedin.com/learning/certificates/16cac5a771e2ab6019b5f13fb8ae762510d7ee0992f9d624fefda195d83454c6/" },
+    { name:"Software Architecture Foundations", date:"Jul 2026", year:"2026", cat:["cloud"],
+      skills:["Software Architecture"],
+      url:"https://www.linkedin.com/learning/certificates/889bb515436ca4669c527304b4d5128b857320830ab40e9669bf837014c82ef5/" },
+    { name:"Learning Apache Tomcat", date:"Apr 2026", year:"2026", cat:["systems"],
+      skills:["Tomcat"],
+      url:"https://www.linkedin.com/learning/certificates/544fb5b80f1725964e8938b8cadf51293b6d22c5ee7efe47edb006c3478fa8a9/" },
+    { name:"Learning GitLab", date:"Mar 2026", year:"2026", cat:["automation"],
+      skills:["GitLab"],
+      url:"https://www.linkedin.com/learning/certificates/a8a1d40ee66e8082de1de1c6046a59e85df59a2313265e006873c35054484062/" },
+    { name:"Networking Foundations: Networking Basics", date:"Mar 2026", year:"2026", cat:["systems"],
+      skills:["Network Administration"],
+      url:"https://www.linkedin.com/learning/certificates/fad30c6997a0d0f12513dc8e7f594d69e59925f1c4c156ee3d3543f4c8ec7329/" },
+    { name:"Advanced GitHub Actions", date:"Mar 2026", year:"2026", cat:["automation"],
+      skills:["GitHub"],
+      url:"https://www.linkedin.com/learning/certificates/f74b462582707cf94ef319100f423e4b84eacf0b23a8afde5ba85a02d1800c00/" },
+    { name:"Building Infrastructure as Code (IaC) with Azure Bicep: Part 1", date:"Mar 2026", year:"2026", cat:["automation","cloud"],
+      skills:["Bicep","Cloud Development"],
+      url:"https://www.linkedin.com/learning/certificates/d33a5d367146a60a0c68949be35a89a79127a89a6468c954cfb7a9f00adf6343/" },
+    { name:"Monitoring and Observability with Datadog", date:"Jul 2025", year:"2025", cat:["systems"],
+      skills:["System Monitoring","Datadog"],
+      url:"https://www.linkedin.com/learning/certificates/d2908b1c28a0e8f1a215dda6098d1efdf85c156ca92109e64f563f9a881f7723/" },
+    { name:"Asking for Feedback as an Employee", date:"Dec 2023", year:"2023", cat:[],
+      skills:["Constructive Feedback"],
+      url:"https://www.linkedin.com/learning/certificates/8fe27407cfd057248a6c30a3713e4a44197f56c46b28efaa76eca3e010cd3286/" },
+    { name:"Installing Apache, MySQL, and PHP", date:"Jun 2023", year:"2023", cat:["systems"],
+      skills:["MySQL","Apache"],
+      url:"https://www.linkedin.com/learning/certificates/a33142e65ae422e2d82c96494130d9283ab137ba2998ea0183fbd46b9c6f7a89/" },
+    { name:"Apache Web Server: Administration", date:"Jun 2023", year:"2023", cat:["systems"],
+      skills:["Apache"],
+      url:"https://www.linkedin.com/learning/certificates/e0acaa3320ae0a09bbc38ab1c832ed11620fbc5076c541f6de29097ca148c864/" },
+    { name:"DevOps Foundations: Continuous Delivery/Continuous Integration", date:"Jun 2023", year:"2023", cat:["automation"],
+      skills:["CI/CD","DevOps"],
+      url:"https://www.linkedin.com/learning/certificates/7b1398d7e52388686666ad9bab55d86586a43c50ce03982b7d5b537622f97030/" },
+    { name:"Azure Essential Training for Developers", date:"Jun 2023", year:"2023", cat:["cloud"],
+      skills:["Microsoft Azure"],
+      url:"https://www.linkedin.com/learning/certificates/efc75fbd7992be2bad28609939d123866bb1935cf03c962b2795ecbcc1123f89/" },
+    { name:"Learning Azure DevOps", date:"Jun 2023", year:"2023", cat:["cloud","automation"],
+      skills:["Azure DevOps Services"],
+      url:"https://www.linkedin.com/learning/certificates/46cc5b8a298f7a4d62d32327f7b5e874d7e217439cad7504c010cd12beb48343/" },
+    { name:"Red Hat Certified Engineer (EX294) Cert Prep: 3 Managing Systems with Ansible", date:"Jun 2023", year:"2023", cat:["automation","systems"],
+      skills:["Red Hat Linux","Ansible"],
+      url:"https://www.linkedin.com/learning/certificates/e83e39a4551ebc3765064208de73901bc5850a02bbec5d29a4bf5095ea5e47f7/" },
+    { name:"Red Hat Certified Engineer (EX294) Cert Prep: 2 Using Ansible Playbooks", date:"Jun 2023", year:"2023", cat:["automation","systems"],
+      skills:["Red Hat Linux","Ansible"],
+      url:"https://www.linkedin.com/learning/certificates/944e99c390435a7f6957bb58ab08ac3042c7e94a3ab1a591d33f3ffe4b750090/" },
+    { name:"Red Hat Certified Engineer (EX294) Cert Prep: 1 Foundations of Ansible", date:"Jun 2023", year:"2023", cat:["automation","systems"],
+      skills:["RHEL"],
+      url:"https://www.linkedin.com/learning/certificates/55db7fdd0984a59925ea1257bb84f5cda619b64b902e64456c97ef1d62fab7e7/" },
+    { name:"Learning Ansible", date:"Jun 2023", year:"2023", cat:["automation"],
+      skills:["Ansible"],
+      url:"https://www.linkedin.com/learning/certificates/af1f32d594ce681a9859af0a10c7d4bd16229b1b16e73a90d91bc5c03ded41ce/" },
+    { name:"Ansible Essential Training", date:"Jun 2023", year:"2023", cat:["automation"],
+      skills:["Ansible"],
+      url:"https://www.linkedin.com/learning/certificates/e89350b5f670eb29d43b026f67c3c8f640dd8a660e357d39fbf4b77e50318853/" },
+    { name:"Introduction to Linux", date:"Sep 2021", year:"2021", cat:["systems"],
+      skills:[],
+      url:"https://www.linkedin.com/learning/certificates/4dd4306f776532ceef3085d8fcd5b2e308f06d1215ba54a8cce7618847e50315/" },
+    { name:"Learning Cloud Computing: Core Concepts", date:"Sep 2021", year:"2021", cat:["cloud"],
+      skills:[],
+      url:"https://www.linkedin.com/learning/certificates/a4ef4897cae0f4e37095f9b6d0a4346ff43ceb1bd0785d8bfe173e0a32cc2048/" },
+    { name:"Cloud Architecture: Core Concepts", date:"Aug 2021", year:"2021", cat:["cloud"],
+      skills:[],
+      url:"https://www.linkedin.com/learning/certificates/8da2c0609372dcabc6c62fe9f21991dfbb731f88155665b93a08df1e0abf8a97/" }
+  ];
+
+  var listEl = document.getElementById('certList');
+  var countEl = document.getElementById('certCount');
+
+  function render(filter){
+    var shown = filter === 'all' ? certs : certs.filter(function(c){ return c.cat.indexOf(filter) !== -1; });
+    countEl.textContent = shown.length + (shown.length === 1 ? ' certification' : ' certifications') +
+                          (filter === 'all' ? ' · issued by LinkedIn Learning' : '');
+    var html = '';
+    var lastYear = null;
+    shown.forEach(function(c){
+      if (c.year !== lastYear){
+        html += '<div class="cert-year">' + c.year + '</div>';
+        lastYear = c.year;
+      }
+      var skills = c.skills.length
+        ? '<div class="cert-skills">' + c.skills.map(function(s){ return '<span>' + s + '</span>'; }).join('') + '</div>'
+        : '';
+      html += '<div class="cert-item">' +
+                '<div class="cert-main">' +
+                  '<span class="cert-name">' + c.name + '</span>' + skills +
+                '</div>' +
+                '<div class="cert-right">' +
+                  '<span class="cert-date">' + c.date + '</span>' +
+                  '<a class="cert-link" href="' + c.url + '" target="_blank" rel="noopener">Show credential ↗</a>' +
+                '</div>' +
+              '</div>';
+    });
+    listEl.innerHTML = html;
+  }
+
+  render('all');
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      render(btn.dataset.filter);
+    });
+  });
+</script>
+
+</body>
+</html>

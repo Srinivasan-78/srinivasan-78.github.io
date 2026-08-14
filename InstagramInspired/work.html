@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Srinivasan Vijayaraghavan</title>
+<meta name="description" content="Six DevOps projects across Thomson Reuters and GraniteRiverLabs — migration frameworks, DR automation, and upstream Wireshark contribution.">
+<link rel="canonical" href="https://www.srinidevops.com/work.html">
+<meta name="author" content="Srinivasan Vijayaraghavan">
+<meta name="theme-color" content="#4D5D53">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Srinivasan Vijayaraghavan">
+<meta property="og:url" content="https://www.srinidevops.com/work.html">
+<meta property="og:title" content="Selected Work — Srinivasan Vijayaraghavan">
+<meta property="og:description" content="Six DevOps projects across Thomson Reuters and GraniteRiverLabs — migration frameworks, DR automation, and upstream Wireshark contribution.">
+<meta property="og:image" content="https://www.srinidevops.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Srinivasan Vijayaraghavan, DevOps Engineer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Selected Work — Srinivasan Vijayaraghavan">
+<meta name="twitter:description" content="Six DevOps projects across Thomson Reuters and GraniteRiverLabs — migration frameworks, DR automation, and upstream Wireshark contribution.">
+<meta name="twitter:image" content="https://www.srinidevops.com/og.png">
+<link rel="stylesheet" href="styles.css?v=6">
+<script>
+/* Theme: applied before paint (no flash) and fully self-contained so
+   the toggle works even if app.js fails to load. */
+(function(){
+  var d = document.documentElement;
+  d.classList.add('js');   /* reveal animations only hide content when JS is alive */
+  function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
+  function save(v){ try{ localStorage.setItem('theme', v); }catch(e){} }
+  var t = stored();
+  if (t !== 'dark' && t !== 'light'){
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  d.setAttribute('data-theme', t);
+  window.paintTheme = function(){
+    var dark = d.getAttribute('data-theme') === 'dark';
+    var b = document.getElementById('themeToggle');
+    if (!b) return;
+    var i = b.querySelector('.tt-icon'), x = b.querySelector('.tt-text');
+    if (i) i.textContent = dark ? '☀' : '☾';
+    if (x) x.textContent = dark ? 'Light' : 'Dark';
+    b.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    b.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+  window.toggleTheme = function(){
+    var next = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    d.setAttribute('data-theme', next);
+    save(next);
+    window.paintTheme();
+  };
+  document.addEventListener('DOMContentLoaded', function(){ window.paintTheme(); });
+})();
+</script>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="handle">@srinivasan.devops</a>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" type="button" onclick="toggleTheme()" aria-pressed="false" aria-label="Switch to dark mode"><span class="tt-icon">☾</span><span class="tt-text">Dark</span></button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu">menu</button>
+    </div>
+    <ul id="navMenu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html" aria-current="page">Work</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="certifications.html">Certifications</a></li>
+      <li><a href="resume.pdf" download>R&eacute;sum&eacute;</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="page-head">
+    <div class="wrap reveal">
+      <div class="page-eyebrow">01 — Work</div>
+      <h1>Selected work</h1>
+      <p class="lede">Six projects spanning CI/CD, disaster recovery, large-scale migration, and embedded protocol tooling. Tap any tile for the full story and the stack behind it.</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="grid" id="grid"></div>
+      <div class="legend reveal d1">
+        <span><i class="sage"></i> Thomson Reuters</span>
+        <span><i class="slate"></i> GraniteRiverLabs</span>
+        <span><i class="brass"></i> Publicly verifiable</span>
+      </div>
+
+      <div class="pager">
+        <a href="index.html">← Home</a>
+        <a href="experience.html">Experience →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Srinivasan Vijayaraghavan</span>
+    <span><a href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/Srinivasan-78" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-card" id="lbCard">
+    <span class="lb-cover" id="lbCover"></span>
+    <span class="lb-tag" id="lbTag"></span>
+    <h3 id="lbTitle"></h3>
+    <p id="lbBody"></p>
+    <div class="lb-stack" id="lbStack"></div>
+    <a class="lb-link" id="lbLink" target="_blank" rel="noopener"></a>
+    <button class="lb-close" id="lbClose">← close</button>
+  </div>
+</div>
+
+<script src="app.js?v=6"></script>
+<script>
+  var ART = {
+    migration: `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="am" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#28332D"/><stop offset="1" stop-color="#4D5D53"/></linearGradient></defs><rect width="600" height="600" fill="url(#am)"/><path d="M0 30 C 150 -2, 300 64, 450 16 S 600 48, 600 37" fill="none" stroke="#A8BC9E" stroke-opacity="0.30" stroke-width="1.8"/><path d="M0 70 C 150 41, 300 102, 450 56 S 600 88, 600 77" fill="none" stroke="#A8BC9E" stroke-opacity="0.43" stroke-width="3.2"/><path d="M0 110 C 150 84, 300 140, 450 96 S 600 128, 600 117" fill="none" stroke="#A8BC9E" stroke-opacity="0.56" stroke-width="4.6"/><path d="M0 150 C 150 127, 300 178, 450 136 S 600 168, 600 157" fill="none" stroke="#A8BC9E" stroke-opacity="0.69" stroke-width="1.8"/><path d="M0 190 C 150 170, 300 216, 450 176 S 600 208, 600 197" fill="none" stroke="#A8BC9E" stroke-opacity="0.82" stroke-width="3.2"/><path d="M0 230 C 150 213, 300 254, 450 216 S 600 248, 600 237" fill="none" stroke="#A8BC9E" stroke-opacity="0.30" stroke-width="4.6"/><path d="M0 270 C 150 256, 300 292, 450 256 S 600 288, 600 277" fill="none" stroke="#A8BC9E" stroke-opacity="0.43" stroke-width="1.8"/><path d="M0 310 C 150 299, 300 330, 450 296 S 600 328, 600 317" fill="none" stroke="#A8BC9E" stroke-opacity="0.56" stroke-width="3.2"/><path d="M0 350 C 150 342, 300 368, 450 336 S 600 368, 600 357" fill="none" stroke="#A8BC9E" stroke-opacity="0.69" stroke-width="4.6"/><path d="M0 390 C 150 385, 300 406, 450 376 S 600 408, 600 397" fill="none" stroke="#A8BC9E" stroke-opacity="0.82" stroke-width="1.8"/><path d="M0 430 C 150 428, 300 444, 450 416 S 600 448, 600 437" fill="none" stroke="#A8BC9E" stroke-opacity="0.30" stroke-width="3.2"/><path d="M0 470 C 150 471, 300 482, 450 456 S 600 488, 600 477" fill="none" stroke="#A8BC9E" stroke-opacity="0.43" stroke-width="4.6"/><path d="M0 510 C 150 514, 300 520, 450 496 S 600 528, 600 517" fill="none" stroke="#A8BC9E" stroke-opacity="0.56" stroke-width="1.8"/><path d="M0 550 C 150 557, 300 558, 450 536 S 600 568, 600 557" fill="none" stroke="#A8BC9E" stroke-opacity="0.69" stroke-width="3.2"/><path d="M0 590 C 150 600, 300 596, 450 576 S 600 608, 600 597" fill="none" stroke="#A8BC9E" stroke-opacity="0.82" stroke-width="4.6"/><circle cx="140" cy="190" r="17" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="140" cy="190" r="7" fill="#E5BC6B"/><circle cx="300" cy="300" r="20" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="300" cy="300" r="10" fill="#E5BC6B"/><circle cx="452" cy="382" r="17" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="452" cy="382" r="7" fill="#E5BC6B"/><circle cx="220" cy="440" r="18" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="220" cy="440" r="8" fill="#E5BC6B"/><circle cx="384" cy="150" r="16" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="384" cy="150" r="6" fill="#E5BC6B"/></svg>`,
+    pipeline: `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="600" height="600" fill="#28332D"/><path d="M90 120 L160 120 L160 88 L230 88" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M230 88 L300 88 L300 152 L370 152" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M370 152 L441 152 L441 110 L512 110" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M90 120 L120 120 L120 300 L150 300" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M230 88 L265 88 L265 268 L300 268" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M370 152 L335 152 L335 268 L300 268" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M512 110 L482 110 L482 322 L452 322" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M150 300 L225 300 L225 268 L300 268" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M300 268 L376 268 L376 322 L452 322" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M150 300 L130 300 L130 470 L110 470" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M300 268 L281 268 L281 442 L262 442" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M452 322 L436 322 L436 482 L420 482" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M452 322 L491 322 L491 398 L530 398" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M110 470 L186 470 L186 442 L262 442" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M262 442 L341 442 L341 482 L420 482" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><path d="M420 482 L475 482 L475 398 L530 398" fill="none" stroke="#A8BC9E" stroke-opacity="0.75" stroke-width="2.6"/><circle cx="90" cy="120" r="20" fill="#28332D"/><circle cx="90" cy="120" r="20" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="90" cy="120" r="11" fill="#E5BC6B"/><circle cx="230" cy="88" r="15" fill="#28332D"/><circle cx="230" cy="88" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="230" cy="88" r="7.5" fill="#F7F3E8"/><circle cx="370" cy="152" r="15" fill="#28332D"/><circle cx="370" cy="152" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="370" cy="152" r="7.5" fill="#F7F3E8"/><circle cx="512" cy="110" r="15" fill="#28332D"/><circle cx="512" cy="110" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="512" cy="110" r="7.5" fill="#F7F3E8"/><circle cx="150" cy="300" r="15" fill="#28332D"/><circle cx="150" cy="300" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="150" cy="300" r="7.5" fill="#F7F3E8"/><circle cx="300" cy="268" r="20" fill="#28332D"/><circle cx="300" cy="268" r="20" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="300" cy="268" r="11" fill="#E5BC6B"/><circle cx="452" cy="322" r="15" fill="#28332D"/><circle cx="452" cy="322" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="452" cy="322" r="7.5" fill="#F7F3E8"/><circle cx="110" cy="470" r="15" fill="#28332D"/><circle cx="110" cy="470" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="110" cy="470" r="7.5" fill="#F7F3E8"/><circle cx="262" cy="442" r="15" fill="#28332D"/><circle cx="262" cy="442" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="262" cy="442" r="7.5" fill="#F7F3E8"/><circle cx="420" cy="482" r="15" fill="#28332D"/><circle cx="420" cy="482" r="15" fill="none" stroke="#F7F3E8" stroke-opacity="0.55" stroke-width="2"/><circle cx="420" cy="482" r="7.5" fill="#F7F3E8"/><circle cx="530" cy="398" r="20" fill="#28332D"/><circle cx="530" cy="398" r="20" fill="none" stroke="#E5BC6B" stroke-opacity="0.55" stroke-width="2"/><circle cx="530" cy="398" r="11" fill="#E5BC6B"/></svg>`,
+    validation: `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="av" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23303E"/><stop offset="1" stop-color="#4A5D75"/></linearGradient></defs><rect width="600" height="600" fill="url(#av)"/><circle cx="452" cy="132" r="56" fill="#F7F3E8" fill-opacity="0.30"/><path d="M0 430 L90 316 L170 390 L250 264 L340 380 L430 296 L520 400 L600 326 L600 600 L0 600 Z" fill="#23303E" fill-opacity="0.42"/><path d="M0 480 L110 386 L200 452 L300 344 L400 446 L500 370 L600 440 L600 600 L0 600 Z" fill="#23303E" fill-opacity="0.6"/><path d="M0 532 L120 458 L230 522 L330 436 L450 516 L560 452 L600 490 L600 600 L0 600 Z" fill="#23303E" fill-opacity="0.82"/><circle cx="250" cy="264" r="22" fill="none" stroke="#E5BC6B" stroke-opacity="0.75" stroke-width="2.4"/><circle cx="250" cy="264" r="10" fill="#E5BC6B"/><circle cx="430" cy="296" r="22" fill="none" stroke="#E5BC6B" stroke-opacity="0.75" stroke-width="2.4"/><circle cx="430" cy="296" r="10" fill="#E5BC6B"/><circle cx="330" cy="436" r="22" fill="none" stroke="#E5BC6B" stroke-opacity="0.75" stroke-width="2.4"/><circle cx="330" cy="436" r="10" fill="#E5BC6B"/></svg>`,
+    matter: `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="600" height="600" fill="#23303E"/><polygon points="21.6,4.0 21.6,52.0 -20.0,76.0 -61.6,52.0 -61.6,4.0 -20.0,-20.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="-20.0" cy="28.0" r="9" fill="#E5BC6B"/><polygon points="115.1,4.0 115.1,52.0 73.5,76.0 32.0,52.0 32.0,4.0 73.5,-20.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="208.6,4.0 208.6,52.0 167.1,76.0 125.5,52.0 125.5,4.0 167.1,-20.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="302.2,4.0 302.2,52.0 260.6,76.0 219.0,52.0 219.0,4.0 260.6,-20.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="395.7,4.0 395.7,52.0 354.1,76.0 312.6,52.0 312.6,4.0 354.1,-20.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="489.2,4.0 489.2,52.0 447.7,76.0 406.1,52.0 406.1,4.0 447.7,-20.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="447.7" cy="28.0" r="9" fill="#E5BC6B"/><polygon points="582.8,4.0 582.8,52.0 541.2,76.0 499.6,52.0 499.6,4.0 541.2,-20.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="68.3,85.0 68.3,133.0 26.8,157.0 -14.8,133.0 -14.8,85.0 26.8,61.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="161.9,85.0 161.9,133.0 120.3,157.0 78.7,133.0 78.7,85.0 120.3,61.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="255.4,85.0 255.4,133.0 213.8,157.0 172.3,133.0 172.3,85.0 213.8,61.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="348.9,85.0 348.9,133.0 307.4,157.0 265.8,133.0 265.8,85.0 307.4,61.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="442.5,85.0 442.5,133.0 400.9,157.0 359.3,133.0 359.3,85.0 400.9,61.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="400.9" cy="109.0" r="9" fill="#E5BC6B"/><polygon points="536.0,85.0 536.0,133.0 494.4,157.0 452.8,133.0 452.8,85.0 494.4,61.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="629.5,85.0 629.5,133.0 587.9,157.0 546.4,133.0 546.4,85.0 587.9,61.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="21.6,166.0 21.6,214.0 -20.0,238.0 -61.6,214.0 -61.6,166.0 -20.0,142.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="115.1,166.0 115.1,214.0 73.5,238.0 32.0,214.0 32.0,166.0 73.5,142.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="208.6,166.0 208.6,214.0 167.1,238.0 125.5,214.0 125.5,166.0 167.1,142.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="302.2,166.0 302.2,214.0 260.6,238.0 219.0,214.0 219.0,166.0 260.6,142.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="260.6" cy="190.0" r="9" fill="#E5BC6B"/><polygon points="395.7,166.0 395.7,214.0 354.1,238.0 312.6,214.0 312.6,166.0 354.1,142.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="489.2,166.0 489.2,214.0 447.7,238.0 406.1,214.0 406.1,166.0 447.7,142.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="582.8,166.0 582.8,214.0 541.2,238.0 499.6,214.0 499.6,166.0 541.2,142.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="68.3,247.0 68.3,295.0 26.8,319.0 -14.8,295.0 -14.8,247.0 26.8,223.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="161.9,247.0 161.9,295.0 120.3,319.0 78.7,295.0 78.7,247.0 120.3,223.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="255.4,247.0 255.4,295.0 213.8,319.0 172.3,295.0 172.3,247.0 213.8,223.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="213.8" cy="271.0" r="9" fill="#E5BC6B"/><polygon points="348.9,247.0 348.9,295.0 307.4,319.0 265.8,295.0 265.8,247.0 307.4,223.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="442.5,247.0 442.5,295.0 400.9,319.0 359.3,295.0 359.3,247.0 400.9,223.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="536.0,247.0 536.0,295.0 494.4,319.0 452.8,295.0 452.8,247.0 494.4,223.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="629.5,247.0 629.5,295.0 587.9,319.0 546.4,295.0 546.4,247.0 587.9,223.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="21.6,328.0 21.6,376.0 -20.0,400.0 -61.6,376.0 -61.6,328.0 -20.0,304.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="115.1,328.0 115.1,376.0 73.5,400.0 32.0,376.0 32.0,328.0 73.5,304.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="73.5" cy="352.0" r="9" fill="#E5BC6B"/><polygon points="208.6,328.0 208.6,376.0 167.1,400.0 125.5,376.0 125.5,328.0 167.1,304.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="302.2,328.0 302.2,376.0 260.6,400.0 219.0,376.0 219.0,328.0 260.6,304.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="395.7,328.0 395.7,376.0 354.1,400.0 312.6,376.0 312.6,328.0 354.1,304.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="489.2,328.0 489.2,376.0 447.7,400.0 406.1,376.0 406.1,328.0 447.7,304.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="582.8,328.0 582.8,376.0 541.2,400.0 499.6,376.0 499.6,328.0 541.2,304.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="541.2" cy="352.0" r="9" fill="#E5BC6B"/><polygon points="68.3,409.0 68.3,457.0 26.8,481.0 -14.8,457.0 -14.8,409.0 26.8,385.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="26.8" cy="433.0" r="9" fill="#E5BC6B"/><polygon points="161.9,409.0 161.9,457.0 120.3,481.0 78.7,457.0 78.7,409.0 120.3,385.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="255.4,409.0 255.4,457.0 213.8,481.0 172.3,457.0 172.3,409.0 213.8,385.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="348.9,409.0 348.9,457.0 307.4,481.0 265.8,457.0 265.8,409.0 307.4,385.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="442.5,409.0 442.5,457.0 400.9,481.0 359.3,457.0 359.3,409.0 400.9,385.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/><polygon points="536.0,409.0 536.0,457.0 494.4,481.0 452.8,457.0 452.8,409.0 494.4,385.0" fill="#A3BDD8" fill-opacity="0.3" stroke="#A3BDD8" stroke-opacity="0.95" stroke-width="2.6"/><circle cx="494.4" cy="433.0" r="9" fill="#E5BC6B"/><polygon points="629.5,409.0 629.5,457.0 587.9,481.0 546.4,457.0 546.4,409.0 587.9,385.0" fill="none" fill-opacity="0" stroke="#A3BDD8" stroke-opacity="0.45" stroke-width="1.9"/></svg>`,
+    docker: `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="600" height="600" fill="#191A17"/><path d="M0 118 Q 150 102 300 124 T 600 109 L600 170 Q 450 182 300 163 T 0 179 Z" fill="#F7F3E8" fill-opacity="0.26"/><path d="M0 176 Q 150 164 300 182 T 600 167 L600 242 Q 450 254 300 235 T 0 251 Z" fill="#E5BC6B" fill-opacity="0.46"/><path d="M0 248 Q 150 240 300 254 T 600 239 L600 328 Q 450 340 300 321 T 0 337 Z" fill="#F7F3E8" fill-opacity="0.3"/><path d="M0 334 Q 150 330 300 340 T 600 325 L600 386 Q 450 398 300 379 T 0 395 Z" fill="#E5BC6B" fill-opacity="0.58"/><path d="M0 392 Q 150 392 300 398 T 600 383 L600 458 Q 450 470 300 451 T 0 467 Z" fill="#F7F3E8" fill-opacity="0.34"/><path d="M0 464 Q 150 468 300 470 T 600 455 L600 544 Q 450 556 300 537 T 0 553 Z" fill="#E5BC6B" fill-opacity="0.66"/><rect x="38" y="56" width="52" height="40" rx="4" fill="#E5BC6B" fill-opacity="0.18" stroke="#F7F3E8" stroke-opacity="0.65" stroke-width="2.2"/><rect x="134" y="56" width="52" height="40" rx="4" fill="#E5BC6B" fill-opacity="0.18" stroke="#F7F3E8" stroke-opacity="0.65" stroke-width="2.2"/><rect x="230" y="56" width="52" height="40" rx="4" fill="#E5BC6B" fill-opacity="0.18" stroke="#F7F3E8" stroke-opacity="0.65" stroke-width="2.2"/><rect x="326" y="56" width="52" height="40" rx="4" fill="#E5BC6B" fill-opacity="0.18" stroke="#F7F3E8" stroke-opacity="0.65" stroke-width="2.2"/><rect x="422" y="56" width="52" height="40" rx="4" fill="#E5BC6B" fill-opacity="0.18" stroke="#F7F3E8" stroke-opacity="0.65" stroke-width="2.2"/><rect x="518" y="56" width="52" height="40" rx="4" fill="#E5BC6B" fill-opacity="0.18" stroke="#F7F3E8" stroke-opacity="0.65" stroke-width="2.2"/></svg>`,
+    wireshark: `<svg class="art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="600" height="600" fill="#2E2431"/><path d="M300 30 L300 570" stroke="#C2A8C7" stroke-opacity="0.75" stroke-width="4" fill="none"/><path d="M300 72 C 254.0 78, 226.39999999999998 102, 208 126" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 72 C 346.0 78, 373.6 102, 392 126" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 116 C 249.5 122, 219.2 146, 199 170" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 116 C 350.5 122, 380.8 146, 401 170" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 160 C 245.0 166, 212.0 190, 190 214" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 160 C 355.0 166, 388.0 190, 410 214" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 204 C 240.5 210, 204.8 234, 181 258" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 204 C 359.5 210, 395.2 234, 419 258" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 248 C 236.0 254, 197.6 278, 172 302" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 248 C 364.0 254, 402.4 278, 428 302" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 292 C 231.5 298, 190.39999999999998 322, 163 346" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 292 C 368.5 298, 409.6 322, 437 346" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 336 C 227.0 342, 183.2 366, 154 390" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 336 C 373.0 342, 416.8 366, 446 390" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 380 C 222.5 386, 176.0 410, 145 434" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 380 C 377.5 386, 424.0 410, 455 434" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 424 C 218.0 430, 168.79999999999998 454, 136 478" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 424 C 382.0 430, 431.20000000000005 454, 464 478" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 468 C 213.5 474, 161.6 498, 127 522" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 468 C 386.5 474, 438.4 498, 473 522" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 512 C 209.0 518, 154.4 542, 118 566" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><path d="M300 512 C 391.0 518, 445.6 542, 482 566" fill="none" stroke="#C2A8C7" stroke-opacity="0.60" stroke-width="2.6"/><polyline points="0,300.0 10,309.4 20,309.6 30,353.8 40,326.2 50,320.6 60,298.3 70,288.3 80,289.7 90,282.5 100,292.4 110,295.8 120,310.1 130,341.2 140,332.0 150,316.6 160,306.3 170,301.3 180,295.1 190,284.6 200,289.2 210,254.1 220,285.4 230,304.5 240,306.4 250,316.7 260,310.7 270,313.6 280,303.3 290,295.7 300,276.9 310,247.4 320,269.3 330,288.4 340,298.4 350,307.0 360,308.8 370,318.0 380,309.6 390,327.8 400,299.7 410,271.4 420,290.3 430,282.1 440,291.3 450,293.3 460,301.8 470,311.8 480,330.9 490,352.4 500,322.7 510,304.0 520,296.5 530,286.2 540,289.3 550,283.5 560,293.8 570,296.4 580,315.1 590,346.4 600,310.8" fill="none" stroke="#E5BC6B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+  };
+
+  var posts = [
+    { tag:"Thomson Reuters", accent:"sage", art:ART.migration, title:"Parallelized migration framework",
+      body:"Built a <strong>large-scale data migration framework</strong> using Azure Storage, custom runners, delta detection, and AzCopy — speeding up large transfers and cutting migration downtime. My standout project on this team.",
+      stack:["Azure Storage","AzCopy","Custom runners","Delta detection"] },
+    { tag:"Thomson Reuters", accent:"sage", art:ART.pipeline, title:"Self-service DR & CI/CD suite",
+      body:"Designed a full GitHub Actions automation suite covering provisioning, config promotion, multi-instance operations, and <strong>DR failover/failback</strong> — replacing manual runbooks entirely with self-service workflows.",
+      stack:["GitHub Actions","DR automation","Self-service"] },
+    { tag:"Thomson Reuters", accent:"sage", art:ART.validation, title:"Fail-fast validation framework",
+      body:"Built an Apache validation framework checking service state, HTTP 200 responses, <strong>NLB convergence</strong>, and healthchecks — stopping bad deployments before they ever reached users.",
+      stack:["Apache","NLB","Healthchecks","Datadog"] },
+    { tag:"GraniteRiverLabs", accent:"slate", art:ART.matter, title:"Project MATTER — CSA protocol",
+      body:"Implemented deployment pipelines for <strong>Project MATTER</strong>, the Connectivity Standards Alliance's smart-home interoperability protocol, including Zigbee-related automation for device interoperability testing.",
+      stack:["Matter / CSA","Zigbee","Embedded CI"] },
+    { tag:"GraniteRiverLabs", accent:"slate", art:ART.docker, title:"One-click Docker release pipeline",
+      body:"Automated Docker image tagging, pushing, and deployment for frontend and backend environments end to end, <strong>solo</strong> — turning a manual release process into a single click.",
+      stack:["Docker","Release automation","Solo build"] },
+    { tag:"GraniteRiverLabs", accent:"slate", art:ART.wireshark, title:"Wireshark THREAD installer",
+      body:"Built a custom Windows Wireshark installer for THREAD protocol analysis, with ongoing enhancements shipped through GitLab CI. <strong>Publicly available as a merge request</strong>, later adopted by the team.",
+      stack:["Wireshark","THREAD","GitLab CI","WiX"],
+      link:{ url:"https://gitlab.com/wireshark/wireshark/-/merge_requests/11008#note_1684405826", label:"View the merge request ↗" } }
+  ];
+
+  var grid = document.getElementById('grid');
+  posts.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.className = 'post ' + p.accent + (p.link ? ' has-link' : '') + ' reveal d' + ((i % 3) + 1);
+    b.innerHTML = '<span class="post-art">' + p.art + '</span>' +
+                  '<span class="post-accent"></span>' +
+                  '<span class="post-body">' +
+                    '<span class="post-tag">' + p.tag + '</span>' +
+                    '<span class="post-foot">' +
+                      '<h3>' + p.title + '</h3>' +
+                      '<span class="post-open">' + (p.link ? 'public work ↗' : 'open ↗') + '</span>' +
+                    '</span>' +
+                  '</span>';
+    b.addEventListener('click', function(){ openLb(p); });
+    grid.appendChild(b);
+  });
+
+  var lb = document.getElementById('lb');
+  var lbCard = document.getElementById('lbCard');
+  var lastFocus = null;
+  function openLb(p){
+    lastFocus = document.activeElement;
+    lbCard.classList.toggle('slate', p.accent === 'slate');
+    document.getElementById('lbCover').innerHTML = p.art;
+    document.getElementById('lbTag').textContent = p.tag;
+    document.getElementById('lbTitle').textContent = p.title;
+    document.getElementById('lbBody').innerHTML = p.body;
+    document.getElementById('lbStack').innerHTML = p.stack.map(function(s){ return '<span>' + s + '</span>'; }).join('');
+    var lnk = document.getElementById('lbLink');
+    if (p.link){ lnk.href = p.link.url; lnk.textContent = p.link.label; lnk.classList.add('show'); }
+    else { lnk.classList.remove('show'); lnk.removeAttribute('href'); }
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
+  }
+  function closeLb(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); });
+
+  /* re-observe dynamically created tiles */
+  if ('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io2.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.post.reveal').forEach(function(el){ io2.observe(el); });
+  } else {
+    document.querySelectorAll('.post.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
