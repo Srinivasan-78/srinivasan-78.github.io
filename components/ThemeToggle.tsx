@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(
-    () =>
-      typeof document !== "undefined" &&
-      document.documentElement.getAttribute("data-theme") === "dark"
-  );
+  // Always false in the server-rendered markup so hydration matches;
+  // the effect below reads the real value ThemeScript already applied.
+  const [dark, setDark] = useState(false);
 
   // Re-sync in case the inline theme script set the attribute after this
   // component's initial render (e.g. hydration timing edge cases).

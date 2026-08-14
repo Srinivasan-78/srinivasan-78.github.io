@@ -3,8 +3,12 @@
 import { useState } from "react";
 
 export type Cert = {
-  name: string; date: string; year: string;
-  cat: string[]; skills: string[]; url: string;
+  name: string;
+  date: string;
+  year: string;
+  cat: string[];
+  skills: string[];
+  url: string;
 };
 
 const FILTERS = [
@@ -17,7 +21,8 @@ const FILTERS = [
 export default function CertList({ certs }: { certs: Cert[] }) {
   const [filter, setFilter] = useState("all");
 
-  const shown = filter === "all" ? certs : certs.filter((c) => c.cat.includes(filter));
+  const shown =
+    filter === "all" ? certs : certs.filter((c) => c.cat.includes(filter));
 
   let lastYear: string | null = null;
 
@@ -70,7 +75,12 @@ export default function CertList({ certs }: { certs: Cert[] }) {
                 </div>
                 <div className="cert-right">
                   <span className="cert-date">{c.date}</span>
-                  <a className="cert-link" href={c.url} target="_blank" rel="noopener">
+                  <a
+                    className="cert-link"
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener"
+                  >
                     Show credential ↗
                   </a>
                 </div>

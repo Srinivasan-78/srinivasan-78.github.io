@@ -299,14 +299,14 @@ a.card:hover {
 
 /* ---------- TYPE SCALE ---------- */
 .display-lg {
-  font-size: clamp(2rem, 5.5vw, 3.6rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 .display-xl {
-  font-size: clamp(2.6rem, 9vw, 6rem);
-  line-height: 0.96;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.9rem, 4.2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
 }
 
 /* ---------- HERO ---------- */
@@ -476,7 +476,7 @@ a.card:hover {
 }
 .statement-line {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 14vw, 9rem);
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
   line-height: 0.92;
   letter-spacing: -0.03em;
   white-space: nowrap;
@@ -605,7 +605,6 @@ a.card:hover {
   gap: 1rem; flex-wrap: wrap;
   padding: 0.9rem 0; border-top: 1px solid var(--ink-15);
 }
-.cert-item:first-of-type { border-top: none; }
 .cert-name { font-size: 0.95rem; display: block; }
 .cert-right {
   display: flex; flex-direction: column; align-items: flex-end;
@@ -653,7 +652,7 @@ a.card:hover {
 .lb-card.slate { border-top: 3px solid var(--slate); }
 .lb-close {
   position: absolute; top: 0.75rem; right: 0.75rem;
-  background: none; border: 1px solid var(--ink-15); border-radius: 6px;
+  background: var(--paper); border: 1px solid var(--ink-15); border-radius: 6px;
   color: var(--ink-70); cursor: pointer; padding: 0.25rem 0.6rem;
   font-family: var(--font-mono); font-size: 0.75rem;
 }
