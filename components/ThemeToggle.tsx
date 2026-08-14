@@ -2,26 +2,15 @@
 
 import { useEffect, useState } from "react";
 
-const THEME_SCRIPT = `
-(function(){
-  var d = document.documentElement;
-  function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
-  var t = stored();
-  if (t !== 'dark' && t !== 'light'){
-    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-  }
-  d.setAttribute('data-theme', t);
-})();
-`;
-
-export function ThemeScript() {
-  // eslint-disable-next-line react/no-danger
-  return <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />;
-}
-
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(
+    () =>
+      typeof document !== "undefined" &&
+      document.documentElement.getAttribute("data-theme") === "dark"
+  );
 
+  // Re-sync in case the inline theme script set the attribute after this
+  // component's initial render (e.g. hydration timing edge cases).
   useEffect(() => {
     setDark(document.documentElement.getAttribute("data-theme") === "dark");
   }, []);

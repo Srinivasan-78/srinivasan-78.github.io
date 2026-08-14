@@ -117,10 +117,15 @@ a { color: var(--ink); text-decoration: none; }
 .btn.ghost:hover { background: var(--sage-wash); }
 
 .card {
+  display: block;
   border: 1px solid var(--ink-15);
   border-radius: 10px;
   padding: 1.25rem;
   background: var(--paper-raised);
+  transition: border-color 0.2s var(--ease), transform 0.15s var(--ease);
+}
+a.card:hover {
+  border-color: var(--sage-line);
 }
 
 .tag {
@@ -134,7 +139,7 @@ a { color: var(--ink); text-decoration: none; }
   margin: 0 6px 6px 0;
 }
 
-.split-word { display: inline-block; overflow: hidden; }
+.split-word { display: inline-block; overflow: hidden; line-height: 1.25; padding-bottom: 0.12em; margin-bottom: -0.12em; }
 .split-word > span { display: inline-block; will-change: transform, opacity; }
 
 @media (prefers-reduced-motion: reduce) {

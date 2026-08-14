@@ -5,7 +5,7 @@ import Cursor from "@/components/Cursor";
 import ProgressRail from "@/components/ProgressRail";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { ThemeScript } from "@/components/ThemeToggle";
+import ThemeScript from "@/components/ThemeScript";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srinidevops.com"),

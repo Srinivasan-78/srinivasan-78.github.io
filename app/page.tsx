@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SplitReveal from "@/components/SplitReveal";
 
 const EXPLORE = [
@@ -122,10 +123,10 @@ export default function Page() {
             }}
           >
             {EXPLORE.map((e) => (
-              <a key={e.href} href={e.href} className="card" data-cursor-hover>
+              <Link key={e.href} href={e.href} className="card" data-cursor-hover>
                 <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{e.title}</h3>
                 <p style={{ color: "var(--ink-70)", fontSize: "0.9rem", margin: 0 }}>{e.body}</p>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

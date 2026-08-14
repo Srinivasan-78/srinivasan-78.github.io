@@ -28,7 +28,7 @@ export default function ProgressRail() {
         right: 0,
         height: 2,
         zIndex: 70,
-        background: "var(--line)",
+        background: "var(--ink-15)",
       }}
     >
       <div
@@ -36,7 +36,7 @@ export default function ProgressRail() {
         style={{
           height: "100%",
           width: "100%",
-          background: "var(--accent)",
+          background: "var(--sage)",
           transformOrigin: "left",
           transform: "scaleX(0)",
         }}

@@ -74,7 +74,7 @@ export default function Cursor() {
           marginLeft: -3,
           marginTop: -3,
           borderRadius: "50%",
-          background: "var(--accent)",
+          background: "var(--sage)",
           pointerEvents: "none",
           zIndex: 60,
         }}
@@ -91,7 +91,7 @@ export default function Cursor() {
           marginLeft: -16,
           marginTop: -16,
           borderRadius: "50%",
-          border: "1px solid var(--accent)",
+          border: "1px solid var(--sage)",
           pointerEvents: "none",
           zIndex: 59,
           transition: "width 0.2s, height 0.2s, margin 0.2s, opacity 0.2s",
