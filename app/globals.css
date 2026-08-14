@@ -1,0 +1,82 @@
+:root {
+  --bg: #0b0b0c;
+  --bg-raised: #131315;
+  --fg: #f2f0ea;
+  --fg-dim: #9a978f;
+  --line: #2a2a2c;
+  --accent: #c9ff3a;
+
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --gap: clamp(1rem, 2vw, 2rem);
+  --radius: 2px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+  scroll-behavior: auto; /* Lenis owns smooth scrolling */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+.section {
+  padding: clamp(4rem, 10vw, 8rem) var(--gap);
+  border-top: 1px solid var(--line);
+}
+
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+}
+.split-word > span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Reduced motion: every animated element gets a static, fully visible fallback */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .split-word > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Cursor / progress rail are opt-in via JS; on touch or coarse pointers they no-op */
+@media (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
