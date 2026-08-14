@@ -5,7 +5,7 @@ export const metadata = { title: "Experience — Srinivasan Vijayaraghavan" };
 export default function Experience() {
   return (
     <main className="wrap" style={{ padding: "2.5rem 24px" }}>
-      <span className="eyebrow">02 — Experience</span>
+      <span className="eyebrow c-sage">02 — Experience</span>
       <SplitReveal as="h1" text="Experience" className="display" />
       <p style={{ color: "var(--ink-70)", maxWidth: "58ch" }}>
         Five years of DevOps engineering across embedded systems and enterprise microservices —
@@ -13,8 +13,8 @@ export default function Experience() {
         multi-cloud production fleet.
       </p>
 
-      <div className="card" style={{ marginTop: "2rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+      <div className="card" style={{ marginTop: "2rem", borderLeft: "3px solid var(--sage)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", flexWrap: "wrap" }}>
           <h3 style={{ fontFamily: "var(--font-display)", margin: 0 }}>DevOps Engineer, Thomson Reuters</h3>
           <span className="eyebrow">Jun 2023 — Present</span>
         </div>
@@ -62,7 +62,7 @@ export default function Experience() {
           },
         ].map((g) => (
           <div key={g.h} style={{ marginTop: "1.25rem" }}>
-            <h5 style={{ margin: "0 0 0.4rem", fontSize: "0.9rem" }}>{g.h}</h5>
+            <h5 className="eyebrow c-sage" style={{ margin: "0 0 0.4rem", fontSize: "0.78rem" }}>{g.h}</h5>
             <ul style={{ color: "var(--ink-70)", paddingLeft: "1.1rem", margin: 0 }}>
               {g.items.map((it) => (
                 <li key={it} style={{ marginBottom: "0.35rem" }}>{it}</li>
@@ -72,8 +72,8 @@ export default function Experience() {
         ))}
       </div>
 
-      <div className="card" style={{ marginTop: "1.5rem", borderColor: "var(--slate-line)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+      <div className="card" style={{ marginTop: "1.5rem", borderColor: "var(--slate-line)", borderLeft: "3px solid var(--slate)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", flexWrap: "wrap" }}>
           <h3 style={{ fontFamily: "var(--font-display)", margin: 0 }}>DevOps Engineer, GraniteRiverLabs</h3>
           <span className="eyebrow">Sep 2021 — Jun 2023</span>
         </div>
@@ -98,7 +98,7 @@ export default function Experience() {
       </div>
 
       <div className="section">
-        <span className="eyebrow">Education</span>
+        <span className="eyebrow c-plum">Education</span>
         <h2 className="display" style={{ fontSize: "1.4rem", margin: "0.4rem 0" }}>
           B.E., Electronics and Communication
         </h2>

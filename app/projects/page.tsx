@@ -3,11 +3,12 @@ import SplitReveal from "@/components/SplitReveal";
 export const metadata = { title: "Projects — Srinivasan Vijayaraghavan" };
 
 type Project = { title: string; status?: string; body: string; stack: string[]; links?: { url: string; label: string }[] };
-type Group = { heading: string; sub: string; items: Project[] };
+type Group = { heading: string; sub: string; accent: "sage" | "slate" | "plum" | "brass"; items: Project[] };
 
 const GROUPS: Group[] = [
   {
     heading: "Live & deployed",
+    accent: "sage",
     sub: "Running right now, hosted on GitHub Pages.",
     items: [
       { title: "Self-Healing Deployment", status: "Live",
@@ -26,6 +27,7 @@ const GROUPS: Group[] = [
   },
   {
     heading: "Platform engineering",
+    accent: "slate",
     sub: "Larger builds — infrastructure, orchestration, multi-tenancy.",
     items: [
       { title: "Multi-Cloud Free-Tier Platform", status: "Work in progress",
@@ -40,6 +42,7 @@ const GROUPS: Group[] = [
   },
   {
     heading: "CI/CD & packaging",
+    accent: "plum",
     sub: "Reusable pipeline and installer scaffolding.",
     items: [
       { title: "Simple-Actions", status: "Reference",
@@ -58,6 +61,7 @@ const GROUPS: Group[] = [
   },
   {
     heading: "Hardware & image automation",
+    accent: "brass",
     sub: "Raspberry Pi provisioning for protocol certification testing.",
     items: [
       { title: "Matter Test Harness Image Builder", status: "Active",
@@ -72,6 +76,7 @@ const GROUPS: Group[] = [
   },
   {
     heading: "Utilities",
+    accent: "sage",
     sub: "Small tools that answer a specific question.",
     items: [
       { title: "SpeedTestDD", status: "Complete",
@@ -93,9 +98,10 @@ export default function Projects() {
 
       {GROUPS.map((g) => (
         <section key={g.heading} className="section">
-          <span className="eyebrow">{g.heading}</span>
+          <span className={"eyebrow c-" + g.accent}>{g.heading}</span>
           <p style={{ color: "var(--ink-45)", margin: "0.3rem 0 1.25rem", fontSize: "0.9rem" }}>{g.sub}</p>
           <div
+            className="accent-cards"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
@@ -104,16 +110,16 @@ export default function Projects() {
           >
             {g.items.map((p) => (
               <div key={p.title} className="card">
-                <div style={{ display: "flex", justifyContent: "space-between", gap: "0.5rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem" }}>
                   <h3 style={{ fontFamily: "var(--font-display)", margin: 0, fontSize: "1.05rem" }}>{p.title}</h3>
-                  {p.status && <span className="tag">{p.status}</span>}
+                  {p.status && <span className="tag" style={{ margin: 0 }}>{p.status}</span>}
                 </div>
                 <p style={{ color: "var(--ink-70)", fontSize: "0.88rem" }}>{p.body}</p>
                 <div>{p.stack.map((s) => <span key={s} className="tag">{s}</span>)}</div>
                 {p.links && (
                   <div style={{ display: "flex", gap: "1rem", marginTop: "0.5rem" }}>
                     {p.links.map((l) => (
-                      <a key={l.url} href={l.url} target="_blank" rel="noopener" className="eyebrow" style={{ color: "var(--sage)" }}>
+                      <a key={l.url} href={l.url} target="_blank" rel="noopener" className={"eyebrow c-" + g.accent}>
                         {l.label}
                       </a>
                     ))}

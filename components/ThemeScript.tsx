@@ -3,8 +3,10 @@ const THEME_SCRIPT = `
   var d = document.documentElement;
   function stored(){ try{ return localStorage.getItem('theme'); }catch(e){ return null; } }
   var t = stored();
+  // Dark is the default look for this site; a stored choice always wins,
+  // and an explicit OS light preference is still respected on first visit.
   if (t !== 'dark' && t !== 'light'){
-    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
   }
   d.setAttribute('data-theme', t);
 })();

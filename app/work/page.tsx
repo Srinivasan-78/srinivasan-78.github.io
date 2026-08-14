@@ -27,7 +27,7 @@ const POSTS = [
 export default function Work() {
   return (
     <main className="wrap" style={{ padding: "2.5rem 24px" }}>
-      <span className="eyebrow">01 — Work</span>
+      <span className="eyebrow c-sage">01 — Work</span>
       <SplitReveal as="h1" text="Selected work" className="display" />
       <p style={{ color: "var(--ink-70)", maxWidth: "58ch" }}>
         Six projects spanning CI/CD, disaster recovery, large-scale migration, and embedded
@@ -46,7 +46,7 @@ export default function Work() {
           const accent = p.accent === "sage" ? "var(--sage)" : "var(--slate)";
           const line = p.accent === "sage" ? "var(--sage-line)" : "var(--slate-line)";
           return (
-            <div key={p.title} className="card" style={{ borderColor: line }}>
+            <div key={p.title} className="card" style={{ borderColor: line, borderLeft: `3px solid ${accent}` }}>
               <span className="tag" style={{ color: accent, borderColor: line }}>{p.tag}</span>
               <h3 style={{ fontFamily: "var(--font-display)", margin: "0.6rem 0 0.4rem" }}>{p.title}</h3>
               <p style={{ color: "var(--ink-70)", fontSize: "0.9rem" }}>{p.body}</p>

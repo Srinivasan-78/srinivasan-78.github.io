@@ -5,7 +5,7 @@ export const metadata = { title: "Contact — Srinivasan Vijayaraghavan" };
 export default function Contact() {
   return (
     <main className="wrap" style={{ padding: "2.5rem 24px" }}>
-      <span className="eyebrow">04 — Contact</span>
+      <span className="eyebrow c-brass">04 — Contact</span>
       <SplitReveal as="h1" text="Get in touch" className="display" />
       <p style={{ color: "var(--ink-70)", maxWidth: "58ch" }}>
         Open to conversations about DevOps, cloud infrastructure, and automation roles. Send a
@@ -35,6 +35,7 @@ export default function Contact() {
       </form>
 
       <div
+        className="accent-cards"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",

@@ -30,7 +30,7 @@ const CERTS: { name: string; date: string; skills: string[] }[] = [
 export default function Certifications() {
   return (
     <main className="wrap" style={{ padding: "2.5rem 24px" }}>
-      <span className="eyebrow">03 — Certifications</span>
+      <span className="eyebrow c-plum">03 — Certifications</span>
       <SplitReveal as="h1" text="Certifications & learning" className="display" />
       <p style={{ color: "var(--ink-70)", maxWidth: "58ch" }}>
         Twenty-two credentials across cloud platforms, automation, infrastructure as code, and
@@ -53,10 +53,10 @@ export default function Certifications() {
             <div>
               <div style={{ fontSize: "0.95rem" }}>{c.name}</div>
               <div style={{ marginTop: "0.3rem" }}>
-                {c.skills.map((s) => <span key={s} className="tag">{s}</span>)}
+                {c.skills.map((s) => <span key={s} className="tag" style={{ color: "var(--plum)", borderColor: "var(--plum-line)", background: "var(--plum-wash)" }}>{s}</span>)}
               </div>
             </div>
-            <span className="eyebrow" style={{ whiteSpace: "nowrap" }}>{c.date}</span>
+            <span className="eyebrow" style={{ whiteSpace: "nowrap", color: "var(--ink-45)" }}>{c.date}</span>
           </div>
         ))}
       </div>

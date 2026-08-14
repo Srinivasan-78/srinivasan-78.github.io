@@ -1,81 +1,105 @@
 import Link from "next/link";
 import SplitReveal from "@/components/SplitReveal";
+import Highlights from "@/components/Highlights";
+import Marquee from "@/components/Marquee";
+import HowIWork from "@/components/HowIWork";
+import Capabilities from "@/components/Capabilities";
+import Statement from "@/components/Statement";
+import Reveal from "@/components/Reveal";
 
 const EXPLORE = [
-  { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds." },
-  { href: "/work", title: "Selected work", body: "Six projects across two companies, including public upstream contribution." },
-  { href: "/experience", title: "Experience", body: "Full role breakdowns at Thomson Reuters and GraniteRiverLabs, plus education." },
-  { href: "/certifications", title: "Certifications", body: "22 credentials in cloud, automation, and infrastructure — all verifiable." },
-  { href: "/contact", title: "Get in touch", body: "Open to DevOps, cloud infrastructure, and automation conversations." },
+  { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds.", go: "View projects →" },
+  { href: "/work", title: "Selected work", body: "Six projects across two companies, including public upstream contribution.", go: "View work →" },
+  { href: "/experience", title: "Experience", body: "Full role breakdowns at Thomson Reuters and GraniteRiverLabs, plus education.", go: "View experience →" },
+  { href: "/certifications", title: "Certifications", body: "22 credentials in cloud, automation, and infrastructure — all verifiable.", go: "View certifications →" },
+  { href: "/contact", title: "Get in touch", body: "Open to DevOps, cloud infrastructure, and automation conversations.", go: "Say hello →" },
+];
+
+const STATS: [string, string, string][] = [
+  ["5", "years shipping", "var(--sage)"],
+  ["15+", "microservices owned", "var(--slate)"],
+  ["22", "certifications", "var(--plum)"],
+  ["2", "clouds in production", "var(--brass)"],
 ];
 
 export default function Page() {
   return (
     <main>
-      <header className="wrap" style={{ padding: "3.5rem 24px 2.5rem" }}>
-        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
-          <div
-            style={{
-              width: 88,
-              height: 88,
-              borderRadius: "50%",
-              background: "#4D5D53",
-              color: "#F7F3E8",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-display)",
-              fontSize: "2rem",
-              flexShrink: 0,
-            }}
-          >
-            SV
+      <header className="hero">
+        <div className="wrap">
+          <div className="hero-meta">
+            <span className="hero-status eyebrow">
+              <i className="pulse" />
+              Open to opportunities
+            </span>
+            <span className="eyebrow">Bangalore, IN · US citizen + OCI</span>
           </div>
-          <div>
-            <SplitReveal as="h1" text="Srinivasan Vijayaraghavan" className="display" stagger={0.015} />
-            <p className="eyebrow" style={{ marginTop: 4 }}>
-              DevOps Engineer · Cloud Infrastructure &amp; Automation
-            </p>
-          </div>
-        </div>
 
-        <div style={{ display: "flex", gap: "2rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
-          {[
-            ["5", "years shipping"],
-            ["4", "clouds automated"],
-            ["22", "certifications"],
-          ].map(([n, l]) => (
-            <div key={l}>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: "1.6rem" }}>{n}</div>
-              <div className="eyebrow">{l}</div>
+          <SplitReveal
+            as="h1"
+            text="I automate the release nobody wants to do by hand."
+            className="display display-xl"
+            stagger={0.018}
+          />
+
+          <div className="hero-lower">
+            <div className="hero-avatar">
+              <div className="hero-avatar-inner">SV</div>
             </div>
-          ))}
-        </div>
+            <div>
+              <div className="display" style={{ fontSize: "1.25rem" }}>
+                Srinivasan Vijayaraghavan
+              </div>
+              <p className="eyebrow" style={{ marginTop: 2 }}>
+                DevOps / SRE · Cloud Infrastructure &amp; Automation
+              </p>
+            </div>
+          </div>
 
-        <p style={{ maxWidth: "58ch", marginTop: "1.5rem", color: "var(--ink-70)" }}>
-          I turn fragile, manual deployments into <strong>fast, reliable automation</strong> — the
-          pipelines, safety nets, and monitoring that let teams ship without holding their breath.
-          Currently leveling up toward Cloud Solutions Architecture.
-        </p>
+          <p className="hero-bio">
+            Five years owning release, upgrade, and disaster-recovery automation for a
+            multi-tenant Azure platform. I build the pipelines, health gates, and rollback
+            paths that decide whether a release ships — and own the recovery when it doesn&rsquo;t.
+          </p>
 
-        <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.5rem", flexWrap: "wrap" }}>
-          <a href="/resume.pdf" className="btn primary" download>
-            Download résumé
-          </a>
-          <a href="/contact" className="btn ghost">
-            Get in touch
-          </a>
+          <Reveal className="stats" stagger={0.08} y={16}>
+            {STATS.map(([n, l, c]) => (
+              <div key={l}>
+                <div className="stat-num" style={{ color: c }}>{n}</div>
+                <div className="eyebrow">{l}</div>
+              </div>
+            ))}
+          </Reveal>
+
+          <div className="hero-actions">
+            <a href="/resume.pdf" className="btn primary" download>
+              Download résumé
+            </a>
+            <Link href="/contact" className="btn ghost">
+              Get in touch
+            </Link>
+          </div>
         </div>
       </header>
 
+      <Marquee />
+
+      <Highlights />
+
+      <HowIWork />
+
+      <Statement />
+
+      <Capabilities />
+
       <section className="section">
         <div className="wrap">
-          <span className="eyebrow">Availability</span>
-          <h2 className="display" style={{ fontSize: "1.6rem", marginTop: 6 }}>
+          <span className="eyebrow c-slate">Availability</span>
+          <h2 className="display display-lg" style={{ margin: "0.4rem 0 0" }}>
             Deployment regions
           </h2>
-          <div className="card" style={{ marginTop: "1.5rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+          <div className="card" style={{ marginTop: "2rem", borderLeft: "3px solid var(--slate)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1rem" }}>
               <span className="eyebrow">work authorization — health check</span>
               <span className="eyebrow" style={{ color: "var(--sage)" }}>2/2 regions healthy</span>
             </div>
@@ -95,14 +119,14 @@ export default function Page() {
                 }}
               >
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}>{region}</span>
-                <span className="tag" style={{ color: "var(--sage)", borderColor: "var(--sage-line)" }}>
+                <span className="tag" style={{ color: "var(--sage)", borderColor: "var(--sage-line)", background: "var(--sage-wash)", margin: 0 }}>
                   {status}
                 </span>
                 <span style={{ color: "var(--ink-45)", fontSize: "0.85rem" }}>{note}</span>
               </div>
             ))}
             <div className="eyebrow" style={{ marginTop: "1rem" }}>
-              sponsorship_required: <b>false</b> · failover: <b>instant</b> · currently based in Bangalore
+              sponsorship_required: <b>false</b> · failover: <b>instant</b> · based in Bangalore
             </div>
           </div>
         </div>
@@ -110,25 +134,27 @@ export default function Page() {
 
       <section className="section">
         <div className="wrap">
-          <span className="eyebrow">Explore</span>
-          <h2 className="display" style={{ fontSize: "1.6rem", marginTop: 6 }}>
+          <span className="eyebrow c-brass">Explore</span>
+          <h2 className="display display-lg" style={{ margin: "0.4rem 0 0" }}>
             Where to next
           </h2>
-          <div
+          <Reveal
+            className="accent-cards"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
               gap: "1rem",
-              marginTop: "1.5rem",
+              marginTop: "2rem",
             }}
           >
             {EXPLORE.map((e) => (
               <Link key={e.href} href={e.href} className="card" data-cursor-hover>
                 <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{e.title}</h3>
-                <p style={{ color: "var(--ink-70)", fontSize: "0.9rem", margin: 0 }}>{e.body}</p>
+                <p style={{ color: "var(--ink-45)", fontSize: "0.9rem", margin: 0 }}>{e.body}</p>
+                <span className="go">{e.go}</span>
               </Link>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
     </main>
