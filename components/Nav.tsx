@@ -1,39 +1,51 @@
+"use client";
+
+import ThemeToggle from "./ThemeToggle";
+
+const LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/work", label: "Work" },
+  { href: "/projects", label: "Projects" },
+  { href: "/experience", label: "Experience" },
+  { href: "/certifications", label: "Certifications" },
+  { href: "/resume.pdf", label: "Résumé" },
+  { href: "/contact", label: "Contact" },
+];
+
 export default function Nav() {
   return (
-    <header
+    <nav
       style={{
-        position: "fixed",
-        top: 2,
-        left: 0,
-        right: 0,
+        position: "sticky",
+        top: 0,
         zIndex: 50,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "1.25rem var(--gap)",
-        pointerEvents: "none",
+        background: "var(--paper)",
+        borderBottom: "1px solid var(--ink-15)",
       }}
     >
-      <span className="eyebrow" style={{ pointerEvents: "auto" }}>
-        LOOMLINE · v2.0.0
-      </span>
-      <nav
+      <div
+        className="wrap"
         style={{
           display: "flex",
-          gap: "1.5rem",
-          pointerEvents: "auto",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0.9rem 24px",
+          gap: "1rem",
+          flexWrap: "wrap",
         }}
       >
-        <a className="eyebrow" href="#principles" data-cursor-hover>
-          How it works
+        <a href="/" className="eyebrow" style={{ color: "var(--sage)" }}>
+          @srinivasan.devops
         </a>
-        <a className="eyebrow" href="#gallery" data-cursor-hover>
-          Modules
-        </a>
-        <a className="eyebrow" href="#audience" data-cursor-hover>
-          Who it's for
-        </a>
-      </nav>
-    </header>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+          {LINKS.map((l) => (
+            <a key={l.href} href={l.href} className="eyebrow" style={{ fontSize: "0.8rem" }}>
+              {l.label}
+            </a>
+          ))}
+          <ThemeToggle />
+        </div>
+      </div>
+    </nav>
   );
 }

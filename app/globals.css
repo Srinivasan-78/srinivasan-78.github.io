@@ -1,82 +1,151 @@
 :root {
-  --bg: #0b0b0c;
-  --bg-raised: #131315;
-  --fg: #f2f0ea;
-  --fg-dim: #9a978f;
-  --line: #2a2a2c;
-  --accent: #c9ff3a;
+  color-scheme: light;
+  --paper: #ffffff;
+  --paper-raised: #fafafa;
+  --ink: #262626;
+  --ink-70: #4b4b4b;
+  --ink-45: #6b6b6b;
+  --ink-15: #dbdbdb;
+  --ink-08: #efefef;
 
-  --font-display: "Fraunces", "Times New Roman", serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sage: #0074cc;
+  --sage-mid: #6b6b6b;
+  --sage-wash: #eaf4fd;
+  --sage-line: #b9ddfa;
 
-  --gap: clamp(1rem, 2vw, 2rem);
-  --radius: 2px;
+  --slate: #a0186f;
+  --slate-wash: #fbeaf4;
+  --slate-line: #f0c4df;
+
+  --plum: #c13584;
+  --plum-wash: #fcebf5;
+  --plum-line: #f2c9e2;
+
+  --brass: #b45f09;
+  --brass-wash: #fdf1e3;
+  --brass-line: #f5d3ac;
+
+  --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+
+  --font-display: "Iowan Old Style", "Georgia", "Palatino Linotype", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --max: 880px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #000000;
+  --paper-raised: #121212;
+  --ink: #fafafa;
+  --ink-70: #c7c7c7;
+  --ink-45: #a8a8a8;
+  --ink-15: #363636;
+  --ink-08: #262626;
+
+  --sage: #0095f6;
+  --sage-mid: #a8a8a8;
+  --sage-wash: #0a1a26;
+  --sage-line: #1f3a4d;
+
+  --slate: #e56baf;
+  --slate-wash: #1e1119;
+  --slate-line: #3d2130;
+
+  --plum: #f075be;
+  --plum-wash: #1e1119;
+  --plum-line: #3d2130;
+
+  --brass: #e0a24a;
+  --brass-wash: #201a10;
+  --brass-line: #3d3013;
 }
 
 * { box-sizing: border-box; }
 
-html {
-  background: var(--bg);
-  scroll-behavior: auto; /* Lenis owns smooth scrolling */
-}
+html { background: var(--paper); }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-mono);
-  font-size: 15px;
-  line-height: 1.5;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 
-a { color: inherit; }
+a { color: var(--ink); text-decoration: none; }
+:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; width: 100%; }
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  font-size: 0.76rem;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--fg-dim);
+  color: var(--sage-mid);
 }
 
 .display {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
-  line-height: 0.95;
+  line-height: 1.1;
 }
 
 .section {
-  padding: clamp(4rem, 10vw, 8rem) var(--gap);
-  border-top: 1px solid var(--line);
+  padding: clamp(3rem, 8vw, 5rem) 0;
+  border-top: 1px solid var(--ink-15);
 }
 
-.split-word {
+.btn {
   display: inline-block;
-  overflow: hidden;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--sage);
+  background: transparent;
+  color: var(--sage);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background 0.22s var(--ease), color 0.22s var(--ease);
 }
-.split-word > span {
-  display: inline-block;
-  will-change: transform, opacity;
+.btn.primary { background: var(--sage); color: var(--paper); }
+.btn.primary:hover { background: transparent; color: var(--sage); }
+.btn.ghost:hover { background: var(--sage-wash); }
+
+.card {
+  border: 1px solid var(--ink-15);
+  border-radius: 10px;
+  padding: 1.25rem;
+  background: var(--paper-raised);
 }
 
-/* Reduced motion: every animated element gets a static, fully visible fallback */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--ink-15);
+  color: var(--ink-70);
+  margin: 0 6px 6px 0;
+}
+
+.split-word { display: inline-block; overflow: hidden; }
+.split-word > span { display: inline-block; will-change: transform, opacity; }
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
-  .split-word > span {
-    opacity: 1 !important;
-    transform: none !important;
-  }
+  .split-word > span { opacity: 1 !important; transform: none !important; }
 }
 
-/* Cursor / progress rail are opt-in via JS; on touch or coarse pointers they no-op */
 @media (pointer: coarse) {
   .cursor-dot, .cursor-ring { display: none !important; }
 }
