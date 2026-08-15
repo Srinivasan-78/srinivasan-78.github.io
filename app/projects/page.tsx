@@ -2,6 +2,7 @@ import SplitReveal from "@/components/SplitReveal";
 import Parallax from "@/components/Parallax";
 import ParallaxLayer from "@/components/ParallaxLayer";
 import ProjectGrid, { type Project } from "@/components/ProjectGrid";
+import Ghost from "@/components/Ghost";
 
 export const metadata = {
   title: "Projects — Srinivasan Vijayaraghavan",
@@ -129,6 +130,11 @@ export default function Projects() {
         </p>
       </ParallaxLayer>
 
+      <div className="micro-row">
+        <span className="micro micro-bright">Public code · live demos</span>
+        <span className="micro">Hover for schematic · tap for detail</span>
+      </div>
+
       <ParallaxLayer speed={0.18} style={{ marginTop: "2rem" }}>
         <Parallax
           src="/images/banner-circuit.webp"
@@ -140,6 +146,7 @@ export default function Projects() {
 
       {GROUPS.map((g) => (
         <section key={g.heading} className="section">
+          <Ghost text={g.heading} />
           <span className={"eyebrow c-" + g.accent}>{g.heading}</span>
           <p style={{ color: "var(--ink-45)", margin: "0.3rem 0 0", fontSize: "0.9rem" }}>{g.sub}</p>
           <ProjectGrid accent={g.accent} items={g.items} />
