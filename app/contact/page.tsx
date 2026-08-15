@@ -50,15 +50,15 @@ export default function Contact() {
       >
         <a className="card" href="mailto:srinivasan.shyam2000@gmail.com" data-cursor-hover>
           <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.3rem" }}>Email</h3>
-          <p style={{ color: "var(--ink-70)", margin: 0, fontSize: "0.9rem" }}>srinivasan.shyam2000@gmail.com</p>
+          <p style={{ color: "var(--ink-70)", margin: 0, fontSize: "0.84rem" }}>srinivasan.shyam2000@gmail.com</p>
         </a>
         <a className="card" href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener" data-cursor-hover>
           <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.3rem" }}>LinkedIn ↗</h3>
-          <p style={{ color: "var(--ink-70)", margin: 0, fontSize: "0.9rem" }}>Full profile, credentials, and recommendations</p>
+          <p style={{ color: "var(--ink-70)", margin: 0, fontSize: "0.84rem" }}>Full profile, credentials, and recommendations</p>
         </a>
         <a className="card" href="https://github.com/Srinivasan-78" target="_blank" rel="noopener" data-cursor-hover>
           <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.3rem" }}>GitHub ↗</h3>
-          <p style={{ color: "var(--ink-70)", margin: 0, fontSize: "0.9rem" }}>Repositories and open-source contributions</p>
+          <p style={{ color: "var(--ink-70)", margin: 0, fontSize: "0.84rem" }}>Repositories and open-source contributions</p>
         </a>
       </div>
     </main>

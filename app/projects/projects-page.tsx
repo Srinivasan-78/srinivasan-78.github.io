@@ -141,7 +141,7 @@ export default function Projects() {
       {GROUPS.map((g) => (
         <section key={g.heading} className="section">
           <span className={"eyebrow c-" + g.accent}>{g.heading}</span>
-          <p style={{ color: "var(--ink-45)", margin: "0.3rem 0 0", fontSize: "0.9rem" }}>{g.sub}</p>
+          <p style={{ color: "var(--ink-45)", margin: "0.3rem 0 0", fontSize: "0.84rem" }}>{g.sub}</p>
           <ProjectGrid accent={g.accent} items={g.items} />
         </section>
       ))}

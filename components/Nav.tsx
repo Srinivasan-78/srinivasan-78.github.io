@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 
 const LINKS: { href: string; label: string; download?: boolean }[] = [
   { href: "/", label: "Home" },
-  { href: "/work", label: "Work" },
   { href: "/projects", label: "Projects" },
-  { href: "/experience", label: "Experience" },
   { href: "/certifications", label: "Certifications" },
   { href: "/resume.pdf", label: "Résumé", download: true },
   { href: "/contact", label: "Contact" },
@@ -16,6 +15,8 @@ const LINKS: { href: string; label: string; download?: boolean }[] = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => href === "/" ? pathname === "/" : pathname?.startsWith(href);
 
   return (
     <nav
@@ -52,7 +53,18 @@ export default function Nav() {
                 {l.label}
               </a>
             ) : (
-              <Link key={l.href} href={l.href} className="eyebrow lnk" style={{ fontSize: "0.8rem" }}>
+              <Link
+                key={l.href}
+                href={l.href}
+                className="eyebrow lnk"
+                aria-current={isActive(l.href) ? "page" : undefined}
+                style={{
+                  fontSize: "0.8rem",
+                  textDecoration: isActive(l.href) ? "underline" : "none",
+                  textUnderlineOffset: "4px",
+                  color: isActive(l.href) ? "var(--sage)" : undefined,
+                }}
+              >
                 {l.label}
               </Link>
             )
@@ -112,7 +124,13 @@ export default function Nav() {
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className="eyebrow"
-                style={{ fontSize: "0.85rem" }}
+                aria-current={isActive(l.href) ? "page" : undefined}
+                style={{
+                  fontSize: "0.85rem",
+                  textDecoration: isActive(l.href) ? "underline" : "none",
+                  textUnderlineOffset: "4px",
+                  color: isActive(l.href) ? "var(--sage)" : undefined,
+                }}
               >
                 {l.label}
               </Link>

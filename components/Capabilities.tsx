@@ -156,7 +156,7 @@ export default function Capabilities() {
     <section className="section">
       <div className="wrap">
         <SectionHead
-          index="02 / 04"
+          index="03 / 05"
           label="What I actually build"
           accent="plum"
           title="Six things I get called in for."

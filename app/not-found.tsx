@@ -5,7 +5,7 @@ export const metadata = { title: "Page not found — Srinivasan Vijayaraghavan" 
 const ROUTES = [
   { href: "/", title: "Home", body: "Profile, skills, and availability.", go: "Go home →" },
   { href: "/projects", title: "Projects", body: "Live tools and platform engineering builds.", go: "View projects →" },
-  { href: "/work", title: "Work", body: "Selected professional projects.", go: "View work →" },
+  { href: "/certifications", title: "Certifications", body: "22 verifiable credentials.", go: "View certifications →" },
   { href: "/contact", title: "Contact", body: "Send a message.", go: "Get in touch →" },
 ];
 
@@ -56,7 +56,7 @@ export default function NotFound() {
         {ROUTES.map((r) => (
           <Link key={r.href} href={r.href} className="card" data-cursor-hover>
             <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{r.title}</h3>
-            <p style={{ color: "var(--ink-45)", fontSize: "0.9rem", margin: 0 }}>{r.body}</p>
+            <p style={{ color: "var(--ink-45)", fontSize: "0.84rem", margin: 0 }}>{r.body}</p>
             <span className="go">{r.go}</span>
           </Link>
         ))}

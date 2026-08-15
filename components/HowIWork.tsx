@@ -37,7 +37,7 @@ export default function HowIWork() {
     <section className="section">
       <div className="wrap">
         <SectionHead
-          index="01 / 04"
+          index="01 / 05"
           label="How I work"
           accent="sage"
           title="Built to survive the release that goes wrong."

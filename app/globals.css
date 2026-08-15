@@ -122,7 +122,7 @@ body {
   background: transparent;
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
@@ -162,7 +162,7 @@ a { color: var(--ink); text-decoration: none; }
 .mega {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2rem, 5.4vw, 3.6rem);
+  font-size: clamp(2.3rem, 6vw, 4.1rem);
   line-height: 0.79;
   letter-spacing: -0.02em;
   margin: 0;
@@ -478,13 +478,13 @@ a.card:hover {
 
 /* ---------- TYPE SCALE ---------- */
 .display-lg {
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-size: clamp(1.35rem, 2.3vw, 1.8rem);
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
 .display-xl {
-  font-size: clamp(1.9rem, 4.2vw, 3rem);
-  line-height: 1.08;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.06;
   letter-spacing: -0.015em;
 }
 
@@ -736,6 +736,7 @@ a.card:hover {
   max-width: 60ch;
   margin-top: 1.5rem;
   color: var(--ink-70);
+  font-size: 0.92rem;
 }
 .stats {
   display: grid;
@@ -784,7 +785,7 @@ a.card:hover {
   gap: 1rem; flex-wrap: wrap;
   padding: 0.9rem 0; border-top: 1px solid var(--ink-15);
 }
-.cert-name { font-size: 0.95rem; display: block; }
+.cert-name { font-size: 0.88rem; display: block; }
 .cert-right {
   display: flex; flex-direction: column; align-items: flex-end;
   gap: 0.3rem; flex-shrink: 0;
@@ -820,7 +821,7 @@ a.card:hover {
 .post.brass .post-cover { color: var(--brass); }
 .post-cover svg { width: 100%; height: auto; display: block; }
 .post-body { padding: 1rem; }
-.post-title { font-family: var(--font-display); font-size: 1.05rem; margin: 0.5rem 0 0.35rem; line-height: 1.25; }
+.post-title { font-family: var(--font-display); font-size: 0.98rem; margin: 0.5rem 0 0.35rem; line-height: 1.25; }
 .post-open { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-45); }
 
 /* ---------- PROJECT CARDS (hover diagram, tap for details) ---------- */
@@ -842,7 +843,7 @@ a.card:hover {
   color: var(--ink-45); border: 1px solid var(--ink-15); border-radius: 999px;
   padding: 2px 9px; flex-shrink: 0;
 }
-.proj-teaser { color: var(--ink-70); font-size: 0.86rem; margin: 0.4rem 0 0.6rem; }
+.proj-teaser { color: var(--ink-70); font-size: 0.8rem; margin: 0.4rem 0 0.6rem; }
 .proj-hint {
   display: block; font-family: var(--font-mono); font-size: 0.68rem;
   color: var(--ink-45); padding: 0 1rem 0.9rem;
@@ -868,8 +869,8 @@ a.card:hover {
   color: var(--ink-70); cursor: pointer; padding: 0.25rem 0.6rem;
   font-family: var(--font-mono); font-size: 0.75rem;
 }
-.lb-title { font-family: var(--font-display); font-size: 1.4rem; margin: 0.6rem 0 0.5rem; line-height: 1.2; }
-.lb-body { color: var(--ink-70); font-size: 0.92rem; }
+.lb-title { font-family: var(--font-display); font-size: 1.3rem; margin: 0.6rem 0 0.5rem; line-height: 1.2; }
+.lb-body { color: var(--ink-70); font-size: 0.85rem; }
 
 /* ---------- DEVOPS 3D BACKGROUND ---------- */
 /* Fixed to the viewport and behind everything, so the objects persist
@@ -994,7 +995,7 @@ main, nav, header, footer { position: relative; z-index: 1; }
 .px-overlay .eyebrow { color: #cfcfcf; }
 .px-title {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-size: clamp(1.2rem, 2.7vw, 1.8rem);
   line-height: 1.15;
   margin: 0.35rem 0 0;
 }
