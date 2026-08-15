@@ -69,9 +69,12 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // data-theme is set here in the server markup rather than left to a
+    // script: dark is the unconditional default, so it must be correct
+    // even if JS never runs. ThemeScript only downgrades to light for a
+    // visitor who explicitly chose it.
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
-        <ThemeScript />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
@@ -79,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="grain">
+        <ThemeScript />
         <VantaBackground />
         <ProgressRail />
         <VelocitySkew />

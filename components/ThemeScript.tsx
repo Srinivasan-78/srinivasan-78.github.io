@@ -1,18 +1,21 @@
 const THEME_SCRIPT = `
 (function(){
-  var d = document.documentElement;
-  var t = null;
-  try { t = localStorage.getItem('theme'); } catch(e) {}
-  // Dark is this site's default, unconditionally. The OS colour-scheme
-  // preference is deliberately NOT consulted: a light-mode OS was
-  // flipping first-time visitors into light mode. Only an explicit
-  // choice the visitor made with the toggle overrides dark.
-  d.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+  try {
+    if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.setAttribute('data-theme','light');
+    }
+  } catch(e) {}
 })();
 `;
 
-// Server component (no "use client") — this is a plain inline <script>,
-// not interactive, so it doesn't need to be a client component.
+/* The <html> element already ships with data-theme="dark" from the
+   server, so dark is correct with JS disabled, blocked, or still
+   loading. This script's only job is the one exception: a visitor who
+   previously chose light. It runs before paint, so there's no flash.
+
+   Note it renders inside <body>, not <head> — App Router does not
+   reliably execute a raw inline <script> placed in <head>, which is why
+   the theme attribute was ending up unset. */
 export default function ThemeScript() {
   // eslint-disable-next-line react/no-danger
   return <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />;
