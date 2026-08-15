@@ -897,7 +897,10 @@ a.card:hover {
 /* Content rides above the scene. Without this the canvas shares
    stacking level 0 with it and paints in DOM order — over the nav. */
 main, nav, header, footer { position: relative; z-index: 1; }
-@media (prefers-reduced-motion: reduce) { .scene-stage { display: none; } }
+/* No reduced-motion hide here. The scene renders a single static frame
+   under that setting (see DevOpsScene), so the geometry stays visible
+   while nothing moves — hiding it removed the background entirely for
+   anyone with the OS setting enabled. */
 @media (pointer: coarse) { .scene-stage { display: none; } }
 
 /* ---------- UI BITS ---------- */

@@ -35,8 +35,15 @@ export default function DevOpsScene() {
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Coarse pointer still bails entirely — a phone gains nothing from a
+    // WebGL context it can't interact with, and pays for it in battery.
     if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    // Reduced motion does NOT bail. It means reduce motion, not remove
+    // content: the scene is built and rendered exactly once, so the
+    // geometry is still there, just perfectly still. Bailing here was
+    // hiding the entire background from anyone with the OS setting on.
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let cancelled = false;
     let cleanup: (() => void) | undefined;
@@ -178,6 +185,9 @@ export default function DevOpsScene() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        // setSize clears the buffer. With no rAF loop running, nothing
+        // would repaint it, so the still scene needs an explicit redraw.
+        if (still) renderer.render(scene, camera);
       };
 
       const home = objects.map((o) => o.mesh.position.clone());
@@ -217,9 +227,17 @@ export default function DevOpsScene() {
       };
 
       onScroll();
-      frame();
-      window.addEventListener("scroll", onScroll, { passive: true });
-      window.addEventListener("pointermove", onPointer, { passive: true });
+      if (still) {
+        // One frame, at rest. No rAF loop, no scroll or pointer
+        // listeners — nothing that could move.
+        line.color.set(cssColor(STOPS[0], "#0095f6"));
+        stop = 0;
+        renderer.render(scene, camera);
+      } else {
+        frame();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("pointermove", onPointer, { passive: true });
+      }
       window.addEventListener("resize", onResize);
 
       const obs = new MutationObserver(() => {
@@ -235,6 +253,9 @@ export default function DevOpsScene() {
         cancelAnimationFrame(raf);
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("pointermove", onPointer);
+        // Both removes are unconditional: removing a listener that was
+        // never added is a no-op, and branching here would leak if the
+        // media query flipped between mount and unmount.
         window.removeEventListener("resize", onResize);
         obs.disconnect();
         scene.traverse((o: any) => {
