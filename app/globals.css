@@ -1330,3 +1330,188 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 640px) {
   .pd-arch > div { grid-template-columns: 1fr; gap: 0.35rem; }
 }
+
+/* ---------- CERTIFICATE MENU (freshman.tv-style) ---------- */
+/* Full-bleed on purpose: the inverting band has to reach both edges of
+   the viewport or the effect reads as a highlighted list item instead
+   of a mechanism. So this page opts out of .wrap entirely. */
+.fm-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 58px);
+}
+.fm-head {
+  padding: 2rem 24px 1.25rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.fm-head p {
+  margin: 0; max-width: 46ch;
+  color: var(--ink-45); font-size: 0.84rem;
+}
+.fm-rows { border-top: 1px dashed var(--ink-15); }
+
+.fm-row {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px dashed var(--ink-15);
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+/* The band that wipes in on hover. transform-origin centre so it opens
+   from the type's own baseline outward rather than dropping down. */
+.fm-fill {
+  position: absolute;
+  inset: 0;
+  background: #050505;
+  transform: scaleY(0);
+  transform-origin: 50% 50%;
+  pointer-events: none;
+}
+.fm-label {
+  position: relative;
+  display: inline-block;
+  padding: 0.1em 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 7.6vw, 6rem);
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.fm-text, .fm-count {
+  position: relative; z-index: 2; color: var(--ink);
+  transition: color 0.3s var(--ease);
+}
+/* Set by the hover handler alongside the GSAP band wipe. */
+.fm-row.is-hot .fm-text,
+.fm-row.is-hot .fm-count { color: #b8b5ac; }
+.fm-count {
+  font-size: 0.26em;
+  vertical-align: super;
+  font-family: Georgia, "Times New Roman", serif;
+  margin-left: 0.15em;
+}
+/* Sits over the type, not behind it — the reference's scribble crosses
+   the letterforms rather than underlining them. */
+.fm-scribble {
+  position: absolute;
+  left: -4%; top: 4%;
+  width: 108%; height: 92%;
+  z-index: 3;
+  overflow: visible;
+  pointer-events: none;
+}
+.fm-scribble path {
+  fill: none;
+  stroke: #e0201b;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+}
+.fm-foot {
+  margin-top: auto;
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: 1rem; padding: 1.25rem 24px 2rem;
+}
+.fm-foot .micro { color: var(--ink-45); text-transform: none; }
+
+.fm-curtain {
+  position: fixed;
+  left: 0; right: 0; top: 0;
+  height: 0;
+  display: none;
+  background: #050505;
+  z-index: 90;
+  pointer-events: none;
+}
+
+@media (hover: none) {
+  /* No hover to reveal it, so the band is always partly there. */
+  .fm-fill { transform: scaleY(1); opacity: 0.06; }
+}
+
+/* ---------- CERTIFICATE VIEWER ---------- */
+.cv-root {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: radial-gradient(120% 90% at 50% 40%, #16171b 0%, #0a0a0c 60%, #050506 100%);
+  color: #f2f0ea;
+  user-select: none;
+}
+.cv-canvas { position: absolute; inset: 0; cursor: grab; }
+.cv-canvas:active { cursor: grabbing; }
+.cv-canvas canvas { display: block; }
+
+.cv-top {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  z-index: 2;
+}
+.cv-shelf {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+  text-transform: uppercase;
+  line-height: 1;
+}
+.cv-shelf sup { font-size: 0.3em; margin-left: 0.2em; opacity: 0.55; }
+.cv-close {
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.04);
+  color: rgba(242,240,234,0.8);
+  border-radius: 999px;
+  padding: 0.55rem 1.15rem;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.cv-close:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+.cv-readout {
+  position: absolute; left: 1.75rem; bottom: 2rem;
+  display: flex; flex-direction: column; gap: 0.3rem;
+  max-width: 42ch; z-index: 2;
+}
+.cv-index { font-family: var(--font-mono); font-size: 0.72rem; color: rgba(242,240,234,0.45); }
+.cv-name {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.05rem, 2.2vw, 1.5rem); line-height: 1.2;
+}
+.cv-meta { font-family: var(--font-mono); font-size: 0.7rem; color: rgba(242,240,234,0.45); }
+.cv-link {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: #c98fae; margin-top: 0.35rem;
+}
+
+.cv-rail {
+  position: absolute; right: 1.75rem; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 6px; z-index: 2;
+}
+.cv-tick {
+  width: 22px; height: 2px; padding: 0; border: 0; cursor: pointer;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.25s var(--ease), width 0.25s var(--ease);
+}
+.cv-tick.is-on { background: #e0201b; width: 38px; }
+
+.cv-hint {
+  position: absolute; bottom: 2rem; right: 1.75rem;
+  color: rgba(242,240,234,0.35); text-transform: none; z-index: 2;
+}
+
+@media (max-width: 720px) {
+  .cv-rail, .cv-hint { display: none; }
+  .cv-readout { left: 1.25rem; right: 1.25rem; bottom: 1.5rem; }
+}
