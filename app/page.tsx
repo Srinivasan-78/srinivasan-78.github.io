@@ -6,6 +6,8 @@ import HowIWork from "@/components/HowIWork";
 import Capabilities from "@/components/Capabilities";
 import Statement from "@/components/Statement";
 import Reveal from "@/components/Reveal";
+import VantaBackground from "@/components/VantaBackground";
+import { CountUp, RotatingWord, DecryptText, TiltCard } from "@/components/Bits";
 
 const EXPLORE = [
   { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds.", go: "View projects →" },
@@ -15,17 +17,18 @@ const EXPLORE = [
   { href: "/contact", title: "Get in touch", body: "Open to DevOps, cloud infrastructure, and automation conversations.", go: "Say hello →" },
 ];
 
-const STATS: [string, string, string][] = [
-  ["5", "years shipping", "var(--sage)"],
-  ["15+", "microservices owned", "var(--slate)"],
-  ["22", "certifications", "var(--plum)"],
-  ["2", "clouds in production", "var(--brass)"],
+const STATS: { value: number; suffix?: string; label: string; color: string }[] = [
+  { value: 5, label: "years shipping", color: "var(--sage)" },
+  { value: 15, suffix: "+", label: "microservices owned", color: "var(--slate)" },
+  { value: 22, label: "certifications", color: "var(--plum)" },
+  { value: 2, label: "clouds in production", color: "var(--brass)" },
 ];
 
 export default function Page() {
   return (
     <main>
-      <header className="hero">
+      <header className="hero vanta-hero">
+        <VantaBackground />
         <div className="wrap">
           <div className="hero-meta">
             <span className="hero-status eyebrow">
@@ -51,7 +54,10 @@ export default function Page() {
                 Srinivasan Vijayaraghavan
               </div>
               <p className="eyebrow" style={{ marginTop: 2 }}>
-                DevOps / SRE · Cloud Infrastructure &amp; Automation
+                DevOps / SRE ·{" "}
+                <RotatingWord
+                  words={["Release automation", "Disaster recovery", "Cloud infrastructure", "Observability"]}
+                />
               </p>
             </div>
           </div>
@@ -63,10 +69,15 @@ export default function Page() {
           </p>
 
           <Reveal className="stats" stagger={0.08} y={16}>
-            {STATS.map(([n, l, c]) => (
-              <div key={l}>
-                <div className="stat-num" style={{ color: c }}>{n}</div>
-                <div className="eyebrow">{l}</div>
+            {STATS.map((st) => (
+              <div key={st.label}>
+                <CountUp
+                  value={st.value}
+                  suffix={st.suffix}
+                  className="stat-num"
+                  style={{ color: st.color, display: "block" }}
+                />
+                <div className="eyebrow">{st.label}</div>
               </div>
             ))}
           </Reveal>
@@ -118,7 +129,7 @@ export default function Page() {
                   flexWrap: "wrap",
                 }}
               >
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}>{region}</span>
+                <DecryptText text={region} className="region-code" />
                 <span className="tag" style={{ color: "var(--sage)", borderColor: "var(--sage-line)", background: "var(--sage-wash)", margin: 0 }}>
                   {status}
                 </span>
@@ -148,11 +159,13 @@ export default function Page() {
             }}
           >
             {EXPLORE.map((e) => (
-              <Link key={e.href} href={e.href} className="card" data-cursor-hover>
-                <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{e.title}</h3>
-                <p style={{ color: "var(--ink-45)", fontSize: "0.9rem", margin: 0 }}>{e.body}</p>
-                <span className="go">{e.go}</span>
-              </Link>
+              <TiltCard key={e.href}>
+                <Link href={e.href} className="card" data-cursor-hover>
+                  <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{e.title}</h3>
+                  <p style={{ color: "var(--ink-45)", fontSize: "0.9rem", margin: 0 }}>{e.body}</p>
+                  <span className="go">{e.go}</span>
+                </Link>
+              </TiltCard>
             ))}
           </Reveal>
         </div>

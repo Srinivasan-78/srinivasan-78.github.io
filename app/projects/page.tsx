@@ -1,6 +1,11 @@
 import SplitReveal from "@/components/SplitReveal";
 
-export const metadata = { title: "Projects — Srinivasan Vijayaraghavan" };
+export const metadata = {
+  title: "Projects — Srinivasan Vijayaraghavan",
+  description: "Platform engineering experiments, homelab automation, and small tools — live demos and public repos.",
+  alternates: { canonical: "/projects" },
+  openGraph: { title: "Projects — Srinivasan Vijayaraghavan", description: "Platform engineering experiments, homelab automation, and small tools — live demos and public repos.", url: "/projects" },
+};
 
 type Project = { title: string; status?: string; body: string; stack: string[]; links?: { url: string; label: string }[] };
 type Group = { heading: string; sub: string; accent: "sage" | "slate" | "plum" | "brass"; items: Project[] };

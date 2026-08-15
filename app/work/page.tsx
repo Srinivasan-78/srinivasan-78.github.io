@@ -1,7 +1,12 @@
 import SplitReveal from "@/components/SplitReveal";
 import WorkGrid, { type Post } from "@/components/WorkGrid";
 
-export const metadata = { title: "Work — Srinivasan Vijayaraghavan" };
+export const metadata = {
+  title: "Work — Srinivasan Vijayaraghavan",
+  description: "Selected DevOps work: CI/CD suites, disaster recovery, large-scale Azure migration, and embedded protocol tooling.",
+  alternates: { canonical: "/work" },
+  openGraph: { title: "Work — Srinivasan Vijayaraghavan", description: "Selected DevOps work: CI/CD suites, disaster recovery, large-scale Azure migration, and embedded protocol tooling.", url: "/work" },
+};
 
 const POSTS: Post[] = [
   {

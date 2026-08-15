@@ -9,6 +9,7 @@ import ThemeScript from "@/components/ThemeScript";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srinidevops.com"),
+  alternates: { canonical: "/" },
   title: "Srinivasan Vijayaraghavan — DevOps Engineer",
   description:
     "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure. 5 years turning fragile deployments into reliable pipelines.",

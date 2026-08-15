@@ -1,6 +1,11 @@
 import SplitReveal from "@/components/SplitReveal";
 
-export const metadata = { title: "Contact — Srinivasan Vijayaraghavan" };
+export const metadata = {
+  title: "Contact — Srinivasan Vijayaraghavan",
+  description: "Get in touch about DevOps, cloud infrastructure, and automation roles.",
+  alternates: { canonical: "/contact" },
+  openGraph: { title: "Contact — Srinivasan Vijayaraghavan", description: "Get in touch about DevOps, cloud infrastructure, and automation roles.", url: "/contact" },
+};
 
 export default function Contact() {
   return (

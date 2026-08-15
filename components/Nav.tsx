@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 
-const LINKS = [
+const LINKS: { href: string; label: string; download?: boolean }[] = [
   { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/projects", label: "Projects" },
@@ -43,11 +43,20 @@ export default function Nav() {
 
         {/* Desktop links — hidden below 720px, replaced by the toggle below */}
         <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} download={l.download} className="eyebrow" style={{ fontSize: "0.8rem" }}>
-              {l.label}
-            </Link>
-          ))}
+          {LINKS.map((l) =>
+            /* resume.pdf is a static asset, not an app route — next/link
+               would try to client-navigate to it and prefetch a page that
+               doesn't exist, so plain <a> for downloads. */
+            l.download ? (
+              <a key={l.href} href={l.href} download className="eyebrow" style={{ fontSize: "0.8rem" }}>
+                {l.label}
+              </a>
+            ) : (
+              <Link key={l.href} href={l.href} className="eyebrow" style={{ fontSize: "0.8rem" }}>
+                {l.label}
+              </Link>
+            )
+          )}
           <ThemeToggle />
         </div>
 
@@ -85,18 +94,30 @@ export default function Nav() {
             gap: "0.75rem",
           }}
         >
-          {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              download={l.download}
-              onClick={() => setOpen(false)}
-              className="eyebrow"
-              style={{ fontSize: "0.85rem" }}
-            >
-              {l.label}
-            </Link>
-          ))}
+          {LINKS.map((l) =>
+            l.download ? (
+              <a
+                key={l.href}
+                href={l.href}
+                download
+                onClick={() => setOpen(false)}
+                className="eyebrow"
+                style={{ fontSize: "0.85rem" }}
+              >
+                {l.label}
+              </a>
+            ) : (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="eyebrow"
+                style={{ fontSize: "0.85rem" }}
+              >
+                {l.label}
+              </Link>
+            )
+          )}
           <ThemeToggle />
         </div>
       )}

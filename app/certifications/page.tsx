@@ -1,7 +1,12 @@
 import SplitReveal from "@/components/SplitReveal";
 import CertList, { type Cert } from "@/components/CertList";
 
-export const metadata = { title: "Certifications — Srinivasan Vijayaraghavan" };
+export const metadata = {
+  title: "Certifications — Srinivasan Vijayaraghavan",
+  description: "22 verified credentials across cloud platforms, automation, infrastructure as code, and observability.",
+  alternates: { canonical: "/certifications" },
+  openGraph: { title: "Certifications — Srinivasan Vijayaraghavan", description: "22 verified credentials across cloud platforms, automation, infrastructure as code, and observability.", url: "/certifications" },
+};
 
 const B = "https://www.linkedin.com/learning/certificates/";
 

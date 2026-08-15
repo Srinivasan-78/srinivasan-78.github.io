@@ -267,17 +267,28 @@ a.card:hover {
 /* ---------- ACCENT-CYCLED CARDS ---------- */
 /* The static site gave every card a colored left rule, cycling through
    the four accents so each section reads as its own colour family. */
-.accent-cards > * {
+/* :where(.card) so the rule reaches the card whether it is the direct
+   child or wrapped (e.g. by TiltCard) — the nth-child still counts the
+   grid's own children, which is what keeps the cycle in order. */
+.accent-cards > * .card,
+.accent-cards > .card {
   border-left: 3px solid var(--sage);
 }
-.accent-cards > *:nth-child(4n + 2) { border-left-color: var(--slate); }
-.accent-cards > *:nth-child(4n + 3) { border-left-color: var(--plum); }
-.accent-cards > *:nth-child(4n + 4) { border-left-color: var(--brass); }
+.accent-cards > *:nth-child(4n + 2) .card,
+.accent-cards > .card:nth-child(4n + 2) { border-left-color: var(--slate); }
+.accent-cards > *:nth-child(4n + 3) .card,
+.accent-cards > .card:nth-child(4n + 3) { border-left-color: var(--plum); }
+.accent-cards > *:nth-child(4n + 4) .card,
+.accent-cards > .card:nth-child(4n + 4) { border-left-color: var(--brass); }
 
 .accent-cards > * .go { color: var(--sage); }
 .accent-cards > *:nth-child(4n + 2) .go { color: var(--slate); }
 .accent-cards > *:nth-child(4n + 3) .go { color: var(--plum); }
 .accent-cards > *:nth-child(4n + 4) .go { color: var(--brass); }
+
+/* The tilt wrapper must fill its grid cell or the card collapses. */
+.accent-cards > *,
+.accent-cards > * > .card { height: 100%; }
 
 .go {
   font-family: var(--font-mono);
@@ -658,3 +669,50 @@ a.card:hover {
 }
 .lb-title { font-family: var(--font-display); font-size: 1.4rem; margin: 0.6rem 0 0.5rem; line-height: 1.2; }
 .lb-body { color: var(--ink-70); font-size: 0.92rem; }
+
+/* ---------- VANTA 3D BACKGROUND ---------- */
+.vanta-hero { position: relative; isolation: isolate; }
+.vanta-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+  /* Fade the field out toward the bottom so body copy below it stays
+     on a clean surface instead of competing with moving geometry. */
+  mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+  pointer-events: none;
+}
+[data-theme="light"] .vanta-bg { opacity: 0.3; }
+@media (prefers-reduced-motion: reduce) {
+  .vanta-bg { display: none; }
+}
+
+/* ---------- UI BITS ---------- */
+.rot-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.rot-word-inner {
+  display: inline-block;
+  transition: transform 0.26s var(--ease), opacity 0.26s var(--ease);
+}
+.rot-word-inner.out {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rot-word-inner,
+  .rot-word-inner.out {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+.region-code {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-width: 9ch;
+  display: inline-block;
+}

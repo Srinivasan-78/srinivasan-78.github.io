@@ -1,6 +1,11 @@
 import SplitReveal from "@/components/SplitReveal";
 
-export const metadata = { title: "Experience — Srinivasan Vijayaraghavan" };
+export const metadata = {
+  title: "Experience — Srinivasan Vijayaraghavan",
+  description: "DevOps engineering at Thomson Reuters and GraniteRiverLabs — CI/CD, configuration management, and disaster recovery across AWS and Azure.",
+  alternates: { canonical: "/experience" },
+  openGraph: { title: "Experience — Srinivasan Vijayaraghavan", description: "DevOps engineering at Thomson Reuters and GraniteRiverLabs — CI/CD, configuration management, and disaster recovery across AWS and Azure.", url: "/experience" },
+};
 
 export default function Experience() {
   return (
