@@ -1209,3 +1209,124 @@ html.lenis, html.lenis body { height: auto; }
   margin-top: -28px !important;
   opacity: 0.6;
 }
+/* ---------- SPHERICAL GALLERY ---------- */
+/* The gallery is its own environment — a dark room you stand inside —
+   so it does not follow the light/dark theme. Card textures are baked
+   dark, and a theme-reactive backdrop behind them would read as a bug. */
+.sph-root { --nav-h: 58px; }
+.sph-stage {
+  position: relative;
+  width: 100%;
+  height: calc(100dvh - var(--nav-h, 58px));
+  min-height: 460px;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 45%, #17181c 0%, #0a0b0d 55%, #050506 100%);
+  user-select: none;
+}
+.sph-canvas { position: absolute; inset: 0; }
+.sph-canvas canvas { display: block; }
+
+/* Sits above the scene for the page transition, below the chrome. */
+.sph-veil {
+  position: absolute;
+  inset: 0;
+  background: #050506;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.sph-hint,
+.sph-readout,
+.sph-dock,
+.sph-filter { position: absolute; z-index: 4; }
+
+.sph-hint {
+  top: 1.25rem; left: 1.5rem;
+  color: rgba(240, 240, 235, 0.45);
+  pointer-events: none;
+}
+.sph-readout {
+  top: 1.25rem; right: 1.5rem;
+  display: flex; flex-direction: column; align-items: flex-end;
+  gap: 0.15rem; max-width: 40ch; text-align: right;
+  pointer-events: none;
+}
+.sph-readout .micro { color: rgba(240, 240, 235, 0.42); text-transform: none; }
+.sph-readout .micro-bright { color: rgba(245, 244, 238, 0.92); text-transform: uppercase; }
+
+.sph-dock {
+  bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 0.25rem; padding: 0.3rem;
+  border-radius: 999px;
+  background: rgba(20, 21, 24, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+}
+.sph-pill {
+  border: 0; border-radius: 999px; cursor: pointer;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+  background: none; color: rgba(240, 240, 235, 0.6);
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.sph-pill:hover { color: #f5f4ee; }
+.sph-pill.is-on { background: #f5f4ee; color: #111; }
+
+.sph-filter { bottom: 1.5rem; right: 1.5rem; }
+.sph-round {
+  border-radius: 999px; cursor: pointer;
+  padding: 0.75rem 1.4rem;
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+  background: rgba(20, 21, 24, 0.72); color: rgba(240, 240, 235, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+}
+.sph-filter-menu {
+  position: absolute; bottom: calc(100% + 0.5rem); right: 0;
+  display: flex; flex-direction: column; min-width: 220px;
+  border-radius: 12px; overflow: hidden;
+  background: rgba(18, 19, 22, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+}
+.sph-filter-menu button {
+  border: 0; background: none; cursor: pointer; text-align: left;
+  padding: 0.7rem 1rem;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.03em;
+  color: rgba(240, 240, 235, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.sph-filter-menu button:last-child { border-bottom: 0; }
+.sph-filter-menu button:hover { color: #f5f4ee; background: rgba(255, 255, 255, 0.05); }
+.sph-filter-menu button.is-on { color: var(--sage); }
+
+.proj-list {
+  display: grid; gap: 1rem; margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+@media (max-width: 720px) {
+  .sph-hint { display: none; }
+  .sph-readout { top: auto; bottom: 5.5rem; left: 1.25rem; right: 1.25rem; align-items: flex-start; text-align: left; }
+  .sph-filter { right: 1.25rem; }
+  .sph-dock { left: 1.25rem; transform: none; }
+}
+
+/* ---------- PROJECT DETAIL ---------- */
+.pd-hero { padding: 2.5rem 0 1rem; }
+.pd-arch { display: grid; gap: 0; margin-top: 1.5rem; border-top: 1px solid var(--ink-15); }
+.pd-arch > div {
+  display: grid; grid-template-columns: minmax(140px, 220px) 1fr;
+  gap: 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--ink-15);
+}
+.pd-arch h3 {
+  margin: 0; font-family: var(--font-mono); font-weight: 400;
+  font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-45);
+}
+.pd-arch p { margin: 0; color: var(--ink-70); font-size: 0.88rem; }
+@media (max-width: 640px) {
+  .pd-arch > div { grid-template-columns: 1fr; gap: 0.35rem; }
+}

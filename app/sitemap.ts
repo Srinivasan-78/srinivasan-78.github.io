@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { PROJECTS } from "@/lib/projects";
 
 const BASE = "https://www.srinidevops.com";
 
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/projects", 0.9],
     ["/certifications", 0.7],
     ["/contact", 0.6],
+    ...PROJECTS.map((p) => [`/projects/${p.slug}`, 0.6] as [string, number]),
   ];
 
   return routes.map(([path, priority]) => ({
