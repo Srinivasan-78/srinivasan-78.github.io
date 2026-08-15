@@ -1,4 +1,5 @@
 import SplitReveal from "@/components/SplitReveal";
+import Parallax from "@/components/Parallax";
 
 export const metadata = {
   title: "Projects — Srinivasan Vijayaraghavan",
@@ -100,6 +101,14 @@ export default function Projects() {
         Platform engineering experiments, homelab automation, and small tools I actually use.
         Everything here is public — code, live demos, or both.
       </p>
+
+      <div style={{ marginTop: "2rem" }}>
+        <Parallax
+          src="/images/banner-circuit.webp"
+          alt="Circuit board lit in blue"
+          height="clamp(180px, 30vw, 320px)"
+        />
+      </div>
 
       {GROUPS.map((g) => (
         <section key={g.heading} className="section">

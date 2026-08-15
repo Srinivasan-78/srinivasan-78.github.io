@@ -1,4 +1,5 @@
 import SplitReveal from "@/components/SplitReveal";
+import Parallax from "@/components/Parallax";
 
 export const metadata = {
   title: "Experience — Srinivasan Vijayaraghavan",
@@ -18,7 +19,15 @@ export default function Experience() {
         multi-cloud production fleet.
       </p>
 
-      <div className="card" style={{ marginTop: "2rem", borderLeft: "3px solid var(--sage)" }}>
+      <div style={{ marginTop: "2rem" }}>
+        <Parallax
+          src="/images/banner-code.webp"
+          alt="Source code on a monitor"
+          height="clamp(160px, 26vw, 280px)"
+        />
+      </div>
+
+      <div className="card" style={{ marginTop: "1.5rem", borderLeft: "3px solid var(--sage)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", flexWrap: "wrap" }}>
           <h3 style={{ fontFamily: "var(--font-display)", margin: 0 }}>DevOps Engineer, Thomson Reuters</h3>
           <span className="eyebrow">Jun 2023 — Present</span>

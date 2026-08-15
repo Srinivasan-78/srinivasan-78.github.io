@@ -6,6 +6,8 @@ import HowIWork from "@/components/HowIWork";
 import Capabilities from "@/components/Capabilities";
 import Statement from "@/components/Statement";
 import Reveal from "@/components/Reveal";
+import Parallax from "@/components/Parallax";
+import Gallery from "@/components/Gallery";
 import VantaBackground from "@/components/VantaBackground";
 import { CountUp, RotatingWord, DecryptText, TiltCard } from "@/components/Bits";
 
@@ -101,7 +103,21 @@ export default function Page() {
 
       <Statement />
 
+      <section className="section">
+        <div className="wrap">
+          <Parallax
+            src="/images/banner-datacenter.webp"
+            alt="Rows of server racks in a datacenter"
+          >
+            <span className="eyebrow">Production, somewhere</span>
+            <h2 className="px-title">Someone has to own the 3am page.</h2>
+          </Parallax>
+        </div>
+      </section>
+
       <Capabilities />
+
+      <Gallery />
 
       <section className="section">
         <div className="wrap">
