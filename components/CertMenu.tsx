@@ -20,8 +20,33 @@ import CertViewer from "./CertViewer";
       single path, so it always draws in the same direction and never
       looks like it's being erased backwards. */
 
-const SCRIBBLE =
-  "M40 62C40 20 150 8 300 12C460 16 570 30 566 62C562 96 430 112 290 108C150 104 44 92 46 60C48 30 200 16 340 22C470 28 556 44 540 74";
+/* One scribble per row, so the annotation reads as someone marking up
+   a page rather than a repeated stamp.
+
+   Every path carries pathLength="1" and is dashed 1 / offset 1. That
+   normalisation is not cosmetic: the draw-on animation is a
+   stroke-dashoffset tween, and a hardcoded dash length only hides the
+   stroke if it happens to exceed the path's real arc length. Get that
+   wrong and the tail of the path wraps back into the next dash and
+   stays painted permanently — which is exactly what stuck a scribble
+   on half the menu. Normalising to 1 makes it independent of geometry,
+   so new scribbles can be added without measuring anything. */
+const SCRIBBLES: Record<string, string> = {
+  // Loose double loop — encircles the word twice.
+  all: "M40 62C40 20 150 8 300 12C460 16 570 30 566 62C562 96 430 112 290 108C150 104 44 92 46 60C48 30 200 16 340 22C470 28 556 44 540 74",
+  // Single lopsided oval with an overshoot.
+  cloud:
+    "M300 10C150 10 44 34 44 62C44 90 150 110 300 110C450 110 556 90 556 62C556 34 450 10 300 10C214 10 128 20 74 38",
+  // Two-pass strike through the middle.
+  automation: "M34 66C160 58 300 62 566 56M46 82C180 90 320 74 552 78",
+  // Scratchy double underline.
+  systems: "M30 92C140 78 260 84 380 80C460 77 520 84 572 74M50 106C170 94 300 100 420 94C490 90 540 94 576 88",
+  // Zigzag struck across.
+  recent: "M36 96L120 40L204 96L288 40L372 96L456 40L540 96",
+  // Bracketed on both sides, like flagging a passage.
+  foundations:
+    "M120 16C60 20 44 40 44 62C44 86 62 104 120 108M480 16C540 20 556 40 556 62C556 86 538 104 480 108",
+};
 
 export default function CertMenu() {
   const [open, setOpen] = useState<Row | null>(null);
@@ -120,7 +145,7 @@ export default function CertMenu() {
                     preserveAspectRatio="none"
                     aria-hidden="true"
                   >
-                    <path d={SCRIBBLE} />
+                    <path d={SCRIBBLES[row.id] ?? SCRIBBLES.all} pathLength="1" />
                   </svg>
                 </span>
               </button>
@@ -158,7 +183,7 @@ function hover(el: HTMLElement, on: boolean) {
     ease: on ? "power3.out" : "power2.in",
   });
   gsap.to(path, {
-    strokeDashoffset: on ? 0 : 1400,
+    strokeDashoffset: on ? 0 : 1,
     duration: on ? 0.55 : 0.35,
     ease: on ? "power2.out" : "power2.in",
   });

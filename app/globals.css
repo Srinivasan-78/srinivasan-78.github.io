@@ -1337,6 +1337,7 @@ html.lenis, html.lenis body { height: auto; }
    of a mechanism. So this page opts out of .wrap entirely. */
 .fm-main {
   width: 100%;
+  background: var(--paper);
   display: flex;
   flex-direction: column;
   min-height: calc(100dvh - 58px);
@@ -1417,8 +1418,10 @@ html.lenis, html.lenis body { height: auto; }
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
+  /* Normalised via pathLength="1" on the path, so this is independent
+     of how long any individual scribble actually is. */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
 }
 .fm-foot {
   margin-top: auto;
@@ -1504,14 +1507,34 @@ html.lenis, html.lenis body { height: auto; }
   background: rgba(255,255,255,0.2);
   transition: background 0.25s var(--ease), width 0.25s var(--ease);
 }
+.cv-tick:hover { background: rgba(255,255,255,0.5); }
 .cv-tick.is-on { background: #e0201b; width: 38px; }
 
+/* Explicit step controls. Scroll and drag are discoverable only once
+   you try them; these say up front that the deck moves one at a time. */
+.cv-nav {
+  position: absolute; right: 1.75rem; bottom: 2rem;
+  display: flex; flex-direction: column; gap: 0.4rem; z-index: 3;
+}
+.cv-step {
+  width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.04);
+  color: rgba(242,240,234,0.8);
+  font-size: 0.9rem; line-height: 1;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+.cv-step:hover:not(:disabled) { color: #fff; border-color: rgba(255,255,255,0.45); }
+.cv-step:disabled { opacity: 0.3; cursor: default; }
+
 .cv-hint {
-  position: absolute; bottom: 2rem; right: 1.75rem;
+  position: absolute; bottom: 2.6rem; right: 6rem;
   color: rgba(242,240,234,0.35); text-transform: none; z-index: 2;
 }
 
 @media (max-width: 720px) {
   .cv-rail, .cv-hint { display: none; }
+  .cv-nav { right: 1.25rem; bottom: 1.25rem; flex-direction: row; }
   .cv-readout { left: 1.25rem; right: 1.25rem; bottom: 1.5rem; }
 }
