@@ -1,3 +1,40 @@
+/* ---------- KH TEKA ----------
+   Commercial typeface from KH Type (khtype.com) — the licence does not
+   permit redistribution, so the .woff2 files are NOT in this repo. Buy
+   a webfont licence, drop the files in /public/fonts, and these rules
+   pick them up. Until then every rule below fails silently and the
+   fallback grotesque in --font-body renders instead, which is why the
+   fallback stack is a close metric match rather than a generic
+   sans-serif. */
+@font-face {
+  font-family: "KH Teka";
+  src: url("/fonts/KHTeka-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KH Teka";
+  src: url("/fonts/KHTeka-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KH Teka";
+  src: url("/fonts/KHTeka-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KH Teka Mono";
+  src: url("/fonts/KHTekaMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* :root holds the light palette; html[data-theme="dark"] overrides it
    with higher specificity, so order in this file never matters. */
 :root,
@@ -30,9 +67,9 @@ html[data-theme="light"] {
 
   --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 
-  --font-display: "Iowan Old Style", "Georgia", "Palatino Linotype", serif;
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-display: "KH Teka", "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "KH Teka", "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "KH Teka Mono", "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   --max: 880px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -101,11 +138,49 @@ a { color: var(--ink); text-decoration: none; }
   color: var(--sage-mid);
 }
 
+/* KH Teka is a grotesque, not a serif — display type needs negative
+   tracking and a tighter leading to hold together at large sizes,
+   where the old serif settings would look loose and airy. */
 .display {
   font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+/* ---------- EDITORIAL DISPLAY ---------- */
+/* Oversized statement type — set in vw so it stays edge-to-edge at any
+   viewport instead of stranding a ragged right margin. */
+.mega {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 11vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  margin: 0;
+  text-wrap: balance;
+}
+.mega-sub {
+  display: block;
+  font-size: clamp(1rem, 2.2vw, 1.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink-45);
   font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
+}
+/* Word pair stacked hard against itself, offset on the second line —
+   the StringTune-style two-beat statement. */
+.word-stack { display: flex; flex-direction: column; }
+.word-stack > :nth-child(2) { align-self: flex-end; }
+
+/* Sections that hold while their content scrolls past them. */
+.pin-stage {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section {
@@ -650,15 +725,46 @@ a.card:hover {
 .post:hover { transform: translateY(-4px); }
 .post.sage { border-left: 3px solid var(--sage); }
 .post.slate { border-left: 3px solid var(--slate); }
+.post.plum { border-left: 3px solid var(--plum); }
+.post.brass { border-left: 3px solid var(--brass); }
 .post.sage:hover { border-color: var(--sage-line); border-left-color: var(--sage); }
 .post.slate:hover { border-color: var(--slate-line); border-left-color: var(--slate); }
+.post.plum:hover { border-color: var(--plum-line); border-left-color: var(--plum); }
+.post.brass:hover { border-color: var(--brass-line); border-left-color: var(--brass); }
 .post-cover { padding: 1rem 1rem 0; }
 .post.sage .post-cover { color: var(--sage); }
 .post.slate .post-cover { color: var(--slate); }
+.post.plum .post-cover { color: var(--plum); }
+.post.brass .post-cover { color: var(--brass); }
 .post-cover svg { width: 100%; height: auto; display: block; }
 .post-body { padding: 1rem; }
 .post-title { font-family: var(--font-display); font-size: 1.05rem; margin: 0.5rem 0 0.35rem; line-height: 1.25; }
 .post-open { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-45); }
+
+/* ---------- PROJECT CARDS (hover diagram, tap for details) ---------- */
+.proj-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem; margin-top: 1.25rem;
+}
+.proj-card { position: relative; width: 100%; }
+.proj-diagram {
+  padding: 1.1rem 1.1rem 0; opacity: 0; max-height: 0; overflow: hidden;
+  transition: opacity 0.3s var(--ease), max-height 0.3s var(--ease);
+}
+.proj-diagram svg { width: 100%; height: auto; display: block; }
+.proj-card:hover .proj-diagram,
+.proj-card:focus-visible .proj-diagram { opacity: 1; max-height: 120px; }
+.proj-face { padding: 1rem; }
+.proj-status {
+  font-family: var(--font-mono); font-size: 0.68rem; white-space: nowrap;
+  color: var(--ink-45); border: 1px solid var(--ink-15); border-radius: 999px;
+  padding: 2px 9px; flex-shrink: 0;
+}
+.proj-teaser { color: var(--ink-70); font-size: 0.86rem; margin: 0.4rem 0 0.6rem; }
+.proj-hint {
+  display: block; font-family: var(--font-mono); font-size: 0.68rem;
+  color: var(--ink-45); padding: 0 1rem 0.9rem;
+}
 
 .lb {
   position: fixed; inset: 0; z-index: 100;
@@ -672,6 +778,8 @@ a.card:hover {
 }
 .lb-card.sage { border-top: 3px solid var(--sage); }
 .lb-card.slate { border-top: 3px solid var(--slate); }
+.lb-card.plum { border-top: 3px solid var(--plum); }
+.lb-card.brass { border-top: 3px solid var(--brass); }
 .lb-close {
   position: absolute; top: 0.75rem; right: 0.75rem;
   background: var(--paper); border: 1px solid var(--ink-15); border-radius: 6px;
@@ -681,39 +789,25 @@ a.card:hover {
 .lb-title { font-family: var(--font-display); font-size: 1.4rem; margin: 0.6rem 0 0.5rem; line-height: 1.2; }
 .lb-body { color: var(--ink-70); font-size: 0.92rem; }
 
-/* ---------- VANTA 3D BACKGROUND ---------- */
-/* Fixed to the viewport and behind everything, so it persists as one
-   continuous space while the page scrolls over it. */
-.vanta-stage {
+/* ---------- DEVOPS 3D BACKGROUND ---------- */
+/* Fixed to the viewport and behind everything, so the objects persist
+   as one continuous space while the page scrolls over them. */
+.scene-stage {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  /* Vignette: the field is strongest in the middle of the viewport and
-     falls away at the edges, so text never sits on busy geometry. */
-  mask-image: radial-gradient(120% 100% at 50% 35%, #000 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(120% 100% at 50% 35%, #000 30%, transparent 100%);
+  /* Vignette: geometry is strongest mid-viewport and falls away at the
+     edges, so text never sits on a busy wireframe. */
+  mask-image: radial-gradient(125% 100% at 50% 40%, #000 25%, transparent 100%);
+  -webkit-mask-image: radial-gradient(125% 100% at 50% 40%, #000 25%, transparent 100%);
 }
-.vanta-inner {
-  /* Oversized so the scroll-driven scale and rotate never expose an
-     edge as the field pushes in. */
-  position: absolute;
-  inset: -25%;
-  will-change: transform;
-}
-.vanta-bg {
-  width: 100%;
-  height: 100%;
-  opacity: 0.55;
-}
-[data-theme="light"] .vanta-bg { opacity: 0.28; }
-@media (prefers-reduced-motion: reduce) {
-  .vanta-stage { display: none; }
-}
-@media (pointer: coarse) {
-  .vanta-stage { display: none; }
-}
+.scene-gl { width: 100%; height: 100%; opacity: 0.7; }
+.scene-gl canvas { display: block; }
+[data-theme="light"] .scene-gl { opacity: 0.42; }
+@media (prefers-reduced-motion: reduce) { .scene-stage { display: none; } }
+@media (pointer: coarse) { .scene-stage { display: none; } }
 
 /* ---------- UI BITS ---------- */
 .rot-word {
