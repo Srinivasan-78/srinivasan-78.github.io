@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import ThemeScript from "@/components/ThemeScript";
 import VelocitySkew from "@/components/VelocitySkew";
 import Hud from "@/components/Hud";
-import VantaBackground from "@/components/VantaBackground";
+import DevOpsScene from "@/components/DevOpsScene";
 
 // themeColor belongs on the viewport export in Next 14; leaving it in
 // metadata still works but logs a deprecation warning at build time.
@@ -83,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="grain">
         <ThemeScript />
-        <VantaBackground />
+        <DevOpsScene />
         <ProgressRail />
         <VelocitySkew />
         <Hud />
