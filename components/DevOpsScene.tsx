@@ -64,12 +64,12 @@ export default function DevOpsScene() {
       const line = new THREE.LineBasicMaterial({
         color: new THREE.Color(cssColor("--sage", "#0095f6")),
         transparent: true,
-        opacity: 0.55,
+        opacity: 0.9,
       });
       const lineDim = new THREE.LineBasicMaterial({
         color: new THREE.Color(cssColor("--ink-45", "#85827d")),
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.5,
       });
 
       const wire = (geo: any, mat: any) =>
@@ -145,7 +145,7 @@ export default function DevOpsScene() {
         }
       }
       pipe.rotation.set(0.3, -0.5, 0.12);
-      place(pipe, -6, -16, -5, 0.95, [0, 0.0005, 0]);
+      place(pipe, -6, -10, -5, 0.95, [0, 0.0005, 0]);
 
       /* ---- orchestration knot ---- */
       place(

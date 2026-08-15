@@ -185,23 +185,51 @@ a { color: var(--ink); text-decoration: none; }
 /* Oversized section word set barely above the background. It is a
    texture, not a heading — which is why it's aria-hidden at the call
    site and why the contrast is deliberately under the text minimum.
-   Anything readable at this size would fight the real content. */
+
+   Two things a fixed vw size gets wrong, both visible as soon as a
+   heading is longer than one word:
+
+   1. It overflows. "Platform engineering" at 13vw is far wider than
+      the viewport, so it clips mid-word and adds a horizontal
+      scrollbar. --ghost-len carries the character count from the
+      component, and the third term below sizes the type to fit that
+      many characters in the available width. 1.8 is the reciprocal of
+      a grotesque's average character width (~0.55em).
+   2. It occupies layout. In flow, it pushes the eyebrow and cards down
+      and collides with them. Absolute inside a positioned section
+      takes it out of flow so content sits over it untouched. */
 .ghost {
+  position: absolute;
+  top: clamp(1rem, 4vw, 3rem);
+  left: 0;
+  right: 0;
+  z-index: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(3rem, 13vw, 11rem);
+  font-size: min(7rem, 9vw, calc((100vw - 3rem) / var(--ghost-len, 12) * 1.8));
   line-height: 0.8;
   letter-spacing: -0.03em;
-  color: color-mix(in srgb, var(--ink) 13%, transparent);
-  text-align: center;
+  color: color-mix(in srgb, var(--ink) 11%, transparent);
+  text-align: left;
   margin: 0;
+  white-space: nowrap;
   user-select: none;
   pointer-events: none;
-  white-space: nowrap;
 }
 /* Sharpens as it enters — the reference blurs type in rather than
    fading it, which reads as focus pulling rather than opacity. */
 .ghost-blur { filter: blur(14px); opacity: 0; }
+
+/* The section is the ghost's positioning context, and clips it so a
+   long word can never widen the page. `clip` rather than `hidden`:
+   hidden would make the section a scroll container, which breaks
+   position:sticky for anything inside it. */
+.section { position: relative; overflow-x: clip; }
+.section > *:not(.ghost) { position: relative; z-index: 1; }
+/* The watermark hangs above the eyebrow, so those sections need the
+   headroom to put it in — otherwise it sits directly behind the label
+   and both become unreadable. */
+.section:has(.ghost) { padding-top: clamp(5.5rem, 13vw, 9.5rem); }
 
 /* ---------- MONO MICRO-LABELS ---------- */
 /* Small uppercase mono set in the margins — running commentary on what
@@ -849,14 +877,15 @@ a.card:hover {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  /* Vignette: geometry is strongest mid-viewport and falls away at the
-     edges, so text never sits on a busy wireframe. */
-  mask-image: radial-gradient(125% 100% at 50% 40%, #000 25%, transparent 100%);
-  -webkit-mask-image: radial-gradient(125% 100% at 50% 40%, #000 25%, transparent 100%);
+  /* A tight vignette plus low opacity made the geometry invisible
+     against the lifted near-black. Wider falloff, fuller opacity — the
+     wireframes still sit well under the text contrast. */
+  mask-image: radial-gradient(150% 120% at 50% 45%, #000 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(150% 120% at 50% 45%, #000 55%, transparent 100%);
 }
-.scene-gl { width: 100%; height: 100%; opacity: 0.7; }
+.scene-gl { width: 100%; height: 100%; opacity: 1; }
 .scene-gl canvas { display: block; }
-[data-theme="light"] .scene-gl { opacity: 0.42; }
+[data-theme="light"] .scene-gl { opacity: 0.5; }
 @media (prefers-reduced-motion: reduce) { .scene-stage { display: none; } }
 @media (pointer: coarse) { .scene-stage { display: none; } }
 

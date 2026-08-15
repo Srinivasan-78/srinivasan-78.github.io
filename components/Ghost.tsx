@@ -61,6 +61,11 @@ export default function Ghost({
       ref={ref}
       aria-hidden="true"
       className={"ghost ghost-blur" + (className ? " " + className : "")}
+      // The character count drives the fit-to-width calculation in CSS.
+      // Doing it here rather than measuring in JS means the size is
+      // correct on the very first paint — no reflow, no flash of
+      // oversized type before a measurement lands.
+      style={{ "--ghost-len": text.length } as React.CSSProperties}
     >
       {text}
     </div>
