@@ -180,11 +180,14 @@ export default function SphereGallery() {
     let cleanup = () => {};
 
     (async () => {
-      const THREE = await import("three").catch(() => null);
-      if (!THREE) {
+      const mod = await import("three").catch(() => null);
+      if (!mod) {
         setSupported(false);
         return;
       }
+      // Annotated rather than narrowed: `patch` below is a hoisted
+      // function declaration, and TS won't carry a narrowing into one.
+      const THREE: typeof import("three") = mod;
       if (disposed) return;
 
       const mono = cssVar("--font-mono", "ui-monospace, monospace");
