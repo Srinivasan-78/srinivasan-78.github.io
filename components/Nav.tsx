@@ -121,14 +121,6 @@ export default function Nav() {
           <ThemeToggle />
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 720px) {
-          .nav-links { display: none !important; }
-          .nav-toggle { display: inline-flex !important; }
-          .nav-mobile-menu { display: flex !important; }
-        }
-      `}</style>
     </nav>
   );
 }

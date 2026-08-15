@@ -97,15 +97,6 @@ export default function Cursor() {
           transition: "width 0.2s, height 0.2s, margin 0.2s, opacity 0.2s",
         }}
       />
-      <style>{`
-        .cursor-ring[data-hover="true"] {
-          width: 56px !important;
-          height: 56px !important;
-          margin-left: -28px !important;
-          margin-top: -28px !important;
-          opacity: 0.6;
-        }
-      `}</style>
     </>
   );
 }

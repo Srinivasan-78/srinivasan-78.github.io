@@ -1142,3 +1142,36 @@ html.lenis, html.lenis body { height: auto; }
 .eyebrow {
   font-variant-numeric: tabular-nums;
 }
+
+
+/* ---------- NAV RESPONSIVE ---------- */
+/* These lived in a <style> element rendered inside the Nav client
+   component. React and Next relocate style tags during hydration, so
+   the DOM at that position stops matching what React expects — a
+   hydration mismatch that takes the whole root down to client
+   rendering. Stylesheet rules belong in the stylesheet.
+
+   !important is still required: the display values these override are
+   inline styles on the elements themselves. */
+@media (max-width: 720px) {
+  .nav-links { display: none !important; }
+  .nav-toggle { display: inline-flex !important; }
+  .nav-mobile-menu { display: flex !important; }
+}
+
+/* ---------- CURSOR HOVER STATE ---------- */
+/* This rule lived in a <style> element inside the Cursor client
+   component, and it was the hydration mismatch: React's server renderer
+   HTML-escapes the double quotes in [data-hover="true"] to &quot;,
+   while the client renders them literally. The two text nodes differ,
+   hydration fails, and the entire root falls back to client rendering —
+   which is what stopped the scroll animations from initialising.
+
+   !important is required: it overrides inline styles on the element. */
+.cursor-ring[data-hover="true"] {
+  width: 56px !important;
+  height: 56px !important;
+  margin-left: -28px !important;
+  margin-top: -28px !important;
+  opacity: 0.6;
+}
