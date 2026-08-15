@@ -7,9 +7,7 @@ import Capabilities from "@/components/Capabilities";
 import Statement from "@/components/Statement";
 import Reveal from "@/components/Reveal";
 import Parallax from "@/components/Parallax";
-import Pipeline from "@/components/Pipeline";
 import SectionHead from "@/components/SectionHead";
-import VantaBackground from "@/components/VantaBackground";
 import { CountUp, RotatingWord, DecryptText, TiltCard } from "@/components/Bits";
 
 const EXPLORE = [
@@ -30,8 +28,7 @@ const STATS: { value: number; suffix?: string; label: string; color: string }[] 
 export default function Page() {
   return (
     <main>
-      <header className="hero vanta-hero">
-        <VantaBackground />
+      <header className="hero">
         <div className="wrap">
           <div className="hero-meta">
             <span className="hero-status eyebrow">
@@ -102,8 +99,6 @@ export default function Page() {
 
       <HowIWork />
 
-      <Pipeline />
-
       <Statement />
 
       <section className="section">
@@ -123,7 +118,7 @@ export default function Page() {
       <section className="section">
         <div className="wrap">
           <SectionHead
-            index="06 / 07"
+            index="03 / 04"
             label="Availability"
             accent="slate"
             title="Deployment regions."
@@ -165,7 +160,7 @@ export default function Page() {
       <section className="section">
         <div className="wrap">
           <SectionHead
-            index="07 / 07"
+            index="04 / 04"
             label="Explore"
             accent="brass"
             title="Where to next."

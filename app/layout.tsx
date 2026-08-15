@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Cursor from "@/components/Cursor";
@@ -8,6 +8,13 @@ import Footer from "@/components/Footer";
 import ThemeScript from "@/components/ThemeScript";
 import VelocitySkew from "@/components/VelocitySkew";
 import Hud from "@/components/Hud";
+import VantaBackground from "@/components/VantaBackground";
+
+// themeColor belongs on the viewport export in Next 14; leaving it in
+// metadata still works but logs a deprecation warning at build time.
+export const viewport: Viewport = {
+  themeColor: "#050505",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srinidevops.com"),
@@ -72,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="grain">
+        <VantaBackground />
         <ProgressRail />
         <VelocitySkew />
         <Hud />

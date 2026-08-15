@@ -72,7 +72,11 @@ html { background: var(--paper); }
 
 body {
   margin: 0;
-  background: var(--paper);
+  /* Transparent on purpose: .vanta-stage sits at z-index -1, and an
+     in-flow block background paints AFTER negative z-index children,
+     so an opaque body would hide the whole field. The base colour
+     lives on html instead, which paints first. */
+  background: transparent;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
@@ -675,21 +679,37 @@ a.card:hover {
 .lb-body { color: var(--ink-70); font-size: 0.92rem; }
 
 /* ---------- VANTA 3D BACKGROUND ---------- */
-.vanta-hero { position: relative; isolation: isolate; }
-.vanta-bg {
-  position: absolute;
+/* Fixed to the viewport and behind everything, so it persists as one
+   continuous space while the page scrolls over it. */
+.vanta-stage {
+  position: fixed;
   inset: 0;
   z-index: -1;
-  opacity: 0.5;
-  /* Fade the field out toward the bottom so body copy below it stays
-     on a clean surface instead of competing with moving geometry. */
-  mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
   pointer-events: none;
+  overflow: hidden;
+  /* Vignette: the field is strongest in the middle of the viewport and
+     falls away at the edges, so text never sits on busy geometry. */
+  mask-image: radial-gradient(120% 100% at 50% 35%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 35%, #000 30%, transparent 100%);
 }
-[data-theme="light"] .vanta-bg { opacity: 0.3; }
+.vanta-inner {
+  /* Oversized so the scroll-driven scale and rotate never expose an
+     edge as the field pushes in. */
+  position: absolute;
+  inset: -25%;
+  will-change: transform;
+}
+.vanta-bg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+}
+[data-theme="light"] .vanta-bg { opacity: 0.28; }
 @media (prefers-reduced-motion: reduce) {
-  .vanta-bg { display: none; }
+  .vanta-stage { display: none; }
+}
+@media (pointer: coarse) {
+  .vanta-stage { display: none; }
 }
 
 /* ---------- UI BITS ---------- */
@@ -826,60 +846,6 @@ html.lenis, html.lenis body { height: auto; }
 /* Selection + focus polish */
 ::selection { background: var(--sage); color: var(--paper); }
 
-/* ---------- PINNED PIPELINE ---------- */
-.pipeline {
-  border-top: 1px solid var(--ink-15);
-  /* No overflow here: this element is the one GSAP pins, and clipping on
-     the pinned element itself is one more thing that can interfere.
-     .pipeline-viewport does the clipping instead. */
-}
-.pipeline-inner { padding: clamp(3rem, 8vw, 5rem) 0; }
-.pipeline-head { margin-bottom: 2.5rem; }
-.pipeline-track {
-  display: flex;
-  gap: 1.25rem;
-  padding-left: max(24px, calc((100vw - var(--max)) / 2 + 24px));
-  padding-right: 24px;
-  will-change: transform;
-}
-.pipeline-panel {
-  flex: 0 0 clamp(240px, 30vw, 340px);
-  padding: 1.5rem;
-  border: 1px solid var(--ink-15);
-  border-left: 3px solid var(--slate);
-  border-radius: 12px;
-  background: var(--paper-raised);
-}
-.pipeline-num {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--slate);
-}
-.pipeline-title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  margin: 0.5rem 0 0.5rem;
-  line-height: 1.15;
-}
-.pipeline-body {
-  margin: 0;
-  color: var(--ink-45);
-  font-size: 0.88rem;
-  line-height: 1.6;
-}
-
-/* Below the pin breakpoint the track becomes a swipeable row. */
-@media (max-width: 899px) {
-  .pipeline-track {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    padding-left: 24px;
-  }
-  .pipeline-track::-webkit-scrollbar { display: none; }
-  .pipeline-panel { scroll-snap-align: start; }
-}
-
 /* ---------- EDITORIAL SECTION CHROME ---------- */
 /* Section headers that stick while their content scrolls past — the
    label stays anchored so you always know which chapter you're in. */
@@ -964,15 +930,13 @@ html.lenis, html.lenis body { height: auto; }
 /* ---------- CARD REFINEMENT ---------- */
 .card,
 .cap-tile,
-.pipeline-panel,
 .post {
   position: relative;
 }
 /* A faint top highlight gives dark cards an edge to catch light on,
    which is what stops them dissolving into the background. */
 [data-theme="dark"] .card::before,
-[data-theme="dark"] .cap-tile::before,
-[data-theme="dark"] .pipeline-panel::before {
+[data-theme="dark"] .cap-tile::before {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
@@ -991,50 +955,3 @@ html.lenis, html.lenis body { height: auto; }
   font-variant-numeric: tabular-nums;
 }
 
-/* GSAP pins the pipeline section, which puts its contents in a
-   transformed/fixed wrapper — position:sticky can't resolve against
-   that, so the header is static inside this one section. */
-.pipeline .sec-head {
-  position: static;
-  backdrop-filter: none;
-  background: transparent;
-}
-
-/* Fade the track at the right edge so a partially-visible panel reads
-   as "more to come" rather than as content clipped by accident. */
-.pipeline-viewport { overflow-x: clip; }
-@media (min-width: 900px) {
-  .pipeline-viewport {
-    mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
-    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
-  }
-}
-
-/* Scroll affordance under the track */
-.pipeline-hint {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 1.75rem;
-  padding-left: max(24px, calc((100vw - var(--max)) / 2 + 24px));
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-45);
-}
-.pipeline-hint i {
-  display: block;
-  width: 46px;
-  height: 1px;
-  background: var(--slate);
-  transform-origin: left;
-  animation: hint 2.4s var(--ease) infinite;
-}
-@keyframes hint {
-  0%, 100% { transform: scaleX(0.35); opacity: 0.5; }
-  50%      { transform: scaleX(1); opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pipeline-hint i { animation: none; transform: scaleX(1); }
-}

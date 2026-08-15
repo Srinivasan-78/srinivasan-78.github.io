@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-  // Always false in the server-rendered markup so hydration matches;
-  // the effect below reads the real value ThemeScript already applied.
-  const [dark, setDark] = useState(false);
+  // Dark is the unconditional default, so the server-rendered markup
+  // says "dark" too. Starting at false made the button briefly show
+  // "Dark" on a page that was already dark, then flip once the effect
+  // ran — that flicker read as the theme changing on its own.
+  const [dark, setDark] = useState(true);
 
-  // Re-sync in case the inline theme script set the attribute after this
-  // component's initial render (e.g. hydration timing edge cases).
+  // Corrects the label for the one case that differs: a visitor who
+  // previously chose light.
   useEffect(() => {
-    setDark(document.documentElement.getAttribute("data-theme") === "dark");
+    setDark(document.documentElement.getAttribute("data-theme") !== "light");
   }, []);
 
   const toggle = () => {
