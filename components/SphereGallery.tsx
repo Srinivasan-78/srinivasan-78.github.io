@@ -26,18 +26,31 @@ import { PROJECTS, CATEGORIES, type Project } from "@/lib/projects";
    rather than like a separate toy. Throw velocity decays into the same
    target, so a flick and a drag resolve through one code path. */
 
-const COLS = 12;
-const ROWS = 4;
+/* Latitude bands covering the whole sphere, pole to pole. */
+const LAT_STEP = 30; // degrees between rows
+const ROW_LAT = [-75, -45, -15, 15, 45, 75];
+const COLS_EQ = 12; // columns on the bands nearest the equator
 const RADIUS = 1000;
-const ROW_LAT = [-45, -15, 15, 45]; // degrees
-/* 5 is coprime with 12, so stepping each row by 5 guarantees no project
-   is ever adjacent to a copy of itself, horizontally or vertically. */
 const ROW_OFFSET = 5;
 const CARD_PX = 640;
-const PITCH_LIMIT = (58 * Math.PI) / 180;
+/* Far enough to bring a pole band to centre without taking the XYZ
+   Euler anywhere near the ±90° singularity. */
+const PITCH_LIMIT = (75 * Math.PI) / 180;
 const LERP = 0.09;
+/* Leaves a hairline gutter between neighbouring cards, like the
+   reference's grid rules. */
+const GUTTER = 0.92;
 
 const rad = (d: number) => (d * Math.PI) / 180;
+
+/* A band at latitude φ has circumference 2πR·cos(φ), so holding the
+   column count fixed would squash every card toward the poles by
+   cos(φ) — which is exactly what made the cards look non-square. Drop
+   columns proportionally instead and the arc width per card stays
+   equal to the arc height, so cards read square at every latitude and
+   curve on all four edges. */
+const colsAt = (latDeg: number) =>
+  Math.max(3, Math.round(COLS_EQ * Math.cos(rad(latDeg))));
 
 function cssVar(name: string, fallback: string) {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -104,17 +117,17 @@ function drawCard(p: Project, img: HTMLImageElement | null, mono: string, displa
   // Top meta row — client left, category right, mirroring the reference.
   x.font = `500 19px ${mono}`;
   x.fillStyle = "rgba(240,240,235,0.85)";
-  x.fillText(p.client.toUpperCase(), 34, 46);
+  x.fillText(p.client.toUpperCase(), 44, 46);
   x.textAlign = "right";
   x.fillStyle = "rgba(240,240,235,0.40)";
-  x.fillText(p.category.toUpperCase(), 606, 46);
+  x.fillText(p.category.toUpperCase(), 596, 46);
   x.textAlign = "left";
 
-  // Artwork
-  const ix = 70,
-    iy = 92,
-    iw = 500,
-    ih = 336;
+  // Artwork — the dominant element now that the cell reads square.
+  const ix = 44,
+    iy = 74,
+    iw = 552,
+    ih = 380;
   if (img && img.complete && img.naturalWidth) drawCover(x, img, ix, iy, iw, ih);
   else {
     x.fillStyle = "#14161a";
@@ -126,27 +139,27 @@ function drawCard(p: Project, img: HTMLImageElement | null, mono: string, displa
 
   // Title
   x.fillStyle = "#f4f2ec";
-  x.font = `500 32px ${display}`;
-  wrap(x, p.title, 34, 480, 572, 38, 2);
+  x.font = `500 33px ${display}`;
+  wrap(x, p.title, 44, 496, 552, 38, 2);
 
   // Tag pills
   x.font = `400 16px ${mono}`;
-  let tx = 34;
+  let tx = 44;
   for (const t of p.tags) {
     const label = t.toUpperCase();
     const w = x.measureText(label).width + 26;
     x.strokeStyle = "rgba(255,255,255,0.18)";
     x.lineWidth = 2;
-    x.strokeRect(tx, 560, w, 34);
+    x.strokeRect(tx, 576, w, 34);
     x.fillStyle = "rgba(240,240,235,0.62)";
-    x.fillText(label, tx + 13, 578);
+    x.fillText(label, tx + 13, 594);
     tx += w + 10;
   }
 
   // Status, right-aligned like the reference's year
   x.textAlign = "right";
   x.fillStyle = "rgba(240,240,235,0.40)";
-  x.fillText(p.status.toUpperCase(), 606, 578);
+  x.fillText(p.status.toUpperCase(), 596, 594);
   x.textAlign = "left";
 
   return c;
@@ -222,20 +235,30 @@ export default function SphereGallery() {
       const textures: T.CanvasTexture[] = PROJECTS.map((p) => {
         const tex = new THREE.CanvasTexture(drawCard(p, null, mono, display));
         tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        /* Prefer the stock photo pulled down by `npm run images`, but
+           never depend on it — fall back to the repo's own art so the
+           gallery is never blank on a fresh clone. Same-origin either
+           way, which matters: a cross-origin image would taint the
+           canvas and WebGL would refuse the texture upload. */
         const img = new Image();
+        let usedFallback = false;
         img.onload = () => {
           const c = drawCard(p, img, mono, display);
           tex.image = c;
           tex.needsUpdate = true;
         };
-        img.src = p.image;
+        img.onerror = () => {
+          if (usedFallback) return;
+          usedFallback = true;
+          img.src = p.image;
+        };
+        img.src = `/images/projects/${p.slug}.jpg`;
         return tex;
       });
 
-      const dTheta = ((Math.PI * 2) / COLS) * 0.9;
-      const dPhi = rad(30) * 0.9;
+      const dPhi = rad(LAT_STEP) * GUTTER;
 
-      function patch(t0: number, p0: number) {
+      function patch(t0: number, p0: number, dTheta: number) {
         const N = 14,
           M = 14;
         const pos: number[] = [],
@@ -271,19 +294,27 @@ export default function SphereGallery() {
         project: Project;
         hover: number;
         base: number;
+        row: number;
+        col: number;
       };
       const slots: Slot[] = [];
 
-      for (let r = 0; r < ROWS; r++) {
-        const p0 = rad(ROW_LAT[r]);
-        for (let c = 0; c < COLS; c++) {
-          const t0 = ((Math.PI * 2) / COLS) * c;
+      ROW_LAT.forEach((lat, r) => {
+        const p0 = rad(lat);
+        const cols = colsAt(lat);
+        const colStep = (Math.PI * 2) / cols;
+        const dTheta = colStep * GUTTER;
+        /* Odd bands are rotated half a cell so the seams don't stack
+           into a visible vertical line running up the sphere. */
+        const shift = r % 2 ? colStep / 2 : 0;
+        for (let c = 0; c < cols; c++) {
+          const t0 = colStep * c + shift;
           const mat = new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             transparent: true,
             depthWrite: false,
           });
-          const mesh = new THREE.Mesh(patch(t0, p0), mat);
+          const mesh = new THREE.Mesh(patch(t0, p0, dTheta), mat);
           mesh.renderOrder = 1;
           world.add(mesh);
           slots.push({
@@ -297,19 +328,20 @@ export default function SphereGallery() {
             project: PROJECTS[0],
             hover: 0,
             base: 1,
+            row: r,
+            col: c,
           });
         }
-      }
+      });
 
       /* Assignment is recomputed rather than toggled: a filtered set of
-         n projects tiles all 48 slots, so the sphere always looks full. */
+         n projects tiles every slot, so the sphere always looks full
+         instead of developing holes. */
       function assign(f: string | null) {
         const pool = f ? PROJECTS.filter((p) => p.client === f) : PROJECTS;
         const list = pool.length ? pool : PROJECTS;
-        slots.forEach((s, i) => {
-          const r = Math.floor(i / COLS);
-          const c = i % COLS;
-          const p = list[(c + r * ROW_OFFSET) % list.length];
+        slots.forEach((s) => {
+          const p = list[(s.col + s.row * ROW_OFFSET) % list.length];
           s.project = p;
           s.mat.map = textures[PROJECTS.indexOf(p)];
           s.mat.needsUpdate = true;
