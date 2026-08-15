@@ -2,26 +2,43 @@
 
 import { useEffect, useState } from "react";
 
+/* This component renders more than once (desktop nav + mobile menu).
+   Each copy having its own idea of the current theme was the bug: click
+   one, and the other's state went stale, so its next click computed the
+   wrong value and flipped the theme the wrong way.
+
+   Fix: the DOM attribute is the single source of truth. Every click
+   reads it fresh, and a MutationObserver keeps every instance's label
+   in sync no matter which one was clicked. */
+
+function isDark() {
+  return document.documentElement.getAttribute("data-theme") !== "light";
+}
+
 export default function ThemeToggle() {
-  // Dark is the unconditional default, so the server-rendered markup
-  // says "dark" too. Starting at false made the button briefly show
-  // "Dark" on a page that was already dark, then flip once the effect
-  // ran — that flicker read as the theme changing on its own.
+  // Dark is the unconditional default, so this matches what the server
+  // renders and what ThemeScript applies before paint.
   const [dark, setDark] = useState(true);
 
-  // Corrects the label for the one case that differs: a visitor who
-  // previously chose light.
   useEffect(() => {
-    setDark(document.documentElement.getAttribute("data-theme") !== "light");
+    setDark(isDark());
+
+    const obs = new MutationObserver(() => setDark(isDark()));
+    obs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => obs.disconnect();
   }, []);
 
   const toggle = () => {
-    const next = dark ? "light" : "dark";
+    // Read from the DOM, never from local state.
+    const next = isDark() ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     try {
       localStorage.setItem("theme", next);
     } catch {}
-    setDark(!dark);
+    // The observer above updates every instance, including this one.
   };
 
   return (
