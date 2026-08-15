@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import SectionHead from "./SectionHead";
+
 gsap.registerPlugin(ScrollTrigger);
 
 /* CSS multi-column masonry of capability tiles. Artwork is original
@@ -153,14 +155,14 @@ export default function Capabilities() {
   return (
     <section className="section">
       <div className="wrap">
-        <span className="eyebrow c-plum">What I actually build</span>
-        <h2 className="display display-lg" style={{ margin: "0.4rem 0 0" }}>
-          Six things I get
-          <br />
-          called in for.
-        </h2>
+        <SectionHead
+          index="05 / 07"
+          label="What I actually build"
+          accent="plum"
+          title="Six things I get called in for."
+        />
 
-        <div className="masonry" ref={ref}>
+        <div className="masonry" ref={ref} data-skew>
           {TILES.map((t) => (
             <article className={"cap-tile accent-" + t.accent} key={t.title}>
               <div className="cap-art">{t.art}</div>

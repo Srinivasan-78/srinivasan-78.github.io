@@ -6,6 +6,8 @@ import ProgressRail from "@/components/ProgressRail";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ThemeScript from "@/components/ThemeScript";
+import VelocitySkew from "@/components/VelocitySkew";
+import Hud from "@/components/Hud";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srinidevops.com"),
@@ -69,8 +71,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body className="grain">
         <ProgressRail />
+        <VelocitySkew />
+        <Hud />
         <Cursor />
         <SmoothScrollProvider>
           <Nav />

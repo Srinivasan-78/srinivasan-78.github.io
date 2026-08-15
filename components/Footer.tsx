@@ -13,7 +13,7 @@ export default function Footer() {
         <span className="eyebrow">© 2026 Srinivasan Vijayaraghavan</span>
         <div style={{ display: "flex", gap: "1.25rem" }}>
           <a
-            className="eyebrow"
+            className="eyebrow lnk"
             href="https://www.linkedin.com/in/srini-solution-architect/"
             target="_blank"
             rel="noopener"
@@ -21,7 +21,7 @@ export default function Footer() {
             LinkedIn
           </a>
           <a
-            className="eyebrow"
+            className="eyebrow lnk"
             href="https://github.com/Srinivasan-78"
             target="_blank"
             rel="noopener"

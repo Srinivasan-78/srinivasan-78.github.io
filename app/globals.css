@@ -36,13 +36,13 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --paper: #000000;
-  --paper-raised: #121212;
-  --ink: #fafafa;
-  --ink-70: #c7c7c7;
-  --ink-45: #a8a8a8;
-  --ink-15: #363636;
-  --ink-08: #262626;
+  --paper: #050505;
+  --paper-raised: #0d0d0e;
+  --ink: #f4f2ef;
+  --ink-70: #b9b6b1;
+  --ink-45: #85827d;
+  --ink-15: #232325;
+  --ink-08: #161617;
 
   --sage: #0095f6;
   --sage-mid: #a8a8a8;
@@ -754,34 +754,243 @@ a.card:hover {
   margin: 0.35rem 0 0;
 }
 
-/* Photo tiles inside the masonry */
-.cap-photo {
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  aspect-ratio: 2 / 5;
-}
-.cap-photo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 118%;
-  top: -9%;
-  object-fit: cover;
-  will-change: transform;
-}
-.gal-item { margin-bottom: 1rem; break-inside: avoid; }
-.gal-cap {
-  position: absolute;
+/* ---------- PROGRESS RAIL ---------- */
+.rail {
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  z-index: 2;
-  padding: 2.5rem 0.75rem 0.7rem;
+  height: 2px;
+  z-index: 70;
+  background: var(--ink-15);
+}
+.rail-bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--sage), var(--slate), var(--plum), var(--brass));
+}
+.rail-pct {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 70;
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.05em;
-  color: #f2f2f2;
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.8));
+  letter-spacing: 0.08em;
+  color: var(--ink-45);
+  padding: 5px 9px;
+  border: 1px solid var(--ink-15);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+@media (pointer: coarse) {
+  .rail-pct { display: none; }
+}
+
+/* ---------- GRAIN OVERLAY ---------- */
+/* A faint static grain stops large flat dark areas from banding and
+   gives the whole page a bit of tooth. Pure CSS, no image request. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-theme="light"] .grain::after { opacity: 0.02; }
+
+/* ---------- SCROLL POLISH ---------- */
+/* Lenis owns the wheel; keep native anchor jumps from fighting it. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Skewed elements need a compositor layer or the skew re-rasterizes
+   text every frame, which is what makes velocity effects look gritty. */
+[data-skew] {
+  will-change: transform;
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+/* Selection + focus polish */
+::selection { background: var(--sage); color: var(--paper); }
+
+/* ---------- PINNED PIPELINE ---------- */
+.pipeline {
+  border-top: 1px solid var(--ink-15);
+  overflow: hidden;
+}
+.pipeline-inner { padding: clamp(3rem, 8vw, 5rem) 0; }
+.pipeline-head { margin-bottom: 2.5rem; }
+.pipeline-track {
+  display: flex;
+  gap: 1.25rem;
+  padding-left: max(24px, calc((100vw - var(--max)) / 2 + 24px));
+  padding-right: 24px;
+  will-change: transform;
+}
+.pipeline-panel {
+  flex: 0 0 clamp(240px, 30vw, 340px);
+  padding: 1.5rem;
+  border: 1px solid var(--ink-15);
+  border-left: 3px solid var(--slate);
+  border-radius: 12px;
+  background: var(--paper-raised);
+}
+.pipeline-num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--slate);
+}
+.pipeline-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0.5rem 0 0.5rem;
+  line-height: 1.15;
+}
+.pipeline-body {
+  margin: 0;
+  color: var(--ink-45);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Below the pin breakpoint the track becomes a swipeable row. */
+@media (max-width: 899px) {
+  .pipeline-track {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-left: 24px;
+  }
+  .pipeline-track::-webkit-scrollbar { display: none; }
+  .pipeline-panel { scroll-snap-align: start; }
+}
+
+/* ---------- EDITORIAL SECTION CHROME ---------- */
+/* Section headers that stick while their content scrolls past — the
+   label stays anchored so you always know which chapter you're in. */
+.sec-head {
+  position: sticky;
+  top: 56px;
+  z-index: 20;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--ink-15);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+.sec-index {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-45);
+  flex-shrink: 0;
+}
+
+/* Hairline rule with a counter, repeated down the page for rhythm. */
+.tick-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0.75rem 0 0;
+}
+.tick-row::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ink-15);
+}
+
+/* ---------- LINK SWEEP ---------- */
+/* Underline grows from the left on hover, collapses to the right on
+   leave — reads more deliberate than a static underline toggle. */
+.lnk {
+  position: relative;
+  display: inline-block;
+}
+.lnk::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.42s var(--ease);
+}
+.lnk:hover::after,
+.lnk:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- CORNER HUD ---------- */
+.hud {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 70;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-45);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hud b { color: var(--sage); font-weight: 400; }
+@media (max-width: 720px) { .hud { display: none; } }
+
+/* ---------- CARD REFINEMENT ---------- */
+.card,
+.cap-tile,
+.pipeline-panel,
+.post {
+  position: relative;
+}
+/* A faint top highlight gives dark cards an edge to catch light on,
+   which is what stops them dissolving into the background. */
+[data-theme="dark"] .card::before,
+[data-theme="dark"] .cap-tile::before,
+[data-theme="dark"] .pipeline-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--ink) 22%, transparent),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Tighter, more typographic eyebrow */
+.eyebrow {
+  font-variant-numeric: tabular-nums;
+}
+
+/* GSAP pins the pipeline section, which puts its contents in a
+   transformed/fixed wrapper — position:sticky can't resolve against
+   that, so the header is static inside this one section. */
+.pipeline .sec-head {
+  position: static;
+  backdrop-filter: none;
+  background: transparent;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Reveal from "./Reveal";
+import SectionHead from "./SectionHead";
 
 /* Numbered because the order is real: this is the sequence a release
    actually moves through, not decoration. */
@@ -35,12 +36,12 @@ export default function HowIWork() {
   return (
     <section className="section">
       <div className="wrap">
-        <span className="eyebrow c-sage">How I work</span>
-        <h2 className="display display-lg" style={{ margin: "0.4rem 0 0" }}>
-          Built to survive the
-          <br />
-          release that goes wrong.
-        </h2>
+        <SectionHead
+          index="02 / 07"
+          label="How I work"
+          accent="sage"
+          title="Built to survive the release that goes wrong."
+        />
 
         <Reveal className="notes" stagger={0.09}>
           {NOTES.map((note) => (

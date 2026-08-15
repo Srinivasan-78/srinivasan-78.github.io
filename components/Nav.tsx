@@ -48,11 +48,11 @@ export default function Nav() {
                would try to client-navigate to it and prefetch a page that
                doesn't exist, so plain <a> for downloads. */
             l.download ? (
-              <a key={l.href} href={l.href} download className="eyebrow" style={{ fontSize: "0.8rem" }}>
+              <a key={l.href} href={l.href} download className="eyebrow lnk" style={{ fontSize: "0.8rem" }}>
                 {l.label}
               </a>
             ) : (
-              <Link key={l.href} href={l.href} className="eyebrow" style={{ fontSize: "0.8rem" }}>
+              <Link key={l.href} href={l.href} className="eyebrow lnk" style={{ fontSize: "0.8rem" }}>
                 {l.label}
               </Link>
             )

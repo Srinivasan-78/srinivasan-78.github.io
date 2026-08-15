@@ -7,7 +7,8 @@ import Capabilities from "@/components/Capabilities";
 import Statement from "@/components/Statement";
 import Reveal from "@/components/Reveal";
 import Parallax from "@/components/Parallax";
-import Gallery from "@/components/Gallery";
+import Pipeline from "@/components/Pipeline";
+import SectionHead from "@/components/SectionHead";
 import VantaBackground from "@/components/VantaBackground";
 import { CountUp, RotatingWord, DecryptText, TiltCard } from "@/components/Bits";
 
@@ -101,6 +102,8 @@ export default function Page() {
 
       <HowIWork />
 
+      <Pipeline />
+
       <Statement />
 
       <section className="section">
@@ -117,14 +120,14 @@ export default function Page() {
 
       <Capabilities />
 
-      <Gallery />
-
       <section className="section">
         <div className="wrap">
-          <span className="eyebrow c-slate">Availability</span>
-          <h2 className="display display-lg" style={{ margin: "0.4rem 0 0" }}>
-            Deployment regions
-          </h2>
+          <SectionHead
+            index="06 / 07"
+            label="Availability"
+            accent="slate"
+            title="Deployment regions."
+          />
           <div className="card" style={{ marginTop: "2rem", borderLeft: "3px solid var(--slate)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", flexWrap: "wrap", marginBottom: "1rem" }}>
               <span className="eyebrow">work authorization — health check</span>
@@ -161,10 +164,12 @@ export default function Page() {
 
       <section className="section">
         <div className="wrap">
-          <span className="eyebrow c-brass">Explore</span>
-          <h2 className="display display-lg" style={{ margin: "0.4rem 0 0" }}>
-            Where to next
-          </h2>
+          <SectionHead
+            index="07 / 07"
+            label="Explore"
+            accent="brass"
+            title="Where to next."
+          />
           <Reveal
             className="accent-cards"
             style={{
