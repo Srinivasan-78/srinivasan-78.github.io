@@ -71,12 +71,12 @@ export default function DevOpsScene() {
       const line = new THREE.LineBasicMaterial({
         color: new THREE.Color(cssColor("--sage", "#0095f6")),
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.55,
       });
       const lineDim = new THREE.LineBasicMaterial({
         color: new THREE.Color(cssColor("--ink-45", "#85827d")),
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.3,
       });
 
       const wire = (geo: any, mat: any) =>
@@ -104,7 +104,7 @@ export default function DevOpsScene() {
         b.position.set(i * 0.5 - 0.5, i * 1.3 - 1.3, 0);
         stack.add(b);
       }
-      place(stack, -11, 6, -6, 0.85, [0.0006, 0.0011, 0]);
+      place(stack, -19, 6, -6, 0.85, [0.0006, 0.0011, 0]);
 
       /* ---- CI gear: torus hub plus radial spokes ---- */
       const gear = new THREE.Group();
@@ -115,12 +115,12 @@ export default function DevOpsScene() {
         tooth.position.set(Math.cos(a) * 3.1, Math.sin(a) * 3.1, 0);
         gear.add(tooth);
       }
-      place(gear, 12, 2.5, -9, 0.6, [0, 0, 0.0016]);
+      place(gear, 20, 2.5, -9, 0.6, [0, 0, 0.0016]);
 
       /* ---- multi-cloud globe ---- */
       place(
         wire(new THREE.IcosahedronGeometry(4.2, 1), lineDim),
-        10,
+        19,
         -9,
         -14,
         0.35,
@@ -135,7 +135,7 @@ export default function DevOpsScene() {
         blade.position.y = i * 1.35 - 2.7;
         rack.add(blade);
       }
-      place(rack, -13, -8, -11, 0.5, [0, 0.0007, 0]);
+      place(rack, -21, -8, -11, 0.5, [0, 0.0007, 0]);
 
       /* ---- pipeline: nodes joined by connectors, the CD motif.
          CylinderGeometry rotated onto Z — r134 has no CapsuleGeometry. ---- */
@@ -152,12 +152,12 @@ export default function DevOpsScene() {
         }
       }
       pipe.rotation.set(0.3, -0.5, 0.12);
-      place(pipe, -6, -10, -5, 0.95, [0, 0.0005, 0]);
+      place(pipe, -17, -10, -5, 0.95, [0, 0.0005, 0]);
 
       /* ---- orchestration knot ---- */
       place(
         wire(new THREE.TorusKnotGeometry(2.6, 0.7, 48, 6, 2, 3), lineDim),
-        6,
+        17,
         14,
         -12,
         0.45,
@@ -205,7 +205,7 @@ export default function DevOpsScene() {
           // The depth multiplier is the whole effect: same scroll
           // input, different travel per object.
           o.mesh.position.y = h.y + current * 46 * o.depth;
-          o.mesh.position.x = h.x + mx * 2.2 * o.depth;
+          o.mesh.position.x = h.x + mx * 1.1 * o.depth;
           o.mesh.rotation.x += o.spin[0];
           o.mesh.rotation.y += o.spin[1];
           o.mesh.rotation.z += o.spin[2];
