@@ -40,19 +40,25 @@ export default function Pipeline() {
       // Leave a right-hand gutter so the last panel finishes inside the
       // viewport rather than hard against the edge.
       const gutter = 48;
-      const distance = track.scrollWidth - window.innerWidth + gutter;
-      if (distance <= 0) return;
+      const distance = () =>
+        Math.max(0, track.scrollWidth - window.innerWidth + gutter);
+      if (distance() <= 0) return;
 
       const tween = gsap.to(track, {
-        x: -distance,
+        x: () => -distance(),
         ease: "none",
         scrollTrigger: {
           trigger: section,
           start: "top top",
           // Scroll length maps 1:1 to horizontal distance, so the pace
           // feels linear rather than the panels racing at the end.
-          end: () => "+=" + distance,
+          end: () => "+=" + distance(),
           pin: true,
+          // Explicit: auto-detection picks "transform" if it thinks the
+          // root scroller has overflow set, which silently disables the
+          // pin. "fixed" is correct for a normal document scroll.
+          pinType: "fixed",
+          pinSpacing: true,
           scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,

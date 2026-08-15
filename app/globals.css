@@ -64,13 +64,11 @@
 
 * { box-sizing: border-box; }
 
-html {
-  background: var(--paper);
-  /* Nothing should be able to widen the document horizontally. `clip`
-     keeps position:sticky working, which `hidden` here would not. */
-  overflow-x: clip;
-}
-body { overflow-x: clip; }
+html { background: var(--paper); }
+/* NOTE: never put overflow-x: clip/hidden on html or body here.
+   ScrollTrigger reads the root scroller's overflow and silently
+   downgrades pinType to "transform", which stops pinning working.
+   Full-bleed sections must clip themselves instead. */
 
 body {
   margin: 0;
@@ -831,9 +829,9 @@ html.lenis, html.lenis body { height: auto; }
 /* ---------- PINNED PIPELINE ---------- */
 .pipeline {
   border-top: 1px solid var(--ink-15);
-  /* clip, not hidden: `hidden` creates a scroll container, which breaks
-     position:sticky in descendants and fights GSAP's pin. */
-  overflow-x: clip;
+  /* No overflow here: this element is the one GSAP pins, and clipping on
+     the pinned element itself is one more thing that can interfere.
+     .pipeline-viewport does the clipping instead. */
 }
 .pipeline-inner { padding: clamp(3rem, 8vw, 5rem) 0; }
 .pipeline-head { margin-bottom: 2.5rem; }
@@ -896,8 +894,7 @@ html.lenis, html.lenis body { height: auto; }
   padding: 0.6rem 0;
   margin-bottom: 1.75rem;
   border-bottom: 1px solid var(--ink-15);
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: blur(10px);
+  background: var(--paper);
 }
 .sec-index {
   font-family: var(--font-mono);
