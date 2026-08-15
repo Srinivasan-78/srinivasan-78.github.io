@@ -57,7 +57,13 @@ export default function SplitReveal({
       {words.map((w, i) => (
         <span className="split-word" key={i}>
           <span>{w}</span>
-          {i < words.length - 1 ? "\u00A0" : ""}
+          {/* null, NOT "". React's server renderer omits an empty string
+              entirely, but the client reconciler still reserves a text
+              node for it — the two trees disagree and hydration fails
+              with "text content does not match" (#425), after which
+              React discards the whole server render and repaints from
+              scratch. null is skipped identically on both sides. */}
+          {i < words.length - 1 ? "\u00A0" : null}
         </span>
       ))}
     </Tag>

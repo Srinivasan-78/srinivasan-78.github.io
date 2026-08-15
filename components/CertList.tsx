@@ -44,7 +44,7 @@ export default function CertList({ certs }: { certs: Cert[] }) {
 
       <div className="cert-count">
         {shown.length} {shown.length === 1 ? "certification" : "certifications"}
-        {filter === "all" ? " · issued by LinkedIn Learning" : ""}
+        {filter === "all" ? " · issued by LinkedIn Learning" : null}
       </div>
 
       <div>
