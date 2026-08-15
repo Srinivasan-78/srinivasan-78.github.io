@@ -37,7 +37,10 @@ export default function Pipeline() {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
-      const distance = track.scrollWidth - window.innerWidth;
+      // Leave a right-hand gutter so the last panel finishes inside the
+      // viewport rather than hard against the edge.
+      const gutter = 48;
+      const distance = track.scrollWidth - window.innerWidth + gutter;
       if (distance <= 0) return;
 
       const tween = gsap.to(track, {
@@ -77,14 +80,21 @@ export default function Pipeline() {
           />
         </div>
 
-        <div className="pipeline-track" ref={trackRef}>
-          {PANELS.map((p) => (
-            <article className="pipeline-panel" key={p.n}>
-              <span className="pipeline-num">({p.n})</span>
-              <h3 className="pipeline-title">{p.title}</h3>
-              <p className="pipeline-body">{p.body}</p>
-            </article>
-          ))}
+        <div className="pipeline-viewport">
+          <div className="pipeline-track" ref={trackRef}>
+            {PANELS.map((p) => (
+              <article className="pipeline-panel" key={p.n}>
+                <span className="pipeline-num">({p.n})</span>
+                <h3 className="pipeline-title">{p.title}</h3>
+                <p className="pipeline-body">{p.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="pipeline-hint">
+          <i />
+          <span>keep scrolling</span>
         </div>
       </div>
     </section>

@@ -64,7 +64,13 @@
 
 * { box-sizing: border-box; }
 
-html { background: var(--paper); }
+html {
+  background: var(--paper);
+  /* Nothing should be able to widen the document horizontally. `clip`
+     keeps position:sticky working, which `hidden` here would not. */
+  overflow-x: clip;
+}
+body { overflow-x: clip; }
 
 body {
   margin: 0;
@@ -825,7 +831,9 @@ html.lenis, html.lenis body { height: auto; }
 /* ---------- PINNED PIPELINE ---------- */
 .pipeline {
   border-top: 1px solid var(--ink-15);
-  overflow: hidden;
+  /* clip, not hidden: `hidden` creates a scroll container, which breaks
+     position:sticky in descendants and fights GSAP's pin. */
+  overflow-x: clip;
 }
 .pipeline-inner { padding: clamp(3rem, 8vw, 5rem) 0; }
 .pipeline-head { margin-bottom: 2.5rem; }
@@ -993,4 +1001,43 @@ html.lenis, html.lenis body { height: auto; }
   position: static;
   backdrop-filter: none;
   background: transparent;
+}
+
+/* Fade the track at the right edge so a partially-visible panel reads
+   as "more to come" rather than as content clipped by accident. */
+.pipeline-viewport { overflow-x: clip; }
+@media (min-width: 900px) {
+  .pipeline-viewport {
+    mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+  }
+}
+
+/* Scroll affordance under the track */
+.pipeline-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  padding-left: max(24px, calc((100vw - var(--max)) / 2 + 24px));
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-45);
+}
+.pipeline-hint i {
+  display: block;
+  width: 46px;
+  height: 1px;
+  background: var(--slate);
+  transform-origin: left;
+  animation: hint 2.4s var(--ease) infinite;
+}
+@keyframes hint {
+  0%, 100% { transform: scaleX(0.35); opacity: 0.5; }
+  50%      { transform: scaleX(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pipeline-hint i { animation: none; transform: scaleX(1); }
 }
