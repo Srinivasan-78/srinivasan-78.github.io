@@ -134,7 +134,7 @@ const DIAGRAM: Record<string, React.ReactNode> = {
       <rect x="30" y="30" width="56" height="48" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
       <path d="M100 55 H150" stroke="currentColor" strokeWidth="3" {...s} />
       <path d="M142 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
-      <path d="M180 30 a25 25 0 1 1 -17 43" stroke="currentColor" strokeWidth="2.5" fill="none" {...s} />
+      <path d="M180 30 a25 25 0 1 1 -17 43" stroke="currentColor" strokeWidth="2.5" {...s} />
       <path d="M156 66 l8 12 12 -6" stroke="currentColor" strokeWidth="2.5" {...s} />
       <path d="M228 55 H260" stroke="currentColor" strokeWidth="3" {...s} opacity="0.7" />
       <path d="M252 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} opacity="0.7" />
