@@ -14,6 +14,9 @@ export type Project = {
   /* Short pills on the card face — kept to 3 so the texture never overflows. */
   tags: string[];
   stack: string[];
+  /* Key into the schematic map in ProjectGrid. Defaults to `title`;
+     set only where the two have drifted apart. */
+  schematic?: string;
   overview: string;
   architecture: { label: string; body: string }[];
   highlights: string[];
@@ -330,6 +333,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "brainrot-study",
     title: "Brainrot Study",
+    schematic: "Brainrot Study — automated video pipeline",
     client: "CI/CD & packaging",
     category: "Automation",
     status: "In progress",

@@ -18,7 +18,7 @@ const s = { fill: "none", strokeLinecap: "round", strokeLinejoin: "round" } as c
 /* One small schematic per project, keyed by title. Kept deliberately
    simple line-art (currentColor) so it inherits the group accent and
    works in light/dark without separate art. */
-const DIAGRAM: Record<string, React.ReactNode> = {
+export const DIAGRAM: Record<string, React.ReactNode> = {
   "Self-Healing Deployment": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <rect x="24" y="40" width="60" height="30" rx="5" stroke="currentColor" strokeWidth="3" fill="none" />
@@ -150,7 +150,7 @@ const DIAGRAM: Record<string, React.ReactNode> = {
   ),
 };
 
-const FALLBACK = (
+export const FALLBACK = (
   <svg viewBox="0 0 300 110" aria-hidden="true">
     <rect x="90" y="35" width="120" height="40" rx="6" stroke="currentColor" strokeWidth="2.5" fill="none" />
   </svg>
