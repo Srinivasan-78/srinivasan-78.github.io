@@ -86,9 +86,6 @@ export default function Page() {
             <a href="/resume.pdf" className="btn primary" download>
               Download résumé
             </a>
-            <Link href="/contact" className="btn ghost">
-              Get in touch
-            </Link>
           </div>
         </div>
       </header>
