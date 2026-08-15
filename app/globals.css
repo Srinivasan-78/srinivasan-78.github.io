@@ -115,10 +115,10 @@ html { background: var(--paper); }
 
 body {
   margin: 0;
-  /* Transparent on purpose: .vanta-stage sits at z-index -1, and an
-     in-flow block background paints AFTER negative z-index children,
-     so an opaque body would hide the whole field. The base colour
-     lives on html instead, which paints first. */
+  /* Transparent on purpose: .scene-stage is a fixed sibling behind the
+     content, so an opaque body background would cover the WebGL field
+     entirely. The base colour lives on html instead, which paints as
+     the canvas background beneath everything. */
   background: transparent;
   color: var(--ink);
   font-family: var(--font-body);
@@ -189,12 +189,12 @@ a { color: var(--ink); text-decoration: none; }
    Two things a fixed vw size gets wrong, both visible as soon as a
    heading is longer than one word:
 
-   1. It overflows. "Platform engineering" at 13vw is far wider than
-      the viewport, so it clips mid-word and adds a horizontal
-      scrollbar. --ghost-len carries the character count from the
-      component, and the third term below sizes the type to fit that
-      many characters in the available width. 1.8 is the reciprocal of
-      a grotesque's average character width (~0.55em).
+   1. It overflows. The previous fix sized against 100vw, but the ghost
+      lives inside .wrap — an 880px column, not the 1900px viewport —
+      so it was still computed roughly twice too large. The width that
+      matters is min(100vw, var(--max)) less the wrap's 24px padding.
+      1.8 is the reciprocal of a grotesque's average character width
+      (~0.55em).
    2. It occupies layout. In flow, it pushes the eyebrow and cards down
       and collides with them. Absolute inside a positioned section
       takes it out of flow so content sits over it untouched. */
@@ -206,7 +206,10 @@ a { color: var(--ink); text-decoration: none; }
   z-index: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: min(7rem, 9vw, calc((100vw - 3rem) / var(--ghost-len, 12) * 1.8));
+  font-size: min(
+    7rem,
+    calc((min(100vw, var(--max)) - 3rem) / var(--ghost-len, 12) * 1.8)
+  );
   line-height: 0.8;
   letter-spacing: -0.03em;
   color: color-mix(in srgb, var(--ink) 11%, transparent);
@@ -874,7 +877,11 @@ a.card:hover {
 .scene-stage {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  /* z-index 0, NOT -1. A negative z-index only stays visible while
+     every ancestor background above it is transparent; one opaque
+     background anywhere in the chain hides it with nothing to debug.
+     Stage at 0 plus explicitly lifted content removes that dependency. */
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
   /* A tight vignette plus low opacity made the geometry invisible
@@ -886,6 +893,10 @@ a.card:hover {
 .scene-gl { width: 100%; height: 100%; opacity: 1; }
 .scene-gl canvas { display: block; }
 [data-theme="light"] .scene-gl { opacity: 0.5; }
+
+/* Content rides above the scene. Without this the canvas shares
+   stacking level 0 with it and paints in DOM order — over the nav. */
+main, nav, header, footer { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) { .scene-stage { display: none; } }
 @media (pointer: coarse) { .scene-stage { display: none; } }
 
