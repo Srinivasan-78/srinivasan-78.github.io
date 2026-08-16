@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # `npm ci` is the goal: it installs the exact tree in the lockfile
+      # and fails loudly if package.json and the lock have drifted. Until
+      # package-lock.json is committed, fall back to `npm install` so the
+      # site keeps deploying. Direct dependencies are pinned to exact
+      # versions in package.json, so even the fallback path can't pick up
+      # a surprise major of gsap/lenis/next between deploys.
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "::warning::No package-lock.json — falling back to npm install. Run 'npm install' locally and commit the lockfile."
+            npm install
+          fi
+
+      - run: npm run build
+      # Pages ignores any directory starting with an underscore unless
+      # this file exists, which would drop the whole _next/ bundle.
+      - run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
