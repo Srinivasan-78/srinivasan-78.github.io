@@ -35,6 +35,10 @@ export function CountUp({
       return;
     }
 
+    // Tracked so teardown can stop it. Disconnecting the observer alone
+    // leaves an in-flight rAF loop running against an unmounted node.
+    let raf = 0;
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -48,16 +52,19 @@ export function CountUp({
             // easeOutExpo — fast start, long settle
             const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
             setN(Math.round(eased * value));
-            if (t < 1) requestAnimationFrame(tick);
+            if (t < 1) raf = requestAnimationFrame(tick);
           };
-          requestAnimationFrame(tick);
+          raf = requestAnimationFrame(tick);
         });
       },
       { threshold: 0.4 }
     );
 
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
   }, [value, duration]);
 
   return (
@@ -83,14 +90,21 @@ export function RotatingWord({
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // The nested swap timeout needs its own handle: clearing only the
+    // interval still leaves a pending swap that fires up to 260ms after
+    // the component is gone.
+    let swap: ReturnType<typeof setTimeout> | undefined;
     const id = setInterval(() => {
       setOut(true);
-      setTimeout(() => {
+      swap = setTimeout(() => {
         setI((v) => (v + 1) % words.length);
         setOut(false);
       }, 260);
     }, interval);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+      clearTimeout(swap);
+    };
   }, [words.length, interval]);
 
   return (
@@ -121,6 +135,11 @@ export function DecryptText({
 
     const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/\\<>[]{}#$%";
 
+    // Hoisted so teardown reaches it. The scramble runs for as long as
+    // the string is wide; unmounting mid-scramble previously left the
+    // interval ticking against a dead component.
+    let id: ReturnType<typeof setInterval> | undefined;
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -129,7 +148,7 @@ export function DecryptText({
           io.unobserve(e.target);
 
           let frame = 0;
-          const id = setInterval(() => {
+          id = setInterval(() => {
             const revealed = Math.floor(frame / 2);
             setShown(
               text
@@ -149,7 +168,10 @@ export function DecryptText({
     );
 
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      clearInterval(id);
+    };
   }, [text, speed]);
 
   return (

@@ -59,22 +59,24 @@ function tracked(x: CanvasRenderingContext2D, text: string, cx: number, y: numbe
   x.textAlign = prev;
 }
 
-function drawCert(c: Cert, index: number, total: number) {
+function drawCert(c: Cert, index: number, total: number, texScale = 1) {
+  const texW = Math.round(TEX_W * texScale);
+  const texH = Math.round(TEX_H * texScale);
   const cv = document.createElement("canvas");
-  cv.width = TEX_W;
-  cv.height = TEX_H;
+  cv.width = texW;
+  cv.height = texH;
   const x = cv.getContext("2d")!;
   const serif = 'Georgia, "Times New Roman", serif';
   const mono = 'ui-monospace, "SF Mono", Menlo, monospace';
   // Layout is authored against a 1000-unit width, then scaled up to
-  // whatever TEX_W is — so raising the texture resolution never means
-  // re-tuning any coordinate below.
-  const S = TEX_W / 1000;
+  // whatever the texture width is — so changing the texture resolution
+  // never means re-tuning any coordinate below.
+  const S = texW / 1000;
 
   x.save();
   x.scale(S, S);
   const W = 1000;
-  const H = TEX_H / S;
+  const H = texH / S;
 
   x.fillStyle = "#f4f1e9";
   x.fillRect(0, 0, W, H);
@@ -156,6 +158,7 @@ export default function CertViewer({
   onClose: () => void;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const [index, setIndex] = useState(0);
   const [ready, setReady] = useState(false);
   const goRef = useRef<(i: number) => void>(() => {});
@@ -226,12 +229,17 @@ export default function CertViewer({
 
       const texCache = new Map<number, T.CanvasTexture>();
       const maxAniso = renderer.capabilities.getMaxAnisotropy();
+      /* A phone draws the card at roughly half the on-screen size, so a
+         full-resolution texture buys nothing but memory — nine live
+         textures at 1400x980 is ~49MB of GPU memory on the device least
+         able to spare it. */
+      const texScale = host.clientWidth > MOBILE_BP ? 1 : 0.5;
 
       function syncTextures(center: number) {
         for (let i = 0; i < certs.length; i++) {
           const near = Math.abs(i - center) <= WINDOW;
           if (near && !texCache.has(i)) {
-            const tex = new THREE.CanvasTexture(drawCert(certs[i], i, certs.length));
+            const tex = new THREE.CanvasTexture(drawCert(certs[i], i, certs.length, texScale));
             tex.anisotropy = maxAniso;
             texCache.set(i, tex);
             cards[i].mat.map = tex;
@@ -369,7 +377,11 @@ export default function CertViewer({
             continue;
           }
           c.mesh.visible = true;
-          c.mesh.position.set(0, y, z);
+          /* The stack offsets are in the same world units as the card,
+             so they have to shrink with it. Scaling the card alone left
+             a small card inside a full-size spread — the deck read as
+             scattered rather than stacked. */
+          c.mesh.position.set(0, y * fitScale, z * fitScale);
           c.mesh.scale.setScalar(Math.max(0.01, scale) * fitScale);
           c.mat.opacity = Math.min(1, opacity);
           /* Depth testing is off, so paint order is the only thing
@@ -423,6 +435,15 @@ export default function CertViewer({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  /* Focus moves into the dialog on open and back to the shelf row on
+     close. Without the restore, dismissing the viewer dropped focus to
+     <body> and a keyboard user had to tab from the top of the page. */
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
+    closeBtnRef.current?.focus();
+    return () => opener?.focus();
+  }, []);
+
   const cert = certs[index];
 
   return (
@@ -434,7 +455,7 @@ export default function CertViewer({
           {row.label}
           <sup>({certs.length})</sup>
         </span>
-        <button type="button" className="cv-close" onClick={onClose}>
+        <button ref={closeBtnRef} type="button" className="cv-close" onClick={onClose}>
           Close ✕
         </button>
       </div>

@@ -1,24 +1,16 @@
-"use client";
+/* Schematic art only. The card component that used to live here was
+   unreferenced — ProjectIndex renders the rows and pulls just these two
+   exports, so the dead component and its duplicate Project/Accent types
+   (which shadowed the real ones in lib/projects.ts) are gone. */
 
-import { useEffect, useRef, useState } from "react";
-
-export type Project = {
-  title: string;
-  status?: string;
-  teaser: string;
-  body: string;
-  stack: string[];
-  links?: { url: string; label: string }[];
-};
-
-type Accent = "sage" | "slate" | "plum" | "brass";
+import type { ReactNode } from "react";
 
 const s = { fill: "none", strokeLinecap: "round", strokeLinejoin: "round" } as const;
 
 /* One small schematic per project, keyed by title. Kept deliberately
    simple line-art (currentColor) so it inherits the group accent and
    works in light/dark without separate art. */
-export const DIAGRAM: Record<string, React.ReactNode> = {
+export const DIAGRAM: Record<string, ReactNode> = {
   "Self-Healing Deployment": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <rect x="24" y="40" width="60" height="30" rx="5" stroke="currentColor" strokeWidth="3" fill="none" />
@@ -155,85 +147,3 @@ export const FALLBACK = (
     <rect x="90" y="35" width="120" height="40" rx="6" stroke="currentColor" strokeWidth="2.5" fill="none" />
   </svg>
 );
-
-export default function ProjectGrid({ accent, items }: { accent: Accent; items: Project[] }) {
-  const [open, setOpen] = useState<number | null>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const active = open === null ? null : items[open];
-
-  useEffect(() => {
-    if (open === null) return;
-    closeRef.current?.focus();
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(null); };
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open]);
-
-  return (
-    <>
-      <div className="proj-grid">
-        {items.map((p, i) => (
-          <button
-            key={p.title}
-            type="button"
-            className={"post proj-card " + accent}
-            onClick={() => setOpen(i)}
-            aria-haspopup="dialog"
-          >
-            <div className="proj-diagram">{DIAGRAM[p.title] ?? FALLBACK}</div>
-            <div className="proj-face">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.5rem" }}>
-                <h3 className="post-title" style={{ margin: 0 }}>{p.title}</h3>
-                {p.status && <span className="proj-status">{p.status}</span>}
-              </div>
-              <p className="proj-teaser">{p.teaser}</p>
-              <div>{p.stack.slice(0, 3).map((t) => <span key={t} className="tag">{t}</span>)}</div>
-            </div>
-            <span className="proj-hint">hover: diagram · tap: details ↗</span>
-          </button>
-        ))}
-      </div>
-
-      {active && (
-        <div
-          className="lb"
-          role="dialog"
-          aria-modal="true"
-          aria-label={active.title}
-          onClick={(e) => { if (e.target === e.currentTarget) setOpen(null); }}
-        >
-          <div className={"lb-card " + accent}>
-            <button ref={closeRef} type="button" className="lb-close" onClick={() => setOpen(null)}>
-              close
-            </button>
-            <div className="post-cover" style={{ padding: 0, color: `var(--${accent})` }}>
-              {DIAGRAM[active.title] ?? FALLBACK}
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", marginTop: "1rem" }}>
-              <h2 className="lb-title" style={{ margin: 0 }}>{active.title}</h2>
-              {active.status && <span className="tag" style={{ margin: 0 }}>{active.status}</span>}
-            </div>
-            <p className="lb-body">{active.body}</p>
-            <div style={{ marginTop: "0.75rem" }}>
-              {active.stack.map((t) => <span key={t} className="tag">{t}</span>)}
-            </div>
-            {active.links && (
-              <div style={{ display: "flex", gap: "1rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
-                {active.links.map((l) => (
-                  <a key={l.url} href={l.url} target="_blank" rel="noopener" className="eyebrow" style={{ color: `var(--${accent})` }}>
-                    {l.label}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </>
-  );
-}

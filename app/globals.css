@@ -627,13 +627,15 @@ a.card:hover {
 }
 .cap-tile:hover { transform: translateY(-2px); }
 .cap-body-wrap { flex: 1 1 auto; min-width: 0; }
+/* These viewBoxes run 300x130 to 300x200 — all landscape, so a square
+   box wasted most of the width and shrank every schematic. */
 .cap-art {
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
+  flex: 0 0 68px;
+  width: 68px;
+  height: 46px;
   border-radius: 8px;
-  padding: 0.4rem;
-  margin: 0 0 0 0.75rem;
+  padding: 0.35rem;
+  margin: 0 0 0 0.85rem;
   background: var(--paper);
   border: 1px solid var(--ink-08);
 }
@@ -832,40 +834,23 @@ a.card:hover {
 .post.slate:hover { border-color: var(--slate-line); border-left-color: var(--slate); }
 .post.plum:hover { border-color: var(--plum-line); border-left-color: var(--plum); }
 .post.brass:hover { border-color: var(--brass-line); border-left-color: var(--brass); }
-.post-cover { padding: 0; flex: 0 0 56px; width: 56px; height: 56px; margin: 0 0.75rem 0 0; align-self: center; }
+/* Sized to the art's own 300x110 viewBox. A square box letterboxed it
+   to roughly a third of the available height, which is what made the
+   schematics read as faint specks. */
+.post-cover { padding: 0; flex: 0 0 78px; width: 78px; height: 29px; margin: 0 0.85rem 0 0; align-self: center; }
 .post.sage .post-cover { color: var(--sage); }
 .post.slate .post-cover { color: var(--slate); }
 .post.plum .post-cover { color: var(--plum); }
 .post.brass .post-cover { color: var(--brass); }
-.post-cover svg { width: 56px; height: 56px; display: block; }
+.post-cover svg { width: 100%; height: 100%; display: block; }
 .post-body { padding: 0.7rem 0.85rem; flex: 1 1 auto; min-width: 0; }
 .post-title { font-family: var(--font-display); font-size: 0.86rem; margin: 0.3rem 0 0.2rem; line-height: 1.2; }
 .post-open { font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-45); }
 
-/* ---------- PROJECT CARDS (hover diagram, tap for details) ---------- */
-.proj-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem; margin-top: 1.25rem;
-}
-.proj-card { position: relative; width: 100%; }
-.proj-diagram {
-  padding: 1.1rem 1.1rem 0; opacity: 0; max-height: 0; overflow: hidden;
-  transition: opacity 0.3s var(--ease), max-height 0.3s var(--ease);
-}
-.proj-diagram svg { width: 100%; height: auto; display: block; }
-.proj-card:hover .proj-diagram,
-.proj-card:focus-visible .proj-diagram { opacity: 1; max-height: 120px; }
-.proj-face { padding: 1rem; }
-.proj-status {
-  font-family: var(--font-mono); font-size: 0.68rem; white-space: nowrap;
-  color: var(--ink-45); border: 1px solid var(--ink-15); border-radius: 999px;
-  padding: 2px 9px; flex-shrink: 0;
-}
+/* Only .proj-teaser survives here — it's used by the project detail
+   page's "other projects" list. The rest belonged to the hover-diagram
+   card component that no longer exists. */
 .proj-teaser { color: var(--ink-70); font-size: 0.8rem; margin: 0.4rem 0 0.6rem; }
-.proj-hint {
-  display: block; font-family: var(--font-mono); font-size: 0.68rem;
-  color: var(--ink-45); padding: 0 1rem 0.9rem;
-}
 
 .lb {
   position: fixed; inset: 0; z-index: 100;
@@ -1456,7 +1441,7 @@ html.lenis, html.lenis body { height: auto; }
 /* Full-bleed on purpose. The rows are the page — a centred column
    would make them read as cards again, which is the thing this
    replaced. */
-.pi { width: 100%; padding-bottom: 2rem; }
+.pi { width: 100%; padding-bottom: 2rem; background: var(--paper); position: relative; z-index: 1; }
 
 .pi-head {
   padding: 2.25rem 32px 1.75rem;
@@ -1546,6 +1531,8 @@ html.lenis, html.lenis body { height: auto; }
 .pi-teaser {
   color: var(--ink-70); font-size: 0.84rem; line-height: 1.5;
   max-width: 56ch;
+  display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
 }
 
 /* Both children occupy the same cell; only one is visible at a time. */
@@ -1590,8 +1577,7 @@ html.lenis, html.lenis body { height: auto; }
 .pi-foot .micro { color: var(--ink-45); text-transform: none; }
 
 @media (max-width: 1040px) {
-  .pi-row { grid-template-columns: 3rem 1fr 240px; }
-  .pi-teaser { display: none; }
+  .pi-row { grid-template-columns: 2.6rem minmax(140px, 24%) 1fr 200px; gap: 1.1rem; }
 }
 @media (max-width: 720px) {
   .pi-group { grid-template-columns: 1fr; }
@@ -1600,8 +1586,22 @@ html.lenis, html.lenis body { height: auto; }
     position: static; writing-mode: horizontal-tb;
     padding: 0.7rem 20px; justify-content: space-between;
   }
-  .pi-row { grid-template-columns: 2.6rem 1fr; gap: 0.9rem; padding: 0.95rem 20px; }
-  .pi-right { display: none; }
+  .pi-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.1rem 20px;
+  }
+  .pi-name { font-size: 1rem; }
+  .pi-teaser { -webkit-line-clamp: 3; line-clamp: 3; font-size: 0.82rem; max-width: none; }
+  /* No hover on touch, so the stack tags stay put instead of living
+     behind a hover swap the visitor can't trigger. The hand-drawn
+     schematic is a hover flourish, not information — dropping it here
+     loses nothing a phone visitor needed. */
+  .pi-right { position: static; height: auto; width: 100%; }
+  .pi-stack { position: static; opacity: 1; flex-wrap: wrap; }
+  .pi-art { display: none; }
   .pi-head, .pi-foot { padding-left: 20px; padding-right: 20px; }
 }
 
