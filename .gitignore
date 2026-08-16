@@ -1,3 +1,0 @@
-
-# Downloaded stock photos are committed so CI builds get them too;
-# remove this comment if you would rather fetch them in the workflow.
