@@ -1299,27 +1299,54 @@ html.lenis, html.lenis body { height: auto; }
   font-family: Georgia, "Times New Roman", serif;
   margin-left: 0.15em;
 }
-/* Sits over the type, not behind it — the reference's scribble crosses
-   the letterforms rather than underlining them. */
-.fm-scribble {
+/* The seal sits over the type at the end of the label, the way a stamp
+   lands on a document — overlapping the last letters rather than being
+   parked politely beside them. Sized in em so it tracks the label's own
+   clamped font-size at every breakpoint. */
+.fm-stamp {
   position: absolute;
-  left: -4%; top: 4%;
-  width: 108%; height: 92%;
+  right: -0.42em;
+  top: 50%;
+  width: 1.05em;
+  height: 1.05em;
+  margin-top: -0.525em;
   z-index: 3;
   overflow: visible;
   pointer-events: none;
+  opacity: 0;
+  /* GSAP writes scale/rotate here, so nothing else may set transform. */
+  transform-origin: 50% 50%;
 }
-.fm-scribble path {
+.fm-stamp-ring {
+  fill: none;
+  stroke: #e0201b;
+  stroke-width: 4;
+  stroke-linecap: round;
+  /* stroke-dasharray is assigned per press by the hover handler. */
+  opacity: 0.9;
+}
+.fm-stamp-ring.inner { stroke-width: 2; opacity: 0.65; }
+.fm-stamp-check {
   fill: none;
   stroke: #e0201b;
   stroke-width: 7;
   stroke-linecap: round;
   stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  /* Normalised via pathLength="1" on the path, so this is independent
-     of how long any individual scribble actually is. */
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
+}
+.fm-stamp-arc,
+.fm-stamp-foot {
+  fill: #e0201b;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-anchor: middle;
+}
+.fm-stamp-foot { font-size: 10px; letter-spacing: 0.22em; }
+
+/* Reduced motion still gets the stamp, just without the press. The mark
+   is information — that the shelf is verified — not decoration. */
+@media (prefers-reduced-motion: reduce) {
+  .fm-row.is-hot .fm-stamp { opacity: 1; }
 }
 .fm-foot {
   margin-top: auto;
