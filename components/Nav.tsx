@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
+import Marquee from "./Marquee";
 
 const LINKS: { href: string; label: string; download?: boolean }[] = [
   { href: "/", label: "Home" },
@@ -17,6 +18,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const isActive = (href: string) => href === "/" ? pathname === "/" : pathname?.startsWith(href);
+  const isHome = pathname === "/";
 
   return (
     <nav
@@ -139,6 +141,8 @@ export default function Nav() {
           <ThemeToggle />
         </div>
       )}
+
+      {isHome && <Marquee />}
     </nav>
   );
 }

@@ -188,6 +188,25 @@ export default function CertViewer({
       );
       camera.position.set(0, 0, CAM_Z);
 
+      // On a narrow phone screen the vertical FOV stays fixed but the
+      // visible width shrinks with the aspect ratio, so a card sized
+      // for desktop overflows the viewport. Scale the whole deck down
+      // to fit when the host is mobile-width; leave desktop untouched.
+      const MOBILE_BP = 720;
+      let fitScale = 1;
+      const updateFitScale = () => {
+        if (host.clientWidth > MOBILE_BP) {
+          fitScale = 1;
+          return;
+        }
+        const fovRad = (camera.fov * Math.PI) / 180;
+        const visibleH = 2 * Math.tan(fovRad / 2) * CAM_Z;
+        const visibleW = visibleH * camera.aspect;
+        const margin = 0.72; // room for the top bar / readout overlays
+        fitScale = Math.min(1, margin * Math.min(visibleW / CARD_W, visibleH / CARD_H));
+      };
+      updateFitScale();
+
       const geo = new THREE.PlaneGeometry(CARD_W, CARD_H);
       const cards = certs.map((_, i) => {
         /* Blank paper until a texture is built for it. Cards outside
@@ -351,7 +370,7 @@ export default function CertViewer({
           }
           c.mesh.visible = true;
           c.mesh.position.set(0, y, z);
-          c.mesh.scale.setScalar(Math.max(0.01, scale));
+          c.mesh.scale.setScalar(Math.max(0.01, scale) * fitScale);
           c.mat.opacity = Math.min(1, opacity);
           /* Depth testing is off, so paint order is the only thing
              stacking these — nearer cards must render last. */
@@ -367,6 +386,7 @@ export default function CertViewer({
         camera.aspect = host.clientWidth / host.clientHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(host.clientWidth, host.clientHeight);
+        updateFitScale();
       };
       window.addEventListener("resize", onResize);
 

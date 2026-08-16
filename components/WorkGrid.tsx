@@ -154,7 +154,6 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
             onClick={() => setOpen(i)}
             aria-haspopup="dialog"
           >
-            <div className="post-cover">{ART[p.title]}</div>
             <div className="post-body">
               <span
                 className="tag"
@@ -169,6 +168,7 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
               <h3 className="post-title">{p.title}</h3>
               <span className="post-open">{p.link ? "public work ↗" : "open ↗"}</span>
             </div>
+            <div className="post-cover">{ART[p.title]}</div>
           </button>
         ))}
       </div>

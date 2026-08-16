@@ -2,7 +2,6 @@ import Link from "next/link";
 import WorkGrid, { type Post } from "@/components/WorkGrid";
 import SplitReveal from "@/components/SplitReveal";
 import Highlights from "@/components/Highlights";
-import Marquee from "@/components/Marquee";
 import HowIWork from "@/components/HowIWork";
 import Capabilities from "@/components/Capabilities";
 import Statement from "@/components/Statement";
@@ -138,8 +137,6 @@ export default function Page() {
         </div>
       </header>
 
-      <Marquee />
-
       <Highlights />
 
       <HowIWork />
@@ -148,40 +145,6 @@ export default function Page() {
         <div className="wrap">
           <SectionHead
             index="02 / 05"
-            label="Selected work"
-            accent="sage"
-            title="Work that shipped."
-          />
-          <p style={{ color: "var(--ink-70)", maxWidth: "58ch", marginTop: "0.75rem" }}>
-            Six projects spanning CI/CD, disaster recovery, large-scale migration, and embedded
-            protocol tooling. Tap any tile for the full story and the stack behind it.
-          </p>
-          <div style={{ marginTop: "2rem" }}>
-            <WorkGrid posts={WORK_POSTS} />
-          </div>
-        </div>
-      </section>
-
-      <Statement />
-
-      <section className="section">
-        <div className="wrap">
-          <Parallax
-            src="/images/banner-datacenter.webp"
-            alt="Rows of server racks in a datacenter"
-          >
-            <span className="eyebrow">Production, somewhere</span>
-            <h2 className="px-title">Someone has to own the 3am page.</h2>
-          </Parallax>
-        </div>
-      </section>
-
-      <Capabilities />
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead
-            index="04 / 05"
             label="Availability"
             accent="slate"
             title="Deployment regions."
@@ -219,6 +182,40 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      <section className="section">
+        <div className="wrap">
+          <SectionHead
+            index="03 / 05"
+            label="Selected work"
+            accent="sage"
+            title="Work that shipped."
+          />
+          <p style={{ color: "var(--ink-70)", maxWidth: "58ch", marginTop: "0.75rem" }}>
+            Six projects spanning CI/CD, disaster recovery, large-scale migration, and embedded
+            protocol tooling. Tap any tile for the full story and the stack behind it.
+          </p>
+          <div style={{ marginTop: "2rem" }}>
+            <WorkGrid posts={WORK_POSTS} />
+          </div>
+        </div>
+      </section>
+
+      <Statement />
+
+      <section className="section">
+        <div className="wrap">
+          <Parallax
+            src="/images/banner-datacenter.webp"
+            alt="Rows of server racks in a datacenter"
+          >
+            <span className="eyebrow">Production, somewhere</span>
+            <h2 className="px-title">Someone has to own the 3am page.</h2>
+          </Parallax>
+        </div>
+      </section>
+
+      <Capabilities />
 
       <section className="section">
         <div className="wrap">

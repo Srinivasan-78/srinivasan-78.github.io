@@ -156,7 +156,7 @@ export default function Capabilities() {
     <section className="section">
       <div className="wrap">
         <SectionHead
-          index="03 / 05"
+          index="04 / 05"
           label="What I actually build"
           accent="plum"
           title="Six things I get called in for."
@@ -165,9 +165,11 @@ export default function Capabilities() {
         <div className="masonry" ref={ref} data-skew>
           {TILES.map((t) => (
             <article className={"cap-tile accent-" + t.accent} key={t.title}>
+              <div className="cap-body-wrap">
+                <h3 className="cap-title">{t.title}</h3>
+                <p className="cap-body">{t.body}</p>
+              </div>
               <div className="cap-art">{t.art}</div>
-              <h3 className="cap-title">{t.title}</h3>
-              <p className="cap-body">{t.body}</p>
             </article>
           ))}
         </div>
