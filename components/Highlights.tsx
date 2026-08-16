@@ -68,6 +68,7 @@ export default function Highlights() {
             className={"hl" + (open === i ? " active" : "")}
             aria-label={r.title}
             aria-expanded={open === i}
+            aria-controls="hl-panel"
             onClick={() => setOpen(open === i ? null : i)}
           >
             <div className="hl-ring">
@@ -82,7 +83,15 @@ export default function Highlights() {
         ))}
       </div>
 
-      <div className={"hl-panel" + (active ? " open" : "")}>
+      {/* aria-live so a screen reader announces the tool list when a ring
+          is tapped — otherwise the content appears with no indication
+          that anything happened. */}
+      <div
+        id="hl-panel"
+        role="region"
+        aria-live="polite"
+        className={"hl-panel" + (active ? " open" : "")}
+      >
         {active && (
           <>
             <h4>{active.title}</h4>

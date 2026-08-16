@@ -88,6 +88,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <VelocitySkew />
         <Hud />
         <Cursor />
+        <a href="#content" className="skip-link">
+          Skip to content
+        </a>
         <SmoothScrollProvider>
           <Nav />
           {children}

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { CERTS, ROWS, forRow, type Row } from "@/lib/certs";
 import CertViewer from "./CertViewer";
+import { useScrollLock } from "./SmoothScrollProvider";
 
 /* Navigation modelled on freshman.tv's menu: full-bleed rows of large
    serif type, each row starting at a different indent so the block
@@ -51,6 +52,7 @@ export default function CertMenu() {
   const [open, setOpen] = useState<Row | null>(null);
   const rowRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const curtainRef = useRef<HTMLDivElement>(null);
+  const { lock, unlock } = useScrollLock();
 
   /* Memoised so the prop keeps its identity across CertViewer's own
      re-renders — a fresh array each time would retear the WebGL scene
@@ -96,21 +98,19 @@ export default function CertMenu() {
     });
   };
 
-  // Body scroll is the viewer's, not the page's, while it is up.
+  // Scroll belongs to the viewer, not the page, while it is up.
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+    lock();
+    return unlock;
+  }, [open, lock, unlock]);
 
   return (
     <>
-      <main className="fm-main">
+      <main id="content" className="fm-main">
         <header className="fm-head">
           <span className="eyebrow c-plum">Certifications</span>
+          <h1 className="fm-h1">Verified credentials</h1>
           <p>
             {CERTS.length} verified credentials. Pick a shelf — each one opens as a
             corridor you travel through.

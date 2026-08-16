@@ -1,12 +1,33 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+
+/* Lenis drives scrolling itself, so `document.body.style.overflow =
+   "hidden"` — what the dialogs used to do — does not stop it. Lenis
+   keeps consuming wheel and touch and keeps calling window.scrollTo, so
+   the page carried on moving behind every open modal.
+
+   Exposing stop/start is the actual fix, and a context is the smallest
+   way to reach the instance from a dialog several levels down. Calls
+   are ref-counted: two overlapping locks (a lightbox opened from a page
+   that already locked) must not have the first one to close release the
+   scroll for both. */
+type ScrollLock = { lock: () => void; unlock: () => void };
+
+const ScrollLockContext = createContext<ScrollLock>({
+  lock: () => {},
+  unlock: () => {},
+});
+
+export function useScrollLock() {
+  return useContext(ScrollLockContext);
+}
 
 export default function SmoothScrollProvider({
   children,
@@ -69,5 +90,27 @@ export default function SmoothScrollProvider({
     ScrollTrigger.refresh();
   }, [pathname]);
 
-  return <>{children}</>;
+  const locks = useRef(0);
+
+  const lock = useCallback(() => {
+    locks.current += 1;
+    if (locks.current > 1) return;
+    lenisRef.current?.stop();
+    // Still set on body: Lenis is skipped entirely under reduced motion,
+    // and native scrolling has to be held back in that case too.
+    document.body.style.overflow = "hidden";
+  }, []);
+
+  const unlock = useCallback(() => {
+    locks.current = Math.max(0, locks.current - 1);
+    if (locks.current > 0) return;
+    lenisRef.current?.start();
+    document.body.style.overflow = "";
+  }, []);
+
+  const value = useMemo(() => ({ lock, unlock }), [lock, unlock]);
+
+  return (
+    <ScrollLockContext.Provider value={value}>{children}</ScrollLockContext.Provider>
+  );
 }

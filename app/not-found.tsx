@@ -11,7 +11,7 @@ const ROUTES = [
 
 export default function NotFound() {
   return (
-    <main className="wrap" style={{ padding: "3rem 24px" }}>
+    <main id="content" className="wrap" style={{ padding: "3rem 24px" }}>
       <span className="eyebrow c-brass">404</span>
       <h1 className="display display-lg" style={{ margin: "0.4rem 0 0.75rem" }}>
         That page didn&rsquo;t resolve

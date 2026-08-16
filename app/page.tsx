@@ -74,7 +74,7 @@ const STATS: { value: number; suffix?: string; label: string; color: string }[] 
 
 export default function Page() {
   return (
-    <main>
+    <main id="content">
       <header className="hero">
         <div className="wrap">
           <div className="hero-meta">

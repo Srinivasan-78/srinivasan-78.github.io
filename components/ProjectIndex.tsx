@@ -115,7 +115,7 @@ export default function ProjectIndex() {
   let n = 0;
 
   return (
-    <main className="pi" ref={rootRef}>
+    <main id="content" className="pi" ref={rootRef}>
       <header className="pi-head">
         <span className="eyebrow c-sage">Projects</span>
         <h1 className="display display-lg">Things I build outside work</h1>

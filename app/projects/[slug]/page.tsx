@@ -27,7 +27,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
   if (!p) notFound();
 
   return (
-    <main className="wrap" style={{ padding: "1.5rem 24px 3rem" }}>
+    <main id="content" className="wrap" style={{ padding: "1.5rem 24px 3rem" }}>
       <Link href="/projects" className="eyebrow lnk">
         ← Back to the gallery
       </Link>

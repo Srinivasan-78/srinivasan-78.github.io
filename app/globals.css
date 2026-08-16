@@ -1,39 +1,47 @@
 /* ---------- KH TEKA ----------
    Commercial typeface from KH Type (khtype.com) — the licence does not
-   permit redistribution, so the .woff2 files are NOT in this repo. Buy
-   a webfont licence, drop the files in /public/fonts, and these rules
-   pick them up. Until then every rule below fails silently and the
-   fallback grotesque in --font-body renders instead, which is why the
-   fallback stack is a close metric match rather than a generic
-   sans-serif. */
-@font-face {
-  font-family: "KH Teka";
-  src: url("/fonts/KHTeka-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "KH Teka";
-  src: url("/fonts/KHTeka-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "KH Teka";
-  src: url("/fonts/KHTeka-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "KH Teka Mono";
-  src: url("/fonts/KHTekaMono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+   permit redistribution, so the .woff2 files are NOT in this repo, and
+   /public/fonts does not exist.
+
+   The @font-face rules are commented out rather than left live. Left
+   live they are not free: the browser requests four .woff2 files on
+   every page load of every route, all four 404, and each one costs a
+   round trip plus a console error before the fallback is used. The
+   fallback stack in --font-body is a deliberate metric match, so
+   commenting these out changes nothing visually today.
+
+   To enable: buy a webfont licence, drop the files in /public/fonts,
+   and uncomment the block below.
+
+   @font-face {
+     font-family: "KH Teka";
+     src: url("/fonts/KHTeka-Regular.woff2") format("woff2");
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+   }
+   @font-face {
+     font-family: "KH Teka";
+     src: url("/fonts/KHTeka-Medium.woff2") format("woff2");
+     font-weight: 500;
+     font-style: normal;
+     font-display: swap;
+   }
+   @font-face {
+     font-family: "KH Teka";
+     src: url("/fonts/KHTeka-Light.woff2") format("woff2");
+     font-weight: 300;
+     font-style: normal;
+     font-display: swap;
+   }
+   @font-face {
+     font-family: "KH Teka Mono";
+     src: url("/fonts/KHTekaMono-Regular.woff2") format("woff2");
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+   }
+*/
 
 /* :root holds the light palette; html[data-theme="dark"] overrides it
    with higher specificity, so order in this file never matters. */
@@ -129,6 +137,27 @@ body {
 }
 
 a { color: var(--ink); text-decoration: none; }
+
+/* Off-screen until focused. Without it, every route makes a keyboard
+   user tab through the whole nav before reaching any content. Not
+   display:none — that would take it out of the tab order entirely and
+   defeat the point. */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  transform: translateY(-120%);
+  padding: 0.7rem 1.1rem;
+  background: var(--sage);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  border-bottom-right-radius: 8px;
+  transition: transform 0.2s var(--ease);
+}
+.skip-link:focus-visible { transform: translateY(0); }
 :focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; width: 100%; }
@@ -259,7 +288,10 @@ a { color: var(--ink); text-decoration: none; }
 .pin-stage {
   position: sticky;
   top: 0;
-  min-height: 100vh;
+  /* dvh, not vh: on iOS Safari 100vh is the address-bar-collapsed
+     height, so a vh-sized sticky stage overflows by ~60px on load and
+     the section below peeks in under it. */
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -311,7 +343,14 @@ a.card:hover {
 }
 
 .split-word { display: inline-block; overflow: hidden; line-height: 1.25; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-.split-word > span { display: inline-block; will-change: transform, opacity; }
+/* No permanent will-change here. Every heading on the site is split
+   into one span per word, so a standing `will-change: transform` meant
+   the browser promoted every word of every heading to its own
+   compositor layer and held it there for the life of the page — memory
+   spent on elements that animate once, on entry, and never again. GSAP
+   promotes what it is actually tweening (force3D) for the duration of
+   the tween, which is the whole benefit at none of the cost. */
+.split-word > span { display: inline-block; }
 
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -1247,6 +1286,19 @@ html.lenis, html.lenis body { height: auto; }
 .fm-head p {
   margin: 0; max-width: 46ch;
   color: var(--ink-45); font-size: 0.84rem;
+}
+/* The page previously opened straight into the shelf rows, leaving the
+   route with no h1 at all — the only one on the site without one. Set
+   quietly so it names the page for search and screen readers without
+   competing with the oversized shelf labels below it. */
+.fm-h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.3vw, 1.8rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
 }
 .fm-rows { border-top: 1px dashed var(--ink-15); }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
@@ -19,9 +19,41 @@ export default function Nav() {
   const pathname = usePathname();
   const isActive = (href: string) => href === "/" ? pathname === "/" : pathname?.startsWith(href);
   const isHome = pathname === "/";
+  const navRef = useRef<HTMLElement>(null);
+
+  /* The mobile menu previously had no way out except tapping a link:
+     Escape did nothing, tapping the page behind it did nothing, and it
+     survived a route change if the destination was reached any other
+     way. All three are baseline expectations for a disclosure menu. */
+  useEffect(() => {
+    if (!open) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      // Focus goes back to the control that opened it, not to <body>.
+      navRef.current?.querySelector<HTMLButtonElement>(".nav-toggle")?.focus();
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (!navRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+
+    document.addEventListener("keydown", onKey);
+    // Capture phase: a link inside the menu still gets its own click,
+    // but a tap anywhere outside closes before that target reacts.
+    document.addEventListener("pointerdown", onPointer, true);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer, true);
+    };
+  }, [open]);
+
+  // Any navigation closes it, including back/forward.
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
     <nav
+      ref={navRef}
       style={{
         position: "sticky",
         top: 2,

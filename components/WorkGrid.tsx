@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useScrollLock } from "./SmoothScrollProvider";
 
 export type Post = {
   tag: string;
@@ -122,14 +123,14 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const active = open === null ? null : posts[open];
+  const { lock, unlock } = useScrollLock();
 
   useEffect(() => {
     if (open === null) return;
 
     lastFocus.current = document.activeElement as HTMLElement;
     closeRef.current?.focus();
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    lock();
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(null);
@@ -138,10 +139,10 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
 
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
+      unlock();
       lastFocus.current?.focus();
     };
-  }, [open]);
+  }, [open, lock, unlock]);
 
   return (
     <>
