@@ -6,14 +6,8 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import Marquee from "./Marquee";
 
-/* The URL stays /resume.pdf — it may already be in sent emails and on
-   LinkedIn — but the saved file gets a name that means something in a
-   recruiter's downloads folder. */
-const RESUME_FILENAME = "Srinivasan-Vijayaraghavan-DevOps.pdf";
-
 const LINKS: { href: string; label: string; download?: boolean }[] = [
   { href: "/", label: "Home" },
-  { href: "/experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
   { href: "/certifications", label: "Certifications" },
   { href: "/resume.pdf", label: "Résumé", download: true },
@@ -89,7 +83,7 @@ export default function Nav() {
                would try to client-navigate to it and prefetch a page that
                doesn't exist, so plain <a> for downloads. */
             l.download ? (
-              <a key={l.href} href={l.href} download={RESUME_FILENAME} className="eyebrow lnk" style={{ fontSize: "0.8rem" }}>
+              <a key={l.href} href={l.href} download className="eyebrow lnk" style={{ fontSize: "0.8rem" }}>
                 {l.label}
               </a>
             ) : (
@@ -151,7 +145,7 @@ export default function Nav() {
               <a
                 key={l.href}
                 href={l.href}
-                download={RESUME_FILENAME}
+                download
                 onClick={() => setOpen(false)}
                 className="eyebrow"
                 style={{ fontSize: "0.85rem" }}

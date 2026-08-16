@@ -23,12 +23,7 @@ export function CountUp({
   style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  /* Seeded with the REAL value, not 0. This renders on the server, and
-     "0 years shipping / 0 certifications" was what every non-executing
-     reader saw: link unfurls, social card scrapers, resume parsers, and
-     anyone with JS blocked. The animation still runs — the effect below
-     resets to 0 first — but the number in the shipped HTML is true. */
-  const [n, setN] = useState(value);
+  const [n, setN] = useState(0);
   const done = useRef(false);
 
   useEffect(() => {
@@ -39,9 +34,6 @@ export function CountUp({
       setN(value);
       return;
     }
-
-    // Wind back to zero only once we know we're animating for real.
-    setN(0);
 
     // Tracked so teardown can stop it. Disconnecting the observer alone
     // leaves an in-flight rAF loop running against an unmounted node.

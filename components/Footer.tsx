@@ -11,12 +11,7 @@ export default function Footer() {
         }}
       >
         <span className="eyebrow">© 2026 Srinivasan Vijayaraghavan</span>
-        <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap" }}>
-          {/* Plain-text email on every page: recruiters copy-paste, and
-              it was previously reachable only via the contact route. */}
-          <a className="eyebrow lnk" href="mailto:srinivasan.shyam2000@gmail.com">
-            srinivasan.shyam2000@gmail.com
-          </a>
+        <div style={{ display: "flex", gap: "1.25rem" }}>
           <a
             className="eyebrow lnk"
             href="https://www.linkedin.com/in/srini-solution-architect/"

@@ -193,14 +193,9 @@ export default function DevOpsScene() {
       const home = objects.map((o) => o.mesh.position.clone());
       let stop = -1;
       let raf = 0;
-      let paused = false;
 
       const frame = () => {
         raf = requestAnimationFrame(frame);
-        // Parked while another component owns a WebGL context (the
-        // certificate viewer). Two renderers on two render loops is
-        // pure heat for a background nobody is looking at.
-        if (paused) return;
         current += (target - current) * 0.06;
         mx += (tmx - mx) * 0.05;
         my += (tmy - my) * 0.05;
@@ -245,18 +240,6 @@ export default function DevOpsScene() {
       }
       window.addEventListener("resize", onResize);
 
-      /* CertViewer opens a full-screen WebGL deck over this scene. It
-         fires these two events around its own lifetime so the
-         background loop can stand down while it's up. */
-      const onPause = () => {
-        paused = true;
-      };
-      const onResume = () => {
-        paused = false;
-      };
-      window.addEventListener("gl:pause", onPause);
-      window.addEventListener("gl:resume", onResume);
-
       const obs = new MutationObserver(() => {
         line.color.set(cssColor(STOPS[stop < 0 ? 0 : stop], "#0095f6"));
         lineDim.color.set(cssColor("--ink-45", "#85827d"));
@@ -274,8 +257,6 @@ export default function DevOpsScene() {
         // never added is a no-op, and branching here would leak if the
         // media query flipped between mount and unmount.
         window.removeEventListener("resize", onResize);
-        window.removeEventListener("gl:pause", onPause);
-        window.removeEventListener("gl:resume", onResume);
         obs.disconnect();
         scene.traverse((o: any) => {
           if (o.geometry) o.geometry.dispose();

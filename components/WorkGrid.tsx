@@ -121,7 +121,6 @@ const ART: Record<string, React.ReactNode> = {
 export default function WorkGrid({ posts }: { posts: Post[] }) {
   const [open, setOpen] = useState<number | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const active = open === null ? null : posts[open];
   const { lock, unlock } = useScrollLock();
@@ -133,40 +132,8 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
     closeRef.current?.focus();
     lock();
 
-    /* aria-modal="true" is a promise to assistive tech that the rest of
-       the page is inert — but it does nothing to Tab. Without trapping,
-       the third Tab press walked out of the dialog and into the page
-       behind it, with no visible focus ring and no way back. */
-    const FOCUSABLE =
-      'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(null);
-        return;
-      }
-      if (e.key !== "Tab") return;
-
-      const card = cardRef.current;
-      if (!card) return;
-      const items = Array.from(card.querySelectorAll<HTMLElement>(FOCUSABLE));
-      if (!items.length) return;
-
-      const first = items[0];
-      const last = items[items.length - 1];
-      const activeEl = document.activeElement;
-
-      // Wrap at both ends, and pull focus back in if it has already escaped.
-      if (!card.contains(activeEl)) {
-        e.preventDefault();
-        first.focus();
-      } else if (e.shiftKey && activeEl === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && activeEl === last) {
-        e.preventDefault();
-        first.focus();
-      }
+      if (e.key === "Escape") setOpen(null);
     };
     document.addEventListener("keydown", onKey);
 
@@ -217,7 +184,7 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
             if (e.target === e.currentTarget) setOpen(null);
           }}
         >
-          <div ref={cardRef} className={"lb-card " + active.accent}>
+          <div className={"lb-card " + active.accent}>
             <button ref={closeRef} type="button" className="lb-close" onClick={() => setOpen(null)}>
               close
             </button>

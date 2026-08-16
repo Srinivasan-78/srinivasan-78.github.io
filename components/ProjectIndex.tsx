@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { PROJECTS, type Project } from "@/lib/projects";
-import { DIAGRAM, FALLBACK } from "@/lib/diagrams";
+import { DIAGRAM, FALLBACK } from "./ProjectGrid";
 
 /* A manifest, not a gallery.
 
@@ -22,22 +22,16 @@ import { DIAGRAM, FALLBACK } from "@/lib/diagrams";
    labels the section continuously while you scroll it, and keeps every
    project name on one unbroken left edge. */
 
-type Group = { name: string; items: Project[]; start: number };
+type Group = { name: string; items: Project[] };
 
 /* Contiguous runs in source order, so re-ordering the array in
-   lib/projects.ts is the only thing needed to re-order this page.
-
-   `start` is the running index of the group's first row. Row numbers
-   used to come from a `let n = 0` mutated inside .map() during render —
-   correct today, but a side effect in the render phase, and a partial
-   re-render under concurrent React would renumber the page. Computing
-   the offset up front makes the numbering a pure function of the data. */
+   lib/projects.ts is the only thing needed to re-order this page. */
 function groupProjects(list: Project[]): Group[] {
   const out: Group[] = [];
   for (const p of list) {
     const tail = out[out.length - 1];
-    if (tail && tail.name === p.group) tail.items.push(p);
-    else out.push({ name: p.group, items: [p], start: out.reduce((n, g) => n + g.items.length, 0) });
+    if (tail && tail.name === p.client) tail.items.push(p);
+    else out.push({ name: p.client, items: [p] });
   }
   return out;
 }
@@ -59,29 +53,20 @@ function isFilled(el: SVGGeometryElement) {
   return !!f && f !== "none";
 }
 
-function armRow(art: Element, onlyUnmeasured = false) {
+function armRow(art: Element) {
   geometry(art).forEach((el) => {
     if (isFilled(el)) {
       if (!el.dataset.o) el.dataset.o = el.getAttribute("opacity") ?? "1";
       gsap.set(el, { opacity: 0 });
     } else {
       let L = len.get(el);
-      // On a re-arm pass, leave anything already measured alone — it may
-      // be mid-draw under the pointer, and resetting its dashoffset
-      // would blank a schematic the user is looking at.
-      if (L != null && onlyUnmeasured) return;
       if (L == null) {
         try {
           L = el.getTotalLength();
         } catch {
           L = 0;
         }
-        /* Below 900px the CSS sets `.pi-art { display: none }`, and an
-           unlaid-out path measures 0. Caching that would leave the
-           schematic snapping in with no draw animation for anyone who
-           later widened the window, so only a real measurement is kept
-           and a 0 gets re-measured on the next arm. */
-        if (L > 0) len.set(el, L);
+        len.set(el, L);
       }
       gsap.set(el, { strokeDasharray: L, strokeDashoffset: L });
     }
@@ -118,27 +103,16 @@ export default function ProjectIndex() {
     const root = rootRef.current;
     if (!root) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const arts = Array.from(root.querySelectorAll<HTMLElement>(".pi-art"));
+    const arts = Array.from(root.querySelectorAll(".pi-art"));
     if (reduced) {
       // Leave the art fully drawn; CSS handles the swap on hover.
       root.classList.add("pi-static");
       return;
     }
     arts.forEach(armRow);
-
-    /* Crossing the 900px breakpoint lays the art out for the first time,
-       so anything that measured 0 while hidden gets a real length now. */
-    let t: ReturnType<typeof setTimeout> | undefined;
-    const onResize = () => {
-      clearTimeout(t);
-      t = setTimeout(() => arts.forEach((a) => armRow(a, true)), 150);
-    };
-    window.addEventListener("resize", onResize);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener("resize", onResize);
-    };
   }, []);
+
+  let n = 0;
 
   return (
     <main id="content" className="pi" ref={rootRef}>
@@ -162,7 +136,8 @@ export default function ProjectIndex() {
           </div>
 
           <div className="pi-rows">
-            {g.items.map((p, i) => {
+            {g.items.map((p) => {
+              n += 1;
               const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
               return (
                 <Link
@@ -179,7 +154,7 @@ export default function ProjectIndex() {
                     if (a) drawRow(a, false);
                   }}
                 >
-                  <span className="pi-num">{String(g.start + i + 1).padStart(2, "0")}</span>
+                  <span className="pi-num">{String(n).padStart(2, "0")}</span>
 
                   <span className="pi-name">
                     {p.title}

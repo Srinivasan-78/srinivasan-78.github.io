@@ -4,11 +4,8 @@ export type ProjectLink = { url: string; label: string };
 export type Project = {
   slug: string;
   title: string;
-  /* Section this project is filed under on the index page. Contiguous
-     runs of the same value become one group, so re-ordering the array
-     below is the only thing needed to re-order the page. Not a client
-     name — these are all personal projects. */
-  group: string;
+  /* Shown top-left on the card, the way the reference shows a client name. */
+  client: string;
   category: string;
   status: string;
   accent: Accent;
@@ -17,7 +14,7 @@ export type Project = {
   /* Short pills on the card face — kept to 3 so the texture never overflows. */
   tags: string[];
   stack: string[];
-  /* Key into the schematic map in lib/diagrams.tsx. Defaults to `title`;
+  /* Key into the schematic map in ProjectGrid. Defaults to `title`;
      set only where the two have drifted apart. */
   schematic?: string;
   overview: string;
@@ -30,7 +27,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "self-healing-deployment",
     title: "Self-Healing Deployment",
-    group: "Live & deployed",
+    client: "Live & deployed",
     category: "Platform",
     status: "Live",
     accent: "sage",
@@ -72,7 +69,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "pdf-tools",
     title: "PDF Tools",
-    group: "Live & deployed",
+    client: "Live & deployed",
     category: "Utility",
     status: "Live",
     accent: "sage",
@@ -107,7 +104,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "vfactor-solutions",
     title: "vFactor Solutions",
-    group: "Live & deployed",
+    client: "Live & deployed",
     category: "Client build",
     status: "Live",
     accent: "sage",
@@ -142,7 +139,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "multi-cloud-free-tier-platform",
     title: "Multi-Cloud Free-Tier Platform",
-    group: "Platform engineering",
+    client: "Platform engineering",
     category: "Infrastructure",
     status: "Work in progress",
     accent: "slate",
@@ -186,7 +183,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "multi-ai-toolkit",
     title: "Multi-AI Toolkit",
-    group: "Platform engineering",
+    client: "Platform engineering",
     category: "Orchestration",
     status: "Active",
     accent: "slate",
@@ -229,7 +226,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "zim-assistant",
     title: "Zim Assistant",
-    group: "Platform engineering",
+    client: "Platform engineering",
     category: "Homelab",
     status: "Active",
     accent: "slate",
@@ -263,7 +260,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "simple-actions",
     title: "Simple-Actions",
-    group: "CI/CD & packaging",
+    client: "CI/CD & packaging",
     category: "Pipelines",
     status: "Reference",
     accent: "plum",
@@ -302,7 +299,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "wix-installer-template",
     title: "WiX Installer Template",
-    group: "CI/CD & packaging",
+    client: "CI/CD & packaging",
     category: "Packaging",
     status: "Reference",
     accent: "plum",
@@ -337,7 +334,7 @@ export const PROJECTS: Project[] = [
     slug: "brainrot-study",
     title: "Brainrot Study",
     schematic: "Brainrot Study — automated video pipeline",
-    group: "CI/CD & packaging",
+    client: "CI/CD & packaging",
     category: "Automation",
     status: "In progress",
     accent: "plum",
@@ -379,7 +376,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "matter-test-harness-image-builder",
     title: "Matter Test Harness Image Builder",
-    group: "Hardware & imaging",
+    client: "Hardware & imaging",
     category: "Hardware",
     status: "Active",
     accent: "brass",
@@ -417,7 +414,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "imgautomation",
     title: "ImgAutomation",
-    group: "Hardware & imaging",
+    client: "Hardware & imaging",
     category: "Hardware",
     status: "Active",
     accent: "brass",
@@ -451,7 +448,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "speedtestdd",
     title: "SpeedTestDD",
-    group: "Utilities",
+    client: "Utilities",
     category: "Benchmark",
     status: "Complete",
     accent: "sage",
@@ -483,6 +480,8 @@ export const PROJECTS: Project[] = [
     links: [{ url: "https://github.com/Srinivasan-78/SpeedTestDD", label: "View repo ↗" }],
   },
 ];
+
+export const CATEGORIES = Array.from(new Set(PROJECTS.map((p) => p.client)));
 
 export function projectBySlug(slug: string) {
   return PROJECTS.find((p) => p.slug === slug);

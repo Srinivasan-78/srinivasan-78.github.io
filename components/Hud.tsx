@@ -25,13 +25,9 @@ export default function Hud() {
     return () => clearInterval(id);
   }, []);
 
-  /* Nothing until the clock is real. The old "--:--" placeholder shipped
-     in the server HTML and turned up in text scrapes of every page. */
-  if (!time) return null;
-
   return (
     <div className="hud" aria-hidden="true">
-      <span>BLR <b>{time}</b></span>
+      <span>BLR <b>{time || "--:--"}</b></span>
       <span>status <b>available</b></span>
     </div>
   );

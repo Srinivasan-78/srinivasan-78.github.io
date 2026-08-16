@@ -435,15 +435,6 @@ export default function CertViewer({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  /* This viewer owns a WebGL context of its own, and DevOpsScene keeps
-     one running behind every route. Two renderers driving two render
-     loops at once is real battery and thermal cost for a background
-     that is fully covered while this is open. */
-  useEffect(() => {
-    window.dispatchEvent(new Event("gl:pause"));
-    return () => window.dispatchEvent(new Event("gl:resume"));
-  }, []);
-
   /* Focus moves into the dialog on open and back to the shelf row on
      close. Without the restore, dismissing the viewer dropped focus to
      <body> and a keyboard user had to tab from the top of the page. */

@@ -9,13 +9,9 @@ import Reveal from "@/components/Reveal";
 import Parallax from "@/components/Parallax";
 import SectionHead from "@/components/SectionHead";
 import { CountUp, RotatingWord, DecryptText, TiltCard } from "@/components/Bits";
-import { PROJECTS } from "@/lib/projects";
 
 const EXPLORE = [
-  /* Derived, never typed by hand — this said "11 builds" while the
-     projects page counted 12 off the same array. */
-  { href: "/projects", title: "Projects", body: `Live tools, a Terraform multi-cloud platform, and automation pipelines — ${PROJECTS.length} builds.`, go: "View projects →" },
-  { href: "/experience", title: "Experience", body: "Two roles, five years, and the detail a résumé PDF has no room for.", go: "View experience →" },
+  { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds.", go: "View projects →" },
   { href: "/certifications", title: "Certifications", body: "22 credentials in cloud, automation, and infrastructure — all verifiable.", go: "View certifications →" },
   { href: "/contact", title: "Get in touch", body: "Open to DevOps, cloud infrastructure, and automation conversations.", go: "Say hello →" },
 ];
@@ -88,12 +84,6 @@ export default function Page() {
             </span>
             <span className="eyebrow">Bangalore, IN · US citizen + OCI</span>
           </div>
-          {/* "Open to opportunities" on its own tells a recruiter nothing
-              actionable. Keep this line current. */}
-          <p className="eyebrow" style={{ marginTop: "0.6rem", color: "var(--ink-45)" }}>
-            Seeking DevOps / SRE and platform engineering roles · India or US · remote,
-            hybrid, or on-site · no sponsorship required
-          </p>
 
           <SplitReveal
             as="h1"
@@ -140,7 +130,7 @@ export default function Page() {
           </Reveal>
 
           <div className="hero-actions">
-            <a href="/resume.pdf" className="btn primary" download="Srinivasan-Vijayaraghavan-DevOps.pdf">
+            <a href="/resume.pdf" className="btn primary" download>
               Download résumé
             </a>
           </div>

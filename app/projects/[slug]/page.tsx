@@ -19,7 +19,6 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
     description: p.teaser,
     alternates: { canonical: `/projects/${p.slug}` },
     openGraph: { title, description: p.teaser, url: `/projects/${p.slug}` },
-    twitter: { card: "summary_large_image", title, description: p.teaser },
   };
 }
 
@@ -34,10 +33,9 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
       </Link>
 
       <div className="pd-hero">
-        {/* `group` is a shelf label on the index ("Live & deployed"),
-            not a client — printing it here read as "Live & deployed ·
-            Utility". The category alone is the useful half. */}
-        <span className={"eyebrow c-" + p.accent}>{p.category}</span>
+        <span className={"eyebrow c-" + p.accent}>
+          {p.client} · {p.category}
+        </span>
         <SplitReveal as="h1" text={p.title} className="display display-xl" stagger={0.02} />
         <p style={{ color: "var(--ink-70)", maxWidth: "58ch", marginTop: "1rem" }}>{p.teaser}</p>
 
@@ -107,7 +105,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
             .slice(0, 3)
             .map((o) => (
               <Link key={o.slug} href={`/projects/${o.slug}`} className="card" data-cursor-hover>
-                <span className="eyebrow">{o.category}</span>
+                <span className="eyebrow">{o.client}</span>
                 <h2 className="post-title">{o.title}</h2>
                 <p className="proj-teaser">{o.teaser}</p>
                 <span className="go">Read more →</span>

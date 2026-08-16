@@ -4,7 +4,6 @@ export const metadata = { title: "Page not found — Srinivasan Vijayaraghavan" 
 
 const ROUTES = [
   { href: "/", title: "Home", body: "Profile, skills, and availability.", go: "Go home →" },
-  { href: "/experience", title: "Experience", body: "Roles, dates, and what shipped.", go: "View experience →" },
   { href: "/projects", title: "Projects", body: "Live tools and platform engineering builds.", go: "View projects →" },
   { href: "/certifications", title: "Certifications", body: "22 verifiable credentials.", go: "View certifications →" },
   { href: "/contact", title: "Contact", body: "Send a message.", go: "Get in touch →" },

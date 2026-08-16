@@ -1,15 +1,9 @@
+/* Schematic art only. The card component that used to live here was
+   unreferenced — ProjectIndex renders the rows and pulls just these two
+   exports, so the dead component and its duplicate Project/Accent types
+   (which shadowed the real ones in lib/projects.ts) are gone. */
+
 import type { ReactNode } from "react";
-
-/* Line-art schematics for the project index, keyed by project title
-   (or by `schematic` where a project's title and its diagram key have
-   drifted apart).
-
-   These live in lib/ rather than in a component because nothing renders
-   them directly — ProjectIndex looks them up and animates the raw SVG
-   geometry. Every stroked element is authored with a real arc length so
-   it can be dashed and unrolled on hover; keep it that way when adding
-   new ones, and keep colours on `currentColor` so the theme drives them.
-*/
 
 const s = { fill: "none", strokeLinecap: "round", strokeLinejoin: "round" } as const;
 

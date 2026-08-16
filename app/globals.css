@@ -361,11 +361,7 @@ a.card:hover {
   .split-word > span { opacity: 1 !important; transform: none !important; }
 }
 
-/* The Cursor effect bails early for coarse pointers AND for reduced
-   motion, but the two elements still render at top:0/left:0 with no
-   transform yet — so without a rule for BOTH cases they sit parked in
-   the corner of the viewport forever. */
-@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+@media (pointer: coarse) {
   .cursor-dot, .cursor-ring { display: none !important; }
 }
 

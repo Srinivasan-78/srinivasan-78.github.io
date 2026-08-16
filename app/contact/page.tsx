@@ -5,7 +5,6 @@ export const metadata = {
   description: "Get in touch about DevOps, cloud infrastructure, and automation roles.",
   alternates: { canonical: "/contact" },
   openGraph: { title: "Contact — Srinivasan Vijayaraghavan", description: "Get in touch about DevOps, cloud infrastructure, and automation roles.", url: "/contact" },
-  twitter: { card: "summary_large_image", title: "Contact — Srinivasan Vijayaraghavan", description: "Get in touch about DevOps, cloud infrastructure, and automation roles." },
 };
 
 export default function Contact() {
