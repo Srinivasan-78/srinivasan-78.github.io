@@ -8,7 +8,7 @@
 import * as THREE from "three";
 import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, MeshTransmissionMaterial, Environment } from "@react-three/drei";
+import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { easing } from "maath";
 
 type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
@@ -26,6 +26,13 @@ class ModelErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
     return this.state.failed ? null : this.props.children;
   }
 }
+
+// MeshTransmissionMaterial renders into an offscreen buffer and samples
+// that buffer for what "shows through" the glass — with nothing else in
+// this scene, an unset buffer is cleared black, so the lens reads as a
+// solid black disc no matter the lighting. `background` feeds it a
+// color to sample instead, which is what actually makes it look clear.
+const LENS_BACKGROUND = new THREE.Color("#f4f4f4");
 
 function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
   const ref = useRef<THREE.Mesh>(null);
@@ -58,6 +65,7 @@ function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
         roughness={0}
         transmission={1}
         color="#ffffff"
+        background={LENS_BACKGROUND}
       />
     </mesh>
   );
@@ -98,10 +106,6 @@ export default function FluidCursor() {
       >
         <ModelErrorBoundary>
           <Suspense fallback={null}>
-            {/* MeshTransmissionMaterial needs something to refract —
-                without an environment it renders flat black instead
-                of glass. */}
-            <Environment preset="city" />
             <LensCursor pointerRef={pointerRef} />
           </Suspense>
         </ModelErrorBoundary>
