@@ -1,111 +1,96 @@
 "use client";
 
-/* eslint-disable react/no-unknown-property */
-// Lightweight cursor built on the FluidGlass lens mesh: tracks the
-// pointer via a raw pointermove listener (not r3f's built-in pointer,
-// since the canvas sits pointer-events:none so page clicks pass through
-// to whatever's underneath).
-import * as THREE from "three";
-import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
-import { easing } from "maath";
+import { useEffect, useRef } from "react";
 
-type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
-
-// useGLTF suspends, and rejects the suspense promise if the model 404s.
-// Without a boundary that rejection is an unhandled render error that
-// unmounts the whole app (this sits at the layout root, above Nav and
-// children) — so a missing/broken lens.glb takes down every page.
-class ModelErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  render() {
-    return this.state.failed ? null : this.props.children;
-  }
-}
-
-function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
-  const ref = useRef<THREE.Mesh>(null);
-  const { nodes } = useGLTF("/assets/demo/3d/lens.glb") as unknown as {
-    nodes: Record<string, THREE.Mesh>;
-  };
-  const geometry = nodes?.Cylinder?.geometry;
-
-  useFrame((state, delta) => {
-    if (!ref.current) return;
-    const { viewport, camera } = state;
-    const v = viewport.getCurrentViewport(camera, [0, 0, 15]);
-    const nx = (pointerRef.current.x / window.innerWidth) * 2 - 1;
-    const ny = -(pointerRef.current.y / window.innerHeight) * 2 + 1;
-    easing.damp3(ref.current.position, [(nx * v.width) / 2, (ny * v.height) / 2, 15], 0.15, delta);
-  });
-
-  if (!geometry) return null;
-
-  return (
-    // 0.045, not the 0.22 this shipped with: at this camera/fov, 0.22
-    // works out to ~17% of viewport width — a giant lens, not a cursor.
-    // 0.045 lands it around a normal cursor-icon size instead.
-    <mesh ref={ref} scale={0.045} rotation-x={Math.PI / 2} geometry={geometry}>
-      {/* MeshTransmissionMaterial's shader hardcodes transmissionAlpha
-          to 1.0 — it can only ever paint a color you feed it, never
-          real alpha, so the real page can never show through it no
-          matter what background color it's given. A plain transparent
-          material actually blends with the canvas's own alpha channel,
-          which is what lets the real page underneath show through. */}
-      <meshPhysicalMaterial
-        transparent
-        opacity={0.16}
-        roughness={0.05}
-        metalness={0}
-        color="#ffffff"
-      />
-    </mesh>
-  );
-}
-
+/* Cursor-following glass lens.
+   Not WebGL: a 3D scene has nothing real drawn behind the mesh, so no
+   material can refract the actual page — it can only refract whatever
+   else exists inside that same scene. backdrop-filter instead reads
+   the page's already-composited pixels, so an SVG feDisplacementMap
+   filter genuinely bends the real content sitting under the lens. */
 export default function FluidCursor() {
-  const pointerRef = useRef({ x: 0, y: 0 });
-  const [enabled, setEnabled] = useState(false);
+  const lensRef = useRef<HTMLDivElement>(null);
+  const pointer = useRef({ x: 0, y: 0 });
+  const pos = useRef({ x: 0, y: 0 });
+  const raf = useRef(0);
 
   useEffect(() => {
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (isCoarse || reduced) return;
 
-    setEnabled(true);
+    const el = lensRef.current;
+    if (!el) return;
+
+    let seeded = false;
     const onMove = (e: PointerEvent) => {
-      pointerRef.current.x = e.clientX;
-      pointerRef.current.y = e.clientY;
+      pointer.current.x = e.clientX;
+      pointer.current.y = e.clientY;
+      // Snap to the first real position instead of easing in from the
+      // (0,0) default — otherwise the lens visibly slides in from the
+      // top-left corner on the first move of every page.
+      if (!seeded) {
+        pos.current.x = e.clientX;
+        pos.current.y = e.clientY;
+        seeded = true;
+      }
+      el.style.opacity = "1";
     };
     window.addEventListener("pointermove", onMove);
-    return () => window.removeEventListener("pointermove", onMove);
+
+    const tick = () => {
+      pos.current.x += (pointer.current.x - pos.current.x) * 0.18;
+      pos.current.y += (pointer.current.y - pos.current.y) * 0.18;
+      el.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0) translate(-50%, -50%)`;
+      raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(raf.current);
+    };
   }, []);
 
-  if (!enabled) return null;
-
   return (
-    // z-index 40: above page content (z 1) but below Nav (z 50), so the
-    // nav and its links/buttons always win the stacking order.
-    <div className="fluid-cursor" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 40 }}>
-      <Canvas
-        camera={{ position: [0, 0, 20], fov: 15 }}
-        gl={{ alpha: true }}
-        style={{ background: "transparent", pointerEvents: "none" }}
-        // Purely decorative — no raycasting/hit-testing needed, and
-        // disabling it means the canvas never intercepts a native
-        // pointer event even if a browser mishandles the CSS above.
-        events={() => ({ enabled: false, priority: 0 })}
-      >
-        <ModelErrorBoundary>
-          <Suspense fallback={null}>
-            <LensCursor pointerRef={pointerRef} />
-          </Suspense>
-        </ModelErrorBoundary>
-      </Canvas>
-    </div>
+    <>
+      {/* width/height 0: this SVG exists only to host the filter
+          definition that the lens div references by id — it never
+          renders anything itself. */}
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
+        <filter id="lens-refraction" x="-50%" y="-50%" width="200%" height="200%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="26" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+      <div
+        ref={lensRef}
+        className="fluid-cursor"
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          // z-index 40: above page content (z 1) but below Nav (z 50),
+          // so the nav and its links/buttons always win the stacking
+          // order.
+          zIndex: 40,
+          width: 64,
+          height: 64,
+          borderRadius: "50%",
+          pointerEvents: "none",
+          opacity: 0,
+          transition: "opacity 0.25s ease",
+          // Safari has no support for referencing an SVG filter from
+          // backdrop-filter, so it silently falls back to just the
+          // blur/saturate — still glassy, just without the distortion.
+          backdropFilter: "url(#lens-refraction) blur(0.5px) saturate(1.4)",
+          WebkitBackdropFilter: "blur(6px) saturate(1.4)",
+          background: "rgba(255,255,255,0.06)",
+          boxShadow:
+            "inset 0 0 0 1px rgba(255,255,255,0.35), inset 0 0 12px rgba(255,255,255,0.15), 0 4px 18px rgba(0,0,0,0.25)",
+        }}
+      />
+    </>
   );
 }
