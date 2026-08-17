@@ -1005,6 +1005,10 @@ main, nav, header, footer { position: relative; z-index: 1; }
   display: inline-block;
 }
 
+.region-code-encrypted {
+  color: var(--ink-45);
+}
+
 /* ---------- PARALLAX ---------- */
 .px-frame {
   position: relative;
