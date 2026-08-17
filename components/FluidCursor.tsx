@@ -21,6 +21,7 @@ const HOVER_SELECTOR = 'a, button, input, textarea, select, [role="button"], [da
    render-to-texture, GPU-composited like any other CSS filter). */
 export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorProps) {
   const lensRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
   const displaceRef = useRef<SVGFEDisplacementMapElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
 
@@ -44,17 +45,19 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
     if (isCoarse || reduced) return;
 
     const el = lensRef.current;
+    const dot = dotRef.current;
     const displace = displaceRef.current;
     const highlight = highlightRef.current;
-    if (!el || !displace || !highlight) return;
+    if (!el || !dot || !displace || !highlight) return;
 
     const restRefraction = size * 0.72;
     const hoverRefraction = hoverSize * 0.72;
-    // Normal blending now (see the highlight-layer comment below), so
-    // these read as direct alpha rather than an overlay-blend fraction
-    // — hence the higher numbers than before.
-    const restHighlight = 0.55;
-    const hoverHighlightOpacity = 0.9;
+    // Rest state stays faint on purpose — "almost invisible on simple
+    // backgrounds" was the point, with the warp/blur doing the work of
+    // making it noticeable over actual content. Hover pushes it up so
+    // interactive elements get a clearer glass cue.
+    const restHighlight = 0.35;
+    const hoverHighlightOpacity = 0.7;
 
     let seeded = false;
     const onMove = (e: PointerEvent) => {
@@ -66,6 +69,7 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
         seeded = true;
       }
       el.style.opacity = "1";
+      dot.style.opacity = "1";
     };
     window.addEventListener("pointermove", onMove);
 
@@ -87,6 +91,10 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
 
       el.style.transform =
         `translate3d(${pos.current.x}px, ${pos.current.y}px, 0) translate(-50%, -50%) scale(${scale.current})`;
+      // Dot rides the same eased position but is never itself scaled —
+      // it's the "still visible even if the glass isn't" marker, so it
+      // stays a fixed small size regardless of hover/rest lens size.
+      dot.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0) translate(-50%, -50%)`;
 
       const t = (scale.current - 1) / (hoverSize / size - 1 || 1);
       const clampedT = Math.min(1, Math.max(0, t));
@@ -128,6 +136,31 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
           />
         </filter>
       </svg>
+      {/* Fallback dot: a fixed marker at the exact cursor position,
+          independent of the glass entirely — if backdrop-filter is
+          unsupported, blocked, or just fails to paint for some reason
+          on a given machine, this is what's left instead of nothing.
+          mix-blend-mode: difference inverts whatever's under it, so a
+          plain white dot reads as visible on any background color
+          without needing a light/dark branch. */}
+      <div
+        ref={dotRef}
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          zIndex: 41,
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          background: "#fff",
+          mixBlendMode: "difference",
+          pointerEvents: "none",
+          opacity: 0,
+          transition: "opacity 0.25s ease",
+        }}
+      />
       <div
         ref={lensRef}
         className="fluid-cursor"
@@ -146,16 +179,19 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
           pointerEvents: "none",
           opacity: 0,
           transition: "opacity 0.25s ease",
-          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
+          filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.1))",
         }}
       >
-        {/* Warp layer: the actual glass. Separated from the highlight
-            below because a filter and a background on the same element
-            get distorted together, which smears the specular gloss
-            into the noise instead of keeping it crisp on top. Sized to
-            the hover-state box and centered, so the earlier JS scale()
-            grows/shrinks it uniformly instead of resizing the element
-            (transform-only keeps this off the layout/paint path). */}
+        {/* Base glass: real blur/saturate on the actual backdrop, no
+            url() in the mix. Split out from the warp layer below on
+            purpose — a browser that rejects the SVG-filter reference
+            in backdrop-filter drops the ENTIRE declaration it's part
+            of, not just that one function, so combining them in one
+            list meant an unsupported warp took the blur down with it.
+            This layer alone is the "simpler fallback" the spec asked
+            for: on any browser without displacement-map support, this
+            is what's left, and it's still real glass, not a fake
+            gradient — no browser is ever left with nothing. */}
         <div
           style={{
             position: "absolute",
@@ -164,12 +200,25 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
             height: size,
             margin: "auto",
             borderRadius: "50%",
-            // Safari has no support for referencing an SVG filter from
-            // backdrop-filter, so it silently falls back to just the
-            // blur/saturate — still glassy, just without the warp.
-            backdropFilter: "url(#lens-refraction) blur(0.3px) saturate(1.3) brightness(1.02) contrast(1.05)",
-            WebkitBackdropFilter: "blur(5px) saturate(1.3) brightness(1.02)",
-            background: "rgba(255,255,255,0.02)",
+            backdropFilter: "blur(3px) saturate(1.35) contrast(1.06) brightness(1.03)",
+            WebkitBackdropFilter: "blur(3px) saturate(1.35) contrast(1.06) brightness(1.03)",
+            background: "rgba(255,255,255,0.025)",
+          }}
+        />
+        {/* Warp layer: displacement only, stacked on top of the base
+            glass so it bends the already-blurred read (still the real
+            backdrop, just softened). Kept to a single filter function
+            so an unsupported url() only drops this div's own (already
+            near-invisible without it) effect, never the base blur. */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: size,
+            height: size,
+            margin: "auto",
+            borderRadius: "50%",
+            backdropFilter: "url(#lens-refraction)",
           }}
         />
         {/* Highlight layer: a faint off-center specular dot plus a
@@ -198,14 +247,19 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
             height: size,
             margin: "auto",
             borderRadius: "50%",
+            // Stops pulled in to 78%+ instead of starting at 34–58%: a
+            // real Fresnel edge is a thin bright/dark rim right at the
+            // silhouette, not a gradient filling most of the disc — the
+            // wide version was covering the middle even where there was
+            // nothing behind it to justify the shading, which is what
+            // read as "solid ball" over a plain background.
             background:
-              "radial-gradient(circle at 30% 26%, rgba(255,255,255,0.5), rgba(255,255,255,0) 34%), " +
-              "radial-gradient(circle, transparent 58%, rgba(255,255,255,0.22) 82%, rgba(255,255,255,0.05) 100%)",
+              "radial-gradient(circle at 32% 28%, rgba(255,255,255,0.3), rgba(255,255,255,0) 16%), " +
+              "radial-gradient(circle, transparent 80%, rgba(255,255,255,0.16) 93%, rgba(255,255,255,0.03) 100%)",
             boxShadow:
-              "inset 0 1.5px 2px rgba(255,255,255,0.55), " +
-              "inset 0 -2px 4px rgba(0,0,0,0.16), " +
-              "inset 0 0 0 1px rgba(0,0,0,0.09), " +
-              "0 1px 3px rgba(0,0,0,0.12)",
+              "inset 0 1px 1px rgba(255,255,255,0.4), " +
+              "inset 0 -1px 2px rgba(0,0,0,0.12), " +
+              "inset 0 0 0 1px rgba(0,0,0,0.06)",
           }}
         />
       </div>
