@@ -50,8 +50,11 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
 
     const restRefraction = size * 0.72;
     const hoverRefraction = hoverSize * 0.72;
-    const restHighlight = 0.16;
-    const hoverHighlightOpacity = 0.32;
+    // Normal blending now (see the highlight-layer comment below), so
+    // these read as direct alpha rather than an overlay-blend fraction
+    // — hence the higher numbers than before.
+    const restHighlight = 0.55;
+    const hoverHighlightOpacity = 0.9;
 
     let seeded = false;
     const onMove = (e: PointerEvent) => {
@@ -173,8 +176,19 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
             Fresnel-style ring that brightens only near the rim — glass
             reflects more at grazing angles than head-on, so the edge
             reading brighter than the center is what makes this look
-            like curved glass rather than a tinted disc. Opacity is
-            tweened per-frame from the tick loop above. */}
+            like curved glass rather than a tinted disc.
+
+            Deliberately NOT mix-blend-mode: overlay (what this shipped
+            with first). Overlay composites as screen() on a light
+            backdrop, and screen(white, anything) = white — so on a
+            white/light-mode background the entire ring silently
+            became a no-op and the lens vanished outright. Plain alpha
+            compositing has no such blind spot: a light rim (visible on
+            dark backgrounds) and a dark rim (visible on light ones)
+            painted at the same time both stay visible on any
+            background, because neither depends on the backdrop's own
+            luminance to render. Opacity is tweened per-frame from the
+            tick loop above. */}
         <div
           ref={highlightRef}
           style={{
@@ -185,10 +199,13 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
             margin: "auto",
             borderRadius: "50%",
             background:
-              "radial-gradient(circle at 30% 26%, rgba(255,255,255,0.35), rgba(255,255,255,0) 32%), " +
-              "radial-gradient(circle, transparent 60%, rgba(255,255,255,0.28) 88%, rgba(255,255,255,0.05) 100%)",
-            boxShadow: "inset 0 1px 1px rgba(255,255,255,0.4), inset 0 -1px 2px rgba(0,0,0,0.08)",
-            mixBlendMode: "overlay",
+              "radial-gradient(circle at 30% 26%, rgba(255,255,255,0.5), rgba(255,255,255,0) 34%), " +
+              "radial-gradient(circle, transparent 58%, rgba(255,255,255,0.22) 82%, rgba(255,255,255,0.05) 100%)",
+            boxShadow:
+              "inset 0 1.5px 2px rgba(255,255,255,0.55), " +
+              "inset 0 -2px 4px rgba(0,0,0,0.16), " +
+              "inset 0 0 0 1px rgba(0,0,0,0.09), " +
+              "0 1px 3px rgba(0,0,0,0.12)",
           }}
         />
       </div>
