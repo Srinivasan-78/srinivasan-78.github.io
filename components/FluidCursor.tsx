@@ -29,7 +29,7 @@ class ModelErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
 
 function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
   const ref = useRef<THREE.Mesh>(null);
-  const { nodes } = useGLTF("/assets/3d/lens.glb") as unknown as {
+  const { nodes } = useGLTF("/assets/demo/3d/lens.glb") as unknown as {
     nodes: Record<string, THREE.Mesh>;
   };
   const geometry = nodes?.Cylinder?.geometry;
