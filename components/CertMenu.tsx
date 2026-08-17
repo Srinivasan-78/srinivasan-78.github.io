@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import DecryptedText from "./DecryptedText";
 import gsap from "gsap";
 import { CERTS, ROWS, forRow, type Row } from "@/lib/certs";
 import CertViewer from "./CertViewer";
@@ -110,7 +111,9 @@ export default function CertMenu() {
       <main id="content" className="fm-main">
         <header className="fm-head">
           <span className="eyebrow c-plum">Certifications</span>
-          <h1 className="fm-h1">Verified credentials</h1>
+          <h1 className="fm-h1">
+            <DecryptedText text="Verified credentials" animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+          </h1>
           <p>
             {CERTS.length} verified credentials. Pick a shelf — each one opens as a
             corridor you travel through.

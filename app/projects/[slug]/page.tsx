@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SplitReveal from "@/components/SplitReveal";
+import DecryptedText from "@/components/DecryptedText";
 import Reveal from "@/components/Reveal";
 import { PROJECTS, projectBySlug } from "@/lib/projects";
 
@@ -55,7 +56,9 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
         <div className="pd-arch">
           {p.architecture.map((a) => (
             <div key={a.label}>
-              <h3>{a.label}</h3>
+              <h3>
+                <DecryptedText text={a.label} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+              </h3>
               <p>{a.body}</p>
             </div>
           ))}
@@ -106,7 +109,9 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
             .map((o) => (
               <Link key={o.slug} href={`/projects/${o.slug}`} className="card" data-cursor-hover>
                 <span className="eyebrow">{o.client}</span>
-                <h2 className="post-title">{o.title}</h2>
+                <h2 className="post-title">
+                  <DecryptedText text={o.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+                </h2>
                 <p className="proj-teaser">{o.teaser}</p>
                 <span className="go">Read more →</span>
               </Link>

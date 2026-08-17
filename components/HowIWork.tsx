@@ -2,6 +2,7 @@
 
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
+import DecryptedText from "./DecryptedText";
 
 /* Numbered because the order is real: this is the sequence a release
    actually moves through, not decoration. */
@@ -48,7 +49,9 @@ export default function HowIWork() {
             <div className="note" key={note.n}>
               <span className={"note-num c-" + note.accent}>({note.n})</span>
               <div>
-                <h3 className="note-head">{note.head}</h3>
+                <h3 className="note-head">
+                  <DecryptedText text={note.head} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+                </h3>
                 <p className="note-body">{note.body}</p>
               </div>
             </div>

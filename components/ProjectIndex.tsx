@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { PROJECTS, type Project } from "@/lib/projects";
+import DecryptedText from "./DecryptedText";
 import { DIAGRAM, FALLBACK } from "./ProjectGrid";
 
 /* A manifest, not a gallery.
@@ -118,7 +119,9 @@ export default function ProjectIndex() {
     <main id="content" className="pi" ref={rootRef}>
       <header className="pi-head">
         <span className="eyebrow c-sage">Projects</span>
-        <h1 className="display display-lg">Things I build outside work</h1>
+        <h1 className="display display-lg">
+          <DecryptedText text="Things I build outside work" animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+        </h1>
         <p>
           {PROJECTS.length} public repositories — live demos, platform experiments, and
           tooling I actually use. Hover a row for its schematic, open it for the full

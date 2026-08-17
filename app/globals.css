@@ -342,23 +342,12 @@ a.card:hover {
   line-height: 1.4;
 }
 
-.split-word { display: inline-block; overflow: hidden; line-height: 1.25; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-/* No permanent will-change here. Every heading on the site is split
-   into one span per word, so a standing `will-change: transform` meant
-   the browser promoted every word of every heading to its own
-   compositor layer and held it there for the life of the page — memory
-   spent on elements that animate once, on entry, and never again. GSAP
-   promotes what it is actually tweening (force3D) for the duration of
-   the tween, which is the whole benefit at none of the cost. */
-.split-word > span { display: inline-block; }
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .split-word > span { opacity: 1 !important; transform: none !important; }
 }
 
 @media (pointer: coarse) {
@@ -1007,6 +996,11 @@ main, nav, header, footer { position: relative; z-index: 1; }
 
 .region-code-encrypted {
   color: var(--ink-45);
+}
+
+.text-encrypted {
+  color: var(--sage);
+  opacity: 0.75;
 }
 
 /* ---------- PARALLAX ---------- */

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import SectionHead from "./SectionHead";
+import DecryptedText from "./DecryptedText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -166,7 +167,9 @@ export default function Capabilities() {
           {TILES.map((t) => (
             <article className={"cap-tile accent-" + t.accent} key={t.title}>
               <div className="cap-body-wrap">
-                <h3 className="cap-title">{t.title}</h3>
+                <h3 className="cap-title">
+                  <DecryptedText text={t.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+                </h3>
                 <p className="cap-body">{t.body}</p>
               </div>
               <div className="cap-art">{t.art}</div>

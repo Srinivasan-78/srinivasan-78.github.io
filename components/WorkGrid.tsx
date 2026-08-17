@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useScrollLock } from "./SmoothScrollProvider";
+import DecryptedText from "./DecryptedText";
 
 export type Post = {
   tag: string;
@@ -166,7 +167,9 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
               >
                 {p.tag}
               </span>
-              <h3 className="post-title">{p.title}</h3>
+              <h3 className="post-title">
+                <DecryptedText text={p.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+              </h3>
               <span className="post-open">{p.link ? "public work ↗" : "open ↗"}</span>
             </div>
             <div className="post-cover">{ART[p.title]}</div>
@@ -201,7 +204,9 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
             >
               {active.tag}
             </span>
-            <h2 className="lb-title">{active.title}</h2>
+            <h2 className="lb-title">
+              <DecryptedText text={active.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+            </h2>
             <p className="lb-body">{active.body}</p>
             <div style={{ marginTop: "0.75rem" }}>
               {active.stack.map((t) => (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DecryptedText from "@/components/DecryptedText";
 
 export const metadata = { title: "Page not found — Srinivasan Vijayaraghavan" };
 
@@ -14,7 +15,7 @@ export default function NotFound() {
     <main id="content" className="wrap" style={{ padding: "3rem 24px" }}>
       <span className="eyebrow c-brass">404</span>
       <h1 className="display display-lg" style={{ margin: "0.4rem 0 0.75rem" }}>
-        That page didn&rsquo;t resolve
+        <DecryptedText text="That page didn't resolve" animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
       </h1>
       <p style={{ color: "var(--ink-70)", maxWidth: "56ch" }}>
         The URL you followed doesn&rsquo;t exist here. No rollback needed — just pick a working
@@ -55,7 +56,9 @@ export default function NotFound() {
       >
         {ROUTES.map((r) => (
           <Link key={r.href} href={r.href} className="card" data-cursor-hover>
-            <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{r.title}</h3>
+            <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>
+              <DecryptedText text={r.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+            </h3>
             <p style={{ color: "var(--ink-45)", fontSize: "0.84rem", margin: 0 }}>{r.body}</p>
             <span className="go">{r.go}</span>
           </Link>

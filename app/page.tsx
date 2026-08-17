@@ -217,7 +217,9 @@ export default function Page() {
             alt="Rows of server racks in a datacenter"
           >
             <span className="eyebrow">Production, somewhere</span>
-            <h2 className="px-title">Someone has to own the 3am page.</h2>
+            <h2 className="px-title">
+              <DecryptedText text="Someone has to own the 3am page." animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+            </h2>
           </Parallax>
         </div>
       </section>
@@ -244,7 +246,9 @@ export default function Page() {
             {EXPLORE.map((e) => (
               <TiltCard key={e.href}>
                 <Link href={e.href} className="card" data-cursor-hover>
-                  <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>{e.title}</h3>
+                  <h3 style={{ fontFamily: "var(--font-display)", margin: "0 0 0.4rem" }}>
+                    <DecryptedText text={e.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+                  </h3>
                   <p style={{ color: "var(--ink-45)", fontSize: "0.84rem", margin: 0 }}>{e.body}</p>
                   <span className="go">{e.go}</span>
                 </Link>
