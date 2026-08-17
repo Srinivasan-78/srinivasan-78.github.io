@@ -354,6 +354,17 @@ a.card:hover {
   .fluid-cursor { display: none !important; }
 }
 
+/* The glass lens replaces the system pointer, not just decorates it —
+   without this, the native arrow and the lens both show at once.
+   Scoped to fine pointers only, and to !important, since the site has
+   several `cursor: pointer` affordance rules with higher specificity
+   than a plain descendant selector could beat on their own. Only the
+   mouse-pointer icon is affected; the text caret in inputs is a
+   separate rendering concern and still shows on focus. */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  * { cursor: none !important; }
+}
+
 /* ---------- SKILL STORY RINGS ---------- */
 .highlights {
   display: flex;
