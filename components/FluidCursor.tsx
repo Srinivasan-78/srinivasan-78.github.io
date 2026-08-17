@@ -150,7 +150,12 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
           position: "fixed",
           top: 0,
           left: 0,
-          zIndex: 41,
+          // z-index 151: above Nav (50) and the lightbox modal (100).
+          // pointer-events: none is what actually keeps clicks passing
+          // through to whatever's underneath — stacking order plays no
+          // part in that, so there's no reason to keep the cursor
+          // *behind* UI it needs to stay visible over.
+          zIndex: 151,
           width: 6,
           height: 6,
           borderRadius: "50%",
@@ -169,10 +174,10 @@ export default function FluidCursor({ size = 56, hoverSize = 72 }: FluidCursorPr
           position: "fixed",
           top: 0,
           left: 0,
-          // z-index 40: above page content (z 1) but below Nav (z 50),
-          // so the nav and its links/buttons always win the stacking
-          // order.
-          zIndex: 40,
+          // z-index 150: same reasoning as the dot above — nothing
+          // depends on this being below Nav/the lightbox, and hovering
+          // either used to leave no cursor visible at all.
+          zIndex: 150,
           width: hoverSize,
           height: hoverSize,
           borderRadius: "50%",
