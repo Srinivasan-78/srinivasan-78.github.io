@@ -8,7 +8,7 @@
 import * as THREE from "three";
 import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
+import { useGLTF, MeshTransmissionMaterial, Environment } from "@react-three/drei";
 import { easing } from "maath";
 
 type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
@@ -46,7 +46,10 @@ function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
   if (!geometry) return null;
 
   return (
-    <mesh ref={ref} scale={0.22} rotation-x={Math.PI / 2} geometry={geometry}>
+    // 0.045, not the 0.22 this shipped with: at this camera/fov, 0.22
+    // works out to ~17% of viewport width — a giant lens, not a cursor.
+    // 0.045 lands it around a normal cursor-icon size instead.
+    <mesh ref={ref} scale={0.045} rotation-x={Math.PI / 2} geometry={geometry}>
       <MeshTransmissionMaterial
         ior={1.15}
         thickness={5}
@@ -81,10 +84,24 @@ export default function FluidCursor() {
   if (!enabled) return null;
 
   return (
-    <div className="fluid-cursor" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 60 }}>
-      <Canvas camera={{ position: [0, 0, 20], fov: 15 }} gl={{ alpha: true }} style={{ background: "transparent" }}>
+    // z-index 40: above page content (z 1) but below Nav (z 50), so the
+    // nav and its links/buttons always win the stacking order.
+    <div className="fluid-cursor" style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 40 }}>
+      <Canvas
+        camera={{ position: [0, 0, 20], fov: 15 }}
+        gl={{ alpha: true }}
+        style={{ background: "transparent", pointerEvents: "none" }}
+        // Purely decorative — no raycasting/hit-testing needed, and
+        // disabling it means the canvas never intercepts a native
+        // pointer event even if a browser mishandles the CSS above.
+        events={() => ({ enabled: false, priority: 0 })}
+      >
         <ModelErrorBoundary>
           <Suspense fallback={null}>
+            {/* MeshTransmissionMaterial needs something to refract —
+                without an environment it renders flat black instead
+                of glass. */}
+            <Environment preset="city" />
             <LensCursor pointerRef={pointerRef} />
           </Suspense>
         </ModelErrorBoundary>
