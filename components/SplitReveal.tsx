@@ -1,5 +1,6 @@
 "use client";
 
+import type { ElementType } from "react";
 import DecryptedText from "./DecryptedText";
 
 /* Heading text decrypts (scrambled glyphs resolving to real characters)
@@ -13,7 +14,7 @@ export default function SplitReveal({
   stagger = 0.03,
 }: {
   text: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
   className?: string;
   stagger?: number;
 }) {
