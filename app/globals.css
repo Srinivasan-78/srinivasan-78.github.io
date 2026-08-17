@@ -351,7 +351,7 @@ a.card:hover {
 }
 
 @media (pointer: coarse) {
-  .cursor-dot, .cursor-ring { display: none !important; }
+  .fluid-cursor { display: none !important; }
 }
 
 /* ---------- SKILL STORY RINGS ---------- */
@@ -1233,22 +1233,6 @@ html.lenis, html.lenis body { height: auto; }
   .nav-mobile-menu { display: flex !important; }
 }
 
-/* ---------- CURSOR HOVER STATE ---------- */
-/* This rule lived in a <style> element inside the Cursor client
-   component, and it was the hydration mismatch: React's server renderer
-   HTML-escapes the double quotes in [data-hover="true"] to &quot;,
-   while the client renders them literally. The two text nodes differ,
-   hydration fails, and the entire root falls back to client rendering —
-   which is what stopped the scroll animations from initialising.
-
-   !important is required: it overrides inline styles on the element. */
-.cursor-ring[data-hover="true"] {
-  width: 56px !important;
-  height: 56px !important;
-  margin-left: -28px !important;
-  margin-top: -28px !important;
-  opacity: 0.6;
-}
 /* ---------- PROJECT DETAIL ---------- */
 .pd-hero { padding: 2.5rem 0 1rem; }
 .pd-arch { display: grid; gap: 0; margin-top: 1.5rem; border-top: 1px solid var(--ink-15); }
