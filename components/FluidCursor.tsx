@@ -8,7 +8,7 @@
 import * as THREE from "three";
 import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { easing } from "maath";
 
 type PointerRef = React.MutableRefObject<{ x: number; y: number }>;
@@ -26,13 +26,6 @@ class ModelErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
     return this.state.failed ? null : this.props.children;
   }
 }
-
-// MeshTransmissionMaterial renders into an offscreen buffer and samples
-// that buffer for what "shows through" the glass — with nothing else in
-// this scene, an unset buffer is cleared black, so the lens reads as a
-// solid black disc no matter the lighting. `background` feeds it a
-// color to sample instead, which is what actually makes it look clear.
-const LENS_BACKGROUND = new THREE.Color("#f4f4f4");
 
 function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
   const ref = useRef<THREE.Mesh>(null);
@@ -57,15 +50,18 @@ function LensCursor({ pointerRef }: { pointerRef: PointerRef }) {
     // works out to ~17% of viewport width — a giant lens, not a cursor.
     // 0.045 lands it around a normal cursor-icon size instead.
     <mesh ref={ref} scale={0.045} rotation-x={Math.PI / 2} geometry={geometry}>
-      <MeshTransmissionMaterial
-        ior={1.15}
-        thickness={5}
-        anisotropy={0.02}
-        chromaticAberration={0.12}
-        roughness={0}
-        transmission={1}
+      {/* MeshTransmissionMaterial's shader hardcodes transmissionAlpha
+          to 1.0 — it can only ever paint a color you feed it, never
+          real alpha, so the real page can never show through it no
+          matter what background color it's given. A plain transparent
+          material actually blends with the canvas's own alpha channel,
+          which is what lets the real page underneath show through. */}
+      <meshPhysicalMaterial
+        transparent
+        opacity={0.16}
+        roughness={0.05}
+        metalness={0}
         color="#ffffff"
-        background={LENS_BACKGROUND}
       />
     </mesh>
   );
