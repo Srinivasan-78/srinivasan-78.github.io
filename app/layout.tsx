@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
-import FluidCursor from "@/components/FluidCursor";
+import SystemCursor from "@/components/SystemCursor";
 import ProgressRail from "@/components/ProgressRail";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -87,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ProgressRail />
         <VelocitySkew />
         <Hud />
-        <FluidCursor />
+        <SystemCursor />
         <a href="#content" className="skip-link">
           Skip to content
         </a>

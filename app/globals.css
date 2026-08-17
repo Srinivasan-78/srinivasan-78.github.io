@@ -351,7 +351,7 @@ a.card:hover {
 }
 
 @media (pointer: coarse) {
-  .fluid-cursor { display: none !important; }
+  .system-cursor { display: none !important; }
 }
 
 /* The glass lens replaces the system pointer, not just decorates it —
