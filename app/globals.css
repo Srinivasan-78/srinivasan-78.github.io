@@ -1871,3 +1871,216 @@ html.lenis, html.lenis body { height: auto; }
      its own dark gradient, and glass there would just muddy the
      certificate underneath. Left alone on purpose. */
 }
+
+/* ── Contact form ─────────────────────────────────────────────────────────
+   Replaces the inline styles the form used to carry, so the error and
+   loading states have somewhere to hook into. */
+.contact-form { max-width: 480px; margin-top: 2rem; }
+
+/* <fieldset> is only here to disable every control in one go while a
+   submission is in flight; it must not draw a box. */
+.cf-fields {
+  display: grid;
+  gap: 1rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.cf-fields[disabled] { opacity: 0.6; }
+
+.cf-field { display: block; }
+.cf-label { display: block; margin-bottom: 4px; }
+
+.cf-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--ink-15);
+  border-radius: 6px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  font: inherit;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+textarea.cf-input { resize: vertical; }
+.cf-input:focus-visible { border-color: var(--sage); }
+
+/* Invalid fields carry both a colour and a text message below — colour is
+   never the only signal. */
+.cf-input-error,
+.cf-input-error:focus-visible {
+  border-color: var(--plum);
+  box-shadow: 0 0 0 1px var(--plum);
+}
+
+.cf-error {
+  margin: 0.35rem 0 0;
+  color: var(--plum);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+}
+
+.cf-error-banner {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--plum-line, var(--ink-15));
+  border-left: 3px solid var(--plum);
+  border-radius: 8px;
+  background: var(--plum-wash, var(--paper-raised));
+}
+.cf-error-banner p {
+  margin: 0.4rem 0 0;
+  font-size: 0.86rem;
+  color: var(--ink-70);
+}
+
+.cf-status {
+  margin: 0.6rem 0 0;
+  min-height: 1.1em;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  color: var(--ink-45);
+}
+
+.cf-submit {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.cf-submit:disabled { cursor: progress; }
+
+.cf-spinner {
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: cf-spin 0.7s linear infinite;
+}
+@keyframes cf-spin { to { transform: rotate(360deg); } }
+
+/* Off-screen rather than display:none — some bots skip hidden inputs. */
+.cf-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-spinner { animation-duration: 2s; }
+}
+
+/* ── Sticky mobile CTA ────────────────────────────────────────────────────
+   Desktop keeps the nav on screen at all times, so this is phone-only. */
+.sticky-cta { display: none; }
+
+@media (max-width: 720px) {
+  .sticky-cta {
+    display: flex;
+    gap: 0.6rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    padding: 0.7rem 16px calc(0.7rem + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--ink-15);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  }
+  .sticky-cta .btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.7rem 0.5rem;
+    font-size: 0.85rem;
+  }
+  .sticky-cta-secondary { flex: 0 0 38% !important; }
+
+  /* The bar floats over the page, so the footer needs clearance or its last
+     line sits underneath it. */
+  .site-footer { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+
+  /* The scroll-percent pill lives in the same bottom-right corner. It is
+     already hidden on touch; this also clears it on a narrow desktop
+     window, where the CTA bar appears but the pointer is still fine. */
+  .rail-pct { display: none; }
+}
+
+/* ── Privacy notice ───────────────────────────────────────────────────────
+   Disclosure, not a consent gate — nothing is blocked behind it. */
+.cookie-notice {
+  position: fixed;
+  z-index: 70;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  margin: 0 auto;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--ink-15);
+  border-left: 3px solid var(--brass);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--paper-raised) 92%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 10px 34px rgb(0 0 0 / 0.28);
+}
+.cookie-notice-body { flex: 1 1 260px; min-width: 0; }
+.cookie-notice-body p {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-70);
+}
+.cookie-notice-btn {
+  flex: 0 0 auto;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 720px) {
+  /* Clears the sticky CTA bar rather than covering it. */
+  .cookie-notice { bottom: calc(4.4rem + env(safe-area-inset-bottom)); }
+}
+
+/* ── Legal pages ──────────────────────────────────────────────────────────
+   Long-form prose, which no other page on the site has. */
+.legal { max-width: 72ch; }
+.legal p,
+.legal li {
+  color: var(--ink-70);
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+.legal p { margin: 0 0 1rem; }
+.legal h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin: 2.25rem 0 0.6rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ink-15);
+}
+.legal ul { margin: 0 0 1rem; padding-left: 1.15rem; }
+.legal li { margin-bottom: 0.45rem; }
+.legal code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--ink-15);
+}
+
+/* Project detail banner — the parallax frame sits between the hero text
+   and the overview, so it needs its own breathing room on both sides. */
+.pd-banner { margin: 1.75rem 0 0.5rem; }

@@ -1,12 +1,13 @@
+import { pageMetadata } from "@/lib/seo";
 import SplitReveal from "@/components/SplitReveal";
+import ContactForm from "@/components/ContactForm";
 import DecryptedText from "@/components/DecryptedText";
 
-export const metadata = {
-  title: "Contact — Srinivasan Vijayaraghavan",
+export const metadata = pageMetadata({
+  title: "Contact",
   description: "Get in touch about DevOps, cloud infrastructure, and automation roles.",
-  alternates: { canonical: "/contact" },
-  openGraph: { title: "Contact — Srinivasan Vijayaraghavan", description: "Get in touch about DevOps, cloud infrastructure, and automation roles.", url: "/contact" },
-};
+  path: "/contact",
+});
 
 export default function Contact() {
   return (
@@ -18,27 +19,7 @@ export default function Contact() {
         message below, or reach out directly on any channel.
       </p>
 
-      <form
-        action="https://formspree.io/f/xrpzzlaz"
-        method="POST"
-        style={{ display: "grid", gap: "1rem", maxWidth: 480, marginTop: "2rem" }}
-      >
-        <div>
-          <label htmlFor="name" className="eyebrow" style={{ display: "block", marginBottom: 4 }}>Name</label>
-          <input id="name" name="name" required style={inputStyle} />
-        </div>
-        <div>
-          <label htmlFor="email" className="eyebrow" style={{ display: "block", marginBottom: 4 }}>Email</label>
-          <input id="email" name="email" type="email" required style={inputStyle} />
-        </div>
-        <div>
-          <label htmlFor="message" className="eyebrow" style={{ display: "block", marginBottom: 4 }}>Message</label>
-          <textarea id="message" name="message" required rows={5} style={inputStyle} />
-        </div>
-        <button type="submit" className="btn primary" style={{ justifySelf: "start" }}>
-          Send message
-        </button>
-      </form>
+      <ContactForm />
 
       <div
         className="accent-cards"
@@ -72,12 +53,3 @@ export default function Contact() {
   );
 }
 
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "0.6rem 0.75rem",
-  border: "1px solid var(--ink-15)",
-  borderRadius: 6,
-  background: "var(--paper-raised)",
-  color: "var(--ink)",
-  font: "inherit",
-};

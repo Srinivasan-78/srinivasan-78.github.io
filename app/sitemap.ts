@@ -12,6 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/certifications", 0.7],
     ["/contact", 0.6],
     ...PROJECTS.map((p) => [`/projects/${p.slug}`, 0.6] as [string, number]),
+    // /thank-you is deliberately absent — it is noindex and only reachable
+    // after a submit, so listing it would invite crawlers to a dead end.
+    ["/privacy", 0.3],
+    ["/terms", 0.3],
   ];
 
   return routes.map(([path, priority]) => ({

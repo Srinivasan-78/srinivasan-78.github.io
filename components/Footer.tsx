@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
-    <footer className="section">
+    <footer className="section site-footer">
       <div
         className="wrap"
         style={{
@@ -11,7 +13,13 @@ export default function Footer() {
         }}
       >
         <span className="eyebrow">© 2026 Srinivasan Vijayaraghavan</span>
-        <div style={{ display: "flex", gap: "1.25rem" }}>
+        <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap" }}>
+          <Link className="eyebrow lnk" href="/privacy">
+            Privacy
+          </Link>
+          <Link className="eyebrow lnk" href="/terms">
+            Terms
+          </Link>
           <a
             className="eyebrow lnk"
             href="https://www.linkedin.com/in/srini-solution-architect/"

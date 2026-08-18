@@ -9,6 +9,9 @@ import ThemeScript from "@/components/ThemeScript";
 import VelocitySkew from "@/components/VelocitySkew";
 import Hud from "@/components/Hud";
 import DevOpsScene from "@/components/DevOpsScene";
+import StickyCta from "@/components/StickyCta";
+import CookieNotice from "@/components/CookieNotice";
+import Analytics from "@/components/Analytics";
 
 // themeColor belongs on the viewport export in Next 14; leaving it in
 // metadata still works but logs a deprecation warning at build time.
@@ -96,6 +99,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Footer />
         </SmoothScrollProvider>
+        <StickyCta />
+        <CookieNotice />
+        <Analytics />
       </body>
     </html>
   );

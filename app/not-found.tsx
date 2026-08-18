@@ -1,7 +1,13 @@
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import DecryptedText from "@/components/DecryptedText";
 
-export const metadata = { title: "Page not found — Srinivasan Vijayaraghavan" };
+export const metadata = pageMetadata({
+  title: "Page not found",
+  description: "That URL doesn't exist on this site. Pick a working route from the list.",
+  path: "/404",
+  noindex: true,
+});
 
 const ROUTES = [
   { href: "/", title: "Home", body: "Profile, skills, and availability.", go: "Go home →" },

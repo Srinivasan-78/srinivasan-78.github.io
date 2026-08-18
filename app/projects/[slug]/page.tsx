@@ -1,8 +1,10 @@
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SplitReveal from "@/components/SplitReveal";
 import DecryptedText from "@/components/DecryptedText";
 import Reveal from "@/components/Reveal";
+import Parallax from "@/components/Parallax";
 import { PROJECTS, projectBySlug } from "@/lib/projects";
 
 export const dynamicParams = false;
@@ -14,13 +16,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const p = projectBySlug(params.slug);
   if (!p) return {};
-  const title = `${p.title} — Srinivasan Vijayaraghavan`;
-  return {
-    title,
+  return pageMetadata({
+    title: p.title,
     description: p.teaser,
-    alternates: { canonical: `/projects/${p.slug}` },
-    openGraph: { title, description: p.teaser, url: `/projects/${p.slug}` },
-  };
+    path: `/projects/${p.slug}`,
+  });
 }
 
 export default function ProjectDetail({ params }: { params: { slug: string } }) {
@@ -45,6 +45,16 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
           <span className="micro">{p.stack.length} technologies</span>
         </div>
       </div>
+
+      {/* The same parallax frame the home page uses, so the banner reads as
+          part of the site rather than a stray photo. Reduced motion holds
+          it still; the image itself is lazy. */}
+      <Parallax
+        src={p.image}
+        alt={p.imageAlt}
+        height="clamp(200px, 32vw, 380px)"
+        className="pd-banner"
+      />
 
       <section className="section" style={{ paddingTop: "1rem" }}>
         <span className="eyebrow">Overview</span>

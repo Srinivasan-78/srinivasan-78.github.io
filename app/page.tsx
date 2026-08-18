@@ -131,7 +131,10 @@ export default function Page() {
           </Reveal>
 
           <div className="hero-actions">
-            <a href="/resume.pdf" className="btn primary" download>
+            <Link href="/contact" className="btn primary" data-cursor-hover>
+              Get in touch
+            </Link>
+            <a href="/resume.pdf" className="btn" download data-cursor-hover>
               Download résumé
             </a>
           </div>

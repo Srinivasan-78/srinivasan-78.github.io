@@ -22,7 +22,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      # ci, not install: install can resolve past the committed lockfile and
+      # build something the local tree never produced.
+      - run: npm ci
       - run: npm run build
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
