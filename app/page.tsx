@@ -10,7 +10,7 @@ import Parallax from "@/components/Parallax";
 import SectionHead from "@/components/SectionHead";
 import { CountUp, RotatingWord, TiltCard } from "@/components/Bits";
 import DecryptedText from "@/components/DecryptedText";
-import FluidGlass from "@/components/FluidGlass";
+import GlassHero from "@/components/GlassHero";
 
 const EXPLORE = [
   { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds.", go: "View projects →" },
@@ -139,18 +139,7 @@ export default function Page() {
         </div>
       </header>
 
-      <div style={{ height: "600px", position: "relative" }}>
-        <FluidGlass
-          mode="lens"
-          lensProps={{
-            scale: 0.25,
-            ior: 1.15,
-            thickness: 5,
-            chromaticAberration: 0.1,
-            anisotropy: 0.01,
-          }}
-        />
-      </div>
+      <GlassHero />
 
       <Highlights />
 

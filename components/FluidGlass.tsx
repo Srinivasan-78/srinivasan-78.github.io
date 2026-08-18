@@ -4,26 +4,28 @@
 import * as THREE from "three";
 import { useRef, useState, useEffect, memo } from "react";
 import { Canvas, createPortal, useFrame, useThree } from "@react-three/fiber";
-import {
-  useFBO,
-  useGLTF,
-  useScroll,
-  Image,
-  Scroll,
-  Preload,
-  ScrollControls,
-  MeshTransmissionMaterial,
-  Text,
-} from "@react-three/drei";
+import { useFBO, useGLTF, Image, Preload, MeshTransmissionMaterial, Text } from "@react-three/drei";
 import { easing } from "maath";
 
 type ModeProps = Record<string, any>;
+
+export type GlassImage = {
+  url: string;
+  position?: [number, number, number];
+  scale?: number | [number, number, number];
+};
 
 type FluidGlassProps = {
   mode?: "lens" | "bar" | "cube";
   lensProps?: ModeProps;
   barProps?: ModeProps;
   cubeProps?: ModeProps;
+  /** Headline rendered inside the WebGL scene so the glass distorts it. */
+  text?: string;
+  /** Backdrop planes rendered behind the glass. */
+  images?: GlassImage[];
+  /** Clear colour behind everything, as a hex string. */
+  background?: string;
 };
 
 export default function FluidGlass({
@@ -31,32 +33,23 @@ export default function FluidGlass({
   lensProps = {},
   barProps = {},
   cubeProps = {},
+  text,
+  images = [],
+  background = "#5227ff",
 }: FluidGlassProps) {
   const Wrapper = mode === "bar" ? Bar : mode === "cube" ? Cube : Lens;
   const rawOverrides = mode === "bar" ? barProps : mode === "cube" ? cubeProps : lensProps;
 
-  const {
-    navItems = [
-      { label: "Home", link: "" },
-      { label: "About", link: "" },
-      { label: "Contact", link: "" },
-    ],
-    ...modeProps
-  } = rawOverrides;
+  const { navItems = [], ...modeProps } = rawOverrides;
 
   return (
-    <Canvas camera={{ position: [0, 0, 20], fov: 15 }} gl={{ alpha: true }}>
-      <ScrollControls damping={0.2} pages={3} distance={0.4}>
-        {mode === "bar" && <NavItems items={navItems} />}
-        <Wrapper modeProps={modeProps}>
-          <Scroll>
-            <Typography />
-            <Images />
-          </Scroll>
-          <Scroll html />
-          <Preload />
-        </Wrapper>
-      </ScrollControls>
+    <Canvas camera={{ position: [0, 0, 20], fov: 15 }} gl={{ alpha: true }} dpr={[1, 1.75]}>
+      {mode === "bar" && navItems.length > 0 && <NavItems items={navItems} />}
+      <Wrapper modeProps={modeProps} background={background}>
+        {text && <Typography text={text} />}
+        <Images images={images} />
+        <Preload />
+      </Wrapper>
     </Canvas>
   );
 }
@@ -68,6 +61,7 @@ const ModeWrapper = memo(function ModeWrapper({
   lockToBottom = false,
   followPointer = true,
   modeProps = {},
+  background = "#5227ff",
   ...props
 }: {
   children?: React.ReactNode;
@@ -76,6 +70,7 @@ const ModeWrapper = memo(function ModeWrapper({
   lockToBottom?: boolean;
   followPointer?: boolean;
   modeProps?: ModeProps;
+  background?: string;
   [key: string]: any;
 }) {
   const ref = useRef<THREE.Mesh>(null!);
@@ -84,9 +79,15 @@ const ModeWrapper = memo(function ModeWrapper({
   const { viewport: vp } = useThree();
   const [scene] = useState(() => new THREE.Scene());
   const geoWidthRef = useRef(1);
+  const clearColor = useRef(new THREE.Color(background));
+
+  useEffect(() => {
+    clearColor.current.set(background);
+  }, [background]);
 
   useEffect(() => {
     const geo = nodes[geometryKey]?.geometry;
+    if (!geo) return;
     geo.computeBoundingBox();
     geoWidthRef.current = geo.boundingBox.max.x - geo.boundingBox.min.x || 1;
   }, [nodes, geometryKey]);
@@ -108,9 +109,7 @@ const ModeWrapper = memo(function ModeWrapper({
     gl.setRenderTarget(buffer);
     gl.render(scene, camera);
     gl.setRenderTarget(null);
-
-    // Background Color
-    gl.setClearColor(0x5227ff, 1);
+    gl.setClearColor(clearColor.current, 1);
   });
 
   const { scale, ior, thickness, anisotropy, chromaticAberration, ...extraMat } = modeProps;
@@ -242,32 +241,26 @@ function NavItems({ items }: { items: { label: string; link: string }[] }) {
   );
 }
 
-function Images() {
-  const group = useRef<THREE.Group>(null!);
-  const data = useScroll();
-  const { height } = useThree((s) => s.viewport);
-
-  useFrame(() => {
-    const children = group.current.children as any[];
-    children[0].material.zoom = 1 + data.range(0, 1 / 3) / 3;
-    children[1].material.zoom = 1 + data.range(0, 1 / 3) / 3;
-    children[2].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-    children[3].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-    children[4].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-  });
+function Images({ images }: { images: GlassImage[] }) {
+  if (images.length === 0) return null;
 
   return (
-    <group ref={group}>
-      <Image position={[-2, 0, 0]} scale={[3, height / 1.1, 1] as any} url="/assets/demo/cs1.webp" />
-      <Image position={[2, 0, 3]} scale={3} url="/assets/demo/cs2.webp" />
-      <Image position={[-2.05, -height, 6]} scale={[1, 3, 1] as any} url="/assets/demo/cs3.webp" />
-      <Image position={[-0.6, -height, 9]} scale={[1, 2, 1] as any} url="/assets/demo/cs1.webp" />
-      <Image position={[0.75, -height, 10.5]} scale={1.5} url="/assets/demo/cs2.webp" />
+    <group>
+      {images.map((img, i) => (
+        <Image
+          key={`${img.url}-${i}`}
+          position={img.position ?? [0, 0, 0]}
+          scale={(img.scale ?? 1) as any}
+          url={img.url}
+          transparent
+          opacity={0.32}
+        />
+      ))}
     </group>
   );
 }
 
-function Typography() {
+function Typography({ text }: { text: string }) {
   const DEVICE = {
     mobile: { fontSize: 0.2 },
     tablet: { fontSize: 0.4 },
@@ -301,7 +294,7 @@ function Typography() {
       anchorX="center"
       anchorY="middle"
     >
-      React Bits
+      {text}
     </Text>
   );
 }

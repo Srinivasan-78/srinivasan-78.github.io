@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import SectionHead from "./SectionHead";
 import DecryptedText from "./DecryptedText";
+import { GlassLayer } from "./GlassSurface";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -166,6 +167,14 @@ export default function Capabilities() {
         <div className="masonry" ref={ref} data-skew>
           {TILES.map((t) => (
             <article className={"cap-tile accent-" + t.accent} key={t.title}>
+              <GlassLayer
+                borderRadius={10}
+                backgroundOpacity={0.55}
+                saturation={1.4}
+                blur={9}
+                displace={0.6}
+                distortionScale={-120}
+              />
               <div className="cap-body-wrap">
                 <h3 className="cap-title">
                   <DecryptedText text={t.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />

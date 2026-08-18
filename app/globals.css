@@ -1681,3 +1681,165 @@ html.lenis, html.lenis body { height: auto; }
   display: grid; gap: 1rem; margin-top: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
+
+/* ---------- Glass stage ----------
+   Full-bleed WebGL panel. The canvas is only mounted on a fine pointer
+   with motion allowed (see GlassHero); everything below it is the
+   poster that shows when it is not, so the section never renders empty. */
+.glass-stage {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 0%, #3a1580 0%, #1c0a3d 55%, #10061f 100%);
+  color: #fff;
+}
+.glass-stage-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.glass-stage-canvas canvas { display: block; }
+.glass-stage-overlay {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  text-align: center;
+  padding: 0 20px;
+  max-width: 46ch;
+  display: grid;
+  gap: 0.9rem;
+  justify-items: center;
+}
+.glass-stage-eyebrow,
+.glass-stage-hint {
+  color: rgba(255, 255, 255, 0.62);
+}
+.glass-stage-title {
+  margin: 0;
+  font-size: clamp(3rem, 13vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  transition: opacity 0.4s ease;
+}
+.glass-stage-caption {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+}
+/* The live canvas draws the same word in 3D so the lens can bend it —
+   the DOM copy would sit on top of it as a flat duplicate. */
+.glass-stage[data-live="true"] .glass-stage-title { opacity: 0; }
+.glass-stage-hint {
+  position: absolute;
+  z-index: 1;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+@media (pointer: coarse) {
+  .glass-stage-hint { display: none; }
+}
+
+/* ---------- Glass surface ----------
+   Ported from React Bits. light-dark() resolves against the
+   color-scheme set on :root / html[data-theme="dark"], so the manual
+   theme toggle drives it — no prefers-color-scheme query needed. */
+.glass-surface {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.26s ease-out;
+}
+.glass-surface__filter {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: -1;
+}
+.glass-surface__content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: inherit;
+  position: relative;
+  z-index: 1;
+}
+.glass-surface--svg {
+  background: light-dark(hsl(0 0% 100% / var(--glass-frost, 0)), hsl(0 0% 0% / var(--glass-frost, 0)));
+  backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
+  box-shadow:
+    0 0 2px 1px light-dark(color-mix(in oklch, black, transparent 85%), color-mix(in oklch, white, transparent 65%)) inset,
+    0 0 10px 4px light-dark(color-mix(in oklch, black, transparent 90%), color-mix(in oklch, white, transparent 85%)) inset,
+    0 4px 16px rgba(17, 17, 26, 0.05),
+    0 8px 24px rgba(17, 17, 26, 0.05),
+    0 16px 56px rgba(17, 17, 26, 0.05);
+}
+.glass-surface--fallback {
+  background: light-dark(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.8) brightness(1.1);
+  border: 1px solid light-dark(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.16));
+  box-shadow:
+    inset 0 1px 0 0 light-dark(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.18)),
+    inset 0 -1px 0 0 light-dark(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08));
+}
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-surface--fallback {
+    background: light-dark(rgba(255, 255, 255, 0.4), rgba(0, 0, 0, 0.4));
+  }
+}
+.glass-surface:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 2px;
+}
+
+/* Backdrop use: the panel fills its parent and carries no content, so
+   the parent's own markup stays in normal flow on top of it. Sizing
+   comes from the parent instead of the width/height props. */
+.glass-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.glass-layer .glass-surface__content { padding: 0; }
+
+/* Capability tiles sit on glass instead of a flat raised panel. The
+   tile keeps its accent border; the background moves to the layer. */
+.cap-tile { position: relative; background: transparent; }
+.cap-tile > .cap-body-wrap,
+.cap-tile > .cap-art { position: relative; z-index: 1; }
+/* Body text sits on this, so the fallback path needs a real fill
+   rather than the demo's 25% white wash. */
+.cap-tile .glass-surface--fallback {
+  background: color-mix(in srgb, var(--paper-raised) 82%, transparent);
+  border: 0;
+}
+
+/* Stack ribbon: glass strip behind the scrolling items. */
+.marquee { position: relative; background: transparent; }
+.marquee-track { position: relative; z-index: 1; }
+
+/* Sticky header. The glass layer replaces the solid paper fill, so the
+   bar's own children have to be lifted above it. */
+.nav-glass > *:not(.glass-layer) { position: relative; z-index: 1; }
+.nav-glass .glass-layer { border-radius: 0; }
+/* Fallback path has no frost variable — without an explicit fill the
+   header would go near-transparent and the links would sit on content. */
+.nav-glass .glass-surface--fallback {
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+}

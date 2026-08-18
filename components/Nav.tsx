@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import Marquee from "./Marquee";
+import { GlassLayer } from "./GlassSurface";
 
 const LINKS: { href: string; label: string; download?: boolean }[] = [
   { href: "/", label: "Home" },
@@ -54,14 +55,18 @@ export default function Nav() {
   return (
     <nav
       ref={navRef}
+      className="nav-glass"
       style={{
         position: "sticky",
         top: 2,
         zIndex: 50,
-        background: "var(--paper)",
         borderBottom: "1px solid var(--ink-15)",
       }}
     >
+      {/* One panel for the whole header — bar, stack ribbon, and the
+          mobile menu when it is open. The page body is transparent over
+          the WebGL field, so this actually has something to refract. */}
+      <GlassLayer borderRadius={0} backgroundOpacity={0.72} saturation={1.6} blur={10} displace={0.7} distortionScale={-110} />
       <div
         className="wrap"
         style={{
