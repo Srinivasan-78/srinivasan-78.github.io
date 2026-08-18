@@ -10,7 +10,6 @@ import Parallax from "@/components/Parallax";
 import SectionHead from "@/components/SectionHead";
 import { CountUp, RotatingWord, TiltCard } from "@/components/Bits";
 import DecryptedText from "@/components/DecryptedText";
-import GlassHero from "@/components/GlassHero";
 
 const EXPLORE = [
   { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds.", go: "View projects →" },
@@ -138,8 +137,6 @@ export default function Page() {
           </div>
         </div>
       </header>
-
-      <GlassHero />
 
       <Highlights />
 

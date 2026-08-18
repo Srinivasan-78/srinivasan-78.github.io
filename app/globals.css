@@ -84,16 +84,19 @@ html[data-theme="light"] {
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  /* Not pure black. A slightly blue-lifted near-black keeps large flat
+  /* Not pure black. A deep violet-lifted near-black keeps large flat
      areas from crushing, and warm off-white ink instead of #fff stops
-     the type vibrating against it. */
-  --paper: #101214;
-  --paper-raised: #16191c;
+     the type vibrating against it.
+     The violet cast is the same family as the glass hero — that
+     section used to be the only place on the site with this palette,
+     which made it read as a different website. */
+  --paper: #0f0a1c;
+  --paper-raised: #17102a;
   --ink: #e6dfe4;
   --ink-70: #a399a8;
   --ink-45: #6f6774;
-  --ink-15: #24272b;
-  --ink-08: #1a1d20;
+  --ink-15: #292036;
+  --ink-08: #1d1529;
 
   --sage: #0095f6;
   --sage-mid: #a8a8a8;
@@ -116,6 +119,15 @@ html[data-theme="dark"] {
 * { box-sizing: border-box; }
 
 html { background: var(--paper); }
+/* Every route gets the same lit-from-above wash the glass hero has, so
+   scrolling out of that section is a change of content, not a change
+   of site. Fixed attachment: the gradient is lighting, and lighting
+   does not scroll away with the copy. */
+html[data-theme="dark"] {
+  background:
+    radial-gradient(120% 80% at 50% 0%, #2a1550 0%, #150c2b 45%, #0f0a1c 100%)
+    fixed;
+}
 /* NOTE: never put overflow-x: clip/hidden on html or body here.
    ScrollTrigger reads the root scroller's overflow and silently
    downgrades pinType to "transform", which stops pinning working.
@@ -351,7 +363,50 @@ a.card:hover {
 }
 
 @media (pointer: coarse) {
-  .system-cursor { display: none !important; }
+  .glass-cursor { display: none !important; }
+}
+
+/* Site-wide cursor lens. Fixed at the origin and moved by transform in
+   GlassCursor; z-index 150 keeps it over Nav (50) and the lightbox
+   (100), while pointer-events: none is what actually stops it eating
+   clicks. */
+.glass-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 150;
+  pointer-events: none;
+  opacity: 0;
+}
+/* The disc itself is a GlassSurface, so displacement, frost and
+   saturate all come from the component — the same path the header
+   takes. Only the shape and the rim are set here. */
+.glass-cursor .glass-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* The header is large enough that edge refraction alone reads as
+     glass. At cursor size the rim is what sells it, so it is drawn
+     rather than left to the panel shadow.
+
+     Nothing here may set mix-blend-mode, opacity below 1, filter or
+     isolation — on this element or any ancestor. Each one makes a
+     backdrop root, and inside a backdrop root the lens can only see
+     its own wrapper, which is empty. That is what a dead lens looks
+     like: a faint ring refracting nothing. */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.25),
+    0 2px 10px rgba(0, 0, 0, 0.25);
+}
+/* Chromium only takes url() in backdrop-filter; everywhere else the
+   whole declaration drops, so the fallback refracts nothing and
+   settles for a soft tinted blur. */
+.glass-cursor .glass-surface--fallback {
+  background: color-mix(in srgb, var(--paper) 10%, transparent);
+  border: 0;
+  backdrop-filter: blur(3px) saturate(1.6) brightness(1.06);
+  -webkit-backdrop-filter: blur(3px) saturate(1.6) brightness(1.06);
 }
 
 /* The glass lens replaces the system pointer, not just decorates it —
@@ -1682,69 +1737,6 @@ html.lenis, html.lenis body { height: auto; }
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-/* ---------- Glass stage ----------
-   Full-bleed WebGL panel. The canvas is only mounted on a fine pointer
-   with motion allowed (see GlassHero); everything below it is the
-   poster that shows when it is not, so the section never renders empty. */
-.glass-stage {
-  position: relative;
-  isolation: isolate;
-  min-height: 100dvh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 50% 0%, #3a1580 0%, #1c0a3d 55%, #10061f 100%);
-  color: #fff;
-}
-.glass-stage-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-.glass-stage-canvas canvas { display: block; }
-.glass-stage-overlay {
-  position: relative;
-  z-index: 1;
-  pointer-events: none;
-  text-align: center;
-  padding: 0 20px;
-  max-width: 46ch;
-  display: grid;
-  gap: 0.9rem;
-  justify-items: center;
-}
-.glass-stage-eyebrow,
-.glass-stage-hint {
-  color: rgba(255, 255, 255, 0.62);
-}
-.glass-stage-title {
-  margin: 0;
-  font-size: clamp(3rem, 13vw, 9rem);
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-  transition: opacity 0.4s ease;
-}
-.glass-stage-caption {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.95rem;
-}
-/* The live canvas draws the same word in 3D so the lens can bend it —
-   the DOM copy would sit on top of it as a flat duplicate. */
-.glass-stage[data-live="true"] .glass-stage-title { opacity: 0; }
-.glass-stage-hint {
-  position: absolute;
-  z-index: 1;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-@media (pointer: coarse) {
-  .glass-stage-hint { display: none; }
-}
-
 /* ---------- Glass surface ----------
    Ported from React Bits. light-dark() resolves against the
    color-scheme set on :root / html[data-theme="dark"], so the manual
@@ -1842,4 +1834,40 @@ html.lenis, html.lenis body { height: auto; }
    header would go near-transparent and the links would sit on content. */
 .nav-glass .glass-surface--fallback {
   background: color-mix(in srgb, var(--paper) 78%, transparent);
+}
+
+/* ---------- Glass panels, site-wide ----------
+   The capability tiles and the header each carry a real GlassSurface
+   with its own SVG displacement filter. Every other panel on the site
+   gets the cheap version: a translucent fill over a backdrop blur.
+   Dozens of per-element `feDisplacementMap` filters would be the same
+   look at a far worse frame cost, and these panels hold body text —
+   refraction through them hurts legibility more than it flatters.
+
+   The base colour is still --paper-raised, just below full opacity, so
+   both themes stay on their own palette. */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .card,
+  .post {
+    background: color-mix(in srgb, var(--paper-raised) 68%, transparent);
+    backdrop-filter: blur(14px) saturate(1.5);
+    -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  }
+  /* The project index is a full-width page surface rather than a tile,
+     so it takes the plainer --paper base and lets the WebGL field read
+     through it. */
+  .pi {
+    background: color-mix(in srgb, var(--paper) 70%, transparent);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  }
+  /* Floats over content, so it needs more body behind its text. */
+  .hud {
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter: blur(18px) saturate(1.5);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  }
+  /* .cv-root is deliberately opaque — it is a fullscreen viewer with
+     its own dark gradient, and glass there would just muddy the
+     certificate underneath. Left alone on purpose. */
 }
