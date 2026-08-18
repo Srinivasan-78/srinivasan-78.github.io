@@ -1030,6 +1030,10 @@ main, nav, header, footer { position: relative; z-index: 1; }
    while nothing moves — hiding it removed the background entirely for
    anyone with the OS setting enabled. */
 @media (pointer: coarse) { .scene-stage { display: none; } }
+/* Mirrors the width gate in DevOpsScene: below 1280px no canvas is ever
+   built, and an empty masked full-viewport layer still costs a
+   compositing pass, so the stage goes with it. */
+@media (max-width: 1279px) { .scene-stage { display: none; } }
 
 /* ---------- UI BITS ---------- */
 .rot-word {

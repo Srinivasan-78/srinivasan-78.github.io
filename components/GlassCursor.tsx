@@ -46,6 +46,57 @@ export default function GlassCursor({ size = 30, hoverSize = 46 }: GlassCursorPr
     if (!el) return;
 
     let seeded = false;
+    let running = false;
+
+    const write = () => {
+      el.style.transform =
+        `translate3d(${pos.current.x}px, ${pos.current.y}px, 0) translate(-50%, -50%) scale(${scale.current})`;
+    };
+
+    /* The loop parks once the lens has caught up with the pointer and
+       the hover scale has settled, and is woken by the events that can
+       actually change either one.
+
+       It used to run for the life of the page. That is far more costly
+       here than a spare rAF normally is: this element carries a
+       backdrop-filter, and a backdrop-filter that moves cannot be
+       cached — every frame re-snapshots the page behind the disc and
+       re-runs the whole displacement chain. An idle pointer now costs
+       nothing at all. */
+    const tick = () => {
+      pos.current.x += (pointer.current.x - pos.current.x) * 0.3;
+      pos.current.y += (pointer.current.y - pos.current.y) * 0.3;
+
+      // Scale eases slower than position, so opening over a link reads
+      // as a deliberate focus change rather than jitter.
+      const target = hovering.current ? hoverSize / size : 1;
+      scale.current += (target - scale.current) * 0.2;
+
+      // Sub-pixel on position, invisible on scale: past this point the
+      // next frame would paint the same disc in the same place.
+      if (
+        Math.abs(pointer.current.x - pos.current.x) < 0.1 &&
+        Math.abs(pointer.current.y - pos.current.y) < 0.1 &&
+        Math.abs(target - scale.current) < 0.001
+      ) {
+        pos.current.x = pointer.current.x;
+        pos.current.y = pointer.current.y;
+        scale.current = target;
+        write();
+        running = false;
+        return;
+      }
+
+      write();
+      raf.current = requestAnimationFrame(tick);
+    };
+
+    const wake = () => {
+      if (running || document.hidden) return;
+      running = true;
+      raf.current = requestAnimationFrame(tick);
+    };
+
     const onMove = (e: PointerEvent) => {
       pointer.current.x = e.clientX;
       pointer.current.y = e.clientY;
@@ -60,33 +111,38 @@ export default function GlassCursor({ size = 30, hoverSize = 46 }: GlassCursorPr
         // — nothing — and refract air for the whole fade.
         el.style.opacity = "1";
       }
+      wake();
     };
     window.addEventListener("pointermove", onMove);
 
     const onOver = (e: PointerEvent) => {
-      hovering.current = !!(e.target as Element).closest?.(HOVER_SELECTOR);
+      const next = !!(e.target as Element).closest?.(HOVER_SELECTOR);
+      if (next === hovering.current) return;
+      hovering.current = next;
+      // Hover state can change under a still pointer — a link scrolling
+      // beneath it, a menu opening — so the scale animation needs its
+      // own wake rather than relying on the move handler for one.
+      wake();
     };
     window.addEventListener("pointerover", onOver);
 
-    const tick = () => {
-      pos.current.x += (pointer.current.x - pos.current.x) * 0.3;
-      pos.current.y += (pointer.current.y - pos.current.y) * 0.3;
-
-      // Scale eases slower than position, so opening over a link reads
-      // as a deliberate focus change rather than jitter.
-      const target = hovering.current ? hoverSize / size : 1;
-      scale.current += (target - scale.current) * 0.2;
-
-      el.style.transform =
-        `translate3d(${pos.current.x}px, ${pos.current.y}px, 0) translate(-50%, -50%) scale(${scale.current})`;
-
-      raf.current = requestAnimationFrame(tick);
+    // A hidden tab throttles rAF rather than stopping it, and the lens
+    // is invisible either way. Stop outright and resume on return.
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf.current);
+      } else {
+        wake();
+      }
     };
-    raf.current = requestAnimationFrame(tick);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerover", onOver);
+      document.removeEventListener("visibilitychange", onVisibility);
+      running = false;
       cancelAnimationFrame(raf.current);
     };
   }, [size, hoverSize]);

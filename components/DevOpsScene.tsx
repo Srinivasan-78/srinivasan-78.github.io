@@ -38,6 +38,12 @@ export default function DevOpsScene() {
     // Coarse pointer still bails entirely — a phone gains nothing from a
     // WebGL context it can't interact with, and pays for it in battery.
     if (window.matchMedia("(pointer: coarse)").matches) return;
+    // Narrow viewports bail too. Below ~1280px the 880px text column
+    // spans most of the screen, and the readability mask drops anything
+    // behind it to ~12% — a whole WebGL context to render something all
+    // but invisible is the worst trade on the page. Matched by a
+    // display:none in globals.css so the masked stage layer goes too.
+    if (window.innerWidth < 1280) return;
 
     // Reduced motion does NOT bail. It means reduce motion, not remove
     // content: the scene is built and rendered exactly once, so the
@@ -48,7 +54,7 @@ export default function DevOpsScene() {
     let cancelled = false;
     let cleanup: (() => void) | undefined;
 
-    (async () => {
+    const build = async () => {
       const THREE = await import("three");
       if (cancelled || !hostRef.current) return;
 
@@ -61,8 +67,12 @@ export default function DevOpsScene() {
       );
       camera.position.set(0, 0, 26);
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      // No MSAA and a 1.5x ceiling on pixel ratio. At 2x with antialias
+      // this was shading four samples per screen pixel across the whole
+      // viewport, every frame, for line art that the mask already keeps
+      // faint. 1.5x still supersamples the lines enough to read clean.
+      const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(window.innerWidth, window.innerHeight);
       host.appendChild(renderer.domElement);
 
@@ -176,29 +186,70 @@ export default function DevOpsScene() {
       const onScroll = () => {
         const max = document.documentElement.scrollHeight - window.innerHeight;
         target = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+        wake();
       };
       const onPointer = (e: PointerEvent) => {
         tmx = (e.clientX / window.innerWidth - 0.5) * 2;
         tmy = (e.clientY / window.innerHeight - 0.5) * 2;
+        wake();
       };
       const onResize = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        // setSize clears the buffer. With no rAF loop running, nothing
-        // would repaint it, so the still scene needs an explicit redraw.
+        // setSize clears the buffer, and the loop is usually parked, so
+        // the repaint has to be explicit — otherwise a resize leaves the
+        // scene blank until the next scroll. wake() covers the animated
+        // case; `still` never has a loop to wake.
         if (still) renderer.render(scene, camera);
+        else wake();
+      };
+      // A hidden tab renders nothing anyone can see. Throttled rAF still
+      // costs a full scene draw per callback, so stop rather than idle.
+      const onVisibility = () => {
+        if (document.hidden) {
+          running = false;
+          cancelAnimationFrame(raf);
+        } else {
+          wake();
+        }
       };
 
       const home = objects.map((o) => o.mesh.position.clone());
       let stop = -1;
       let raf = 0;
+      let running = false;
+      let lastInput = 0;
+      let lastDraw = 0;
 
-      const frame = () => {
+      /* 30fps, not 60. This is a background field of slowly drifting
+         wireframes — nobody can see the missing frames — and halving the
+         draw rate halves far more than this canvas. Every
+         backdrop-filter on the page (the cards, the nav, the HUD) sits
+         over this canvas, and a blurred backdrop can never be cached
+         while what is behind it repaints, so each scene frame drags a
+         re-blur of every glass surface along with it. */
+      const FRAME_MS = 1000 / 30;
+
+      // Everything has arrived where it was heading, so the next frame
+      // would draw the same image.
+      const settled = () =>
+        Math.abs(target - current) < 0.0005 &&
+        Math.abs(tmx - mx) < 0.001 &&
+        Math.abs(tmy - my) < 0.001;
+
+      const frame = (now: number) => {
         raf = requestAnimationFrame(frame);
-        current += (target - current) * 0.06;
-        mx += (tmx - mx) * 0.05;
-        my += (tmy - my) * 0.05;
+
+        if (now - lastDraw < FRAME_MS) return;
+        lastDraw = now;
+
+        // Ease constants are doubled from their 60fps values: half the
+        // frames means half the steps, and the old numbers made the
+        // parallax visibly lag the scroll at this rate.
+        current += (target - current) * 0.12;
+        mx += (tmx - mx) * 0.1;
+        my += (tmy - my) * 0.1;
 
         objects.forEach((o, i) => {
           const h = home[i];
@@ -224,6 +275,28 @@ export default function DevOpsScene() {
         }
 
         renderer.render(scene, camera);
+
+        /* Park once input has stopped and the eased values have caught
+           up. The per-object spins are the only thing still moving at
+           that point, and at ~0.0006 rad/frame they are not worth
+           keeping a WebGL context — and every glass surface above it —
+           awake for while the visitor sits still reading. Any scroll or
+           pointer move brings it straight back. */
+        if (now - lastInput > 500 && settled()) {
+          cancelAnimationFrame(raf);
+          running = false;
+        }
+      };
+
+      const wake = () => {
+        // Reduced motion has no loop to wake: it gets one static frame.
+        if (still) return;
+        lastInput = performance.now();
+        if (running || document.hidden) return;
+        running = true;
+        // Reset so the first frame back is never skipped by the cap.
+        lastDraw = 0;
+        raf = requestAnimationFrame(frame);
       };
 
       onScroll();
@@ -234,15 +307,20 @@ export default function DevOpsScene() {
         stop = 0;
         renderer.render(scene, camera);
       } else {
-        frame();
+        wake();
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("pointermove", onPointer, { passive: true });
       }
       window.addEventListener("resize", onResize);
+      document.addEventListener("visibilitychange", onVisibility);
 
       const obs = new MutationObserver(() => {
         line.color.set(cssColor(STOPS[stop < 0 ? 0 : stop], "#0095f6"));
         lineDim.color.set(cssColor("--ink-45", "#85827d"));
+        // The loop is usually parked and `still` never has one, so the
+        // new colour needs its own frame or the theme toggle appears to
+        // miss the background entirely.
+        renderer.render(scene, camera);
       });
       obs.observe(document.documentElement, {
         attributes: true,
@@ -250,6 +328,7 @@ export default function DevOpsScene() {
       });
 
       cleanup = () => {
+        running = false;
         cancelAnimationFrame(raf);
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("pointermove", onPointer);
@@ -257,6 +336,7 @@ export default function DevOpsScene() {
         // never added is a no-op, and branching here would leak if the
         // media query flipped between mount and unmount.
         window.removeEventListener("resize", onResize);
+        document.removeEventListener("visibilitychange", onVisibility);
         obs.disconnect();
         scene.traverse((o: any) => {
           if (o.geometry) o.geometry.dispose();
@@ -266,10 +346,22 @@ export default function DevOpsScene() {
         renderer.dispose();
         renderer.domElement.remove();
       };
-    })();
+    };
+
+    /* three.js is ~170KB gzipped and this is background decoration, so
+       the import waits for the main thread to go quiet: hydration,
+       fonts and the first images all land before the scene starts
+       building. The timeout is the escape hatch for a page that never
+       reports an idle period. */
+    const hasIdle = typeof window.requestIdleCallback === "function";
+    const handle = hasIdle
+      ? window.requestIdleCallback(() => build(), { timeout: 2500 })
+      : window.setTimeout(build, 900);
 
     return () => {
       cancelled = true;
+      if (hasIdle) window.cancelIdleCallback(handle);
+      else clearTimeout(handle);
       cleanup?.();
     };
   }, []);
