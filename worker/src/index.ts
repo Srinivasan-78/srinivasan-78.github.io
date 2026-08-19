@@ -27,6 +27,10 @@ const MAX_MESSAGE_CHARS = 1500;
 const MAX_TURNS = 16;
 const MAX_TOTAL_CHARS = 12000;
 
+/* SSE frame delimiter. The spec allows LF, CR, or CRLF line endings, so a
+   blank line is any of the three doubled up. */
+const FRAME_SEPARATOR = /\r\n\r\n|\n\n|\r\r/;
+
 type Turn = { role: "user" | "assistant"; content: string };
 
 function corsHeaders(origin: string | null, env: Env): Record<string, string> {
@@ -179,46 +183,61 @@ export default {
       const decoder = new TextDecoder();
       let buffer = "";
       let sawText = false;
+
+      /* Handles one complete SSE frame. Returns nothing; throws to end the
+         stream with a message the visitor sees. */
+      const handleFrame = async (frame: string) => {
+        const line = frame.split(/\r\n|\n|\r/).find((l) => l.startsWith("data:"));
+        if (!line) return;
+        /* Anything that is not a JSON frame — a keepalive, a comment, a
+           sentinel — is skipped rather than aborting an answer that is
+           otherwise streaming fine. */
+        let chunk: GeminiChunk;
+        try {
+          chunk = JSON.parse(line.slice(5).trim()) as GeminiChunk;
+        } catch {
+          return;
+        }
+
+        if (chunk.promptFeedback?.blockReason) {
+          throw new Error("That question was blocked by a safety filter.");
+        }
+        const candidate = chunk.candidates?.[0];
+        const text = candidate?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
+        if (text) {
+          sawText = true;
+          await writer.write(sse({ type: "delta", text }));
+        }
+        /* STOP and MAX_TOKENS are normal endings. Anything else — SAFETY,
+           RECITATION — means the answer was cut off for a reason the
+           visitor should be told about rather than left guessing. */
+        const finish = candidate?.finishReason;
+        if (finish && finish !== "STOP" && finish !== "MAX_TOKENS") {
+          throw new Error("The answer was stopped early. Try rephrasing.");
+        }
+      };
+
       try {
         for (;;) {
           const { done, value } = await reader.read();
           if (done) break;
           buffer += decoder.decode(value, { stream: true });
-          /* Upstream frames are separated by a blank line and can be split
-             across network chunks, so the tail is kept until it is complete. */
-          const frames = buffer.split("\n\n");
+          /* Frames are separated by a blank line and can be split across
+             network chunks, so the tail is kept until it is complete. The
+             separator is not always "\n\n": this endpoint emits CRLF, and
+             Google's own SDK also allows a bare "\r\r", so all three are
+             accepted. Splitting on "\n\n" alone matched nothing and every
+             answer came out empty. */
+          const frames = buffer.split(FRAME_SEPARATOR);
           buffer = frames.pop() ?? "";
-          for (const frame of frames) {
-            const line = frame.split("\n").find((l) => l.startsWith("data:"));
-            if (!line) continue;
-            /* Anything that is not a JSON frame — a keepalive, a comment, a
-               sentinel — is skipped rather than aborting an answer that is
-               otherwise streaming fine. */
-            let chunk: GeminiChunk;
-            try {
-              chunk = JSON.parse(line.slice(5).trim()) as GeminiChunk;
-            } catch {
-              continue;
-            }
-
-            if (chunk.promptFeedback?.blockReason) {
-              throw new Error("That question was blocked by a safety filter.");
-            }
-            const candidate = chunk.candidates?.[0];
-            const text = candidate?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
-            if (text) {
-              sawText = true;
-              await writer.write(sse({ type: "delta", text }));
-            }
-            /* STOP and MAX_TOKENS are normal endings. Anything else — SAFETY,
-               RECITATION — means the answer was cut off for a reason the
-               visitor should be told about rather than left guessing. */
-            const finish = candidate?.finishReason;
-            if (finish && finish !== "STOP" && finish !== "MAX_TOKENS") {
-              throw new Error("The answer was stopped early. Try rephrasing.");
-            }
-          }
+          for (const frame of frames) await handleFrame(frame);
         }
+        /* The last frame usually arrives without a trailing blank line, so
+           whatever is left in the buffer is a frame too — dropping it lost
+           the end of every answer. */
+        buffer += decoder.decode();
+        if (buffer.trim()) await handleFrame(buffer);
+
         if (!sawText) throw new Error("The assistant returned an empty answer. Try rephrasing.");
         await writer.write(sse({ type: "done" }));
       } catch (err) {
