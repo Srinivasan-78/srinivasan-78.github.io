@@ -10,7 +10,7 @@ const GREETING =
   "Ask me anything about Srinivasan's work — his experience, projects, certifications, or how to get in touch.";
 
 /* One assistant reply is streamed at a time, so a single ref is enough to
-   cancel an in-flight request when the panel closes or the page unloads. */
+   cancel an in-flight request when the panel closes or the widget unmounts. */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -26,7 +26,13 @@ export default function ChatWidget() {
   useEffect(() => () => abortRef.current?.abort(), []);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (open) {
+      inputRef.current?.focus();
+      return;
+    }
+    /* Closing the panel drops the answer nobody is going to read, rather than
+       leaving the worker streaming tokens into a hidden div. */
+    abortRef.current?.abort();
   }, [open]);
 
   /* Pinned to the newest line as tokens arrive. `turns` changes on every
@@ -109,19 +115,28 @@ export default function ChatWidget() {
           for (const frame of frames) {
             const line = frame.split("\n").find((l) => l.startsWith("data:"));
             if (!line) continue;
-            const event = JSON.parse(line.slice(5).trim()) as
+            /* A frame that is not JSON is skipped, not thrown on — one
+               malformed line should not discard a reply that is otherwise
+               arriving correctly. */
+            let event:
               | { type: "delta"; text: string }
               | { type: "done" }
               | { type: "error"; message: string };
+            try {
+              event = JSON.parse(line.slice(5).trim());
+            } catch {
+              continue;
+            }
             if (event.type === "delta") append(event.text);
             else if (event.type === "error") throw new Error(event.message);
           }
         }
       } catch (err) {
-        if ((err as Error).name === "AbortError") return;
-        setError(err instanceof Error ? err.message : "Something went wrong.");
+        const aborted = (err as Error).name === "AbortError";
+        if (!aborted) setError(err instanceof Error ? err.message : "Something went wrong.");
         /* Drops the empty placeholder so the log does not keep a blank
-           assistant bubble under the error. */
+           assistant bubble under the error — or, when the panel was closed
+           before a single token arrived, no bubble at all. */
         setTurns((prev) => {
           const last = prev[prev.length - 1];
           return last?.role === "assistant" && last.content === "" ? prev.slice(0, -1) : prev;

@@ -15,7 +15,11 @@ export interface Env {
    table; they are shown per-key in AI Studio. */
 const MODEL = "gemini-3.7-flash";
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:streamGenerateContent?alt=sse`;
-const MAX_OUTPUT_TOKENS = 800;
+/* Thinking tokens are drawn from this same budget, so it has to leave room
+   for both the reasoning and the two-to-four sentences the answer is meant to
+   be. At 800 a long question could spend the whole allowance thinking and
+   finish with no text at all. */
+const MAX_OUTPUT_TOKENS = 2000;
 
 /* Caps, in the order an abusive request would hit them. They bound spend and
    latency per request — the per-IP rate limiter bounds requests per visitor. */
@@ -136,7 +140,14 @@ export default {
         body: JSON.stringify({
           contents: toGeminiContents(parsed.turns),
           systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS, temperature: 0.3 },
+          generationConfig: {
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
+            temperature: 0.3,
+            /* The answers are short lookups over a fixed reference, not
+               reasoning problems. Low keeps latency and token spend down;
+               the budget above is what stops thinking from eating the reply. */
+            thinkingConfig: { thinkingLevel: "low" },
+          },
         }),
       });
     } catch (err) {
@@ -180,7 +191,15 @@ export default {
           for (const frame of frames) {
             const line = frame.split("\n").find((l) => l.startsWith("data:"));
             if (!line) continue;
-            const chunk = JSON.parse(line.slice(5).trim()) as GeminiChunk;
+            /* Anything that is not a JSON frame — a keepalive, a comment, a
+               sentinel — is skipped rather than aborting an answer that is
+               otherwise streaming fine. */
+            let chunk: GeminiChunk;
+            try {
+              chunk = JSON.parse(line.slice(5).trim()) as GeminiChunk;
+            } catch {
+              continue;
+            }
 
             if (chunk.promptFeedback?.blockReason) {
               throw new Error("That question was blocked by a safety filter.");
@@ -218,7 +237,6 @@ export default {
       headers: {
         "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-store",
-        Connection: "keep-alive",
         ...cors,
       },
     });
