@@ -1,39 +1,136 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
+# One pipeline, run by hand. Nothing deploys on a push — publishing is a
+# decision, not a side effect of committing.
+#
+# The three stages run in order and pass the worker URL down the chain:
+#   worker  → deploys the chat backend, emits its URL
+#   build   → puts that URL in the environment, builds the static site with it
+#   publish → uploads the result to GitHub Pages
+#
+# Because the URL comes from the deploy that just happened, there is no
+# repository variable to keep in sync and no way for the site to be built
+# against a stale endpoint.
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
+# Read-only by default; the publish job widens this for itself alone.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  group: "deploy"
+  # Not cancel-in-progress: a half-cancelled deploy leaves the worker and the
+  # site on different versions of the contract between them.
+  cancel-in-progress: false
+
+env:
+  # Keeps wrangler from phoning home during CI runs.
+  WRANGLER_SEND_METRICS: false
 
 jobs:
+  worker:
+    name: Deploy chat worker
+    runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Actions masks registered secrets in log output on its own. Re-masking
+      # here covers the case where a step reads one into a shell variable of
+      # its own, which the automatic masking does not follow.
+      - name: Mask secrets in log output
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "::add-mask::$GEMINI_API_KEY"
+          echo "::add-mask::$CLOUDFLARE_API_TOKEN"
+          echo "::add-mask::$CLOUDFLARE_ACCOUNT_ID"
+
+      # Typecheck before deploying: the worker imports the site's own data
+      # files, so a change to lib/projects.ts can break it from outside its
+      # own directory.
+      - run: npm ci
+        working-directory: worker
+      - run: npm run typecheck
+        working-directory: worker
+
+      - id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          # Uploads the value from env below as a Worker secret before the
+          # deploy, replacing whatever was there. Wrangler prints the secret's
+          # name on success, never its value, and the key never reaches the
+          # bundle, the repo, or the site.
+          secrets: |
+            GEMINI_API_KEY
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      # Deliberately does not echo steps.deploy.outputs.command-output — the
+      # raw wrangler output is the one place in this job that could carry more
+      # than intended. Only the URL is surfaced.
+      - name: Report the worker URL
+        env:
+          WORKER_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          {
+            echo "## Chat worker"
+            echo
+            echo '`'"$WORKER_URL"'`'
+          } >> "$GITHUB_STEP_SUMMARY"
+
   build:
+    name: Build site
+    needs: worker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      # The URL from the job above becomes an environment variable for every
+      # later step in this job. That is what wires the widget to the backend:
+      # Next inlines it at build time, because a static export has no runtime
+      # in which to look it up.
+      - name: Point the chat widget at the worker
+        env:
+          WORKER_URL: ${{ needs.worker.outputs.url }}
+        run: |
+          if [ -z "$WORKER_URL" ]; then
+            echo "Worker deploy produced no URL — refusing to ship a site whose chat button cannot work."
+            exit 1
+          fi
+          echo "NEXT_PUBLIC_CHAT_API=$WORKER_URL" >> "$GITHUB_ENV"
+
       # ci, not install: install can resolve past the committed lockfile and
       # build something the local tree never produced.
       - run: npm ci
       - run: npm run build
       - run: touch out/.nojekyll
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
-  deploy:
+  publish:
+    name: Publish to Pages
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

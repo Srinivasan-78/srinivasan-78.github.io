@@ -11,6 +11,7 @@ import Hud from "@/components/Hud";
 import DevOpsScene from "@/components/DevOpsScene";
 import StickyCta from "@/components/StickyCta";
 import CookieNotice from "@/components/CookieNotice";
+import ChatWidget from "@/components/ChatWidget";
 import Analytics from "@/components/Analytics";
 
 // themeColor belongs on the viewport export in Next 14; leaving it in
@@ -100,6 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </SmoothScrollProvider>
         <StickyCta />
+        <ChatWidget />
         <CookieNotice />
         <Analytics />
       </body>

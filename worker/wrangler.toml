@@ -1,0 +1,25 @@
+name = "srini-chat"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+# No nodejs_compat: the worker calls Gemini over plain fetch and touches no
+# Node built-ins. The flag was only there for the SDK that is no longer used.
+
+# Where the widget is allowed to call from. Any other Origin gets a 403 and
+# no CORS headers, so a copy of the page on someone else's domain cannot
+# spend the API budget.
+[vars]
+ALLOWED_ORIGINS = "https://www.srinidevops.com,https://srinidevops.com,https://srinivasan-78.github.io,http://localhost:3000"
+
+# Per-IP throttle, enforced at the edge before the request reaches the model —
+# the only place a limit is worth anything, since an in-worker counter resets
+# with every new isolate. `period` accepts 10 or 60 and nothing else.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 15
+  period = 60
+
+# GEMINI_API_KEY is a secret, not a var. The pipeline uploads it; by hand it is:
+#   npx wrangler secret put GEMINI_API_KEY

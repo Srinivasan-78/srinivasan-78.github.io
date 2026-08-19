@@ -17,5 +17,8 @@
     "paths": { "@/*": ["./*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  /* The worker is a separate Cloudflare build with its own deps and
+     its own tsconfig — type-checking it from here fails on imports the
+     site never installs. */
+  "exclude": ["node_modules", "worker"]
 }
