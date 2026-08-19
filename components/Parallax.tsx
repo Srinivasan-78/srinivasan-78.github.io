@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isLite } from "@/lib/lite";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,10 @@ export default function Parallax({
     const img = imgRef.current;
     if (!frame || !img) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    /* A scrubbed transform on every image in view is the most expensive
+       thing on the page per scrolled pixel. The image still shows, it just
+       holds still. */
+    if (isLite()) return;
 
     const tween = gsap.fromTo(
       img,

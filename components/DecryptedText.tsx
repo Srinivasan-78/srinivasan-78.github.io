@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useMemo, useCallback, type CSSProperties, type ComponentPropsWithoutRef } from "react";
-import { motion } from "motion/react";
+import { isLite } from "@/lib/lite";
 
 const styles: Record<string, CSSProperties> = {
   wrapper: {
@@ -25,8 +25,11 @@ type AnimateOn = "view" | "hover" | "inViewHover" | "click";
 type ClickMode = "once" | "toggle";
 type Direction = "forward" | "reverse";
 
+/* Plain span rather than motion.span. Nothing on this site passes a single
+   motion prop to it, so the whole animation library was being bundled to
+   render an element it never animated. */
 interface DecryptedTextProps
-  extends Omit<ComponentPropsWithoutRef<typeof motion.span>, "onClick" | "onMouseEnter" | "onMouseLeave" | "children"> {
+  extends Omit<ComponentPropsWithoutRef<"span">, "onClick" | "onMouseEnter" | "onMouseLeave" | "children"> {
   text: string;
   speed?: number;
   maxIterations?: number;
@@ -62,6 +65,12 @@ export default function DecryptedText({
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isDecrypted, setIsDecrypted] = useState(animateOn !== "click");
   const [direction, setDirection] = useState<Direction>("forward");
+  /* Set after mount, never during render: the server has no matchMedia, and
+     a first paint that disagreed with the markup would be a hydration
+     mismatch on every heading on the page. */
+  const [lite, setLite] = useState(false);
+
+  useEffect(() => setLite(isLite()), []);
 
   const containerRef = useRef<HTMLSpanElement>(null);
   const orderRef = useRef<number[]>([]);
@@ -325,6 +334,11 @@ export default function DecryptedText({
 
   useEffect(() => {
     if (animateOn !== "view" && animateOn !== "inViewHover") return;
+    /* On touch this is the most expensive text on the page: a re-render of
+       one span per character, for every instance in view, twenty times a
+       second. Headings appear already decrypted instead — which is what
+       the initial state renders anyway, so there is nothing to undo. */
+    if (lite) return;
 
     const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
@@ -352,7 +366,7 @@ export default function DecryptedText({
         observer.unobserve(currentRef);
       }
     };
-  }, [animateOn, hasAnimated, triggerDecrypt]);
+  }, [animateOn, hasAnimated, triggerDecrypt, lite]);
 
   useEffect(() => {
     if (animateOn === "click") {
@@ -367,7 +381,9 @@ export default function DecryptedText({
   }, [animateOn, text, encryptInstantly]);
 
   const animateProps =
-    animateOn === "hover" || animateOn === "inViewHover"
+    lite
+      ? {}
+      : animateOn === "hover" || animateOn === "inViewHover"
       ? {
           onMouseEnter: triggerHoverDecrypt,
           onMouseLeave: resetToPlainText,
@@ -379,7 +395,7 @@ export default function DecryptedText({
         : {};
 
   return (
-    <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...animateProps} {...props}>
+    <span className={parentClassName} ref={containerRef} style={styles.wrapper} {...animateProps} {...props}>
       <span style={styles.srOnly}>{displayText}</span>
 
       <span aria-hidden="true">
@@ -393,6 +409,6 @@ export default function DecryptedText({
           );
         })}
       </span>
-    </motion.span>
+    </span>
   );
 }

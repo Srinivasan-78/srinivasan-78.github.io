@@ -2279,3 +2279,151 @@ textarea.cf-input { resize: vertical; }
   .chat-launcher:hover { transform: none; }
   .chat-head .pulse { animation: none; }
 }
+
+/* ---------- TOUCH: THE LIGHTER BUILD ---------- */
+/* Everything below is the CSS half of lib/lite.ts. Same content, same
+   layout, same palette — what comes off is the per-frame GPU work that
+   was written for a desktop and made phones stutter.
+
+   Three things dominate that cost, in order:
+
+   1. backdrop-filter. Every blurred panel forces the compositor to read
+      back the pixels behind it and re-blur them whenever either layer
+      moves — which, for a sticky header or a card in a scrolling list,
+      is every single frame. The panels below swap to an opaque fill of
+      the same colour. The look is flat instead of frosted; the text on
+      them is if anything easier to read.
+   2. The grain overlay. A fixed full-viewport pseudo-element sitting
+      above the page at z-90, so it is composited over everything, every
+      frame, forever. It exists to stop banding on large dark fills,
+      which is a problem phone screens largely do not have.
+   3. Anything looping. A marquee and a handful of pulse rings never stop
+      animating, so the device never gets an idle frame. On a small
+      screen they are also the effects that read as busy rather than
+      alive — the "overstimulating" half of the complaint.
+
+   Desktop is untouched: nothing here exists outside this query, and the
+   JS gate uses the same `(pointer: coarse)` test. */
+@media (pointer: coarse) {
+  /* 1 — no backdrop readback anywhere */
+  .glass-surface--svg,
+  .glass-surface--fallback,
+  .card,
+  .post,
+  .pi,
+  .hud,
+  .rail-pct,
+  .sticky-cta,
+  .cookie-notice,
+  .chat-launcher,
+  .chat-panel {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* The fills those panels had were translucent because a blur sat
+     behind them. With the blur gone, translucency alone just lets the
+     page show through as noise, so each goes back to solid. */
+  .card,
+  .post { background: var(--paper-raised); }
+  .pi { background: var(--paper); }
+  .hud { background: var(--paper); }
+  .sticky-cta { background: var(--paper); }
+  .cookie-notice,
+  .chat-launcher,
+  .chat-panel { background: var(--paper-raised); }
+  /* The nav's glass layer has no content of its own — with the filter
+     off it is an empty tinted box over the header, so it goes entirely
+     and the header keeps its own background. */
+  .glass-layer { display: none; }
+
+  /* 2 — no full-viewport overlay */
+  .grain::after { display: none; }
+
+  /* 3 — nothing loops */
+  .marquee-track { animation: none; }
+  .hero-status .pulse,
+  .chat-head .pulse,
+  .pi-pulse { animation: none; }
+
+  /* VelocitySkew is off here, so the layer promotion it needed is pure
+     cost: a compositor layer per skewed element, held for a transform
+     that never comes. */
+  [data-skew] {
+    will-change: auto;
+    transform: none;
+  }
+}
+
+/* ---------- TOUCH: CERTIFICATE VIEWER ---------- */
+/* The viewer is a fullscreen overlay with four absolutely-positioned
+   corners over a WebGL canvas. At desktop widths they never meet. On a
+   phone two of them were landing on top of each other: the readout was
+   stretched full-width along the bottom while the step buttons sat in
+   that same corner, so the "Show credential" link — the one thing the
+   screen exists to hand over — was underneath a button and unclickable.
+
+   The fix is to stop them sharing the bottom edge. Controls own it; the
+   readout sits directly above them. Both clear the home indicator, and
+   the header clears the notch. */
+@media (max-width: 720px) {
+  .cv-top {
+    padding: max(1rem, env(safe-area-inset-top)) 1.25rem 1rem;
+    gap: 0.75rem;
+  }
+  /* A long shelf label used to squeeze Close down to its ellipsis. */
+  .cv-shelf {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .cv-close {
+    flex-shrink: 0;
+    padding: 0.5rem 0.9rem;
+  }
+
+  .cv-nav {
+    right: 1.25rem;
+    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    flex-direction: row;
+  }
+  /* Cleared of the buttons: one row of 40px steps plus breathing room. */
+  .cv-readout {
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: calc(5.25rem + env(safe-area-inset-bottom));
+    max-width: none;
+  }
+  /* The skills list can run to several lines on a narrow screen and push
+     the certificate name off the top of the readout. Two lines, then cut. */
+  .cv-meta {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+  /* Tap targets, not pointer targets. */
+  .cv-step {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---------- TOUCH: CERTIFICATE MENU ---------- */
+/* The shelf rows carry an inline `margin-left` of up to 61%, which is
+   what staggers them across a wide screen. On a phone that margin eats
+   most of the line, and the label — nowrap, uppercase, and never smaller
+   than 2.6rem — ran straight into `.fm-row`'s overflow: hidden. Half the
+   shelves were reading as clipped fragments.
+
+   So on a narrow screen the stagger goes: the rows sit flush in a column
+   and the type comes down to a size that fits the width it actually has.
+   The inverting band still reaches both edges, because .fm-fill is
+   absolutely positioned against the row and ignores this padding. */
+@media (max-width: 720px) {
+  .fm-row { padding: 0 24px; }
+  .fm-label {
+    /* !important because the indent is an inline style on the element. */
+    margin-left: 0 !important;
+    font-size: clamp(1.75rem, 9vw, 3rem);
+  }
+}

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isLite } from "@/lib/lite";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,10 @@ export default function VelocitySkew() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    /* Skewing on scroll means re-rasterising text on a device that is
+       already struggling to scroll it, and it is the effect that reads as
+       "overstimulating" on a small screen. Off on touch. */
+    if (isLite()) return;
 
     const targets = gsap.utils.toArray<HTMLElement>("[data-skew]");
     if (!targets.length) return;

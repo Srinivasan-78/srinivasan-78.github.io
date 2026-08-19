@@ -17,8 +17,17 @@ export default function ProgressRail() {
     let last = -1;
     let running = false;
 
+    /* Scrollable distance, cached. Reading scrollHeight forces the browser
+       to lay the document out, and this ran on every scroll event — a full
+       layout per event, on the one device that cannot spare it. It only
+       changes when the page does, so it is measured then instead. */
+    let max = 0;
+    const remeasure = () => {
+      max = document.documentElement.scrollHeight - window.innerHeight;
+      measure();
+    };
+
     const measure = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
       target = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
       start();
     };
@@ -53,17 +62,23 @@ export default function ProgressRail() {
       raf.current = requestAnimationFrame(tick);
     };
 
-    measure();
+    remeasure();
     current = target;
     tick();
     window.addEventListener("scroll", measure, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", remeasure);
+    /* Lazy images and font swaps change the document height after load, and
+       neither fires a resize. Without this the rail reaches 100% early and
+       then sits there for the rest of the page. */
+    const ro = new ResizeObserver(remeasure);
+    ro.observe(document.documentElement);
 
     return () => {
       running = false;
       cancelAnimationFrame(raf.current);
+      ro.disconnect();
       window.removeEventListener("scroll", measure);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", remeasure);
     };
   }, []);
 

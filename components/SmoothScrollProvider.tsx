@@ -2,7 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { usePathname } from "next/navigation";
-import Lenis from "lenis";
+import type Lenis from "lenis";
+import { isLite } from "@/lib/lite";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -39,54 +40,80 @@ export default function SmoothScrollProvider({
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    /* Touch devices keep native scrolling. Lenis replaces a scroll the
+       compositor handles on its own thread with one computed in JS every
+       frame, which is exactly the "laggy scroll" phones were reporting —
+       and momentum on mobile already feels right without it. */
+    if (isLite()) return;
 
-    const lenis = new Lenis({
-      // lerp gives frame-rate-independent smoothing and reads more
-      // naturally than a fixed duration on high-refresh displays.
-      lerp: 0.09,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.6,
-      // Lenis runs its own rAF loop by default; we drive it from the
-      // GSAP ticker instead, so leaving that on would step the scroll
-      // twice per frame and double the apparent speed.
-      autoRaf: false,
-    });
-    lenisRef.current = lenis;
+    // Imported here rather than at module scope so the bail above is also
+    // a bail on downloading it. Phones and reduced-motion visitors never
+    // fetch a scroll library they will not run.
+    let cancelled = false;
+    let teardown: (() => void) | undefined;
 
-    lenis.on("scroll", ScrollTrigger.update);
+    void (async () => {
+      const { default: Lenis } = await import("lenis");
+      // The effect was torn down while the import was in flight — under
+      // StrictMode's double-mount that is the common case, not the edge.
+      if (cancelled) return;
 
-    // Named so it can actually be removed. An anonymous callback here
-    // leaks on unmount, and under React StrictMode's double-mount that
-    // leaves two Lenis instances advancing the same scroll.
-    const raf = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
+      const lenis = new Lenis({
+        // lerp gives frame-rate-independent smoothing and reads more
+        // naturally than a fixed duration on high-refresh displays.
+        lerp: 0.09,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.6,
+        // Lenis runs its own rAF loop by default; we drive it from the
+        // GSAP ticker instead, so leaving that on would step the scroll
+        // twice per frame and double the apparent speed.
+        autoRaf: false,
+      });
+      lenisRef.current = lenis;
 
-    // Trigger positions are measured when they're created, but the page
-    // has ~12 lazy images that change layout height as they arrive.
-    // Without a refresh, every trigger below an image fires at the wrong
-    // scroll position.
-    const refresh = () => ScrollTrigger.refresh();
-    const imgs = Array.from(document.images);
-    imgs.forEach((img) => {
-      if (!img.complete) img.addEventListener("load", refresh, { once: true });
-    });
-    window.addEventListener("load", refresh, { once: true });
+      lenis.on("scroll", ScrollTrigger.update);
 
-    // Font swap changes text metrics, shifting every text-based trigger.
-    if (document.fonts) document.fonts.ready.then(refresh);
+      // Named so it can actually be removed. An anonymous callback here
+      // leaks on unmount, and under React StrictMode's double-mount that
+      // leaves two Lenis instances advancing the same scroll.
+      const raf = (time: number) => lenis.raf(time * 1000);
+      gsap.ticker.add(raf);
+      gsap.ticker.lagSmoothing(0);
+
+      // Trigger positions are measured when they're created, but the page
+      // has ~12 lazy images that change layout height as they arrive.
+      // Without a refresh, every trigger below an image fires at the wrong
+      // scroll position.
+      const refresh = () => ScrollTrigger.refresh();
+      const imgs = Array.from(document.images);
+      imgs.forEach((img) => {
+        if (!img.complete) img.addEventListener("load", refresh, { once: true });
+      });
+      window.addEventListener("load", refresh, { once: true });
+
+      // Font swap changes text metrics, shifting every text-based trigger.
+      if (document.fonts) document.fonts.ready.then(refresh);
+
+      teardown = () => {
+        gsap.ticker.remove(raf);
+        imgs.forEach((img) => img.removeEventListener("load", refresh));
+        window.removeEventListener("load", refresh);
+        lenis.destroy();
+        lenisRef.current = null;
+      };
+    })();
 
     return () => {
-      gsap.ticker.remove(raf);
-      imgs.forEach((img) => img.removeEventListener("load", refresh));
-      window.removeEventListener("load", refresh);
-      lenis.destroy();
-      lenisRef.current = null;
+      cancelled = true;
+      teardown?.();
     };
   }, []);
 
   useEffect(() => {
-    lenisRef.current?.scrollTo(0, { immediate: true });
+    /* Without Lenis — touch, or reduced motion — the same reset has to go
+       through the window, or a route change lands mid-page. */
+    if (lenisRef.current) lenisRef.current.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
     ScrollTrigger.refresh();
   }, [pathname]);
 

@@ -177,8 +177,15 @@ export default function CertViewer({
       if (!mod || disposed) return;
       const THREE: typeof import("three") = mod;
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      /* A phone renders this deck at its own screen density, and the
+         combination of MSAA and a 2x pixel ratio meant shading four samples
+         per screen pixel across a full-screen canvas — on the device least
+         able to afford it. The cards are flat, axis-aligned quads with a
+         text texture, so MSAA buys almost nothing here even on desktop;
+         dropping it on touch costs no visible edge quality. */
+      const lite = window.matchMedia("(pointer: coarse)").matches;
+      const renderer = new THREE.WebGLRenderer({ antialias: !lite, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, lite ? 1.5 : 2));
       renderer.setSize(host.clientWidth, host.clientHeight);
       host.appendChild(renderer.domElement);
 
