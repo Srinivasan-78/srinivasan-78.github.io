@@ -104,6 +104,31 @@ export default function ChatWidget() {
         const decoder = new TextDecoder();
         let buffer = "";
 
+        /* Handles one complete SSE frame. Throws to end the reply with a
+           message the visitor sees. */
+        const handleFrame = (frame: string) => {
+          const line = frame.split("\n").find((l) => l.startsWith("data:"));
+          if (!line) return;
+          /* A frame that is not JSON is skipped, not thrown on — one
+             malformed line should not discard a reply that is otherwise
+             arriving correctly. */
+          let event:
+            | { type: "delta"; text: string }
+            | { type: "notice"; message: string }
+            | { type: "done" }
+            | { type: "error"; message: string };
+          try {
+            event = JSON.parse(line.slice(5).trim());
+          } catch {
+            return;
+          }
+          if (event.type === "delta") append(event.text);
+          /* A notice keeps the partial answer and explains why it stops —
+             a truncated reply that says nothing reads as a broken widget. */
+          else if (event.type === "notice") setError(event.message);
+          else if (event.type === "error") throw new Error(event.message);
+        };
+
         /* SSE frames are separated by a blank line and can be split across
            network chunks, so the tail of the buffer is kept until it is. */
         for (;;) {
@@ -112,25 +137,13 @@ export default function ChatWidget() {
           buffer += decoder.decode(value, { stream: true });
           const frames = buffer.split("\n\n");
           buffer = frames.pop() ?? "";
-          for (const frame of frames) {
-            const line = frame.split("\n").find((l) => l.startsWith("data:"));
-            if (!line) continue;
-            /* A frame that is not JSON is skipped, not thrown on — one
-               malformed line should not discard a reply that is otherwise
-               arriving correctly. */
-            let event:
-              | { type: "delta"; text: string }
-              | { type: "done" }
-              | { type: "error"; message: string };
-            try {
-              event = JSON.parse(line.slice(5).trim());
-            } catch {
-              continue;
-            }
-            if (event.type === "delta") append(event.text);
-            else if (event.type === "error") throw new Error(event.message);
-          }
+          for (const frame of frames) handleFrame(frame);
         }
+        /* A stream cut short leaves a final frame with no trailing blank line
+           after it. Dropping that lost the end of the answer with no sign
+           anything had gone wrong. */
+        buffer += decoder.decode();
+        if (buffer.trim()) handleFrame(buffer);
       } catch (err) {
         const aborted = (err as Error).name === "AbortError";
         if (!aborted) setError(err instanceof Error ? err.message : "Something went wrong.");

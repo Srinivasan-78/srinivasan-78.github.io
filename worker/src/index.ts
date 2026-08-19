@@ -18,8 +18,10 @@ const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODE
 /* Thinking tokens are drawn from this same budget, so it has to leave room
    for both the reasoning and the two-to-four sentences the answer is meant to
    be. At 800 a long question could spend the whole allowance thinking and
-   finish with no text at all. */
-const MAX_OUTPUT_TOKENS = 2000;
+   finish with no text at all; at 2000 a long one still occasionally ran out
+   part-way through the text, which reads as the answer freezing mid-sentence.
+   The system prompt is what keeps replies short — this is only the ceiling. */
+const MAX_OUTPUT_TOKENS = 4000;
 
 /* Caps, in the order an abusive request would hit them. They bound spend and
    latency per request — the per-IP rate limiter bounds requests per visitor. */
@@ -93,10 +95,14 @@ function toGeminiContents(turns: Turn[]) {
 type GeminiChunk = {
   candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[];
   promptFeedback?: { blockReason?: string };
+  /* Arrives on the final chunk. Field names differ between API versions, so
+     it is carried as an open record and logged whole rather than picked
+     apart into fields that may not exist. */
+  usageMetadata?: Record<string, unknown>;
 };
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const origin = request.headers.get("Origin");
     const cors = corsHeaders(origin, env);
 
@@ -178,11 +184,19 @@ export default {
     /* Deliberately not awaited: the response has to start flowing before the
        model finishes, which is the entire point of streaming. Errors from here
        on are reported down the stream, because the 200 is already on the wire. */
-    (async () => {
+    const pump = (async () => {
       const reader = upstream.body!.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
       let sawText = false;
+      /* Why the model stopped, as reported by upstream. Staying null through to
+         the end of the stream means it never said — the connection was cut. */
+      let finishReason: string | null = null;
+      /* Token accounting from the last chunk, logged once the answer is out.
+         It is the only way to see two things that decide what this costs:
+         how much of the prompt hit the implicit cache, and how many of the
+         output tokens went to thinking rather than to the reply. */
+      let usage: Record<string, unknown> | null = null;
 
       /* Handles one complete SSE frame. Returns nothing; throws to end the
          stream with a message the visitor sees. */
@@ -199,6 +213,8 @@ export default {
           return;
         }
 
+        if (chunk.usageMetadata) usage = chunk.usageMetadata;
+
         if (chunk.promptFeedback?.blockReason) {
           throw new Error("That question was blocked by a safety filter.");
         }
@@ -208,11 +224,15 @@ export default {
           sawText = true;
           await writer.write(sse({ type: "delta", text }));
         }
-        /* STOP and MAX_TOKENS are normal endings. Anything else — SAFETY,
+        /* STOP is the only clean ending. MAX_TOKENS is a clean protocol
+           ending but a truncated answer, so it is recorded and reported below
+           rather than passed off as complete. Anything else — SAFETY,
            RECITATION — means the answer was cut off for a reason the
            visitor should be told about rather than left guessing. */
         const finish = candidate?.finishReason;
-        if (finish && finish !== "STOP" && finish !== "MAX_TOKENS") {
+        if (!finish) return;
+        finishReason = finish;
+        if (finish !== "STOP" && finish !== "MAX_TOKENS") {
           throw new Error("The answer was stopped early. Try rephrasing.");
         }
       };
@@ -239,7 +259,24 @@ export default {
         if (buffer.trim()) await handleFrame(buffer);
 
         if (!sawText) throw new Error("The assistant returned an empty answer. Try rephrasing.");
+        /* Upstream ended without ever saying why it stopped, so whatever was
+           streamed is a fragment. Reporting it beats a "done" that makes half
+           an answer look finished. */
+        if (!finishReason) {
+          throw new Error("The answer was cut off before it finished. Try asking again.");
+        }
+        if (finishReason === "MAX_TOKENS") {
+          await writer.write(
+            sse({
+              type: "notice",
+              message: "That answer hit the length limit and stops early. Ask for a narrower part of it.",
+            }),
+          );
+        }
         await writer.write(sse({ type: "done" }));
+        /* Logged after the answer is on the wire, so measuring never delays
+           it. Visible in `wrangler tail`. */
+        console.log("usage", JSON.stringify(usage));
       } catch (err) {
         console.error("stream failed", err);
         const message =
@@ -251,6 +288,11 @@ export default {
         await writer.close();
       }
     })();
+
+    /* The pump writes into the response body, so the runtime normally keeps it
+       alive on its own. Registering it says so explicitly, rather than relying
+       on that and having an eviction abandon a half-written answer. */
+    ctx.waitUntil(pump);
 
     return new Response(readable, {
       headers: {
