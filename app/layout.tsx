@@ -48,6 +48,15 @@ export const metadata: Metadata = {
   description:
     "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure. 5 years turning fragile deployments into reliable pipelines.",
   authors: [{ name: "Srinivasan Vijayaraghavan" }],
+  /* Without max-image-preview:large, Google caps any thumbnail it chooses
+     to show at a small size. It is a permission, not a request — it does
+     not make Google pick an image, it only stops it from shrinking one it
+     has already picked. */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -60,6 +69,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Srinivasan Vijayaraghavan",
+    /* The canonical in `alternates` only emits <link rel="canonical">;
+       og:url is a separate tag and Next does not derive one from it. Every
+       other page gets this through pageMetadata in lib/seo.ts — the home
+       page builds its metadata here, so it has to be stated. */
+    url: "/",
     title: "Srinivasan Vijayaraghavan — DevOps Engineer",
     description:
       "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.",
