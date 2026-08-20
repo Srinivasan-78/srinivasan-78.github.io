@@ -47,7 +47,7 @@ export default function CertIndex() {
   }, [rowId]);
 
   return (
-    <main id="content" className="wrap cert-main">
+    <main id="content" tabIndex={-1} className="wrap cert-main">
       <div className="page-head">
         <span className="eyebrow">Certifications</span>
         <SplitReveal as="h1" text="Verified credentials" className="display display-lg" />

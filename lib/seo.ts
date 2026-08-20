@@ -19,8 +19,12 @@ export function pageMetadata({
 }: {
   title: string;
   description: string;
-  /* Root-relative, with a leading slash — "" for the home page. */
-  path: string;
+  /* Root-relative, with a leading slash — "" for the home page, and null
+     for a page that is not a URL anyone should be sent to. The 404 is the
+     only one of those: it answers every wrong address on the site, so a
+     canonical tag there would nominate one of them as the real page, and
+     an og:url would hand social cards a link into a dead end. */
+  path: string | null;
   noindex?: boolean;
 }): Metadata {
   const fullTitle = `${title} — Srinivasan Vijayaraghavan`;
@@ -28,14 +32,17 @@ export function pageMetadata({
   return {
     title: fullTitle,
     description,
-    alternates: { canonical: path || "/" },
+    /* An explicit null rather than an omission: leaving it out lets the
+       root layout's canonical fall through, which would have the 404
+       page nominating the home page as its canonical URL. */
+    alternates: { canonical: path === null ? null : path || "/" },
     ...(noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type: "website",
       siteName: "Srinivasan Vijayaraghavan",
       title: fullTitle,
       description,
-      url: path || "/",
+      ...(path === null ? {} : { url: path || "/" }),
       images: [OG_IMAGE],
     },
     twitter: {

@@ -2,11 +2,13 @@ import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import GlowCard from "@/components/ui/GlowCard";
 
+/* No path and no `noindex` flag of its own: Next emits `noindex` for a
+   not-found page already, and adding a second robots tag saying
+   `noindex, follow` left two of them arguing in the head. */
 export const metadata = pageMetadata({
   title: "Page not found",
   description: "That URL doesn't exist on this site. Pick a working route from the list.",
-  path: "/404",
-  noindex: true,
+  path: null,
 });
 
 const ROUTES = [
@@ -18,7 +20,7 @@ const ROUTES = [
 
 export default function NotFound() {
   return (
-    <main id="content" className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
+    <main id="content" tabIndex={-1} className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
         <span className="eyebrow">404</span>
         <h1 className="display display-lg">That page didn&rsquo;t resolve</h1>
@@ -33,9 +35,7 @@ export default function NotFound() {
         {ROUTES.map((r) => (
           <GlowCard key={r.href}>
             <Link href={r.href} className="card">
-              <h3 className="card-title">
-                {r.title}
-              </h3>
+              <h2 className="card-title">{r.title}</h2>
               <p className="card-body">{r.body}</p>
               <span className="go">{r.go}</span>
             </Link>

@@ -28,7 +28,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
   if (!p) notFound();
 
   return (
-    <main id="content">
+    <main id="content" tabIndex={-1}>
       <div className="wrap pd-top">
         <Link href="/projects" className="eyebrow lnk">
           ← Back to the gallery
@@ -63,12 +63,17 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
 
       <div className="wrap">
         <section className="section pd-section">
-          <span className="eyebrow">Overview</span>
+          {/* The section labels are the page's real subsections, so they are
+              headings rather than styled spans — without them the document
+              went straight from its <h1> to the <h3>s inside "How it
+              works". `.eyebrow` sets its own size and zeroes the margin, so
+              the element change is invisible. */}
+          <h2 className="eyebrow">Overview</h2>
           <p className="pd-prose">{p.overview}</p>
         </section>
 
         <section className="section pd-section">
-          <span className="eyebrow">How it works</span>
+          <h2 className="eyebrow">How it works</h2>
           <div className="pd-arch">
             {p.architecture.map((a) => (
               <div key={a.label}>
@@ -80,7 +85,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
         </section>
 
         <section className="section pd-section">
-          <span className="eyebrow">What makes it worth reading</span>
+          <h2 className="eyebrow">What makes it worth reading</h2>
           <ul className="pd-list">
             {p.highlights.map((h) => (
               <li key={h}>{h}</li>
@@ -89,7 +94,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
         </section>
 
         <section className="section pd-section">
-          <span className="eyebrow">Stack</span>
+          <h2 className="eyebrow">Stack</h2>
           <div className="pd-stack">
             {p.stack.map((t) => (
               <span key={t} className="tag">
@@ -99,24 +104,37 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
           </div>
         </section>
 
-        <Reveal className="hero-actions">
-          {p.links.map((l, i) => (
-            <a
-              key={l.url}
-              href={l.url}
-              target="_blank"
-              rel="noopener"
-              className={"btn" + (i === 0 ? " primary" : "")}
-            >
-              {l.label}
-            </a>
-          ))}
-        </Reveal>
+        {/* Some of these projects have no public repository, and a page
+            with no way to act on it is a dead end. When there is nothing to
+            link out to, the page says so and offers the one route that is
+            always open. */}
+        {p.links.length > 0 ? (
+          <Reveal className="hero-actions">
+            {p.links.map((l, i) => (
+              <a
+                key={l.url}
+                href={l.url}
+                target="_blank"
+                rel="noopener"
+                className={"btn" + (i === 0 ? " primary" : "")}
+              >
+                {l.label}
+              </a>
+            ))}
+          </Reveal>
+        ) : (
+          <Reveal className="hero-actions">
+            <Link href="/contact" className="btn primary">
+              Ask me about this project
+            </Link>
+            <span className="micro">no public repository for this one</span>
+          </Reveal>
+        )}
       </div>
 
       <div className="wrap">
         <section className="section pd-section">
-          <span className="eyebrow">Next</span>
+          <h2 className="eyebrow">Next</h2>
           <Reveal className="proj-list" pop>
             {PROJECTS.filter((o) => o.slug !== p.slug)
               .slice(0, 3)
@@ -124,7 +142,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
                 <GlowCard key={o.slug}>
                   <Link href={`/projects/${o.slug}`} className="card">
                     <span className="eyebrow">{o.client}</span>
-                    <h2 className="card-title">{o.title}</h2>
+                    <h3 className="card-title">{o.title}</h3>
                     <p className="card-body">{o.teaser}</p>
                     <span className="go">Read more</span>
                   </Link>

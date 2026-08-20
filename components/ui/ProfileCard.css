@@ -381,7 +381,7 @@
   flex-direction: column;
 }
 
-.pc-details h3 {
+.pc-details .pc-name {
   font-weight: 600;
   margin: 0;
   font-size: min(5svh, 3em);
@@ -443,7 +443,7 @@
     top: 2em;
   }
 
-  .pc-details h3 {
+  .pc-details .pc-name {
     font-size: min(4svh, 2.5em);
   }
 
@@ -489,7 +489,7 @@
     top: 1.5em;
   }
 
-  .pc-details h3 {
+  .pc-details .pc-name {
     font-size: min(3.5svh, 2em);
   }
 
@@ -533,7 +533,7 @@
     max-height: 320px;
   }
 
-  .pc-details h3 {
+  .pc-details .pc-name {
     font-size: min(3svh, 1.5em);
   }
 

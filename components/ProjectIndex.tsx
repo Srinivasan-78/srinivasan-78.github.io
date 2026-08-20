@@ -116,16 +116,15 @@ export default function ProjectIndex() {
   let n = 0;
 
   return (
-    <main id="content" className="pi wrap" ref={rootRef}>
+    <main id="content" tabIndex={-1} className="pi wrap" ref={rootRef}>
       <header className="pi-head">
         <span className="eyebrow">Projects</span>
         <h1 className="display display-lg">
           Things I build outside work
         </h1>
         <p>
-          {PROJECTS.length} public repositories — live demos, platform experiments, and
-          tooling I actually use. Hover a row for its schematic, open it for the full
-          write-up.
+          {PROJECTS.length} builds — live demos, platform experiments, and tooling I actually
+          use. Hover a row for its schematic, open it for the full write-up.
         </p>
       </header>
 
@@ -139,7 +138,7 @@ export default function ProjectIndex() {
           <section className="pi-group">
             <div className="pi-rail">
               <span className="pi-rail-inner">
-                <span className="pi-rail-label">{g.name}</span>
+                <h2 className="pi-rail-label">{g.name}</h2>
                 <span className="pi-rail-count">{String(g.items.length).padStart(2, "0")}</span>
               </span>
             </div>

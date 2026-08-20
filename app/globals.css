@@ -40,9 +40,18 @@ html[data-theme="light"] {
   --ink-15: #d2d2d7;
   --ink-08: #ebebed;
 
-  --accent: #0071e3;
+  /* #0071e3 measured 4.31:1 against --paper-raised, which is where most
+     accent-coloured text on this theme actually sits (card "go" labels,
+     the certificate links). Two steps darker clears 4.5:1 on the card and
+     5.5:1 on white without changing which blue this is. */
+  --accent: #0066cc;
   --accent-wash: #f0f7ff;
   --accent-line: #b6dbff;
+  /* The accent as a *fill* behind white text, which is a different
+     contrast problem from the accent as text. Split out so the dark
+     theme can keep its lighter link blue while its buttons stay
+     readable. */
+  --accent-solid: #0066cc;
   --danger: #b3261e;
 
   /* The click spark. It is drawn on a canvas, which cannot read a
@@ -98,6 +107,11 @@ html[data-theme="dark"] {
   --accent: #2997ff;
   --accent-wash: #0b1c2c;
   --accent-line: #1b3a5c;
+  /* White on #2997ff is 3.02:1 — fine for a 4px rule, a failure for the
+     label on the primary button. The fill drops to the light theme's
+     blue (4.7:1 with white) while links and the focus ring keep the
+     brighter one they need against black. */
+  --accent-solid: #0071e3;
   --danger: #ff6961;
   --spark: rgba(255, 255, 255, 0.6);
 }
@@ -160,7 +174,7 @@ a { color: var(--ink); text-decoration: none; }
   z-index: 200;
   transform: translateY(-120%);
   padding: 0.7rem 1.1rem;
-  background: var(--accent);
+  background: var(--accent-solid);
   /* White, not --paper: in dark mode --paper is black, and black on the
      accent blue is the one contrast pair on the site that fails. */
   color: #fff;
@@ -175,6 +189,20 @@ a { color: var(--ink); text-decoration: none; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); width: 100%; }
 
+/* The header is sticky, so anything scrolled to by a fragment lands
+   underneath it. Measured: the bar is 105-107px from 640px up and 74px at
+   phone widths, so the reserve clears it with a little room either side.
+   Without this, "Skip to content" put the first 25px of the <h1> behind
+   the nav — the one thing that link exists to avoid. */
+html { scroll-padding-top: 120px; }
+@media (max-width: 520px) {
+  html { scroll-padding-top: 88px; }
+}
+/* The skip target carries tabindex="-1" so focus actually moves there
+   rather than staying on <body>; that makes it programmatically focusable,
+   which must not draw a ring around the whole page. */
+main:focus { outline: none; }
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -182,6 +210,11 @@ a { color: var(--ink); text-decoration: none; }
   text-transform: uppercase;
   color: var(--ink-45);
   margin: 0;
+  /* Section labels on the project pages are <h2>s wearing this class, so
+     the user agent's bold has to be overridden. `inherit` rather than a
+     number: on a <span> it resolves to exactly what the span already
+     inherited, so nothing that used this before moves. */
+  font-weight: inherit;
 }
 
 /* Display type tracks tighter than body and gets tighter still as it
@@ -262,8 +295,8 @@ a { color: var(--ink); text-decoration: none; }
   transition: background 0.22s var(--ease), opacity 0.22s var(--ease);
 }
 .btn:hover { background: var(--accent-wash); }
-.btn.primary { background: var(--accent); color: #fff; }
-.btn.primary:hover { background: var(--accent); opacity: 0.85; }
+.btn.primary { background: var(--accent-solid); color: #fff; }
+.btn.primary:hover { background: var(--accent-solid); opacity: 0.85; }
 
 /* Flat, borderless, generously rounded. The 3px coloured left rule
    every card used to carry — cycling through four hues by position —
@@ -1026,6 +1059,9 @@ a.card:hover {
   white-space: nowrap;
 }
 .pi-rail-count { color: var(--ink); opacity: 0.5; }
+/* An <h2>: each group panel is a section of the index and this is its
+   name. The rail sets the type, so the heading takes none of its own. */
+.pi-rail-label { margin: 0; font-size: inherit; font-weight: inherit; letter-spacing: inherit; }
 
 .pi-rows { min-width: 0; }
 
@@ -1354,6 +1390,18 @@ textarea.cf-input { resize: vertical; }
 @media (max-width: 720px) {
   /* Clears the sticky CTA bar rather than covering it. */
   .cookie-notice { bottom: calc(4.4rem + env(safe-area-inset-bottom)); }
+  /* The chat launcher is fixed to the same corner, and on a phone the
+     notice is a full-width panel rather than a bar — so the launcher
+     landed inside it, level with "Got it", reading as a button belonging
+     to the notice.
+
+     Hidden rather than nudged upwards: the notice's height depends on how
+     its sentence wraps, so no single offset clears it at every width, and
+     a third floating control over a screen that already carries the
+     notice and the sticky CTA is too much either way. It costs one tap on
+     one visit — the notice never comes back once dismissed, and the
+     launcher returns the moment it goes. */
+  body:has(.cookie-notice) .chat-launcher { display: none; }
 }
 
 /* ── Legal pages ──────────────────────────────────────────────────────────
@@ -1442,9 +1490,31 @@ textarea.cf-input { resize: vertical; }
   box-shadow: 0 18px 48px rgb(0 0 0 / 0.34);
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  /* The delay on `visibility` is what lets the closing fade finish before
+     the box is taken away — see the [hidden] rule below. */
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s linear 0.22s;
 }
-.chat-panel.is-open { opacity: 1; transform: none; }
+/* `display: flex` above outranks the UA's `[hidden] { display: none }`, so
+   the closed panel was still laid out: invisible at opacity 0, but a
+   380x560 fixed box in the bottom-right corner of every page that ate
+   clicks meant for whatever was under it, kept its controls in the tab
+   order, and read out to a screen reader as though it were open.
+
+   visibility rather than display, because display cannot be transitioned
+   and the fade is worth keeping. It takes the panel out of hit testing,
+   out of the tab order and out of the accessibility tree, which is the
+   whole of what the attribute was supposed to do. */
+.chat-panel[hidden] {
+  visibility: hidden;
+  pointer-events: none;
+}
+.chat-panel.is-open {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  /* No delay in this direction: the panel has to be there before it fades in. */
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s;
+}
 
 .chat-head {
   padding: 0.85rem 1rem;
@@ -1973,7 +2043,18 @@ html[data-theme="light"] .glow-card .cap-tile:hover {
    site's own greys and blue. */
 .pc-quiet .pc-card {
   border: 1px solid var(--ink-15);
-  max-height: 480px;
+  /* The card is sized by height — `aspect-ratio: 0.718` turns that into
+     its width — so a height cap is really a width cap in disguise. A
+     flat 480px here outranked ProfileCard.css's own narrow-screen caps
+     (0,2,0 beats 0,1,0), which put a 333px-wide card in a 272px column
+     at 320px and pushed the page 7px wide in both directions.
+
+     Capping by the column instead of by a fixed number fixes every
+     narrow width at once and keeps the ratio intact: below ~393px the
+     card is exactly as tall as the gutters allow it to be wide, and
+     from there up the 480px ceiling is the smaller of the two and
+     nothing changes. */
+  max-height: min(480px, calc((100vw - (2 * var(--gutter))) / 0.718));
 }
 .pc-quiet .pc-shine {
   filter: brightness(0.5) contrast(1.1) saturate(0.18) opacity(0.26);
@@ -1989,7 +2070,7 @@ html[data-theme="light"] .glow-card .cap-tile:hover {
 }
 /* Two long words. The component sizes this off viewport height and lets
    it run on one line, which overflows a card 388px wide. */
-.pc-quiet .pc-details h3 {
+.pc-quiet .pc-details .pc-name {
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.1vw, 1.75rem);
   line-height: 1.1;
@@ -2227,6 +2308,26 @@ main.wrap {
 
   /* The profile card's contact button was 78x34. */
   .pc-quiet .pc-contact-btn { min-height: 44px; padding: 0 16px; }
+
+  /* The chat widget, the privacy notice and the certificate filters
+     were outside the first pass. Measured: launcher 142x37, suggestion
+     chips 28 tall, chat send 60x32, "Got it" 64x32, filter chips 32
+     tall, "Show credential" 36 tall. Same treatment — a minimum box,
+     type untouched. */
+  .chat-launcher,
+  .chat-chip,
+  .chat-send,
+  .cookie-notice-btn,
+  .cert-chip {
+    min-height: 44px;
+  }
+  /* A link at the foot of a card, not a button: it gets the height as
+     padding so the row above it does not gain a gap. */
+  .cert-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 
   /* Project index: the status line and the stack chips were set at
      0.62rem — a hair under 10px, which is a size for a caption on a

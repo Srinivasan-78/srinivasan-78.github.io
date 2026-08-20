@@ -404,7 +404,12 @@ const ProfileCardComponent = ({
             </div>
             <div className="pc-content">
               <div className="pc-details">
-                <h3>{name}</h3>
+                {/* Not a heading. The card is an object in the hero, not a
+                    section of the document, and an <h3> here landed
+                    between the page's <h1> and its first <h2> — a level
+                    skip for anyone navigating by headings, for a name the
+                    hero already states in its own line above. */}
+                <div className="pc-name">{name}</div>
                 <p>{title}</p>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import GlowCard from "@/components/ui/GlowCard";
+import { PROJECTS } from "@/lib/projects";
 
 // noindex: a post-submit confirmation has no standalone value in search
 // results, and indexing it invites people to land here without submitting.
@@ -12,14 +13,14 @@ export const metadata = pageMetadata({
 });
 
 const NEXT = [
-  { href: "/projects", title: "Projects", body: "Eleven builds across CI/CD, disaster recovery, and platform engineering.", go: "View projects" },
+  { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds across CI/CD, disaster recovery, and platform engineering.`, go: "View projects" },
   { href: "/certifications", title: "Certifications", body: "22 credentials, each with a verification link.", go: "View certifications" },
   { href: "/resume.pdf", title: "Résumé", body: "The one-page version, as a PDF.", go: "Download résumé", download: true },
 ];
 
 export default function ThankYou() {
   return (
-    <main id="content" className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
+    <main id="content" tabIndex={-1} className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
       <span className="eyebrow">Message sent</span>
       <h1 className="display display-lg">
@@ -40,7 +41,7 @@ export default function ThankYou() {
           n.download ? (
             <GlowCard key={n.href}>
               <a href={n.href} download className="card">
-                <h3 className="card-title">{n.title}</h3>
+                <h2 className="card-title">{n.title}</h2>
                 <p className="card-body">{n.body}</p>
                 <span className="go">{n.go}</span>
               </a>
@@ -48,7 +49,7 @@ export default function ThankYou() {
           ) : (
             <GlowCard key={n.href}>
               <Link href={n.href} className="card">
-                <h3 className="card-title">{n.title}</h3>
+                <h2 className="card-title">{n.title}</h2>
                 <p className="card-body">{n.body}</p>
                 <span className="go">{n.go}</span>
               </Link>

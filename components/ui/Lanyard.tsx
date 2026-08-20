@@ -38,6 +38,14 @@ import "./Lanyard.css";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
+/* 0.69 MB, down from 2.34. The model itself is only ~160 KB of it — the
+   rest was a 1678x1677 RGBA PNG baked into the binary chunk, and the
+   material that samples it is alphaMode OPAQUE, so the renderer was
+   discarding that alpha channel anyway. It is stored as JPEG now, at the
+   same pixel dimensions: nothing about the card looks different, because
+   the only part of this atlas that reaches the screen is the card's edges
+   and its unprinted ground — both faces are drawn over it from the SVGs in
+   `cardMap` below. */
 const CARD_GLB = "/assets/lanyard/card.glb";
 const BAND_TEXTURE = "/assets/lanyard/lanyard.png";
 

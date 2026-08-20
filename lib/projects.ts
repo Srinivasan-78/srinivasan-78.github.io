@@ -1,5 +1,12 @@
 export type ProjectLink = { url: string; label: string };
 
+/* A project may legitimately have no links: some of these live in
+   repositories that are not public. An empty `links` array is that case,
+   said out loud — app/projects/[slug]/page.tsx turns it into a contact CTA
+   rather than rendering an empty button row. What must never appear here is
+   a URL that 404s: a "View repo" button that goes nowhere is worse than no
+   button, and every entry below is checked against the live URL. */
+
 export type Project = {
   slug: string;
   title: string;
@@ -277,7 +284,11 @@ export const PROJECTS: Project[] = [
       "Windows and Linux packaging in one template set",
       "Artifact cleanup built into the pipeline, not bolted on",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/Simple-Actions", label: "View repo ↗" }],
+    /* No public link. https://github.com/Srinivasan-78/Simple-Actions answered 404 to an
+       anonymous request, so the button that pointed at it was a dead CTA.
+       Restore the entry the moment the repository is public — the detail
+       page reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "wix-installer-template",
@@ -309,7 +320,11 @@ export const PROJECTS: Project[] = [
       "Upgrade path correct from the first release",
       "Drop-in starting point for any MSBuild desktop project",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/WixTemplate", label: "View repo ↗" }],
+    /* No public link. https://github.com/Srinivasan-78/WixTemplate answered 404 to an
+       anonymous request, so the button that pointed at it was a dead CTA.
+       Restore the entry the moment the repository is public — the detail
+       page reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "brainrot-study",
@@ -386,7 +401,11 @@ export const PROJECTS: Project[] = [
       "Captures the built state, not a bootstrap script",
       "Distributable image size via PiShrink",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/ImgCreation", label: "View repo ↗" }],
+    /* No public link. https://github.com/Srinivasan-78/ImgCreation answered 404 to an
+       anonymous request, so the button that pointed at it was a dead CTA.
+       Restore the entry the moment the repository is public — the detail
+       page reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "imgautomation",
@@ -418,7 +437,11 @@ export const PROJECTS: Project[] = [
       "Build artifacts kept off the card being imaged",
       "Clean handoff boundary with the image builder",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/ImgAutomation", label: "View repo ↗" }],
+    /* No public link. https://github.com/Srinivasan-78/ImgAutomation answered 404 to an
+       anonymous request, so the button that pointed at it was a dead CTA.
+       Restore the entry the moment the repository is public — the detail
+       page reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "speedtestdd",
@@ -450,7 +473,11 @@ export const PROJECTS: Project[] = [
       "Answers one narrow question properly",
       "Run it once before a long imaging job",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/SpeedTestDD", label: "View repo ↗" }],
+    /* No public link. https://github.com/Srinivasan-78/SpeedTestDD answered 404 to an
+       anonymous request, so the button that pointed at it was a dead CTA.
+       Restore the entry the moment the repository is public — the detail
+       page reads an empty list as "offer the contact route instead". */
+    links: [],
   },
 ];
 

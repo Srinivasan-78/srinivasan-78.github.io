@@ -13,7 +13,7 @@ const UPDATED = "18 August 2026";
 
 export default function Privacy() {
   return (
-    <main id="content" className="wrap legal" style={{ padding: "3.5rem 24px 5rem" }}>
+    <main id="content" tabIndex={-1} className="wrap legal" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
         <span className="eyebrow">Legal</span>
         <SplitReveal as="h1" text="Privacy Policy" className="display display-lg" />

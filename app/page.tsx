@@ -10,9 +10,11 @@ import SystemDiagram from "@/components/SystemDiagram";
 import { CountUp } from "@/components/Bits";
 import HeroShowcase from "@/components/HeroShowcase";
 import GlowCard from "@/components/ui/GlowCard";
+/* Counted, not typed: this line said "11 builds" while lib/projects.ts held 12. */
+import { PROJECTS } from "@/lib/projects";
 
 const EXPLORE = [
-  { href: "/projects", title: "Projects", body: "Live tools, a Terraform multi-cloud platform, and automation pipelines — 11 builds.", go: "View projects" },
+  { href: "/projects", title: "Projects", body: `Live tools, a Terraform multi-cloud platform, and automation pipelines — ${PROJECTS.length} builds.`, go: "View projects" },
   { href: "/certifications", title: "Certifications", body: "22 credentials in cloud, automation, and infrastructure — all verifiable.", go: "View certifications" },
   { href: "/contact", title: "Get in touch", body: "Open to DevOps, cloud infrastructure, and automation conversations.", go: "Say hello" },
 ];
@@ -84,7 +86,7 @@ const REGIONS: [string, string][] = [
 
 export default function Page() {
   return (
-    <main id="content">
+    <main id="content" tabIndex={-1}>
       {/* The hero used to carry eight things at once: a status pill, a
           location, a scrambling headline, an avatar, a word that cycled
           forever, a bio paragraph, four counters and two buttons. The
