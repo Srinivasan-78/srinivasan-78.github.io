@@ -13,10 +13,12 @@ const UPDATED = "18 August 2026";
 
 export default function Terms() {
   return (
-    <main id="content" className="wrap legal" style={{ padding: "2.5rem 24px" }}>
-      <span className="eyebrow c-brass">Legal</span>
-      <SplitReveal as="h1" text="Terms of Use" className="display" />
-      <p className="eyebrow" style={{ marginTop: "0.5rem" }}>Last updated: {UPDATED}</p>
+    <main id="content" className="wrap legal" style={{ padding: "3.5rem 24px 5rem" }}>
+      <div className="page-head">
+        <span className="eyebrow">Legal</span>
+        <SplitReveal as="h1" text="Terms of Use" className="display display-lg" />
+        <p className="eyebrow">Last updated: {UPDATED}</p>
+      </div>
 
       <p>
         This is the personal portfolio of Srinivasan Vijayaraghavan. By using the site you

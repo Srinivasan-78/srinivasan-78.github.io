@@ -1,26 +1,26 @@
 import SplitReveal from "./SplitReveal";
 
-/* Sticky chapter header. The index and label pin to the top while the
-   section's content scrolls beneath, so the page reads as numbered
-   chapters rather than one continuous column. */
+/* Section opener: one quiet label, one headline.
+
+   It used to pin to the top of the viewport with a rule under it and a
+   chapter number beside it ("02 / 05"). Three separate signals for one
+   piece of information, one of which followed you down the page. The
+   numbering also implied the sections were a sequence to be read in
+   order, which they are not.
+
+   Whitespace does the separating now — see the section padding in
+   globals.css — so this no longer draws a border either. */
 export default function SectionHead({
-  index,
   label,
   title,
-  accent = "sage",
 }: {
-  index: string;
   label: string;
   title: string;
-  accent?: "sage" | "slate" | "plum" | "brass";
 }) {
   return (
-    <>
-      <div className="sec-head">
-        <span className={"eyebrow c-" + accent}>{label}</span>
-        <span className="sec-index">{index}</span>
-      </div>
-      <SplitReveal as="h2" text={title} className="display display-lg" stagger={0.02} />
-    </>
+    <div className="sec-head">
+      <span className="eyebrow">{label}</span>
+      <SplitReveal as="h2" text={title} className="display display-lg" />
+    </div>
   );
 }

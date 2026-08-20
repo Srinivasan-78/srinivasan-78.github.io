@@ -35,23 +35,21 @@ export const CERTS: Cert[] = [
 ];
 
 
+/* The six groupings the page filters by. `indent` went with the shelf
+   staircase these used to be drawn as — the chips are a row now. */
 export type Row = {
   id: string;
   label: string;
   match: (c: Cert) => boolean;
-  /* Horizontal indent as a viewport percentage. The reference staggers
-     every row to a different start so the block reads as a ragged
-     column of type rather than a left-aligned list. */
-  indent: number;
 };
 
 export const ROWS: Row[] = [
-  { id: "all", label: "All", match: () => true, indent: 2 },
-  { id: "cloud", label: "Cloud", match: (c) => c.cat.includes("cloud"), indent: 19 },
-  { id: "automation", label: "Automation", match: (c) => c.cat.includes("automation"), indent: 36 },
-  { id: "systems", label: "Systems", match: (c) => c.cat.includes("systems"), indent: 61 },
-  { id: "recent", label: "Recent", match: (c) => Number(c.year) >= 2025, indent: 4 },
-  { id: "foundations", label: "Foundations", match: (c) => Number(c.year) <= 2021, indent: 41 },
+  { id: "all", label: "All", match: () => true },
+  { id: "cloud", label: "Cloud", match: (c) => c.cat.includes("cloud") },
+  { id: "automation", label: "Automation", match: (c) => c.cat.includes("automation") },
+  { id: "systems", label: "Systems", match: (c) => c.cat.includes("systems") },
+  { id: "recent", label: "Recent", match: (c) => Number(c.year) >= 2025 },
+  { id: "foundations", label: "Foundations", match: (c) => Number(c.year) <= 2021 },
 ];
 
 export const forRow = (row: Row) => CERTS.filter(row.match);

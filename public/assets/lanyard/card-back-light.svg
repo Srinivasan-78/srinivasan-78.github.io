@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1500" viewBox="0 0 1000 1500" role="img" aria-label="Conference badge, back">
+  <defs>
+    <linearGradient id="bgb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f7f7f9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="1500" fill="url(#bgb)"/>
+
+  <g stroke="#000000" stroke-opacity="0.06" stroke-width="2">
+    <path d="M0 300 H1000 M0 600 H1000 M0 900 H1000 M0 1200 H1000"/>
+  </g>
+
+  <text x="90" y="210" fill="#6e6e73" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace"
+        font-size="34" letter-spacing="9">WHAT I OWN</text>
+
+  <g font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="54" font-weight="500" fill="#1d1d1f">
+    <text x="90" y="380">CI/CD &amp; release automation</text>
+    <text x="90" y="480">Disaster recovery, rehearsed</text>
+    <text x="90" y="580">Multi-tenant Azure platform</text>
+    <text x="90" y="680">Infrastructure as code</text>
+  </g>
+
+  <g stroke="#d2d2d7" stroke-width="3">
+    <path d="M90 760 H910"/>
+  </g>
+
+  <g font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" fill="#86868b" font-size="30" letter-spacing="4">
+    <text x="90" y="860">05  YEARS SHIPPING</text>
+    <text x="90" y="930">22  CERTIFICATIONS</text>
+    <text x="90" y="1000">02  CLOUDS IN PRODUCTION</text>
+    <text x="90" y="1070">15+ MICROSERVICES OWNED</text>
+  </g>
+
+  <g stroke="#d2d2d7" stroke-width="3">
+    <path d="M90 1160 H910"/>
+  </g>
+
+  <g font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" fill="#6e6e73" font-size="30" letter-spacing="3">
+    <text x="90" y="1260">github.com/Srinivasan-78</text>
+    <text x="90" y="1330">linkedin.com/in/srini-solution-architect</text>
+  </g>
+
+  <text x="90" y="1430" fill="#2997ff" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace"
+        font-size="30" letter-spacing="5">SRINIDEVOPS.COM</text>
+</svg>

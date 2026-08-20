@@ -1,7 +1,4 @@
 
-# Downloaded stock photos are committed so CI builds get them too;
-# remove this comment if you would rather fetch them in the workflow.
-
 # Next.js build output and local deps — never commit these
 node_modules/
 .next/

@@ -1,57 +1,54 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
+import { useInView } from "@/lib/useInView";
 
-gsap.registerPlugin(ScrollTrigger);
+/* Wraps a group and brings its children in together when the group
+   scrolls into view.
 
-/* Wraps any group of children and staggers them into view on scroll.
-   Children animate as a batch so a grid row arrives together rather
-   than one tile at a time down the page. */
+   The motion itself is one CSS transition defined once in globals.css
+   (.reveal-group / .is-in) — this component only decides when the class
+   flips and how far apart the children are spaced. */
 export default function Reveal({
   children,
   className,
   style,
-  stagger = 0.07,
-  y = 26,
+  /** Seconds between each child arriving. */
+  stagger = 0.06,
+  /** Scale the children up as they arrive, rather than only sliding
+      them. For cards and tiles — objects with a surface. Plain text
+      blocks should not use it: type scaling up reads as a zoom, not as
+      an arrival, and it resamples the glyphs on the way. */
+  pop = false,
 }: {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   stagger?: number;
-  y?: number;
+  pop?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const kids = Array.from(el.children) as HTMLElement[];
-    if (!kids.length) return;
-
-    gsap.set(kids, { opacity: 0, y });
-
-    const triggers = ScrollTrigger.batch(kids, {
-      start: "top 92%",
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, {
-          opacity: 1,
-          y: 0,
-          duration: 0.65,
-          ease: "power2.out",
-          stagger,
-        }),
+    /* Delay is written per child rather than expressed in CSS, because
+       the child count is whatever the caller passed and nth-child rules
+       would have to guess at it. Capped so a long grid does not leave
+       its last tile waiting seconds after the first. */
+    Array.from(el.children).forEach((kid, i) => {
+      (kid as HTMLElement).style.transitionDelay = `${Math.min(i * stagger, 0.45)}s`;
     });
-
-    return () => triggers.forEach((t) => t.kill());
-  }, [stagger, y]);
+  }, [ref, stagger, children]);
 
   return (
-    <div ref={ref} className={className} style={style}>
+    <div
+      ref={ref}
+      className={[className, "reveal-group", pop && "reveal-pop", inView && "is-in"]
+        .filter(Boolean)
+        .join(" ")}
+      style={style}
+    >
       {children}
     </div>
   );

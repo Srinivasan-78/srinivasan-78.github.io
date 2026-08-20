@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import GlowCard from "./ui/GlowCard";
 import Link from "next/link";
 import gsap from "gsap";
 import { PROJECTS, type Project } from "@/lib/projects";
-import DecryptedText from "./DecryptedText";
 import { DIAGRAM, FALLBACK } from "./ProjectGrid";
 
 /* A manifest, not a gallery.
@@ -116,11 +116,11 @@ export default function ProjectIndex() {
   let n = 0;
 
   return (
-    <main id="content" className="pi" ref={rootRef}>
+    <main id="content" className="pi wrap" ref={rootRef}>
       <header className="pi-head">
-        <span className="eyebrow c-sage">Projects</span>
+        <span className="eyebrow">Projects</span>
         <h1 className="display display-lg">
-          <DecryptedText text="Things I build outside work" animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
+          Things I build outside work
         </h1>
         <p>
           {PROJECTS.length} public repositories — live demos, platform experiments, and
@@ -129,65 +129,72 @@ export default function ProjectIndex() {
         </p>
       </header>
 
+      {/* Each group is a panel now, on the same surface, radius and
+          proximity glow as every other card on the site — so the index
+          reads as the same material as the home page rather than as a
+          bare table that happens to live on the same domain. The rows
+          inside keep their own behaviour. */}
       {groups.map((g) => (
-        <section key={g.name} className="pi-group">
-          <div className="pi-rail">
-            <span className="pi-rail-inner">
-              <span className="pi-rail-label">{g.name}</span>
-              <span className="pi-rail-count">{String(g.items.length).padStart(2, "0")}</span>
-            </span>
-          </div>
+        <GlowCard key={g.name} className="pi-glow">
+          <section className="pi-group">
+            <div className="pi-rail">
+              <span className="pi-rail-inner">
+                <span className="pi-rail-label">{g.name}</span>
+                <span className="pi-rail-count">{String(g.items.length).padStart(2, "0")}</span>
+              </span>
+            </div>
 
-          <div className="pi-rows">
-            {g.items.map((p) => {
-              n += 1;
-              const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
-              return (
-                <Link
-                  key={p.slug}
-                  href={`/projects/${p.slug}`}
-                  className="pi-row"
-                  data-cursor-hover
-                  onMouseEnter={(e) => {
-                    const a = e.currentTarget.querySelector(".pi-art");
-                    if (a) drawRow(a, true);
-                  }}
-                  onMouseLeave={(e) => {
-                    const a = e.currentTarget.querySelector(".pi-art");
-                    if (a) drawRow(a, false);
-                  }}
-                >
-                  <span className="pi-num">{String(n).padStart(2, "0")}</span>
+            <div className="pi-rows">
+              {g.items.map((p) => {
+                n += 1;
+                const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
+                return (
+                  <Link
+                    key={p.slug}
+                    href={`/projects/${p.slug}`}
+                    className="pi-row"
+                 
+                    onMouseEnter={(e) => {
+                      const a = e.currentTarget.querySelector(".pi-art");
+                      if (a) drawRow(a, true);
+                    }}
+                    onMouseLeave={(e) => {
+                      const a = e.currentTarget.querySelector(".pi-art");
+                      if (a) drawRow(a, false);
+                    }}
+                  >
+                    <span className="pi-num">{String(n).padStart(2, "0")}</span>
 
-                  <span className="pi-name">
-                    {p.title}
-                    <span className={"pi-status s-" + p.accent}>
-                      {p.status === "Live" || p.status === "Active" ? (
-                        <i className="pi-dot" />
-                      ) : null}
-                      {p.status}
+                    <span className="pi-name">
+                      {p.title}
+                      <span className="pi-status">
+                        {p.status === "Live" || p.status === "Active" ? (
+                          <i className="pi-dot" />
+                        ) : null}
+                        {p.status}
+                      </span>
                     </span>
-                  </span>
 
-                  <span className="pi-teaser">{p.teaser}</span>
+                    <span className="pi-teaser">{p.teaser}</span>
 
-                  {/* The swap zone: tokens at rest, schematic on hover. */}
-                  <span className="pi-right">
-                    <span className="pi-stack">
-                      {p.stack.slice(0, 4).map((t) => (
-                        <em key={t}>{t}</em>
-                      ))}
-                      {p.stack.length > 4 && <em className="pi-more">+{p.stack.length - 4}</em>}
+                    {/* The swap zone: tokens at rest, schematic on hover. */}
+                    <span className="pi-right">
+                      <span className="pi-stack">
+                        {p.stack.slice(0, 4).map((t) => (
+                          <em key={t}>{t}</em>
+                        ))}
+                        {p.stack.length > 4 && <em className="pi-more">+{p.stack.length - 4}</em>}
+                      </span>
+                      <span className="pi-art">{art}</span>
                     </span>
-                    <span className="pi-art">{art}</span>
-                  </span>
 
-                  <span className="pi-sweep" aria-hidden="true" />
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+                    <span className="pi-sweep" aria-hidden="true" />
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        </GlowCard>
       ))}
 
       <footer className="pi-foot">

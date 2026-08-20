@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+/* useLayoutEffect warns during SSR, where it is a no-op anyway. */
+const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /* Small animated UI primitives, written for this project.
-   These are originals in the same spirit as react-bits — that library is
-   copy-into-your-repo rather than an npm dependency, so run
-   `npx jsrepo add` to pull its real components when you want them, and
-   these can be swapped out or kept alongside. */
+
+   These are originals in the same spirit as React Bits. The real React
+   Bits components the site uses — LogoLoop, ClickSpark, BorderGlow,
+   ProfileCard, Lanyard — live in components/ui/, ported to TypeScript
+   and kept diffable against upstream. This file is the local pair to
+   them, not a placeholder for them. */
 
 /** Counts up to `value` once it scrolls into view. */
 export function CountUp({
@@ -23,17 +28,20 @@ export function CountUp({
   style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [n, setN] = useState(0);
+  /* Starts at the real value, not at zero. The server renders this
+     component too, so a visitor with scripting off — or anyone reading
+     the page before hydration — used to get a row of zeros where the
+     numbers should be. The count is reset to zero below, inside a layout
+     effect, so it happens before the browser paints and there is no
+     flash of the final figure. */
+  const [n, setN] = useState(value);
   const done = useRef(false);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setN(value);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setN(0);
 
     // Tracked so teardown can stop it. Disconnecting the observer alone
     // leaves an in-flight rAF loop running against an unmounted node.
@@ -72,85 +80,5 @@ export function CountUp({
       {n}
       {suffix}
     </span>
-  );
-}
-
-/** Cycles a word through a list, one at a time, in place. */
-export function RotatingWord({
-  words,
-  interval = 2200,
-  className,
-}: {
-  words: string[];
-  interval?: number;
-  className?: string;
-}) {
-  const [i, setI] = useState(0);
-  const [out, setOut] = useState(false);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // The nested swap timeout needs its own handle: clearing only the
-    // interval still leaves a pending swap that fires up to 260ms after
-    // the component is gone.
-    let swap: ReturnType<typeof setTimeout> | undefined;
-    const id = setInterval(() => {
-      setOut(true);
-      swap = setTimeout(() => {
-        setI((v) => (v + 1) % words.length);
-        setOut(false);
-      }, 260);
-    }, interval);
-    return () => {
-      clearInterval(id);
-      clearTimeout(swap);
-    };
-  }, [words.length, interval]);
-
-  return (
-    <span className={"rot-word " + (className ?? "")}>
-      <span className={"rot-word-inner" + (out ? " out" : "")}>{words[i]}</span>
-    </span>
-  );
-}
-
-/** Tilts toward the pointer, with a soft spring back on leave. */
-export function TiltCard({
-  children,
-  className,
-  max = 7,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  max?: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transition = "transform 0.08s linear";
-    el.style.transform = `perspective(700px) rotateY(${px * max * 2}deg) rotateX(${
-      -py * max * 2
-    }deg) translateZ(0)`;
-  };
-
-  const reset = () => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.transition = "transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1)";
-    el.style.transform = "perspective(700px) rotateY(0) rotateX(0)";
-  };
-
-  return (
-    <div ref={ref} className={className} onPointerMove={onMove} onPointerLeave={reset}>
-      {children}
-    </div>
   );
 }

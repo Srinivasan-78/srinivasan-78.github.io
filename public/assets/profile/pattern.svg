@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Luminance mask for the profile card's holographic sheen. Black
+       hides the sheen, light lets it through, so a mostly-black tile
+       with a faint node grid means the effect reads as texture rather
+       than as a rainbow slick across the whole card. -->
+  <rect width="240" height="240" fill="#000000"/>
+  <g stroke="#3a3a3a" stroke-width="1" fill="none">
+    <path d="M0 60 H240 M0 120 H240 M0 180 H240"/>
+    <path d="M60 0 V240 M120 0 V240 M180 0 V240"/>
+  </g>
+  <g fill="#8a8a8a">
+    <circle cx="60" cy="60" r="3"/>
+    <circle cx="180" cy="120" r="3"/>
+    <circle cx="120" cy="180" r="3"/>
+  </g>
+  <g fill="#4d4d4d">
+    <circle cx="120" cy="60" r="2"/>
+    <circle cx="180" cy="60" r="2"/>
+    <circle cx="60" cy="120" r="2"/>
+    <circle cx="120" cy="120" r="2"/>
+    <circle cx="60" cy="180" r="2"/>
+    <circle cx="180" cy="180" r="2"/>
+  </g>
+</svg>

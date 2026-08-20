@@ -147,7 +147,7 @@ export default function ContactForm() {
           className="cf-honeypot"
         />
 
-        <button type="submit" className="btn primary cf-submit" data-cursor-hover>
+        <button type="submit" className="btn primary cf-submit">
           {sending ? (
             <>
               <span className="cf-spinner" aria-hidden="true" />

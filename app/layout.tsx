@@ -1,23 +1,44 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
-import GlassCursor from "@/components/GlassCursor";
+import ScrollProvider from "@/components/ScrollProvider";
 import ProgressRail from "@/components/ProgressRail";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ThemeScript from "@/components/ThemeScript";
-import VelocitySkew from "@/components/VelocitySkew";
-import Hud from "@/components/Hud";
-import DevOpsScene from "@/components/DevOpsScene";
 import StickyCta from "@/components/StickyCta";
 import CookieNotice from "@/components/CookieNotice";
 import ChatWidget from "@/components/ChatWidget";
 import Analytics from "@/components/Analytics";
+import ClickSpark from "@/components/ui/ClickSpark";
 
-// themeColor belongs on the viewport export in Next 14; leaving it in
-// metadata still works but logs a deprecation warning at build time.
+/* Self-hosted at build time by next/font, so there is no request to
+   fonts.googleapis.com at runtime and no swap flash. Inter is the
+   closest freely-licensed match to the SF Pro metrics the layout is
+   tuned for: same x-height ratio, same tight default tracking, and a
+   variable weight axis so the display sizes do not need a second file.
+
+   This replaces the commented-out KH Teka block that used to sit at the
+   top of globals.css — that typeface is licensed per-domain and its
+   files were never in the repo, so every page was silently rendering in
+   the fallback stack anyway. */
+const sans = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500"],
+  variable: "--font-mono-face",
+});
+
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  /* Matches the default theme, which is now the dark one — the browser
+     chrome on mobile tints from this before any CSS has been read. */
+  themeColor: "#000000",
 };
 
 export const metadata: Metadata = {
@@ -75,9 +96,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     // data-theme is set here in the server markup rather than left to a
     // script: dark is the unconditional default, so it must be correct
-    // even if JS never runs. ThemeScript only downgrades to light for a
+    // even if JS never runs. ThemeScript only switches to light for a
     // visitor who explicitly chose it.
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    //
+    // Dark is the default because the design this site follows is a dark
+    // one — black page, #121214 surfaces, one blue accent. Light is kept
+    // behind the toggle rather than dropped: it is a working theme, and
+    // some people read on a bright train.
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script
           type="application/ld+json"
@@ -85,21 +116,38 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="grain">
+      {/* Ambient chrome that used to live here — a WebGL background field,
+          a cursor lens, a scroll-velocity skew driver, and a corner clock —
+          has been removed rather than tuned down. Each was decoration with
+          no subject, and running four of them at once is what made the page
+          read as busy. What is left is one hairline scroll indicator. */}
+      <body>
         <ThemeScript />
-        <DevOpsScene />
         <ProgressRail />
-        <VelocitySkew />
-        <Hud />
-        <GlassCursor />
         <a href="#content" className="skip-link">
           Skip to content
         </a>
-        <SmoothScrollProvider>
-          <Nav />
-          {children}
-          <Footer />
-        </SmoothScrollProvider>
+        {/* One click reaction for the whole app. The canvas is fixed at
+            viewport size and pointer-events:none, and the wrapper is
+            display:contents, so nothing here is between a visitor and a
+            button. See components/ui/ClickSpark.tsx. */}
+        <ClickSpark
+          /* A token, not a literal: the canvas colour has to change with
+             the theme, and rgba(255,255,255,.6) is invisible on the
+             light page. ClickSpark resolves this off <html> and re-reads
+             it when data-theme flips. */
+          sparkColor="--spark"
+          sparkSize={8}
+          sparkRadius={12}
+          sparkCount={6}
+          duration={300}
+        >
+          <ScrollProvider>
+            <Nav />
+            {children}
+            <Footer />
+          </ScrollProvider>
+        </ClickSpark>
         <StickyCta />
         <ChatWidget />
         <CookieNotice />

@@ -1,0 +1,167 @@
+/* The mobile navigation layer.
+
+   Everything here is namespaced under .mobile-nav__ and only paints
+   below the site's existing 720px breakpoint. The trigger reuses the
+   header's own .nav-toggle styling so the closed state is exactly the
+   button that was already there. */
+
+.mobile-nav__overlay {
+  --mn-exit: 260ms;
+
+  position: fixed;
+  inset: 0;
+  /* dvh, not vh: the layer must not sit under collapsing browser chrome
+     or grow a scrollbar when the URL bar retracts. */
+  min-height: 100dvh;
+  height: 100%;
+
+  /* Above the chat panel (80), the certificate viewer (95) and the work
+     lightbox (100); below the skip link (200), which has to stay
+     reachable, and the click-spark canvas (400), which is inert. */
+  z-index: 110;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  /* The header's own treatment: the page colour at 92%, blurred. Not a
+     new visual language — the same one, taken opaque enough to read
+     type over. */
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+
+  padding:
+    calc(env(safe-area-inset-top) + 0.9rem)
+    calc(env(safe-area-inset-right) + 20px)
+    calc(env(safe-area-inset-bottom) + 1rem)
+    calc(env(safe-area-inset-left) + 20px);
+
+  animation: mn-in 300ms cubic-bezier(0.28, 0.11, 0.32, 1) both;
+}
+
+/* No backdrop-filter — Firefox on some platforms, older WebKit — means
+   the page would read straight through the layer. Go opaque there. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .mobile-nav__overlay { background: var(--paper); }
+}
+
+.mobile-nav__overlay.is-closing {
+  animation: mn-out var(--mn-exit) cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes mn-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mn-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* The wheel arrives after the ground does — a short, single move, not a
+   sequence of them. */
+.mobile-nav__wheel {
+  position: relative;
+  min-height: 0;
+  animation: mn-wheel-in 420ms cubic-bezier(0.28, 0.11, 0.32, 1) 90ms both;
+}
+.is-closing .mobile-nav__wheel {
+  animation: mn-wheel-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes mn-wheel-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes mn-wheel-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translate3d(0, 8px, 0) scale(0.98); }
+}
+
+.mobile-nav__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.mobile-nav__eyebrow { color: var(--ink-45); }
+
+.mobile-nav__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 0.9rem;
+  background: none;
+  border: 1px solid var(--ink-15);
+  border-radius: 999px;
+  color: var(--ink-70);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.mobile-nav__close:hover,
+.mobile-nav__close:focus-visible { color: var(--ink); border-color: var(--ink-45); }
+
+.mobile-nav__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mobile-nav__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 1.5rem;
+}
+.mobile-nav__hint {
+  margin: 0;
+  color: var(--ink-45);
+  text-transform: none;
+}
+
+/* The wheel's own size, expressed against the viewport rather than in
+   fixed px, so a 320px phone and a 430px one both get type that fits.
+   The labels are nowrap by design — this is what keeps the longest one,
+   "Certifications", inside the layer instead of pushing the document
+   sideways. */
+.mobile-nav__wheel .option-wheel__item {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 9.5vw, 2.6rem);
+  line-height: 1.15;
+}
+
+@media (max-width: 360px) {
+  .mobile-nav__overlay { padding-left: calc(env(safe-area-inset-left) + 16px); }
+}
+
+/* Landscape on a phone: the layer is only ~390px tall, so the bar and
+   the foot give up their breathing room and the wheel tightens. */
+@media (max-height: 520px) {
+  .mobile-nav__overlay { padding-top: calc(env(safe-area-inset-top) + 0.5rem); }
+  /* Sized against the height, because height is what is short here. The
+     wheel measures its own step from this, so the whole list shrinks
+     together and still fits between the bar and the bottom edge. */
+  .mobile-nav__wheel .option-wheel__item { font-size: clamp(1.15rem, 6.4vh, 1.7rem); }
+  .mobile-nav__hint { display: none; }
+}
+
+/* The trigger is the header's existing button. It only exists below the
+   breakpoint, which the header's own rule already handles; this is here
+   so the desktop tree is unambiguous. */
+.mobile-nav__trigger { display: none; }
+@media (max-width: 720px) {
+  .mobile-nav__trigger { display: inline-flex; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav__overlay,
+  .mobile-nav__overlay.is-closing,
+  .mobile-nav__wheel,
+  .is-closing .mobile-nav__wheel {
+    animation-duration: 1ms;
+  }
+}

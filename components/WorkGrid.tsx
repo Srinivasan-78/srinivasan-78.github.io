@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useScrollLock } from "./SmoothScrollProvider";
-import DecryptedText from "./DecryptedText";
+import { useScrollLock } from "./ScrollProvider";
+import { useInView } from "@/lib/useInView";
+import GlowCard from "./ui/GlowCard";
 
 export type Post = {
   tag: string;
-  accent: "sage" | "slate";
   title: string;
   body: string;
   stack: string[];
@@ -69,18 +69,24 @@ const ART: Record<string, React.ReactNode> = {
       <circle cx="150" cy="55" r="16" stroke="currentColor" strokeWidth="3" fill="none" />
       {[0, 60, 120, 180, 240, 300].map((a) => {
         const r = (a * Math.PI) / 180;
+        /* Rounded, not raw. Math.sin and Math.cos are allowed to differ
+           in their last bit between implementations, and they do:
+           Node renders 37.67949192431123 into the server HTML where the
+           browser computes 37.679491924311236, and React reports the
+           attribute as a hydration mismatch on every load. Two decimals
+           is finer than a pixel in a 300-unit viewBox. */
+        const at = (radius: number, axis: "x" | "y") =>
+          ((axis === "x" ? 150 + Math.cos(r) * radius : 55 + Math.sin(r) * radius)).toFixed(2);
         return (
           <g key={a}>
             <path
-              d={`M${150 + Math.cos(r) * 20} ${55 + Math.sin(r) * 20} L${150 + Math.cos(r) * 42} ${
-                55 + Math.sin(r) * 42
-              }`}
+              d={`M${at(20, "x")} ${at(20, "y")} L${at(42, "x")} ${at(42, "y")}`}
               stroke="currentColor"
               strokeWidth="2.5"
               {...s}
               opacity="0.6"
             />
-            <circle cx={150 + Math.cos(r) * 50} cy={55 + Math.sin(r) * 50} r="7" fill="currentColor" />
+            <circle cx={at(50, "x")} cy={at(50, "y")} r="7" fill="currentColor" />
           </g>
         );
       })}
@@ -125,6 +131,10 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
   const lastFocus = useRef<HTMLElement | null>(null);
   const active = open === null ? null : posts[open];
   const { lock, unlock } = useScrollLock();
+  /* Not wrapped in <Reveal> because the tiles are this component's own
+     children, not a caller's — the group class goes straight on the grid
+     and the stagger is a static nth-child step in globals.css. */
+  const { ref: gridRef, inView } = useInView<HTMLDivElement>();
 
   useEffect(() => {
     if (open === null) return;
@@ -147,33 +157,28 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
 
   return (
     <>
-      <div className="work-grid">
+      <div
+        ref={gridRef}
+        className={"work-grid reveal-group reveal-pop" + (inView ? " is-in" : "")}
+      >
         {posts.map((p, i) => (
-          <button
-            key={p.title}
-            type="button"
-            className={"post " + p.accent}
-            onClick={() => setOpen(i)}
-            aria-haspopup="dialog"
-          >
-            <div className="post-body">
-              <span
-                className="tag"
-                style={{
-                  color: `var(--${p.accent})`,
-                  borderColor: `var(--${p.accent}-line)`,
-                  margin: 0,
-                }}
-              >
-                {p.tag}
-              </span>
-              <h3 className="post-title">
-                <DecryptedText text={p.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
-              </h3>
-              <span className="post-open">{p.link ? "public work ↗" : "open ↗"}</span>
-            </div>
-            <div className="post-cover">{ART[p.title]}</div>
-          </button>
+          <GlowCard key={p.title}>
+            <button
+              type="button"
+              className="post"
+              onClick={() => setOpen(i)}
+              aria-haspopup="dialog"
+            >
+              <div className="post-body">
+                <span className="tag tag-client">{p.tag}</span>
+                <h3 className="post-title">
+                  {p.title}
+                </h3>
+                <span className="post-open">{p.link ? "public work ↗" : "open ↗"}</span>
+              </div>
+              <div className="post-cover">{ART[p.title]}</div>
+            </button>
+          </GlowCard>
         ))}
       </div>
 
@@ -187,50 +192,36 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
             if (e.target === e.currentTarget) setOpen(null);
           }}
         >
-          <div className={"lb-card " + active.accent}>
-            <button ref={closeRef} type="button" className="lb-close" onClick={() => setOpen(null)}>
-              close
-            </button>
-            <div className="post-cover" style={{ padding: 0, color: `var(--${active.accent})` }}>
-              {ART[active.title]}
+          <GlowCard className="lb-glow" radius={22} animated>
+            <div className="lb-card">
+              <button ref={closeRef} type="button" className="lb-close" onClick={() => setOpen(null)}>
+                close
+              </button>
+              <div className="lb-cover">{ART[active.title]}</div>
+              <span className="tag tag-client">{active.tag}</span>
+              <h2 className="lb-title">
+                {active.title}
+              </h2>
+              <p className="lb-body">{active.body}</p>
+              <div style={{ marginTop: "0.75rem" }}>
+                {active.stack.map((t) => (
+                  <span key={t} className="tag">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              {active.link && (
+                <a
+                  href={active.link.url}
+                  target="_blank"
+                  rel="noopener"
+                  className="go lb-link"
+                >
+                  {active.link.label}
+                </a>
+              )}
             </div>
-            <span
-              className="tag"
-              style={{
-                color: `var(--${active.accent})`,
-                borderColor: `var(--${active.accent}-line)`,
-                margin: "1rem 0 0",
-              }}
-            >
-              {active.tag}
-            </span>
-            <h2 className="lb-title">
-              <DecryptedText text={active.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
-            </h2>
-            <p className="lb-body">{active.body}</p>
-            <div style={{ marginTop: "0.75rem" }}>
-              {active.stack.map((t) => (
-                <span key={t} className="tag">
-                  {t}
-                </span>
-              ))}
-            </div>
-            {active.link && (
-              <a
-                href={active.link.url}
-                target="_blank"
-                rel="noopener"
-                className="eyebrow"
-                style={{
-                  color: `var(--${active.accent})`,
-                  display: "block",
-                  marginTop: "1rem",
-                }}
-              >
-                {active.link.label}
-              </a>
-            )}
-          </div>
+          </GlowCard>
         </div>
       )}
     </>

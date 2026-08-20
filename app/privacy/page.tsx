@@ -13,10 +13,12 @@ const UPDATED = "18 August 2026";
 
 export default function Privacy() {
   return (
-    <main id="content" className="wrap legal" style={{ padding: "2.5rem 24px" }}>
-      <span className="eyebrow c-brass">Legal</span>
-      <SplitReveal as="h1" text="Privacy Policy" className="display" />
-      <p className="eyebrow" style={{ marginTop: "0.5rem" }}>Last updated: {UPDATED}</p>
+    <main id="content" className="wrap legal" style={{ padding: "3.5rem 24px 5rem" }}>
+      <div className="page-head">
+        <span className="eyebrow">Legal</span>
+        <SplitReveal as="h1" text="Privacy Policy" className="display display-lg" />
+        <p className="eyebrow">Last updated: {UPDATED}</p>
+      </div>
 
       <p>
         This is a personal portfolio site. It is a static site with no application server, no

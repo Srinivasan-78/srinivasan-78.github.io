@@ -12,12 +12,14 @@ import { useEffect, useState } from "react";
    in sync no matter which one was clicked. */
 
 function isDark() {
-  return document.documentElement.getAttribute("data-theme") !== "light";
+  return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
 export default function ThemeToggle() {
   // Dark is the unconditional default, so this matches what the server
-  // renders and what ThemeScript applies before paint.
+  // renders and what ThemeScript applies before paint. It must start
+  // true or the button's first paint disagrees with the page and React
+  // reports a hydration mismatch.
   const [dark, setDark] = useState(true);
 
   useEffect(() => {

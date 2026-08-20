@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="700" viewBox="0 0 500 700" role="img" aria-label="SV monogram">
+  <!-- Stand-in portrait for the profile card.
+
+       The site has never carried a photograph — the hero that preceded
+       this one used the same two-letter monogram, so this is that mark
+       drawn at card size rather than invented content. Replace this file
+       with a cut-out portrait (transparent PNG, subject bottom-aligned,
+       roughly 500x700) and the card picks it up with no code change. -->
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="52%" r="46%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mono" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#c9d6e4"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="250" cy="365" r="230" fill="url(#halo)"/>
+  <circle cx="250" cy="365" r="150" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="1.5"/>
+  <circle cx="250" cy="365" r="178" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5"/>
+
+  <text x="250" y="365" fill="url(#mono)" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="168" font-weight="600" letter-spacing="-6" text-anchor="middle" dominant-baseline="central">SV</text>
+</svg>

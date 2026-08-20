@@ -1,0 +1,79 @@
+/* The wheel owns its geometry; the page around it owns nothing of it.
+   Every rule here is namespaced under .option-wheel so dropping the
+   component into any layout cannot reach anything else. */
+
+.option-wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  /* The wheel interprets pointer movement itself. Without this the
+     browser starts a scroll on the first vertical pixel and the drag
+     never reaches this component. Scoped to the wheel — the close
+     button and anything else in the overlay keep normal touch. */
+  touch-action: none;
+  outline: none;
+}
+.option-wheel:active { cursor: grabbing; }
+
+/* The focus ring goes on the active option, not on the box.
+
+   A listbox driven by aria-activedescendant keeps DOM focus on the
+   container, so the obvious rule — outline the container — draws a
+   rectangle around the whole wheel, which on a phone is a white box
+   the height of the screen. The thing that is actually active is the
+   centred option, so that is what gets the ring. */
+.option-wheel:focus-visible { outline: none; }
+.option-wheel:focus-visible .option-wheel__item--selected {
+  outline: 2px solid var(--ow-active);
+  outline-offset: 8px;
+  border-radius: 4px;
+}
+
+/* Options are laid out from the vertical centre and moved by transform,
+   so nothing in the loop touches layout. */
+.option-wheel__track {
+  position: absolute;
+  inset: 0;
+}
+
+.option-wheel__item {
+  position: absolute;
+  top: 50%;
+  /* em, so the option keeps itself optically centred whatever size the
+     cascade gives it. */
+  margin-top: -0.6em;
+  white-space: nowrap;
+  font-size: var(--ow-font-size);
+  line-height: 1.2;
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+
+  /* --ow-p is 1 on the centred option and 0 by one step away. It is set
+     by the component every frame; everything expressive about
+     proximity is decided here rather than in the JavaScript. */
+  --ow-p: 0;
+  color: var(--ow-text);
+  color: color-mix(in srgb, var(--ow-active) calc(var(--ow-p) * 100%), var(--ow-text));
+  font-weight: calc(300 + var(--ow-p) * 300);
+  letter-spacing: calc(-0.01em - var(--ow-p) * 0.012em);
+}
+
+.option-wheel--left .option-wheel__item {
+  left: var(--ow-inset);
+  transform-origin: 0% 50%;
+}
+.option-wheel--right .option-wheel__item {
+  right: var(--ow-inset);
+  transform-origin: 100% 50%;
+}
+
+/* The selected option is the one thing on the wheel that is not being
+   interpolated, so it gets the one static affordance. */
+.option-wheel__item--selected { cursor: pointer; }
+
+@media (prefers-reduced-motion: reduce) {
+  .option-wheel__item { will-change: auto; }
+}

@@ -1,4 +1,3 @@
-export type Accent = "sage" | "slate" | "plum" | "brass";
 export type ProjectLink = { url: string; label: string };
 
 export type Project = {
@@ -8,14 +7,6 @@ export type Project = {
   client: string;
   category: string;
   status: string;
-  accent: Accent;
-  /* Banner photo for the detail page. Required alongside `imageAlt` so a
-     new project cannot ship an image without a description of it. */
-  image: string;
-  /* Describes the photograph, not the project — the heading beside it
-     already says what the project is, and repeating that gives a screen
-     reader the same sentence twice. */
-  imageAlt: string;
   teaser: string;
   /* Short pills on the card face — kept to 3 so the texture never overflows. */
   tags: string[];
@@ -36,10 +27,6 @@ export const PROJECTS: Project[] = [
     client: "Live & deployed",
     category: "Platform",
     status: "Live",
-    accent: "sage",
-    image: "/images/observability-ui.webp",
-    imageAlt:
-      "A monitoring dashboard showing service health graphs and time-series charts",
     teaser:
       "Break a demo service on purpose, then watch the pipeline detect and recover on its own.",
     tags: ["CI/CD", "Chaos", "Recovery"],
@@ -80,10 +67,6 @@ export const PROJECTS: Project[] = [
     client: "Live & deployed",
     category: "Utility",
     status: "Live",
-    accent: "sage",
-    image: "/images/banner-code.webp",
-    imageAlt:
-      "Source code on a dark editor screen, shallow depth of field",
     teaser:
       "Drag-and-drop PDF processing that never leaves the browser — nothing uploaded, nothing stored.",
     tags: ["Client-side", "Zero upload", "Static"],
@@ -117,10 +100,6 @@ export const PROJECTS: Project[] = [
     client: "Live & deployed",
     category: "Client build",
     status: "Live",
-    accent: "sage",
-    image: "/images/globe-network.webp",
-    imageAlt:
-      "A globe wrapped in glowing network connection lines",
     teaser:
       "A full recruitment-consultancy site — services, reviews, and contact — on its own domain.",
     tags: ["Static site", "DNS", "HTTPS"],
@@ -154,10 +133,6 @@ export const PROJECTS: Project[] = [
     client: "Platform engineering",
     category: "Infrastructure",
     status: "Work in progress",
-    accent: "slate",
-    image: "/images/multicloud-sky.webp",
-    imageAlt:
-      "Layered cloud formations lit from behind at altitude",
     teaser:
       "One dashboard provisions free-tier compute across four clouds via Terraform, with an hourly auto-destroy sweep.",
     tags: ["Terraform", "FastAPI", "Multi-tenant"],
@@ -200,10 +175,6 @@ export const PROJECTS: Project[] = [
     client: "Platform engineering",
     category: "Orchestration",
     status: "Active",
-    accent: "slate",
-    image: "/images/circuit-macro.webp",
-    imageAlt:
-      "Macro photograph of a circuit board's traces and surface-mounted components",
     teaser:
       "Claude plans, free-tier APIs do the legwork — stretching a single request across five providers.",
     tags: ["Python", "LLM routing", "Failover"],
@@ -245,10 +216,6 @@ export const PROJECTS: Project[] = [
     client: "Platform engineering",
     category: "Homelab",
     status: "Active",
-    accent: "slate",
-    image: "/images/racks-corridor.webp",
-    imageAlt:
-      "A corridor between two rows of server racks in a data centre",
     teaser: "A homelab chatbot that searches offline Wikipedia snapshots through a local LLM.",
     tags: ["Python", "Kiwix", "Self-hosted"],
     stack: ["Python", "Kiwix", ".zim archives", "Batch", "Self-hosted"],
@@ -281,10 +248,6 @@ export const PROJECTS: Project[] = [
     client: "CI/CD & packaging",
     category: "Pipelines",
     status: "Reference",
-    accent: "plum",
-    image: "/images/terraform-plan.webp",
-    imageAlt:
-      "A terminal showing the resource diff from a Terraform plan run",
     teaser:
       "Reusable GitHub Actions templates that build, sign, and release Windows/Linux installers end to end.",
     tags: ["Actions", "Signing", "Release"],
@@ -322,10 +285,6 @@ export const PROJECTS: Project[] = [
     client: "CI/CD & packaging",
     category: "Packaging",
     status: "Reference",
-    accent: "plum",
-    image: "/images/motherboard-epyc.webp",
-    imageAlt:
-      "A server motherboard with its CPU socket and memory slots exposed",
     teaser: "A WiX scaffold that turns a build output into a signed MSI, shortcuts and all.",
     tags: ["WiX", "MSI", "MSBuild"],
     stack: ["WiX Toolset v3", "MSBuild", "Heat harvesting", "MSI", "XML"],
@@ -359,10 +318,6 @@ export const PROJECTS: Project[] = [
     client: "CI/CD & packaging",
     category: "Automation",
     status: "In progress",
-    accent: "plum",
-    image: "/images/banner-code.webp",
-    imageAlt:
-      "Source code on a dark editor screen, shallow depth of field",
     teaser: "Type a topic, get back a finished short-form study video — script to voiceover to render.",
     tags: ["Actions", "FFmpeg", "TTS"],
     stack: ["GitHub Actions", "Python", "FFmpeg", "Edge-TTS", "LLM APIs", "Failover logic"],
@@ -403,10 +358,6 @@ export const PROJECTS: Project[] = [
     client: "Hardware & imaging",
     category: "Hardware",
     status: "Active",
-    accent: "brass",
-    image: "/images/cabling-blue.webp",
-    imageAlt:
-      "Bundled blue network patch cables running into a switch",
     teaser: "Turns a bare Pi into a certified Matter test harness, then images the finished SD card.",
     tags: ["Bash", "Matter", "Raspberry Pi"],
     stack: ["Bash", "Raspberry Pi", "Ubuntu 22.04", "Docker", "Matter / CHIP", "PiShrink"],
@@ -443,10 +394,6 @@ export const PROJECTS: Project[] = [
     client: "Hardware & imaging",
     category: "Hardware",
     status: "Active",
-    accent: "brass",
-    image: "/images/htop-terminal.webp",
-    imageAlt:
-      "The htop terminal interface showing per-core CPU and memory meters",
     teaser: "The unattended bootstrap half of the imaging pipeline — resumes itself after every reboot.",
     tags: ["Bash", "Bootstrap", "Unattended"],
     stack: ["Bash", "Raspberry Pi", "Auto-start hooks", "Git automation"],
@@ -479,10 +426,6 @@ export const PROJECTS: Project[] = [
     client: "Utilities",
     category: "Benchmark",
     status: "Complete",
-    accent: "sage",
-    image: "/images/banner-datacenter.webp",
-    imageAlt:
-      "Rows of server racks receding down a data centre hall",
     teaser: "Sweeps dd block sizes from 512B to 64MB to find the fastest one for this disk.",
     tags: ["Bash", "dd", "I/O"],
     stack: ["Bash", "dd", "I/O benchmarking", "Cache-aware"],
@@ -511,7 +454,6 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const CATEGORIES = Array.from(new Set(PROJECTS.map((p) => p.client)));
 
 export function projectBySlug(slug: string) {
   return PROJECTS.find((p) => p.slug === slug);

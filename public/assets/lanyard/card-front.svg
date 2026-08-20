@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1500" viewBox="0 0 1000 1500" role="img" aria-label="Conference badge, front">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#131318"/>
+      <stop offset="55%" stop-color="#0d0d11"/>
+      <stop offset="100%" stop-color="#16161c"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2997ff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#2997ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="1500" fill="url(#bg)"/>
+
+  <!-- hairline grid, the same schematic language the site uses -->
+  <g stroke="#ffffff" stroke-opacity="0.045" stroke-width="2">
+    <path d="M0 300 H1000 M0 600 H1000 M0 900 H1000 M0 1200 H1000"/>
+    <path d="M250 0 V1500 M500 0 V1500 M750 0 V1500"/>
+  </g>
+
+  <text x="90" y="210" fill="#86868b" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace"
+        font-size="34" letter-spacing="9">SRINIDEVOPS.COM</text>
+
+  <text x="90" y="640" fill="#f5f5f7" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="104" font-weight="600" letter-spacing="-3">Srinivasan</text>
+  <text x="90" y="760" fill="#f5f5f7" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="104" font-weight="600" letter-spacing="-3">Vijayaraghavan</text>
+
+  <rect x="90" y="830" width="420" height="4" fill="url(#rule)"/>
+
+  <text x="90" y="920" fill="#a1a1a6" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="52" font-weight="500">DevOps / SRE</text>
+  <text x="90" y="990" fill="#6e6e73" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace"
+        font-size="34" letter-spacing="4">BANGALORE, IN</text>
+
+  <!-- release path: the thing the badge is actually about -->
+  <g transform="translate(90 1160)">
+    <path d="M0 40 H700" stroke="#2c2c2e" stroke-width="5"/>
+    <g fill="#2997ff">
+      <circle cx="0" cy="40" r="14"/>
+      <circle cx="175" cy="40" r="14"/>
+      <circle cx="350" cy="40" r="14"/>
+      <circle cx="525" cy="40" r="14"/>
+    </g>
+    <circle cx="700" cy="40" r="18" fill="none" stroke="#2997ff" stroke-width="5"/>
+    <g fill="#6e6e73" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="26" letter-spacing="3">
+      <text x="-6" y="110">BUILD</text>
+      <text x="169" y="110">GATE</text>
+      <text x="326" y="110">PROMOTE</text>
+      <text x="505" y="110">VERIFY</text>
+    </g>
+  </g>
+</svg>

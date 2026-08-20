@@ -38,7 +38,7 @@ export default function CookieNotice() {
   return (
     <div className="cookie-notice" role="region" aria-label="Privacy notice">
       <div className="cookie-notice-body">
-        <span className="eyebrow c-brass">Privacy</span>
+        <span className="eyebrow">Privacy</span>
         <p>
           No tracking cookies here. Analytics is cookieless and aggregate, and the only thing
           stored in your browser is your theme choice.{" "}

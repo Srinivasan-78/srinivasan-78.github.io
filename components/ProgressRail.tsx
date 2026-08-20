@@ -2,70 +2,53 @@
 
 import { useEffect, useRef } from "react";
 
+/* A hairline at the top of the viewport showing how far down the page
+   you are. The only piece of ambient chrome left on the site.
+
+   The percentage pill that used to sit in the corner alongside it is
+   gone: it was a second readout of the same fact, parked over the
+   content, in a corner that on a phone already belongs to the CTA bar
+   and the chat launcher.
+
+   No smoothing loop either. That existed to keep the bar in step with
+   Lenis's interpolated scroll position; with native scrolling the real
+   value is already the right one, so this writes it directly from a
+   passive listener and never schedules a frame of its own. */
 export default function ProgressRail() {
   const barRef = useRef<HTMLDivElement>(null);
-  const pctRef = useRef<HTMLSpanElement>(null);
-  const raf = useRef(0);
 
   useEffect(() => {
     const bar = barRef.current;
-    const pct = pctRef.current;
-    if (!bar || !pct) return;
-
-    let target = 0;
-    let current = 0;
-    let last = -1;
-    let running = false;
+    if (!bar) return;
 
     /* Scrollable distance, cached. Reading scrollHeight forces the browser
        to lay the document out, and this ran on every scroll event — a full
        layout per event, on the one device that cannot spare it. It only
        changes when the page does, so it is measured then instead. */
     let max = 0;
+    let queued = false;
+
+    const paint = () => {
+      queued = false;
+      const p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      bar.style.transform = `scaleX(${p})`;
+    };
+
+    // Coalesce to one write per frame: a trackpad can fire scroll events
+    // faster than the compositor paints them.
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(paint);
+    };
+
     const remeasure = () => {
       max = document.documentElement.scrollHeight - window.innerHeight;
-      measure();
-    };
-
-    const measure = () => {
-      target = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-      start();
-    };
-
-    /* Ease the bar toward the real value rather than snapping to it, so
-       the rail glides with Lenis instead of stuttering ahead of it — but
-       park the loop once it has converged. Previously this rAF ran for
-       the life of the page whether or not anything moved, keeping the
-       main thread awake on every route even while the user sat still
-       reading. */
-    const tick = () => {
-      current += (target - current) * 0.12;
-
-      if (Math.abs(target - current) < 0.0005) {
-        current = target;
-        running = false;
-      }
-
-      bar.style.transform = `scaleX(${current})`;
-      const rounded = Math.round(current * 100);
-      if (rounded !== last) {
-        pct.textContent = String(rounded).padStart(2, "0") + "%";
-        last = rounded;
-      }
-
-      if (running) raf.current = requestAnimationFrame(tick);
-    };
-
-    const start = () => {
-      if (running) return;
-      running = true;
-      raf.current = requestAnimationFrame(tick);
+      onScroll();
     };
 
     remeasure();
-    current = target;
-    tick();
-    window.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", remeasure);
     /* Lazy images and font swaps change the document height after load, and
        neither fires a resize. Without this the rail reaches 100% early and
@@ -74,22 +57,15 @@ export default function ProgressRail() {
     ro.observe(document.documentElement);
 
     return () => {
-      running = false;
-      cancelAnimationFrame(raf.current);
       ro.disconnect();
-      window.removeEventListener("scroll", measure);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", remeasure);
     };
   }, []);
 
   return (
-    <>
-      <div className="rail">
-        <div ref={barRef} className="rail-bar" />
-      </div>
-      <span className="rail-pct" aria-hidden="true">
-        <span ref={pctRef}>00%</span>
-      </span>
-    </>
+    <div className="rail" aria-hidden="true">
+      <div ref={barRef} className="rail-bar" />
+    </div>
   );
 }

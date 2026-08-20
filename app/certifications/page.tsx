@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/seo";
-import CertMenu from "@/components/CertMenu";
+import CertIndex from "@/components/CertIndex";
 
 export const metadata = pageMetadata({
   title: "Certifications",
@@ -9,5 +9,5 @@ export const metadata = pageMetadata({
 });
 
 export default function Certifications() {
-  return <CertMenu />;
+  return <CertIndex />;
 }

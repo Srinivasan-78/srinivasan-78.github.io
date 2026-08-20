@@ -173,7 +173,7 @@ export default function ChatWidget() {
         aria-expanded={open}
         aria-controls="site-chat-panel"
         onClick={() => setOpen((v) => !v)}
-        data-cursor-hover
+       
       >
         <span aria-hidden="true" className="chat-launcher-icon">
           {open ? "✕" : "◍"}
@@ -244,7 +244,7 @@ export default function ChatWidget() {
           {turns.length === 0 ? (
             <div className="chat-suggestions">
               {CHAT_SUGGESTIONS.map((s) => (
-                <button key={s} type="button" className="chat-chip" onClick={() => send(s)} data-cursor-hover>
+                <button key={s} type="button" className="chat-chip" onClick={() => send(s)}>
                   {s}
                 </button>
               ))}

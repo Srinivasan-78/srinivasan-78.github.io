@@ -1,14 +1,6 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
-import DecryptedText from "./DecryptedText";
-import { GlassLayer } from "./GlassSurface";
-
-gsap.registerPlugin(ScrollTrigger);
+import GlowCard from "./ui/GlowCard";
 
 /* CSS multi-column masonry of capability tiles. Artwork is original
    SVG rather than stock photography: no licensing questions, no
@@ -17,7 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 type Tile = {
   title: string;
   body: string;
-  accent: "sage" | "slate" | "plum" | "brass";
   art: React.ReactNode;
 };
 
@@ -27,7 +18,6 @@ const TILES: Tile[] = [
   {
     title: "Pipelines that gate themselves",
     body: "Provisioning, promotion, DR failover and failback — self-service workflows instead of runbooks nobody wants to open at 2am.",
-    accent: "sage",
     art: (
       <svg viewBox="0 0 300 160" role="img" aria-label="A pipeline branching through validation gates">
         <path d="M20 80 H90" stroke="currentColor" strokeWidth="3" {...stroke} />
@@ -43,7 +33,6 @@ const TILES: Tile[] = [
   {
     title: "Disaster recovery, rehearsed",
     body: "Region-to-region migration with zero data loss, HA mirroring, and a restore path that's been run — not just written down.",
-    accent: "slate",
     art: (
       <svg viewBox="0 0 300 200" role="img" aria-label="Two regions mirroring data with a failover arc">
         <rect x="24" y="70" width="80" height="60" rx="8" stroke="currentColor" strokeWidth="3" fill="none" />
@@ -61,7 +50,6 @@ const TILES: Tile[] = [
   {
     title: "Config without drift",
     body: "Centralized vars and vault, environment-agnostic inventories, Jinja2 templating — one source of truth across fifteen-plus services.",
-    accent: "plum",
     art: (
       <svg viewBox="0 0 300 150" role="img" aria-label="Configuration layers stacking into one source">
         {[0, 1, 2].map((i) => (
@@ -86,7 +74,6 @@ const TILES: Tile[] = [
   {
     title: "Observability wired into the deploy",
     body: "Datadog dashboards, HTTP/TCP/JMX synthetics, and run summaries pushed to Teams — failures announce themselves.",
-    accent: "brass",
     art: (
       <svg viewBox="0 0 300 150" role="img" aria-label="A monitoring waveform with an alert spike">
         <path
@@ -105,7 +92,6 @@ const TILES: Tile[] = [
   {
     title: "Secrets held properly",
     body: "BYOK through Key Vault and App Configuration, RBAC gates in CI, commit signing — least privilege as a default, not a cleanup task.",
-    accent: "sage",
     art: (
       <svg viewBox="0 0 300 170" role="img" aria-label="A key passing through a permission gate into a vault">
         <rect x="150" y="46" width="110" height="80" rx="10" stroke="currentColor" strokeWidth="3" fill="none" />
@@ -120,7 +106,6 @@ const TILES: Tile[] = [
   {
     title: "Migration at scale",
     body: "Parallelized transfer with delta detection and AzCopy, cutting the window where a cutover can hurt anyone.",
-    accent: "slate",
     art: (
       <svg viewBox="0 0 300 130" role="img" aria-label="Parallel transfer lanes moving between two stores">
         {[34, 65, 96].map((y, i) => (
@@ -136,55 +121,29 @@ const TILES: Tile[] = [
 ];
 
 export default function Capabilities() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const tiles = el.querySelectorAll(".cap-tile");
-    gsap.set(tiles, { opacity: 0, y: 30 });
-    const triggers = ScrollTrigger.batch(tiles, {
-      start: "top 93%",
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", stagger: 0.08 }),
-    });
-    return () => triggers.forEach((t) => t.kill());
-  }, []);
-
   return (
     <section className="section">
       <div className="wrap">
         <SectionHead
-          index="04 / 05"
           label="What I actually build"
-          accent="plum"
           title="Six things I get called in for."
         />
 
-        <div className="masonry" ref={ref} data-skew>
+        <Reveal className="masonry" pop>
           {TILES.map((t) => (
-            <article className={"cap-tile accent-" + t.accent} key={t.title}>
-              <GlassLayer
-                borderRadius={10}
-                backgroundOpacity={0.55}
-                saturation={1.4}
-                blur={9}
-                displace={0.6}
-                distortionScale={-120}
-              />
-              <div className="cap-body-wrap">
-                <h3 className="cap-title">
-                  <DecryptedText text={t.title} animateOn="view" sequential useOriginalCharsOnly encryptedClassName="text-encrypted" />
-                </h3>
-                <p className="cap-body">{t.body}</p>
-              </div>
-              <div className="cap-art">{t.art}</div>
-            </article>
+            <GlowCard key={t.title}>
+              <article className="cap-tile">
+                <div className="cap-body-wrap">
+                  <h3 className="cap-title">
+                    {t.title}
+                  </h3>
+                  <p className="cap-body">{t.body}</p>
+                </div>
+                <div className="cap-art">{t.art}</div>
+              </article>
+            </GlowCard>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
