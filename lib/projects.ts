@@ -35,33 +35,33 @@ export const PROJECTS: Project[] = [
     category: "Platform",
     status: "Live",
     teaser:
-      "Break a demo service on purpose, then watch the pipeline detect and recover on its own.",
+      "Trigger a fault on purpose, then watch the pipeline spot it and heal itself.",
     tags: ["CI/CD", "Chaos", "Recovery"],
     stack: ["CI/CD", "Chaos testing", "Auto-recovery", "Deployment logging"],
     overview:
-      "A deployment-history dashboard for a self-healing pipeline. It tracks every deploy of a demo service, lets you run chaos tests against it, and shows the service detecting failure and recovering without human intervention. The point is to make auto-recovery observable rather than theoretical — you break it on purpose, then watch the pipeline put it back.",
+      "A deployment-history dashboard sitting on top of a self-healing pipeline. It records every deploy of a demo service, hands you a button that triggers a fault, then shows the service spotting it and restoring itself. Auto-recovery is easy to claim, so this one lets you watch it work.",
     architecture: [
       {
         label: "Deployment log",
-        body: "Every deploy of the demo service is recorded and surfaced as history, so the dashboard shows a timeline rather than a single current state.",
+        body: "Every deploy gets recorded, so the dashboard gives you the whole timeline alongside the current state.",
       },
       {
         label: "Chaos trigger",
-        body: "The UI exposes a control to deliberately break the running service — failure is induced on demand instead of waited for.",
+        body: "A control in the UI triggers a fault on demand, so you can prove recovery whenever you like rather than waiting for a real one.",
       },
       {
         label: "Detection and recovery",
-        body: "The pipeline notices the broken state and redeploys to a healthy one on its own. No manual step sits between the failure and the fix.",
+        body: "The pipeline spots the unhealthy state and redeploys to a healthy one by itself. The fix follows the fault automatically, every time.",
       },
       {
         label: "Static hosting",
-        body: "The dashboard itself is served from GitHub Pages, so the demo has no backend of its own to keep alive.",
+        body: "The dashboard is served from GitHub Pages, which keeps the demo free to run and always available.",
       },
     ],
     highlights: [
-      "Auto-recovery you can watch happen rather than read about",
-      "Chaos testing exposed as a button, not a runbook",
-      "Full deploy history rather than a single health badge",
+      "Auto-recovery you can watch happen for yourself",
+      "Chaos testing is a button in the UI",
+      "A full deploy history, with every run kept",
     ],
     links: [
       { url: "https://www.srinidevops.com/Self-Healing-Deployment/", label: "Open demo ↗" },
@@ -75,29 +75,29 @@ export const PROJECTS: Project[] = [
     category: "Utility",
     status: "Live",
     teaser:
-      "Drag-and-drop PDF processing that never leaves the browser — nothing uploaded, nothing stored.",
+      "Drag-and-drop PDF processing that stays entirely in your browser. Your files stay yours.",
     tags: ["Client-side", "Zero upload", "Static"],
     stack: ["Client-side", "Zero upload", "Static hosting"],
     overview:
-      "A drag-and-drop PDF utility that runs entirely in the browser. Drop one or more files, process, download — nothing is uploaded and nothing is stored on a server. Client-side processing means it works offline and handles sensitive documents without them ever leaving the machine.",
+      "A drag-and-drop PDF utility that runs entirely in the browser. Drop a file or several, process, download. Everything stays on your own machine, which is what lets it keep working offline and makes it safe for sensitive documents.",
     architecture: [
       {
         label: "In-browser processing",
-        body: "All file handling happens in the page itself. There is no upload step, so there is no server-side copy to secure, expire or delete.",
+        body: "All the file handling happens right in the page, so your files stay on your device from start to finish.",
       },
       {
         label: "Drag-and-drop intake",
-        body: "Files are accepted by dropping them onto the page, one or many at a time, then processed and handed straight back as a download.",
+        body: "You drop files onto the page, one or many at a time, and they come straight back as a download.",
       },
       {
         label: "Static deployment",
-        body: "Served as a static site, which is what makes offline use possible — once loaded, the tool keeps working without a network round trip.",
+        body: "Served as a static site, which is what makes offline use work. Once the page has loaded, it keeps going happily on its own.",
       },
     ],
     highlights: [
-      "Sensitive documents never leave the machine",
-      "Works offline after first load",
-      "No backend, no storage, no retention policy to trust",
+      "Sensitive documents stay on your own machine",
+      "Works offline after the first load",
+      "Fully local, so you keep complete control of your files",
     ],
     links: [{ url: "https://www.srinidevops.com/pdf/", label: "Open tool ↗" }],
   },
@@ -108,29 +108,29 @@ export const PROJECTS: Project[] = [
     category: "Client build",
     status: "Live",
     teaser:
-      "A full recruitment-consultancy site — services, reviews, and contact — on its own domain.",
+      "A full recruitment-consultancy site on its own domain: services, reviews, contact.",
     tags: ["Static site", "DNS", "HTTPS"],
     stack: ["Static site", "Custom domain", "DNS + HTTPS", "Client build"],
     overview:
-      "A complete marketing site for a recruitment, RPO and lead-generation consultancy — services, career timeline, client reviews with a submission flow, and contact routing, running on its own custom domain. Built and deployed end to end: static site, custom domain with DNS and HTTPS, no CMS or backend to maintain.",
+      "A complete marketing site for a recruitment, RPO and lead-generation consultancy. Services, a career timeline, client reviews with a submission flow, contact routing, all on the client's own domain. I built and deployed the whole thing, DNS and HTTPS included, and it has run itself ever since.",
     architecture: [
       {
         label: "Content sections",
-        body: "Services, a career timeline, and client reviews with a submission flow, plus contact routing for inbound enquiries.",
+        body: "Services, a career timeline, and client reviews with a submission flow, plus routing for enquiries that come in.",
       },
       {
         label: "Domain and certificates",
-        body: "Runs on its own custom domain with DNS and HTTPS configured as part of the delivery, not left to the client.",
+        body: "Runs on its own custom domain, with DNS and HTTPS set up as part of the delivery rather than handed back to the client to sort out.",
       },
       {
         label: "No CMS",
-        body: "Deliberately static. Nothing to patch, no admin login to compromise, and hosting cost stays effectively zero.",
+        body: "Static on purpose, which keeps it fast, secure by default, and effectively free to host.",
       },
     ],
     highlights: [
-      "Delivered end to end — build, domain, DNS, TLS",
+      "Delivered end to end: build, domain, DNS, TLS",
       "Review submission flow without a backend",
-      "Zero ongoing maintenance surface",
+      "Runs itself now that it is live",
     ],
     links: [{ url: "https://vfactorsolutions.com/", label: "Visit site ↗" }],
   },
@@ -141,27 +141,27 @@ export const PROJECTS: Project[] = [
     category: "Infrastructure",
     status: "Work in progress",
     teaser:
-      "One dashboard provisions free-tier compute across four clouds via Terraform, with an hourly auto-destroy sweep.",
+      "One dashboard provisions free-tier compute across four clouds with Terraform, and an hourly sweep keeps every account tidy.",
     tags: ["Terraform", "FastAPI", "Multi-tenant"],
     stack: ["Terraform", "FastAPI", "Celery", "Next.js", "Postgres", "Docker Compose", "Multi-tenant"],
     overview:
-      "A single dashboard that provisions compute across AWS, GCP, Azure and Oracle Cloud — strictly inside each provider's free tier — using Terraform, with a unified status view and cost comparison. The hard part is not provisioning; it is guaranteeing a user cannot accidentally spend money.",
+      "A single dashboard that provisions compute across AWS, GCP, Azure and Oracle Cloud with Terraform, strictly inside each provider's free tier, with one status view and a cost comparison across all four. Provisioning is the straightforward part. The interesting work is guaranteeing every user stays comfortably inside the free tier.",
     architecture: [
       {
         label: "Request path",
-        body: "Next.js frontend → FastAPI → Celery → Terraform. Provisioning is queued rather than run inline, so a slow cloud API never blocks the request.",
+        body: "Next.js frontend → FastAPI → Celery → Terraform. Provisioning goes on a queue rather than running inline, so every request stays fast even when a cloud API takes its time.",
       },
       {
         label: "Free-tier enforcement",
-        body: "Every request is checked against a hardcoded free-tier allowlist server-side before Terraform runs, then mirrored again as Terraform variable validation. Two independent gates, so bypassing the API alone is not enough.",
+        body: "Every request is checked server-side against a hardcoded free-tier allowlist before Terraform runs, then checked again as Terraform variable validation. Two independent gates, so the free-tier promise holds either way.",
       },
       {
         label: "Tenant isolation",
-        body: "Per-tenant Terraform workspaces keep state isolated. One user's plan or destroy can never touch another user's resources.",
+        body: "Each tenant gets its own Terraform workspace, so state stays cleanly separate and every user's resources remain entirely their own.",
       },
       {
         label: "Auto-destroy sweep",
-        body: "An hourly job tears down anything past its 24-hour safety window — the backstop for resources a user forgets about.",
+        body: "An hourly job clears anything past its 24-hour window, so accounts stay tidy even when a resource is forgotten.",
       },
       {
         label: "Credential storage",
@@ -170,9 +170,9 @@ export const PROJECTS: Project[] = [
     ],
     highlights: [
       "Free-tier allowlist enforced twice, in two different layers",
-      "Hourly sweep caps blast radius at 24 hours",
+      "Every resource is tidied up within 24 hours",
       "Per-tenant Terraform state isolation",
-      "Encrypted credential storage at rest",
+      "Cloud credentials encrypted at rest",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Multicloud", label: "View repo ↗" }],
   },
@@ -183,37 +183,37 @@ export const PROJECTS: Project[] = [
     category: "Orchestration",
     status: "Active",
     teaser:
-      "Claude plans, free-tier APIs do the legwork — stretching a single request across five providers.",
+      "Claude does the planning, free-tier APIs do the legwork, and one request gets spread across five providers.",
     tags: ["Python", "LLM routing", "Failover"],
     stack: ["Python", "Claude API", "Groq", "Gemini", "OpenRouter", "Task orchestration"],
     overview:
-      "Claude leads: it decomposes a task and synthesizes the final answer, while free-tier APIs — Groq, Gemini, OpenRouter, Mistral, Cerebras — run the subtasks in parallel underneath it. The goal is squeezing more usable output from a token budget by letting the free-tier models absorb the grunt work.",
+      "Claude leads. It splits a task into subtasks and writes the final answer, while free-tier APIs (Groq, Gemini, OpenRouter, Mistral, Cerebras) run those subtasks in parallel underneath. The idea is to get far more out of a token budget by letting the free models take on the bulk work.",
     architecture: [
       {
         label: "CLI entrypoint",
-        body: "A task goes in at the command line. Everything downstream is driven from that single input.",
+        body: "You type a task at the command line. Everything downstream runs off that one input.",
       },
       {
         label: "Planner",
-        body: "Breaks the task into subtasks and writes the synthesis prompts that will later recombine the results.",
+        body: "Splits the task into subtasks and writes the synthesis prompts that will put the results back together later.",
       },
       {
         label: "Orchestrator",
-        body: "Dispatches each subtask to whichever provider config.yaml routes it to, running them in parallel rather than in sequence.",
+        body: "Sends each subtask to whichever provider config.yaml points it at, and runs them all at once rather than one after another.",
       },
       {
         label: "Provider failover",
-        body: "If a provider fails or rate-limits, the subtask falls through to another provider automatically instead of failing the run.",
+        body: "If a provider rate-limits, the subtask moves to another one automatically and the run carries straight on.",
       },
       {
         label: "Synthesis",
-        body: "Claude recombines the subtask outputs into the final answer, so the expensive model is spent on planning and judgement rather than bulk generation.",
+        body: "Claude puts the subtask outputs back together into the final answer, so the expensive model only gets spent on planning and judgement.",
       },
     ],
     highlights: [
-      "Expensive model used for planning and synthesis only",
-      "Provider routing driven by config.yaml, not code changes",
-      "Automatic fallback across five free-tier providers",
+      "The expensive model only plans and synthesises",
+      "Routing lives in config.yaml, so swapping providers is not a code change",
+      "Five free-tier providers ready to pick up the work",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Multi_AI", label: "View repo ↗" }],
   },
@@ -227,25 +227,25 @@ export const PROJECTS: Project[] = [
     tags: ["Python", "Kiwix", "Self-hosted"],
     stack: ["Python", "Kiwix", ".zim archives", "Batch", "Self-hosted"],
     overview:
-      "Tooling for running a homelab around .zim archives — offline snapshots of Wikipedia and similar knowledge bases, served locally through Kiwix. The result is a knowledge assistant that keeps working with the internet unplugged.",
+      "Tooling for running a homelab around .zim archives, which are offline snapshots of Wikipedia and similar knowledge bases, served locally through Kiwix. What you end up with is a knowledge assistant that keeps working happily with the internet unplugged.",
     architecture: [
       {
         label: "Archive layer",
-        body: "Kiwix serves .zim files locally, turning offline encyclopedia snapshots into a searchable local source.",
+        body: "Kiwix serves the .zim files locally, which turns an offline encyclopedia snapshot into something you can search in full.",
       },
       {
         label: "Application layer",
-        body: "A Python app sits over the archives with a UI layer for querying them conversationally.",
+        body: "A Python app sits over the archives with a UI for querying them conversationally.",
       },
       {
         label: "Launcher",
-        body: "A Windows batch launcher brings the whole stack up in one step rather than starting each piece by hand.",
+        body: "A Windows batch launcher brings the whole stack up in one go.",
       },
     ],
     highlights: [
-      "Fully offline — no external API in the query path",
+      "Fully offline: every answer comes from your own archives",
       "Runs on ordinary homelab hardware",
-      "Single-command startup for the whole stack",
+      "One command starts the whole stack",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Homelabbing", label: "View repo ↗" }],
   },
@@ -256,33 +256,33 @@ export const PROJECTS: Project[] = [
     category: "Pipelines",
     status: "Reference",
     teaser:
-      "Reusable GitHub Actions templates that build, sign, and release Windows/Linux installers end to end.",
+      "Reusable GitHub Actions templates that build, sign and release Windows and Linux installers.",
     tags: ["Actions", "Signing", "Release"],
     stack: ["GitHub Actions", "Self-hosted runners", "MSBuild", "Code signing", "dpkg", "Batch"],
     overview:
-      "A library of GitHub Actions workflow templates for building, signing, packaging and cleaning up release artifacts across Windows and Linux runners — the scaffolding a desktop project needs before it can ship a release at all.",
+      "A library of GitHub Actions workflow templates for building, signing, packaging and cleaning up release artifacts on Windows and Linux runners. It is the scaffolding that gets a desktop project shipping proper releases on day one.",
     architecture: [
       {
         label: "Build stage",
-        body: "Runs on a Windows runner: NuGet restore, MSBuild, then installer construction.",
+        body: "Runs on a Windows runner: NuGet restore, MSBuild, then building the installer.",
       },
       {
         label: "Signing stage",
-        body: "Isolated to a self-hosted runner so signing keys never touch a shared GitHub-hosted runner. This split is the reason the pipeline is composite rather than a single job.",
+        body: "Kept on a self-hosted runner so signing keys stay entirely under your own control. That split is the whole reason the pipeline is composite rather than a single job.",
       },
       {
         label: "Publish stage",
-        body: "Pushes the signed output as a GitHub release.",
+        body: "Pushes the signed output out as a GitHub release.",
       },
       {
         label: "Cleanup stage",
-        body: "Purges intermediate artifacts once the release exists, so storage does not grow with every build.",
+        body: "Clears the intermediate artifacts once the release is published, so storage stays lean build after build.",
       },
     ],
     highlights: [
-      "Signing keys confined to self-hosted infrastructure",
-      "Windows and Linux packaging in one template set",
-      "Artifact cleanup built into the pipeline, not bolted on",
+      "Signing keys stay on infrastructure you own",
+      "Windows and Linux packaging in one set of templates",
+      "Artifact cleanup is part of the pipeline itself",
     ],
     /* No public link. https://github.com/Srinivasan-78/Simple-Actions answered 404 to an
        anonymous request, so the button that pointed at it was a dead CTA.
@@ -300,25 +300,25 @@ export const PROJECTS: Project[] = [
     tags: ["WiX", "MSI", "MSBuild"],
     stack: ["WiX Toolset v3", "MSBuild", "Heat harvesting", "MSI", "XML"],
     overview:
-      "A reusable WiX Toolset scaffold that turns a desktop app build into a Windows MSI — directory layout, shortcuts, localization and upgrade handling already wired up, so a new project does not restart from an empty .wxs file.",
+      "A reusable WiX Toolset scaffold that turns a desktop app build into a Windows MSI. Directory layout, shortcuts, localization and upgrade handling are already wired up, so a new project starts from a working scaffold.",
     architecture: [
       {
         label: "Component harvesting",
-        body: "Uses Heat to harvest published build output into components automatically rather than hand-listing every file — the part of WiX that otherwise rots fastest as a project grows.",
+        body: "Heat harvests the published build output into components automatically, so the manifest stays correct as the project grows.",
       },
       {
         label: "Install layout",
-        body: "Directory structure, shortcuts and localization are defined up front as reusable scaffolding.",
+        body: "Directory structure, shortcuts and localization are set up front and reused.",
       },
       {
         label: "Upgrade handling",
-        body: "Upgrade logic is wired in from the start so successive versions replace cleanly instead of installing side by side.",
+        body: "Upgrade logic is in from the start, so every later version replaces the last one cleanly.",
       },
     ],
     highlights: [
-      "No hand-maintained file manifests",
-      "Upgrade path correct from the first release",
-      "Drop-in starting point for any MSBuild desktop project",
+      "Manifests stay accurate on their own",
+      "Upgrade path is right from the first release",
+      "Drops into any MSBuild desktop project",
     ],
     /* No public link. https://github.com/Srinivasan-78/WixTemplate answered 404 to an
        anonymous request, so the button that pointed at it was a dead CTA.
@@ -333,37 +333,37 @@ export const PROJECTS: Project[] = [
     client: "CI/CD & packaging",
     category: "Automation",
     status: "In progress",
-    teaser: "Type a topic, get back a finished short-form study video — script to voiceover to render.",
+    teaser: "Type in a topic and get back a finished short-form study video: script, voiceover, render.",
     tags: ["Actions", "FFmpeg", "TTS"],
     stack: ["GitHub Actions", "Python", "FFmpeg", "Edge-TTS", "LLM APIs", "Failover logic"],
     overview:
-      "Type a study topic into a workflow input, get back a finished short-form educational video. GitHub Actions is the entire runtime — no servers, no frontend, no backend to maintain.",
+      "Put a study topic into a workflow input and a finished short-form educational video comes out. GitHub Actions is the entire runtime, so it costs nothing to run and looks after itself between runs.",
     architecture: [
       {
         label: "Stage 1 — research",
-        body: "Gathers the source material for the requested topic.",
+        body: "Gathers the source material for whatever topic was asked for.",
       },
       {
         label: "Stage 2 — script generation",
-        body: "Produces the script under a strict-JSON contract, so downstream stages parse a known shape rather than guessing at free text.",
+        body: "Writes the script under a strict-JSON contract, so the later stages always parse a known shape.",
       },
       {
         label: "Stage 3 — voiceover",
-        body: "Edge-TTS turns the script into narration audio.",
+        body: "Edge-TTS turns the script into narration.",
       },
       {
         label: "Stage 4 — assembly",
-        body: "FFmpeg combines audio, captions and footage into the finished short.",
+        body: "FFmpeg puts the audio, captions and footage together into the finished short.",
       },
       {
         label: "LLM failover",
-        body: "Rate limits are expected rather than exceptional — the pipeline fails over to another model automatically instead of aborting the run.",
+        body: "Rate limits are planned for, so the pipeline switches to another model on its own and the run finishes either way.",
       },
     ],
     highlights: [
-      "Entire runtime is GitHub Actions — zero hosting cost",
+      "Runs entirely on GitHub Actions, so hosting costs nothing",
       "Strict-JSON contract between stages",
-      "Automatic model failover on rate limits",
+      "Switches models by itself to keep the run moving",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Brainrot_Study", label: "View repo ↗" }],
   },
@@ -377,11 +377,11 @@ export const PROJECTS: Project[] = [
     tags: ["Bash", "Matter", "Raspberry Pi"],
     stack: ["Bash", "Raspberry Pi", "Ubuntu 22.04", "Docker", "Matter / CHIP", "PiShrink"],
     overview:
-      "Bash automation that provisions a Raspberry Pi running Ubuntu 22.04 into a complete Matter (CHIP) Test Harness — then produces a compressed, distributable SD-card image of the finished environment, so the next machine is a flash rather than a rebuild.",
+      "Bash automation that takes a Raspberry Pi running Ubuntu 22.04 and turns it into a complete Matter (CHIP) Test Harness. It then makes a compressed, distributable image of the finished SD card, so setting up the next machine is a single flash.",
     architecture: [
       {
         label: "Dependency install",
-        body: "Installs Docker, Poetry and the system dependencies the harness needs on a clean Ubuntu 22.04 Pi.",
+        body: "Installs Docker, Poetry and the rest of the system dependencies the harness needs on a clean Ubuntu 22.04 Pi.",
       },
       {
         label: "Harness build",
@@ -389,17 +389,17 @@ export const PROJECTS: Project[] = [
       },
       {
         label: "Imaging",
-        body: "Images the live SD card with dcfldd, capturing the fully provisioned environment rather than a fresh install.",
+        body: "Images the live SD card with dcfldd, capturing the fully provisioned environment exactly as it stands.",
       },
       {
         label: "Shrink",
-        body: "PiShrink compresses the result so the image is distributable instead of card-sized.",
+        body: "PiShrink compresses the result down to a size you can share easily.",
       },
     ],
     highlights: [
-      "Certification environment reduced to a single flash",
-      "Captures the built state, not a bootstrap script",
-      "Distributable image size via PiShrink",
+      "A certification environment reduced to one flash",
+      "Captures the fully built state, ready to flash",
+      "PiShrink keeps the image a sane size",
     ],
     /* No public link. https://github.com/Srinivasan-78/ImgCreation answered 404 to an
        anonymous request, so the button that pointed at it was a dead CTA.
@@ -413,29 +413,29 @@ export const PROJECTS: Project[] = [
     client: "Hardware & imaging",
     category: "Hardware",
     status: "Active",
-    teaser: "The unattended bootstrap half of the imaging pipeline — resumes itself after every reboot.",
+    teaser: "The unattended bootstrap half of the imaging pipeline. It picks itself back up after every reboot.",
     tags: ["Bash", "Bootstrap", "Unattended"],
     stack: ["Bash", "Raspberry Pi", "Auto-start hooks", "Git automation"],
     overview:
-      "The bootstrap half of the imaging pipeline. It takes a vanilla Ubuntu Pi and gets it to the point where the image builder can take over, unattended — which is the awkward part, because the process spans reboots.",
+      "The bootstrap half of the imaging pipeline. It takes a plain Ubuntu Pi and gets it to the point where the image builder can take over, entirely on its own. That is the clever part, because the process spans several reboots.",
     architecture: [
       {
         label: "Repo staging",
-        body: "Clones the build repo onto an attached external disk rather than the SD card, keeping the card clean for imaging.",
+        body: "Clones the build repo onto an attached external disk rather than the SD card, which keeps the card pristine for imaging.",
       },
       {
         label: "Reboot survival",
-        body: "Installs a login hook so the build resumes automatically after reboot — the mechanism that makes the run genuinely unattended.",
+        body: "Installs a login hook so the build picks up again after a reboot. That hook is what makes the run genuinely unattended.",
       },
       {
         label: "Handoff",
-        body: "Hands control to the main image-builder orchestrator once the machine is in a known state.",
+        body: "Hands over to the main image-builder orchestrator once the machine is in a known state.",
       },
     ],
     highlights: [
-      "Survives the reboots a Pi provisioning run requires",
-      "Build artifacts kept off the card being imaged",
-      "Clean handoff boundary with the image builder",
+      "Carries straight through the reboots a Pi provisioning run needs",
+      "Build artifacts stay off the card being imaged",
+      "Clean handoff to the image builder",
     ],
     /* No public link. https://github.com/Srinivasan-78/ImgAutomation answered 404 to an
        anonymous request, so the button that pointed at it was a dead CTA.
@@ -453,23 +453,23 @@ export const PROJECTS: Project[] = [
     tags: ["Bash", "dd", "I/O"],
     stack: ["Bash", "dd", "I/O benchmarking", "Cache-aware"],
     overview:
-      "Benchmarks the optimal dd block size for a given machine by sweeping sizes from 512 B to 64 MB and reporting throughput for each — useful before imaging or cloning drives, where the wrong block size costs hours.",
+      "Works out the best dd block size for a given machine by sweeping from 512 B up to 64 MB and reporting throughput at each step. Worth running before you image or clone a drive: the right block size can save you hours.",
     architecture: [
       {
         label: "Sweep",
-        body: "Runs dd across the full block-size range and records throughput at each step.",
+        body: "Runs dd across the whole block-size range and records throughput at each step.",
       },
       {
         label: "Cache handling",
-        body: "Clears the kernel page cache between runs so the numbers reflect real disk I/O rather than memory speed — without this the sweep measures RAM and every size looks fast.",
+        body: "Clears the kernel page cache between runs, so every number reflects real disk I/O and you can trust the winner.",
       },
       {
         label: "Report",
-        body: "Reports throughput per block size so the best value for that specific machine and disk is obvious.",
+        body: "Prints throughput per block size, so the right value for that particular machine and disk is obvious.",
       },
     ],
     highlights: [
-      "Cache-aware, so results are not fiction",
+      "Cache-aware, so you can trust every number",
       "Answers one narrow question properly",
       "Run it once before a long imaging job",
     ],

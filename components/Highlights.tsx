@@ -67,7 +67,7 @@ export default function Highlights() {
   return (
     <section className="section">
       <div className="wrap">
-        <SectionHead label="Skills" title="What I work with." />
+        <SectionHead label="Skills" title="What I love working with" />
 
         <Reveal className="skill-grid" pop stagger={0.05}>
           {SKILLS.map((s) => (

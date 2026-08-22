@@ -7,7 +7,7 @@ import GlowCard from "@/components/ui/GlowCard";
    `noindex, follow` left two of them arguing in the head. */
 export const metadata = pageMetadata({
   title: "Page not found",
-  description: "That URL doesn't exist on this site. Pick a working route from the list.",
+  description: "That address points elsewhere. Here are the pages that are ready and waiting for you.",
   path: null,
 });
 
@@ -23,10 +23,10 @@ export default function NotFound() {
     <main id="content" tabIndex={-1} className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
         <span className="eyebrow">404</span>
-        <h1 className="display display-lg">That page didn&rsquo;t resolve</h1>
+        <h1 className="display display-lg">Let&rsquo;s get you back on track</h1>
         <p>
-          The URL you followed doesn&rsquo;t exist here. No rollback needed — just pick a
-          working route below.
+          That address points somewhere else, and everything else on the site is right here
+          waiting. Pick whichever one you were after.
         </p>
       </div>
 

@@ -5,7 +5,7 @@ import SplitReveal from "@/components/SplitReveal";
 export const metadata = pageMetadata({
   title: "Privacy Policy",
   description:
-    "What this site stores, what it does not, and how the contact form and analytics handle your data.",
+    "What this site stores, and how the contact form and analytics look after your data.",
   path: "/privacy",
 });
 
@@ -21,9 +21,9 @@ export default function Privacy() {
       </div>
 
       <p>
-        This is a personal portfolio site. It is a static site with no application server, no
-        user accounts, and no database. The sections below describe exactly what happens to
-        data when you visit.
+        This is a personal portfolio, and your visit stays refreshingly simple. It&rsquo;s a
+        static site with no application server, no user accounts and no database behind it. Below
+        is exactly what happens to your data when you visit.
       </p>
 
       <h2>Who runs this site</h2>
@@ -52,8 +52,8 @@ export default function Privacy() {
         </li>
       </ul>
       <p>
-        Both are stored locally by your browser and can be cleared at any time through your
-        browser&rsquo;s site-data settings. Neither is transmitted anywhere.
+        Your browser keeps both of them locally, and you can clear them any time through its
+        site-data settings. Both stay on your own device.
       </p>
 
       <h2>Analytics</h2>
@@ -61,15 +61,15 @@ export default function Privacy() {
         Site traffic is measured with <b>Plausible Analytics</b>, a privacy-focused, cookieless
         analytics service. Plausible does not set cookies, does not collect personal data, and
         does not track visitors across sites or over time. It records aggregate counts only:
-        page URL, referrer, country, and the general browser and device type. No individual
-        visitor can be identified from it, and nothing is sold or shared with advertisers.
+        page URL, referrer, country, and the general browser and device type. Every visitor stays
+        anonymous, and the numbers serve one purpose: telling me which pages are useful.
       </p>
       <p>
         Plausible processes this data in the EU. Their privacy policy is at{" "}
         <a className="lnk" href="https://plausible.io/privacy" target="_blank" rel="noopener">
           plausible.io/privacy ↗
         </a>
-        . If you use a content blocker, the analytics script simply does not run and the site
+        . If you run a content blocker the analytics script just doesn&rsquo;t load, and the site
         works exactly the same.
       </p>
 
@@ -118,8 +118,9 @@ export default function Privacy() {
 
       <h2>Files you download</h2>
       <p>
-        The résumé PDF is a plain static file. Downloading it is an ordinary file request — it
-        is not gated, not tracked individually, and requires nothing from you.
+        The résumé PDF is a plain static file. Downloading it is an ordinary file request.
+        Nothing is gated, nothing is tracked per person, and you don&rsquo;t have to give me
+        anything for it.
       </p>
 
       <h2>Links to other sites</h2>
@@ -132,8 +133,8 @@ export default function Privacy() {
       <h2>Your rights</h2>
       <p>
         Because the site holds no account data, the only personal data that can exist is a
-        contact-form message you chose to send. You can ask me at any time to tell you what I
-        hold, correct it, or delete it. Email{" "}
+        contact-form message you chose to send, and you stay in control of it. Ask me at any time
+        to tell you what I hold, correct it, or delete it. Email{" "}
         <a className="lnk" href="mailto:srinivasan.shyam2000@gmail.com">
           srinivasan.shyam2000@gmail.com
         </a>{" "}
@@ -148,9 +149,9 @@ export default function Privacy() {
 
       <h2>Changes to this policy</h2>
       <p>
-        If the site starts doing something materially different with data, this page changes
-        first and the date at the top is updated. There is no version history to dig through —
-        this page always describes the current behaviour.
+        If the site ever starts doing something materially different with data, this page
+        changes first and the date at the top moves. There&rsquo;s no version history to dig
+        through; this page always describes what happens now.
       </p>
 
       <p style={{ marginTop: "2.5rem" }}>

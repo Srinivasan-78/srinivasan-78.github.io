@@ -40,10 +40,10 @@ export default function Error({
     <main id="content" tabIndex={-1} className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
         <span className="eyebrow">Error</span>
-        <h1 className="display display-lg">Something on this page failed</h1>
+        <h1 className="display display-lg">Let&rsquo;s try that again</h1>
         <p>
-          The page loaded but a part of it stopped working. Nothing you did caused it and
-          nothing was lost. Try it again — if it keeps happening, tell me at{" "}
+          The page loaded, and one piece of it just needs another go. Everything you had is
+          safe. Give it another try, and if it keeps happening do let me know at{" "}
           <a className="lnk" href="mailto:srinivasan.shyam2000@gmail.com">
             srinivasan.shyam2000@gmail.com
           </a>

@@ -52,8 +52,9 @@ export default function CertIndex() {
         <span className="eyebrow">Certifications</span>
         <SplitReveal as="h1" text="Verified credentials" className="display display-lg" />
         <p>
-          {CERTS.length} credentials from LinkedIn Learning, across cloud platforms, automation,
-          infrastructure as code, and observability. Every one links to its own verification page.
+          {CERTS.length} credentials from LinkedIn Learning, covering cloud platforms, automation,
+          infrastructure as code and observability. Each one links to its own verification page, so
+          you can confirm every single one.
         </p>
       </div>
 

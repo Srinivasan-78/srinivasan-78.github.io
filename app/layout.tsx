@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   title: "Srinivasan Vijayaraghavan — DevOps Engineer",
   description:
-    "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure. 5 years turning fragile deployments into reliable pipelines.",
+    "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure. Five years spent making releases calm, predictable and easy to trust.",
   authors: [{ name: "Srinivasan Vijayaraghavan" }],
   /* Without max-image-preview:large, Google caps any thumbnail it chooses
      to show at a small size. It is a permission, not a request — it does
@@ -76,14 +76,14 @@ export const metadata: Metadata = {
     url: "/",
     title: "Srinivasan Vijayaraghavan — DevOps Engineer",
     description:
-      "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.",
+      "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Srinivasan Vijayaraghavan, DevOps Engineer" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Srinivasan Vijayaraghavan — DevOps Engineer",
     description:
-      "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.",
+      "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
     images: ["/og.png"],
   },
 };
@@ -96,7 +96,7 @@ const jsonLd = {
   image: "https://www.srinidevops.com/og.png",
   jobTitle: "DevOps Engineer",
   description:
-    "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.",
+    "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
   email: "mailto:srinivasan.shyam2000@gmail.com",
   address: { "@type": "PostalAddress", addressLocality: "Bangalore", addressCountry: "IN" },
   worksFor: { "@type": "Organization", name: "Thomson Reuters" },

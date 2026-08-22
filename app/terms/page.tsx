@@ -5,7 +5,7 @@ import SplitReveal from "@/components/SplitReveal";
 export const metadata = pageMetadata({
   title: "Terms of Use",
   description:
-    "The terms covering use of this portfolio site, its content, the résumé, and the linked project demos.",
+    "The terms covering use of this portfolio site, its content, the résumé and the linked project demos.",
   path: "/terms",
 });
 
@@ -22,25 +22,24 @@ export default function Terms() {
 
       <p>
         This is the personal portfolio of Srinivasan Vijayaraghavan. By using the site you
-        accept the terms below. They are short because the site is simple: it publishes
-        information about my work and offers a way to contact me. Nothing is sold here.
+        accept the terms below. They&rsquo;re short because the site is simple: it publishes
+        information about my work and gives you a way to contact me. Nothing is sold here.
       </p>
 
       <h2>What the site is</h2>
       <p>
-        An informational portfolio. It is not a product, not a service, and carries no uptime
-        commitment. Pages, projects, and the résumé may change or be removed at any time
+        An informational portfolio. It isn&rsquo;t a product or a service, and there&rsquo;s no
+        uptime commitment. Pages, projects and the résumé may change or disappear at any time
         without notice.
       </p>
 
       <h2>Content and copyright</h2>
       <p>
-        The written content, page designs, and the résumé on this site are my own work and
-        remain my copyright. You are welcome to read it, quote it with attribution, share the
-        links, and pass the résumé to colleagues in the ordinary course of evaluating me for a
-        role.
+        The written content, page designs and the résumé on this site are my own work and stay
+        my copyright. You&rsquo;re welcome to read it, quote it with attribution, share the links,
+        and pass the résumé to colleagues while you&rsquo;re considering me for a role.
       </p>
-      <p>What you may not do without written permission:</p>
+      <p>A few things need my written permission first:</p>
       <ul>
         <li>Republish the content as your own, in whole or in part.</li>
         <li>
@@ -73,10 +72,10 @@ export default function Terms() {
 
       <h2>Contacting me</h2>
       <p>
-        Use the contact form or the email address for genuine professional enquiries. Do not
-        use them to send unsolicited sales pitches, bulk mail, or anything unlawful, and do not
-        send confidential material through the form — it passes through a third-party service.
-        See the{" "}
+        The contact form and the email address are open for genuine professional enquiries, and
+        I&rsquo;m glad to hear from you. Please keep them clear of unsolicited sales pitches, bulk
+        mail, and anything unlawful, and keep confidential material out of the form, since it
+        passes through a third-party service. See the{" "}
         <Link className="lnk" href="/privacy">
           Privacy Policy
         </Link>{" "}
@@ -89,11 +88,10 @@ export default function Terms() {
 
       <h2>Accuracy</h2>
       <p>
-        I keep the site accurate and current to the best of my knowledge, but it is a portfolio,
-        not a formal record. Nothing on it should be treated as professional or technical
-        advice, and it is not a substitute for a proper reference or background check. Verify
-        the certifications through the issuers&rsquo; own verification links before relying on
-        them.
+        I keep the site accurate and current as best I can, but it&rsquo;s a portfolio rather
+        than a formal record. Nothing on it is professional or technical advice, and it
+        doesn&rsquo;t replace a proper reference or background check. Check the certifications
+        through the issuers&rsquo; own verification links before relying on them.
       </p>
 
       <h2>Liability</h2>

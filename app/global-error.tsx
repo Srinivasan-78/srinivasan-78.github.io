@@ -27,15 +27,15 @@ export default function GlobalError({
         >
           <span className="eyebrow">Error</span>
           <h1 className="display display-lg" style={{ margin: 0 }}>
-            This page didn&rsquo;t load
+            One quick reload should do it
           </h1>
           <p style={{ maxWidth: "62ch" }}>
-            Something failed before the site could finish rendering. Reloading usually clears
-            it. If it does not, email{" "}
+            The site needs one more go at rendering this page. A reload almost always sorts it.
+            If it doesn&rsquo;t, email{" "}
             <a className="lnk" href="mailto:srinivasan.shyam2000@gmail.com">
               srinivasan.shyam2000@gmail.com
             </a>{" "}
-            and I will look at it.
+            and I&rsquo;ll get it sorted.
           </p>
           {error.digest && <p className="eyebrow">reference: {error.digest}</p>}
           <div className="hero-actions">

@@ -40,8 +40,8 @@ export default function CookieNotice() {
       <div className="cookie-notice-body">
         <span className="eyebrow">Privacy</span>
         <p>
-          No tracking cookies here. Analytics is cookieless and aggregate, and the only thing
-          stored in your browser is your theme choice.{" "}
+          Your privacy is safe here. Analytics is cookieless and aggregate, and the only thing
+          kept in your browser is your theme choice.{" "}
           <Link className="lnk" href="/privacy">
             Read the privacy policy
           </Link>

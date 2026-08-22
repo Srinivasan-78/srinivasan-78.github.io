@@ -7,7 +7,7 @@ import { OFF_TOPIC_REFUSAL } from "@/lib/assistant";
 type Turn = { role: "user" | "assistant"; content: string };
 
 const GREETING =
-  "Ask me anything about Srinivasan's work — his experience, projects, certifications, or how to get in touch.";
+  "Happy to answer anything about Srinivasan's work: his experience, projects, certifications, or the best way to reach him.";
 
 /* One assistant reply is streamed at a time, so a single ref is enough to
    cancel an in-flight request when the panel closes or the widget unmounts. */
@@ -96,7 +96,7 @@ export default function ChatWidget() {
         if (!res.ok || !res.body) {
           const detail = await res.json().catch(() => null);
           throw new Error(
-            (detail as { error?: string } | null)?.error ?? "The assistant is unavailable right now.",
+            (detail as { error?: string } | null)?.error ?? "The assistant is taking a short break. Please try again in a moment.",
           );
         }
 
@@ -146,7 +146,7 @@ export default function ChatWidget() {
         if (buffer.trim()) handleFrame(buffer);
       } catch (err) {
         const aborted = (err as Error).name === "AbortError";
-        if (!aborted) setError(err instanceof Error ? err.message : "Something went wrong.");
+        if (!aborted) setError(err instanceof Error ? err.message : "That one didn't come through. Please try again.");
         /* Drops the empty placeholder so the log does not keep a blank
            assistant bubble under the error — or, when the panel was closed
            before a single token arrived, no bubble at all. */
@@ -209,7 +209,7 @@ export default function ChatWidget() {
               </button>
             ) : null}
           </div>
-          <p>Answers come from this site and his résumé. It can be wrong — verify anything that matters.</p>
+          <p>Answers come from this site and his résumé. Do double-check anything important.</p>
         </header>
 
         <div className="chat-log" ref={logRef}>

@@ -9,23 +9,23 @@ import GlowCard from "./ui/GlowCard";
 const NOTES = [
   {
     n: "01",
-    head: "Gate it before it ships",
-    body: "Backup integrity verified in T-SQL, four-condition health checks on restart, validation that fails fast rather than half-deploying.",
+    head: "Prove it before it ships",
+    body: "Backup integrity is verified in T-SQL, and every restart clears four health conditions before the deploy carries on. Whatever reaches production has already earned its place there.",
   },
   {
     n: "02",
-    head: "Make the rollback boring",
-    body: "Every upgrade path has a rescue block and a tested restore. Recovery shouldn't be the part nobody has rehearsed.",
+    head: "Rehearse the rollback",
+    body: "Every upgrade path has a rescue block and a restore that someone has run end to end. Practising recovery in the quiet moments is what keeps it quick and calm on the day it counts.",
   },
   {
     n: "03",
-    head: "One inventory, every environment",
-    body: "Environment-agnostic Ansible instead of a three-place edit. Drift is a design flaw, not a fact of life.",
+    head: "One inventory for every environment",
+    body: "The Ansible is environment-agnostic, so a single change lands everywhere it belongs. Good design is what keeps every environment perfectly in step with the others.",
   },
   {
     n: "04",
-    head: "Instrument the deploy itself",
-    body: "Deployment telemetry, run summaries, and Teams alerting — so a failed release announces itself instead of waiting to be found.",
+    head: "Watch the deploy itself",
+    body: "Deployment telemetry, run summaries and Teams alerts. Every release reports its own status the moment it knows it, so the team always has the full picture in front of them.",
   },
 ];
 
@@ -35,7 +35,7 @@ export default function HowIWork() {
       <div className="wrap">
         <SectionHead
           label="How I work"
-          title="Built to survive the release that goes wrong."
+          title="Built so every release lands well"
         />
 
         <Reveal className="notes" stagger={0.09}>

@@ -31,7 +31,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
     <main id="content" tabIndex={-1}>
       <div className="wrap pd-top">
         <Link href="/projects" className="eyebrow lnk">
-          ← Back to the gallery
+          ← Back to projects
         </Link>
 
         <div className="pd-hero">
@@ -56,7 +56,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
         <div className="wrap">
           <SystemDiagram
             stages={p.architecture.map((a) => ({ label: a.label }))}
-            caption={`${p.title} — how the pieces fit together.`}
+            caption={`How ${p.title} fits together.`}
           />
         </div>
       </section>
@@ -85,7 +85,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
         </section>
 
         <section className="section pd-section">
-          <h2 className="eyebrow">What makes it worth reading</h2>
+          <h2 className="eyebrow">Highlights</h2>
           <ul className="pd-list">
             {p.highlights.map((h) => (
               <li key={h}>{h}</li>
@@ -127,7 +127,7 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
             <Link href="/contact" className="btn primary">
               Ask me about this project
             </Link>
-            <span className="micro">no public repository for this one</span>
+            <span className="micro">this one lives in a private repository</span>
           </Reveal>
         )}
       </div>

@@ -7,13 +7,13 @@ import { PROJECTS } from "@/lib/projects";
 // results, and indexing it invites people to land here without submitting.
 export const metadata = pageMetadata({
   title: "Message sent",
-  description: "Your message reached my inbox. I reply to genuine enquiries within two business days.",
+  description: "Your message reached my inbox. I answer genuine enquiries within a couple of working days.",
   path: "/thank-you",
   noindex: true,
 });
 
 const NEXT = [
-  { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds across CI/CD, disaster recovery, and platform engineering.`, go: "View projects" },
+  { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds across CI/CD, disaster recovery and platform engineering.`, go: "View projects" },
   { href: "/certifications", title: "Certifications", body: "22 credentials, each with a verification link.", go: "View certifications" },
   { href: "/resume.pdf", title: "Résumé", body: "The one-page version, as a PDF.", go: "Download résumé", download: true },
 ];
@@ -27,8 +27,9 @@ export default function ThankYou() {
         Message delivered
       </h1>
       <p>
-        Thanks for getting in touch. Your message is in my inbox and I read every one. Expect a
-        reply within two business days — if it is urgent, email me directly at{" "}
+        Thanks for writing. It has landed safely in my inbox and I read every one. You should
+        hear back within a couple of working days, and for anything urgent you can reach me
+        directly at{" "}
         <a className="lnk" href="mailto:srinivasan.shyam2000@gmail.com">
           srinivasan.shyam2000@gmail.com
         </a>

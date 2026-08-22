@@ -17,7 +17,7 @@ const stroke = { fill: "none", strokeLinecap: "round", strokeLinejoin: "round" }
 const TILES: Tile[] = [
   {
     title: "Pipelines that gate themselves",
-    body: "Provisioning, promotion, DR failover and failback — self-service workflows instead of runbooks nobody wants to open at 2am.",
+    body: "Provisioning, promotion, DR failover and failback, all as workflows the team runs for themselves. One button, any hour, anyone on the rota.",
     art: (
       <svg viewBox="0 0 300 160" role="img" aria-label="A pipeline branching through validation gates">
         <path d="M20 80 H90" stroke="currentColor" strokeWidth="3" {...stroke} />
@@ -31,8 +31,8 @@ const TILES: Tile[] = [
     ),
   },
   {
-    title: "Disaster recovery, rehearsed",
-    body: "Region-to-region migration with zero data loss, HA mirroring, and a restore path that's been run — not just written down.",
+    title: "Disaster recovery you have rehearsed",
+    body: "Region-to-region migration with every byte intact, HA mirroring, and a restore path proven start to finish long before anyone needs it.",
     art: (
       <svg viewBox="0 0 300 200" role="img" aria-label="Two regions mirroring data with a failover arc">
         <rect x="24" y="70" width="80" height="60" rx="8" stroke="currentColor" strokeWidth="3" fill="none" />
@@ -48,8 +48,8 @@ const TILES: Tile[] = [
     ),
   },
   {
-    title: "Config without drift",
-    body: "Centralized vars and vault, environment-agnostic inventories, Jinja2 templating — one source of truth across fifteen-plus services.",
+    title: "Config that stays put",
+    body: "Centralised vars and vault, environment-agnostic inventories, Jinja2 templating. Fifteen-plus services all reading from one source and staying neatly in step.",
     art: (
       <svg viewBox="0 0 300 150" role="img" aria-label="Configuration layers stacking into one source">
         {[0, 1, 2].map((i) => (
@@ -72,8 +72,8 @@ const TILES: Tile[] = [
     ),
   },
   {
-    title: "Observability wired into the deploy",
-    body: "Datadog dashboards, HTTP/TCP/JMX synthetics, and run summaries pushed to Teams — failures announce themselves.",
+    title: "Monitoring built into the deploy",
+    body: "Datadog dashboards, HTTP/TCP/JMX synthetics, and run summaries pushed into Teams. Every release reports on itself in real time.",
     art: (
       <svg viewBox="0 0 300 150" role="img" aria-label="A monitoring waveform with an alert spike">
         <path
@@ -90,8 +90,8 @@ const TILES: Tile[] = [
     ),
   },
   {
-    title: "Secrets held properly",
-    body: "BYOK through Key Vault and App Configuration, RBAC gates in CI, commit signing — least privilege as a default, not a cleanup task.",
+    title: "Secrets handled properly",
+    body: "BYOK through Key Vault and App Configuration, RBAC gates in CI, signed commits. Least privilege from day one, which keeps things simple and safe for the whole life of the service.",
     art: (
       <svg viewBox="0 0 300 170" role="img" aria-label="A key passing through a permission gate into a vault">
         <rect x="150" y="46" width="110" height="80" rx="10" stroke="currentColor" strokeWidth="3" fill="none" />
@@ -104,8 +104,8 @@ const TILES: Tile[] = [
     ),
   },
   {
-    title: "Migration at scale",
-    body: "Parallelized transfer with delta detection and AzCopy, cutting the window where a cutover can hurt anyone.",
+    title: "Migrations that land cleanly",
+    body: "Parallel transfer with delta detection and AzCopy, so the cutover window stays short and the day feels like any other day.",
     art: (
       <svg viewBox="0 0 300 130" role="img" aria-label="Parallel transfer lanes moving between two stores">
         {[34, 65, 96].map((y, i) => (
@@ -126,7 +126,7 @@ export default function Capabilities() {
       <div className="wrap">
         <SectionHead
           label="What I actually build"
-          title="Six things I get called in for."
+          title="Six things people bring me in for"
         />
 
         <Reveal className="masonry" pop>

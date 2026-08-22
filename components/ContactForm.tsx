@@ -15,16 +15,16 @@ type Status = "idle" | "sending" | "error";
 function validate(values: Record<Field, string>): Errors {
   const errors: Errors = {};
 
-  if (!values.name.trim()) errors.name = "Enter your name.";
-  else if (values.name.trim().length < 2) errors.name = "That looks too short to be a name.";
+  if (!values.name.trim()) errors.name = "Your name, please.";
+  else if (values.name.trim().length < 2) errors.name = "A little more of your name, please.";
 
   const email = values.email.trim();
-  if (!email) errors.email = "Enter your email so I can reply.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = "That doesn't look like a valid email address.";
+  if (!email) errors.email = "Your email, so I can reply.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = "Please check that email address.";
 
   const message = values.message.trim();
-  if (!message) errors.message = "Enter a message.";
-  else if (message.length < 10) errors.message = "A little more detail helps — 10 characters minimum.";
+  if (!message) errors.message = "A message, please.";
+  else if (message.length < 10) errors.message = "A bit more detail would help. Ten characters or more.";
 
   return errors;
 }
@@ -90,12 +90,12 @@ export default function ContactForm() {
       setStatus("error");
       setFormError(
         detail ||
-          "The form service rejected that submission. Please try again, or email me directly at srinivasan.shyam2000@gmail.com."
+          "That one needs another go. Try again, or email me directly at srinivasan.shyam2000@gmail.com."
       );
     } catch {
       setStatus("error");
       setFormError(
-        "Couldn't reach the form service — check your connection and try again, or email me directly at srinivasan.shyam2000@gmail.com."
+        "The form service is out of reach for a moment. Check your connection and try again, or email me directly at srinivasan.shyam2000@gmail.com."
       );
     }
   }
@@ -168,7 +168,7 @@ export default function ContactForm() {
 
       {formError && (
         <div className="cf-error-banner" role="alert">
-          <span className="eyebrow">submit — failed</span>
+          <span className="eyebrow">submit — try again</span>
           <p>{formError}</p>
         </div>
       )}

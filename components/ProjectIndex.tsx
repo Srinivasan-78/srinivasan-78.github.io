@@ -120,11 +120,11 @@ export default function ProjectIndex() {
       <header className="pi-head">
         <span className="eyebrow">Projects</span>
         <h1 className="display display-lg">
-          Things I build outside work
+          Things I build for the love of it
         </h1>
         <p>
-          {PROJECTS.length} builds — live demos, platform experiments, and tooling I actually
-          use. Hover a row for its schematic, open it for the full write-up.
+          {PROJECTS.length} builds: live demos, platform experiments, and tooling I happily use
+          myself. Hover a row to see its schematic, click through for the full write-up.
         </p>
       </header>
 

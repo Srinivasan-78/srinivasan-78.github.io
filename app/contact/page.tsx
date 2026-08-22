@@ -6,7 +6,7 @@ import LanyardScene from "@/components/ui/LanyardScene";
 
 export const metadata = pageMetadata({
   title: "Contact",
-  description: "Get in touch about DevOps, cloud infrastructure, and automation roles.",
+  description: "Get in touch about DevOps, cloud infrastructure and automation roles.",
   path: "/contact",
 });
 
@@ -24,8 +24,8 @@ export default function Contact() {
           <span className="eyebrow">Contact</span>
           <SplitReveal as="h1" text="Get in touch" className="display display-lg" />
           <p>
-            Open to conversations about DevOps, cloud infrastructure, and automation roles. Send a
-            message below, or reach out directly on any channel.
+            I&rsquo;d love to hear about DevOps, cloud infrastructure and automation roles. Use
+            the form below, or pick whichever channel suits you best.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export default function Contact() {
           <GlowCard>
             <a className="card" href="https://www.linkedin.com/in/srini-solution-architect/" target="_blank" rel="noopener">
               <h2 className="card-title">LinkedIn ↗</h2>
-              <p className="card-body">Full profile, credentials, and recommendations</p>
+              <p className="card-body">Full profile, credentials and recommendations</p>
             </a>
           </GlowCard>
           <GlowCard>
