@@ -43,7 +43,12 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  /* Upstream sets `none` here so a finger dragging the card tilts it
+     instead of scrolling. Mobile tilt is off (see HeroShowcase), and the
+     card is 60-70svh tall, so `none` meant a swipe that started anywhere
+     on the hero card scrolled nothing at all — the page felt stuck.
+     `pan-y` hands vertical scroll back to the browser. */
+  touch-action: pan-y pinch-zoom;
 }
 
 .pc-behind {

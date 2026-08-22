@@ -195,10 +195,17 @@ const ProfileCardComponent = ({
     return { x: evt.clientX - rect.left, y: evt.clientY - rect.top };
   };
 
+  /* A finger is scrolling, not aiming. Touch pointers fire pointerenter
+     and pointermove exactly like a mouse, so without this the card tilts
+     and lights up under every swipe that passes over it. Mobile tilt,
+     when it is on, comes from deviceorientation below — never from a
+     pointer — so touch has no business driving the tilt engine. */
+  const isTiltPointer = (event: PointerEvent) => event.pointerType !== "touch";
+
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
       const shell = shellRef.current;
-      if (!shell || !tiltEngine) return;
+      if (!shell || !tiltEngine || !isTiltPointer(event)) return;
       const { x, y } = getOffsets(event, shell);
       tiltEngine.setTarget(x, y);
     },
@@ -208,7 +215,7 @@ const ProfileCardComponent = ({
   const handlePointerEnter = useCallback(
     (event: PointerEvent) => {
       const shell = shellRef.current;
-      if (!shell || !tiltEngine) return;
+      if (!shell || !tiltEngine || !isTiltPointer(event)) return;
 
       shell.classList.add("active");
       shell.classList.add("entering");
