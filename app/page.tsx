@@ -13,6 +13,7 @@ import GlowCard from "@/components/ui/GlowCard";
 /* Counted, not typed: this line said "11 builds" while lib/projects.ts held 12. */
 import { PROJECTS } from "@/lib/projects";
 import { CERTS } from "@/lib/certs";
+import { NumberWord } from "@/lib/words";
 
 const EXPLORE = [
   { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds and counting: live tools, a Terraform multi-cloud platform, and plenty of automation.`, go: "View projects" },
@@ -188,8 +189,8 @@ export default function Page() {
         <div className="wrap">
           <SectionHead label="Selected work" title="Things I shipped and stand behind" />
           <p className="sec-lede">
-            Six of them, across CI/CD, disaster recovery, large migrations and embedded protocol
-            work. Each card carries the stack it was built on.
+            {NumberWord(WORK_POSTS.length)} of them, across CI/CD, disaster recovery, large
+            migrations and embedded protocol work. Each card carries the stack it was built on.
           </p>
           <WorkGrid posts={WORK_POSTS} />
         </div>

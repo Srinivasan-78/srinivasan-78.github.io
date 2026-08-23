@@ -114,8 +114,8 @@ export default function CertIndex() {
                 target="_blank"
                 rel="noopener"
                 /* The card's own heading is not in the link, so a screen
-                   reader reading links out of context would hear
-                   twenty-two identical "Show credential"s. */
+                   reader reading links out of context would hear one
+                   identical "Show credential" per card. */
                 aria-label={`Show credential for ${c.name}`}
               >
                 Show credential ↗

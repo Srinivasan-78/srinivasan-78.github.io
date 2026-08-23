@@ -88,7 +88,7 @@ transfers and cutting migration downtime.
 ## Technical skills
 
 - CI/CD and IaC: GitHub Actions, Azure DevOps (incl. REST API), GitLab CI,
-  Ansible, Jinja2, Bicep, ARM templates, Terraform, Docker.
+  Ansible, Chef, Puppet, Bolt, Jinja2, Bicep, ARM templates, Terraform, Docker.
 - Cloud: Azure — ACR, AKS, Service Bus, App Configuration, Key Vault (BYOK),
   Storage, Load Balancer, AzCopy, CLI. AWS — EC2, security groups.
 - Reliability and SRE: DR failover/failback, SQL Server mirroring (HA), backup

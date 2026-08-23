@@ -102,8 +102,9 @@ const jsonLd = {
   worksFor: { "@type": "Organization", name: "Thomson Reuters" },
   alumniOf: { "@type": "CollegeOrUniversity", name: "Madras Institute of Technology, Anna University" },
   knowsAbout: [
-    "DevOps", "CI/CD", "Amazon Web Services", "Microsoft Azure", "Ansible", "Terraform",
-    "Docker", "GitHub Actions", "Kubernetes", "Datadog", "Infrastructure as Code", "Disaster Recovery",
+    "DevOps", "CI/CD", "Amazon Web Services", "Microsoft Azure", "Ansible", "Chef", "Puppet",
+    "Terraform", "Docker", "GitHub Actions", "Kubernetes", "Datadog", "Infrastructure as Code",
+    "Disaster Recovery",
   ],
   sameAs: ["https://www.linkedin.com/in/srini-solution-architect/", "https://github.com/Srinivasan-78"],
 };

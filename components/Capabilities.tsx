@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import GlowCard from "./ui/GlowCard";
+import { NumberWord } from "@/lib/words";
 
 /* CSS multi-column masonry of capability tiles. Artwork is original
    SVG rather than stock photography: no licensing questions, no
@@ -126,7 +127,7 @@ export default function Capabilities() {
       <div className="wrap">
         <SectionHead
           label="What I actually build"
-          title="Six things people bring me in for"
+          title={`${NumberWord(TILES.length)} things people bring me in for`}
         />
 
         <Reveal className="masonry" pop>
