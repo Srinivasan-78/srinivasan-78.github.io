@@ -24,6 +24,12 @@ export type Project = {
   overview: string;
   architecture: { label: string; body: string }[];
   highlights: string[];
+  /* The live, running build, when there is one. Every deployed project is
+     served from the same domain as this site under its repository name
+     (srinidevops.com/<Repo>/), so the index can offer a one-click route to
+     the real thing instead of making a visitor read the write-up first to
+     find it. Only URLs verified to answer 200 belong here. */
+  demo?: string;
   links: ProjectLink[];
 };
 
@@ -63,6 +69,7 @@ export const PROJECTS: Project[] = [
       "Chaos testing is a button in the UI",
       "A full deploy history, with every run kept",
     ],
+    demo: "https://www.srinidevops.com/Self-Healing-Deployment/",
     links: [
       { url: "https://www.srinidevops.com/Self-Healing-Deployment/", label: "Open demo ↗" },
       { url: "https://github.com/Srinivasan-78/Self-Healing-Deployment", label: "Source ↗" },
@@ -99,6 +106,7 @@ export const PROJECTS: Project[] = [
       "Works offline after the first load",
       "Fully local, so you keep complete control of your files",
     ],
+    demo: "https://www.srinidevops.com/pdf/",
     links: [{ url: "https://www.srinidevops.com/pdf/", label: "Open tool ↗" }],
   },
   {
@@ -132,6 +140,7 @@ export const PROJECTS: Project[] = [
       "Review submission flow without a backend",
       "Runs itself now that it is live",
     ],
+    demo: "https://vfactorsolutions.com/",
     links: [{ url: "https://vfactorsolutions.com/", label: "Visit site ↗" }],
   },
   {
@@ -215,6 +224,7 @@ export const PROJECTS: Project[] = [
       "Routing lives in config.yaml, so swapping providers is not a code change",
       "Five free-tier providers ready to pick up the work",
     ],
+    demo: "https://www.srinidevops.com/Multi_AI/",
     links: [{ url: "https://github.com/Srinivasan-78/Multi_AI", label: "View repo ↗" }],
   },
   {
@@ -343,11 +353,19 @@ export const PROJECTS: Project[] = [
     category: "Actions",
     status: "Active",
     teaser:
-      "A GitHub Action that turns PDFs, Office files and scans into Markdown on every push, OCR included.",
+      "Turns PDFs, Office files and scans into Markdown \u2014 as a GitHub Action on every push, or in your browser with nothing uploaded.",
     tags: ["Actions", "OCR", "Markdown"],
-    stack: ["GitHub Actions", "Python", "Tesseract OCR", "LibreOffice", "Markdown"],
+    stack: [
+      "GitHub Actions",
+      "Python",
+      "Tesseract OCR",
+      "LibreOffice",
+      "tesseract.js",
+      "pdf.js",
+      "Markdown",
+    ],
     overview:
-      "AI tools and code search cannot read a .pdf or an .xlsx \u2014 they read text. This action does the reading on every push and leaves behind Markdown anyone, or anything, can open. Point it at a folder of documents, get back one .md per file plus an optional single merged file for pasting into a model.",
+      "AI tools and code search cannot read a .pdf or an .xlsx \u2014 they read text. This does the reading for you and leaves behind Markdown anyone, or anything, can open. Point the Action at a folder of documents and it converts them on every push; or open the browser version, drop files straight in and get the same Markdown back without committing anything anywhere.",
     architecture: [
       {
         label: "Extraction",
@@ -356,6 +374,14 @@ export const PROJECTS: Project[] = [
       {
         label: "OCR fallback",
         body: "A PDF page with almost no extractable text is treated as a scan and read with Tesseract. Auto by default, so OCR only costs time on the pages that actually need it.",
+      },
+      {
+        label: "Browser version",
+        body: "The same conversion runs entirely client-side on GitHub Pages. Files are read with the File API and never leave the machine \u2014 there is no upload endpoint, because a static host has nothing to upload to.",
+      },
+      {
+        label: "Batch in the browser",
+        body: "Drop a folder or a .zip and the whole lot converts at once, in a worker pool sized from the machine\u2019s core count with a matching pool of OCR workers. Results are held as Blobs so a big batch never fills the JS heap, and the folder structure survives into the downloaded zip.",
       },
       {
         label: "Token trimming",
@@ -372,10 +398,15 @@ export const PROJECTS: Project[] = [
     ],
     highlights: [
       "Scanned pages handled by OCR without being asked",
-      "Outputs and a run-summary table you can wire into later steps",
+      "A browser version that converts locally, with nothing uploaded",
+      "Whole folders and zips at once, on as many cores as the machine has",
       "One merged file when you want to paste a whole doc set into a model",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/doc2md-action", label: "View repo \u2197" }],
+    demo: "https://www.srinidevops.com/doc2md-action/",
+    links: [
+      { url: "https://www.srinidevops.com/doc2md-action/", label: "Convert a file \u2197" },
+      { url: "https://github.com/Srinivasan-78/doc2md-action", label: "View repo \u2197" },
+    ],
   },
   {
     slug: "wix-installer-template",

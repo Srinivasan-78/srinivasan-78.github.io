@@ -1109,6 +1109,27 @@ a.card:hover {
   background: currentColor;
 }
 
+/* The write-up link, stretched over the whole row so the row still reads
+   as one target, and the demo pill lifted above it. Without the z-index
+   the overlay would swallow the pill's clicks. */
+.pi-open { position: absolute; inset: 0; z-index: 2; }
+.pi-row:has(.pi-open:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.pi-demo {
+  position: relative; z-index: 3;
+  align-self: flex-start;
+  font-family: var(--font-mono); font-size: 0.62rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+  padding: 0.2rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.pi-demo:hover, .pi-demo:focus-visible {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: var(--accent);
+}
+
 .pi-teaser {
   color: var(--ink-70); font-size: 0.84rem; line-height: 1.5;
   max-width: 56ch;
@@ -2334,6 +2355,13 @@ main.wrap {
      desktop, not for the only label a row carries on a phone. */
   .pi-status,
   .pi-stack em { font-size: 0.7rem; }
+  /* The demo pill is a real tap target, so it gets the 44px minimum the
+     cert links already take. */
+  .pi-demo {
+    font-size: 0.7rem;
+    display: inline-flex; align-items: center;
+    min-height: 44px; padding: 0 0.7rem;
+  }
   .pi-rail-inner { font-size: 0.72rem; }
   /* Chips are also the widest thing in a stacked row; give them a
      little more room now that they are bigger. */

@@ -124,7 +124,8 @@ export default function ProjectIndex() {
         </h1>
         <p>
           {PROJECTS.length} builds: live demos, platform experiments, and tooling I happily use
-          myself. Hover a row to see its schematic, click through for the full write-up.
+          myself. Hover a row to see its schematic, click through for the full write-up, or
+          open a live build straight from its row.
         </p>
       </header>
 
@@ -148,11 +149,9 @@ export default function ProjectIndex() {
                 n += 1;
                 const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
                 return (
-                  <Link
+                  <div
                     key={p.slug}
-                    href={`/projects/${p.slug}`}
                     className="pi-row"
-                 
                     onMouseEnter={(e) => {
                       const a = e.currentTarget.querySelector(".pi-art");
                       if (a) drawRow(a, true);
@@ -162,6 +161,16 @@ export default function ProjectIndex() {
                       if (a) drawRow(a, false);
                     }}
                   >
+                    {/* The row used to be one big <Link>. A deployed project
+                        now offers a second destination — the running build —
+                        and an <a> cannot live inside an <a>, so the write-up
+                        link became an overlay stretched across the row and
+                        the demo link sits above it. Clicking anywhere still
+                        opens the write-up; only the demo pill differs. */}
+                    <Link href={`/projects/${p.slug}`} className="pi-open">
+                      <span className="sr-only">{p.title} — read the write-up</span>
+                    </Link>
+
                     <span className="pi-num">{String(n).padStart(2, "0")}</span>
 
                     <span className="pi-name">
@@ -172,6 +181,16 @@ export default function ProjectIndex() {
                         ) : null}
                         {p.status}
                       </span>
+                      {p.demo ? (
+                        <a
+                          href={p.demo}
+                          target="_blank"
+                          rel="noopener"
+                          className="pi-demo"
+                        >
+                          Open live build ↗
+                        </a>
+                      ) : null}
                     </span>
 
                     <span className="pi-teaser">{p.teaser}</span>
@@ -188,7 +207,7 @@ export default function ProjectIndex() {
                     </span>
 
                     <span className="pi-sweep" aria-hidden="true" />
-                  </Link>
+                  </div>
                 );
               })}
             </div>
@@ -197,7 +216,10 @@ export default function ProjectIndex() {
       ))}
 
       <footer className="pi-foot">
-        <span className="micro">(hover for schematic · click for the write-up)</span>
+        <span className="micro">
+          (hover for schematic · click for the write-up · &ldquo;open live build&rdquo; runs the real
+          thing)
+        </span>
         <span className="micro">(all public on github.com/Srinivasan-78)</span>
       </footer>
     </main>

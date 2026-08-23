@@ -27,6 +27,14 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
   const p = projectBySlug(params.slug);
   if (!p) notFound();
 
+  /* The running build leads, when there is one. Some projects already list
+     their demo among `links`; matching on URL keeps that from becoming two
+     buttons to the same place. */
+  const actions =
+    p.demo && !p.links.some((l) => l.url === p.demo)
+      ? [{ url: p.demo, label: "Open live build ↗" }, ...p.links]
+      : p.links;
+
   return (
     <main id="content" tabIndex={-1}>
       <div className="wrap pd-top">
@@ -108,9 +116,9 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
             with no way to act on it is a dead end. When there is nothing to
             link out to, the page says so and offers the one route that is
             always open. */}
-        {p.links.length > 0 ? (
+        {actions.length > 0 ? (
           <Reveal className="hero-actions">
-            {p.links.map((l, i) => (
+            {actions.map((l, i) => (
               <a
                 key={l.url}
                 href={l.url}
