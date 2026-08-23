@@ -43,31 +43,41 @@ export const PROJECTS: Project[] = [
     teaser:
       "Trigger a fault on purpose, then watch the pipeline spot it and heal itself.",
     tags: ["CI/CD", "Chaos", "Recovery"],
-    stack: ["CI/CD", "Chaos testing", "Auto-recovery", "Deployment logging"],
+    stack: ["Ansible", "Docker", "FastAPI", "GitHub Actions", "Python", "GitHub Pages"],
     overview:
-      "A deployment-history dashboard sitting on top of a self-healing pipeline. It records every deploy of a demo service, hands you a button that triggers a fault, then shows the service spotting it and restoring itself. Auto-recovery is easy to claim, so this one lets you watch it work.",
+      "A deployment pipeline that ships a new version of a web service, checks whether the new version actually works, and puts the old one back automatically when it does not. Two container slots sit behind one port: the outgoing version is stopped but kept, the new one takes the port, and a health gate decides which of them keeps it. Every attempt — success, rollback, or a build that never got that far — is written to a log that a small dashboard draws as a timeline. It generalises the rollback and validation automation I built for production microservices into an open demo you can run for yourself.",
     architecture: [
       {
-        label: "Deployment log",
-        body: "Every deploy gets recorded, so the dashboard gives you the whole timeline alongside the current state.",
+        label: "Two slots, one door",
+        body: "The outgoing version is stopped and renamed `previous` rather than deleted, and the new one starts as `active` on port 8080. A stopped container keeps its filesystem, so restoring it takes a second — which is exactly why nothing here runs with `--rm`.",
       },
       {
-        label: "Chaos trigger",
-        body: "A control in the UI triggers a fault on demand, so you can prove recovery whenever you like rather than waiting for a real one.",
+        label: "Health gate",
+        body: "validate.py requires all three of HTTP 200, a body reporting healthy, and a reply inside the latency budget. A 200 from a service that is broken underneath, or so slow it is useless, does not count as healthy.",
       },
       {
-        label: "Detection and recovery",
-        body: "The pipeline spots the unhealthy state and redeploys to a healthy one by itself. The fix follows the fault automatically, every time.",
+        label: "Retry with backoff",
+        body: "A service that has just started often needs a moment, so a failed check retries on a growing delay — 2s, 3s, 4.5s, capped at 10s — before the gate gives up and hands over to rollback.",
       },
       {
-        label: "Static hosting",
-        body: "The dashboard is served from GitHub Pages, which keeps the demo free to run and always available.",
+        label: "Rollback role",
+        body: "It deletes the broken release, renames `previous` back to `active`, starts it and waits for the port. First it checks whether the deploy actually touched anything: a build that failed before the swap must never turn into an outage.",
+      },
+      {
+        label: "Chaos on demand",
+        body: "Running the workflow with force_fail set makes the deployed container return HTTP 500 from its health endpoint on purpose. Recovery gets proved whenever you like, instead of waiting for a real outage to prove it for you.",
+      },
+      {
+        label: "Log and dashboard",
+        body: "Every ending appends one atomic entry — success, rollback or failed — to deployments.json. A dependency-free HTML page draws it newest-first as a colour-coded timeline and publishes to GitHub Pages after each run.",
       },
     ],
     highlights: [
-      "Auto-recovery you can watch happen for yourself",
-      "Chaos testing is a button in the UI",
-      "A full deploy history, with every run kept",
+      "A rollback deliberately fails the run: recovering from a broken release is not a successful release",
+      "Health is three checks, not a curl — status code, body and response time",
+      "Chaos testing is one workflow input away",
+      "A failed build never becomes an outage, because nothing is torn down before the swap",
+      "Every tunable lives in one group_vars file, with secrets kept separate",
     ],
     demo: "https://www.srinidevops.com/Self-Healing-Deployment/",
     links: [
@@ -84,27 +94,41 @@ export const PROJECTS: Project[] = [
     teaser:
       "Drag-and-drop PDF processing that stays entirely in your browser. Your files stay yours.",
     tags: ["Client-side", "Zero upload", "Static"],
-    stack: ["Client-side", "Zero upload", "Static hosting"],
+    stack: ["pdf-lib", "pdf.js", "JSZip", "Vanilla JS", "PyMuPDF", "FastAPI"],
     overview:
-      "A drag-and-drop PDF utility that runs entirely in the browser. Drop a file or several, process, download. Everything stays on your own machine, which is what lets it keep working offline and makes it safe for sensitive documents.",
+      "Nine PDF tools — merge, split, remove, extract, reorder, rotate, page numbers, add text and edit existing text — on one static page with no build step and no framework. Eight of the nine run entirely in your browser tab: the file is opened, changed and saved without ever leaving your machine, which is what makes it work offline and safe for documents you would never upload anywhere. The ninth, Edit Text, is honest about needing a small helper you run yourself, because rewriting a word in a PDF's own embedded font is something a browser genuinely cannot do.",
     architecture: [
       {
-        label: "In-browser processing",
-        body: "All the file handling happens right in the page, so your files stay on your device from start to finish.",
+        label: "One page, four screens",
+        body: "index.html holds four sections and shows one at a time, so changing screen is a CSS class rather than a page load. Three files — markup, styling and about 490 lines of JavaScript — are the whole site.",
       },
       {
-        label: "Drag-and-drop intake",
-        body: "You drop files onto the page, one or many at a time, and they come straight back as a download.",
+        label: "One state object",
+        body: "The chosen tool, the files, the page order, the removed and kept sets, rotations and edits all live in a single state object. Start over throws it away wholesale, so two jobs can never bleed into each other.",
       },
       {
-        label: "Static deployment",
-        body: "Served as a static site, which is what makes offline use work. Once the page has loaded, it keeps going happily on its own.",
+        label: "Page order as numbers",
+        body: "Reorder, remove and extract never move real pages while you work; they rearrange a list of indices, and the PDF is built once at the end by copying pages in that order. Three tools, one function, a different list each time.",
+      },
+      {
+        label: "Thumbnails with a personality",
+        body: "pdf.js paints each page onto a canvas at 40%, and the chosen tool attaches its own behaviour to that same grid: tap to delete, tap to keep, a rotate button, a drag handle, or a click that opens the page editor.",
+      },
+      {
+        label: "Local output",
+        body: "The finished bytes become a Blob and an invisible download link. Nothing was ever on a server — the file was invented in memory a second earlier.",
+      },
+      {
+        label: "Edit Text, the exception",
+        body: "A small FastAPI and PyMuPDF helper genuinely removes the old glyphs rather than covering them with a white box, pulls the original embedded font out by its xref, and redraws the new text in it. With no backend configured, that one tool says it is unavailable and the other eight carry on.",
       },
     ],
     highlights: [
-      "Sensitive documents stay on your own machine",
-      "Works offline after the first load",
-      "Fully local, so you keep complete control of your files",
+      "Eight of the nine tools work with the network unplugged",
+      "No build step, no npm install, no framework — open the file and it runs",
+      "Redaction deletes the glyphs, because a white box leaves the words copy-pasteable underneath",
+      "Click position is flipped and unscaled from screen pixels to PDF points",
+      "The one tool that needs a server says so, rather than quietly uploading your file",
     ],
     demo: "https://www.srinidevops.com/pdf/",
     links: [{ url: "https://www.srinidevops.com/pdf/", label: "Open tool ↗" }],
@@ -118,27 +142,41 @@ export const PROJECTS: Project[] = [
     teaser:
       "A full recruitment-consultancy site on its own domain: services, reviews, contact.",
     tags: ["Static site", "DNS", "HTTPS"],
-    stack: ["Static site", "Custom domain", "DNS + HTTPS", "Client build"],
+    stack: ["Static site", "Vanilla JS", "GitHub Pages", "Formspree", "GoatCounter", "DNS + HTTPS"],
     overview:
-      "A complete marketing site for a recruitment, RPO and lead-generation consultancy. Services, a career timeline, client reviews with a submission flow, contact routing, all on the client's own domain. I built and deployed the whole thing, DNS and HTTPS included, and it has run itself ever since.",
+      "A complete marketing site for a recruitment, RPO and lead-generation consultancy in Chennai: five static pages, no CMS, no build step. The front page asks visitors to say which of three people they are — hiring for a team, looking for a role, or buying a lead list — and sends each to the section that answers them. I delivered the whole thing: build, custom domain, DNS and HTTPS, forms, analytics consent and the legal pages. It has run itself ever since.",
     architecture: [
       {
-        label: "Content sections",
-        body: "Services, a career timeline, and client reviews with a submission flow, plus routing for enquiries that come in.",
+        label: "Five pages, two shared files",
+        body: "Home, privacy, terms, thank-you and 404 all point at one stylesheet and one script, so fixing the menu or changing a colour once fixes it everywhere. No page carries its own copy of anything.",
       },
       {
-        label: "Domain and certificates",
-        body: "Runs on its own custom domain, with DNS and HTTPS set up as part of the delivery rather than handed back to the client to sort out.",
+        label: "Three audiences, one hero",
+        body: "The three 'I am here to' buttons scroll a visitor to the section built for their case and note which type they were, so one page serves three intents without three landing pages.",
       },
       {
-        label: "No CMS",
-        body: "Static on purpose, which keeps it fast, secure by default, and effectively free to host.",
+        label: "Forms without a backend",
+        body: "The review and candidate forms post to Formspree, with a hidden honeypot field that quietly discards bot submissions. They still work with JavaScript off: plain HTML validation, and a hidden field naming the thank-you page.",
+      },
+      {
+        label: "Consent before counting",
+        body: "Nothing is requested from the analytics provider until the banner is answered — not the script, not a pixel. The answer lives in localStorage on the visitor's own device, and the privacy page has a button that clears it.",
+      },
+      {
+        label: "Theme before first paint",
+        body: "A tiny inline script picks light or dark from the stored choice, or the system preference, before a single pixel is drawn. A dark-mode visitor never gets the flash of white.",
+      },
+      {
+        label: "Delivery",
+        body: "GitHub Pages publishes the docs folder on every push to main, with a CNAME file holding the custom domain. The founder photo ships as WebP and JPEG at two widths, and the multi-megabyte original never leaves the repository.",
       },
     ],
     highlights: [
       "Delivered end to end: build, domain, DNS, TLS",
-      "Review submission flow without a backend",
-      "Runs itself now that it is live",
+      "Both forms keep working with JavaScript disabled",
+      "Reduce-motion, a skip link and a keyboard-closable menu, handled rather than bolted on",
+      "Analytics stays entirely unloaded unless the visitor says yes",
+      "Push to main, live in about a minute — there is no build server anywhere",
     ],
     demo: "https://vfactorsolutions.com/",
     links: [{ url: "https://vfactorsolutions.com/", label: "Visit site ↗" }],
@@ -152,36 +190,41 @@ export const PROJECTS: Project[] = [
     teaser:
       "One dashboard provisions free-tier compute across four clouds with Terraform, and an hourly sweep keeps every account tidy.",
     tags: ["Terraform", "FastAPI", "Multi-tenant"],
-    stack: ["Terraform", "FastAPI", "Celery", "Next.js", "Postgres", "Docker Compose", "Multi-tenant"],
+    stack: ["Terraform", "FastAPI", "Celery", "Redis", "Next.js", "Postgres", "Docker Compose"],
     overview:
-      "A single dashboard that provisions compute across AWS, GCP, Azure and Oracle Cloud with Terraform, strictly inside each provider's free tier, with one status view and a cost comparison across all four. Provisioning is the straightforward part. The interesting work is guaranteeing every user stays comfortably inside the free tier.",
+      "One dashboard that provisions real compute on AWS, GCP, Azure or Oracle Cloud with Terraform, strictly inside each provider's free tier, then lists it all in one place and tears it down automatically after 24 hours. It owns no hardware: you supply your own cloud credentials and it acts on your behalf, more valet than rental company. Provisioning is the straightforward part — the interesting work is making a surprise bill structurally impossible.",
     architecture: [
       {
         label: "Request path",
-        body: "Next.js frontend → FastAPI → Celery → Terraform. Provisioning goes on a queue rather than running inline, so every request stays fast even when a cloud API takes its time.",
+        body: "Next.js to FastAPI to Redis to a Celery worker to Terraform. Building an instance takes one to three minutes, so the API saves the row, queues the job and answers pending in about 50ms rather than holding the browser open.",
       },
       {
-        label: "Free-tier enforcement",
-        body: "Every request is checked server-side against a hardcoded free-tier allowlist before Terraform runs, then checked again as Terraform variable validation. Two independent gates, so the free-tier promise holds either way.",
+        label: "The browser never picks the machine",
+        body: "A request carries only a provider and a resource type. Instance size, region and image are looked up server-side and written into Terraform, so there is no field in which to ask for a $5,000 GPU box, however the request is forged.",
+      },
+      {
+        label: "Four independent locks",
+        body: "The allowlist, the server-side locked spec, Terraform variable validation inside the module itself, and a cap of one resource per provider with a 24-hour timer. All four have to be picked, not one.",
       },
       {
         label: "Tenant isolation",
-        body: "Each tenant gets its own Terraform workspace, so state stays cleanly separate and every user's resources remain entirely their own.",
+        body: "Each user and provider gets its own Terraform workspace, with the module files symlinked rather than copied — one blueprint, many private state files — and every database query scoped by user, so another tenant's resource simply 404s.",
       },
       {
-        label: "Auto-destroy sweep",
-        body: "An hourly job clears anything past its 24-hour window, so accounts stay tidy even when a resource is forgotten.",
+        label: "Hourly sweep",
+        body: "Celery beat fires on the hour, queues a destroy for anything past its expiry and the worker runs terraform destroy. Resources live 24 to 25 hours, comfortably inside every provider's monthly allowance.",
       },
       {
-        label: "Credential storage",
-        body: "Postgres holds users, resources and credentials, with cloud credentials Fernet-encrypted at rest.",
+        label: "Credentials",
+        body: "Cloud keys are Fernet-encrypted before they reach Postgres and decrypted only by the worker, only at provision or destroy time. Listing credentials returns providers and dates, never a payload; passwords are bcrypt, sessions are JWT.",
       },
     ],
     highlights: [
-      "Free-tier allowlist enforced twice, in two different layers",
-      "Every resource is tidied up within 24 hours",
-      "Per-tenant Terraform state isolation",
-      "Cloud credentials encrypted at rest",
+      "Free-tier enforcement in four layers, two of them below the API",
+      "Every resource is destroyed within 25 hours, forgotten or not",
+      "Per-tenant Terraform state, with shared modules by symlink",
+      "Cloud credentials encrypted at rest and never handed back out",
+      "Honest about its edges: Azure and Oracle modules are still stubs, and state locking is local",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Multicloud", label: "View repo ↗" }],
   },
@@ -194,35 +237,41 @@ export const PROJECTS: Project[] = [
     teaser:
       "Claude does the planning, free-tier APIs do the legwork, and one request gets spread across five providers.",
     tags: ["Python", "LLM routing", "Failover"],
-    stack: ["Python", "Claude API", "Groq", "Gemini", "OpenRouter", "Task orchestration"],
+    stack: ["Python", "Claude CLI", "Groq", "Gemini", "Mistral", "OpenRouter", "Cloudflare Workers"],
     overview:
-      "Claude leads. It splits a task into subtasks and writes the final answer, while free-tier APIs (Groq, Gemini, OpenRouter, Mistral, Cerebras) run those subtasks in parallel underneath. The idea is to get far more out of a token budget by letting the free models take on the bulk work.",
+      "One strong model plans, a crowd of free ones does the legwork. Claude splits a task into subtasks and writes the final answer, while Groq, Gemini, Mistral, Cerebras and OpenRouter run those subtasks in parallel underneath. There are three faces on the same logic — a command line, a terminal app that shows the plan executing live, and a hosted web page. Run locally, Claude is called through the CLI you are already logged into, so the planning rides your existing subscription instead of billing per token.",
     architecture: [
       {
-        label: "CLI entrypoint",
-        body: "You type a task at the command line. Everything downstream runs off that one input.",
-      },
-      {
         label: "Planner",
-        body: "Splits the task into subtasks and writes the synthesis prompts that will put the results back together later.",
+        body: "Claude reads the task, splits it into subtasks, tags each one with a type, and writes the synthesis prompt that will put the results back together later.",
       },
       {
-        label: "Orchestrator",
-        body: "Sends each subtask to whichever provider config.yaml points it at, and runs them all at once rather than one after another.",
+        label: "Routing by subtask type",
+        body: "config.yaml maps a type to a provider: extraction to Groq, summarisation to Gemini, bulk to Cerebras, coding to Mistral, hard reasoning to Claude. Rearranging the crew is a config edit, not a code change.",
       },
       {
-        label: "Provider failover",
-        body: "If a provider rate-limits, the subtask moves to another one automatically and the run carries straight on.",
+        label: "Parallel execution",
+        body: "Every subtask goes out at once instead of queueing, so a run takes as long as its slowest piece rather than the sum of all of them.",
+      },
+      {
+        label: "Failover",
+        body: "A provider that rate-limits or times out hands its subtask to OpenRouter. If that fails too, the subtask records an error and the run carries on — one broken piece never kills the answer, and the synthesiser sees the error like any other result.",
       },
       {
         label: "Synthesis",
-        body: "Claude puts the subtask outputs back together into the final answer, so the expensive model only gets spent on planning and judgement.",
+        body: "Claude merges the results and settles the disagreements between them, so the expensive model is spent on judgement rather than on chopping.",
+      },
+      {
+        label: "Keys behind a worker",
+        body: "The hosted page holds no secrets. A Cloudflare Worker keeps the keys, checks the caller's origin server-side rather than trusting CORS, rate-limits per IP, and caps prompt length and output tokens before any provider is called.",
       },
     ],
     highlights: [
       "The expensive model only plans and synthesises",
-      "Routing lives in config.yaml, so swapping providers is not a code change",
-      "Five free-tier providers ready to pick up the work",
+      "Provider routing lives in config.yaml, so swapping one is not a code change",
+      "Locally, Claude runs through the CLI login rather than a metered API key",
+      "A provider that speaks the common OpenAI shape needs three config lines and no new code",
+      "Honest about the limit: an origin check stops casual abuse, and provider spend caps are the real backstop",
     ],
     demo: "https://www.srinidevops.com/Multi_AI/",
     links: [{ url: "https://github.com/Srinivasan-78/Multi_AI", label: "View repo ↗" }],
@@ -238,38 +287,39 @@ export const PROJECTS: Project[] = [
     tags: ["Python", "tree-sitter", "RAG"],
     stack: ["Python", "tree-sitter", "Neo4j / Cypher", "GraphML", "GitHub Actions", "JSONL"],
     overview:
-      "Reading an unfamiliar repo means drawing a map on a whiteboard: these files sit in these folders, this function calls that one, this class inherits from that one. repo2graph draws that map for you. It parses every source file with tree-sitter, turns files, folders, functions, classes and imports into a graph, and cuts the code into retrieval chunks that each carry their own graph neighbourhood in the header. Plain text search finds files that mention a thing; a graph finds the files that do it, and hands you their neighbours too.",
+      "Point it at a codebase and it draws the map. Every folder, file, function, class and import becomes a node, and every containment, call, import, inheritance and co-change becomes an edge. Plain text search finds the files that mention login; the graph finds the function that does the login and hands you its callers and callees with it. It also cuts the code into retrieval chunks that each carry that neighbourhood in their header, which is usually the thing a RAG pipeline was missing.",
     architecture: [
       {
         label: "Parsing",
-        body: "tree-sitter reads real code structure rather than regexes, so it works on a repo it has never seen with no configuration. Sixteen languages get full symbol and call extraction; everything else still lands on the map as files and directories.",
+        body: "tree-sitter reads real code structure rather than guessing from words, so a repo it has never seen needs no configuration. Sixteen languages get full symbol and call extraction, and every other file still lands on the map in its folder, so nothing goes missing.",
       },
       {
         label: "Graph model",
-        body: "Files, directories, symbols and imported modules become nodes; CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS and CO_CHANGE become edges. Node ids are readable enough to construct by hand, like sym:pkg/mod.py::Class.method.",
+        body: "CONTAINS, DEFINES, IMPORTS, CALLS, CALLS_EXTERNAL, INHERITS and CO_CHANGE, across repo, directory, file, symbol, module and external nodes. Node ids are readable enough to write by hand, like sym:pkg/mod.py::Class.method.",
       },
       {
         label: "Co-change edges",
-        body: "Reading the last N commits adds \u201cthese files keep changing together\u201d links, which are surprisingly good at revealing coupling nothing in the code makes obvious.",
+        body: "Reading the last N commits links the files that keep being edited together, which is surprisingly good at exposing coupling nothing in the code makes obvious.",
       },
       {
         label: "Chunking for retrieval",
-        body: "Roughly one chunk per function or class, each opening with its callers, its callees and its docstring. Embed those and a question like \u201chow does login work?\u201d matches the code that handles login, not whatever shares a few words with the question.",
+        body: "Roughly one chunk per function or class, each opening with its callers, its callees and its docstring, cut at about 4,000 characters with a few lines of overlap so nothing is lost at a seam.",
       },
       {
         label: "Built-in retriever",
-        body: "Lexical scoring plus a one-hop walk across the graph, so callers and callees come along with every hit. No embedding model, no vector database, no API key needed to start.",
+        body: "Lexical scoring plus a one-hop walk across the graph, so the surrounding code comes along with every hit. No embedding model, no vector database and no API key needed to start.",
       },
       {
-        label: "Exports and automation",
-        body: "Writes JSONL, GraphML and an idempotent Cypher script for Neo4j. A composite Action keeps a graph beside your own code, and a workflow_dispatch job indexes any repo from the Actions tab.",
+        label: "Outputs and automation",
+        body: "A single self-contained graph.html, an overview written for a person to read first, and JSONL, GraphML and idempotent Cypher for everything else. A composite Action keeps a fresh graph beside your own code, and a dispatch job maps any repo from the Actions tab.",
       },
     ],
     highlights: [
       "Sixteen languages parsed with tree-sitter, zero configuration",
       "Chunks carry their graph neighbourhood, so retrieval lands on the right code",
-      "Honest about approximation: call edges carry a confidence score",
-      "overview.md is written for a person to read first",
+      "graph.html is one file: no server, no install, drag, zoom and search in a browser",
+      "Honest about approximation: name-matched calls carry a confidence score, and a missing edge never proves a missing call",
+      "Entrypoints are marked and ranked by reach, so the main paths through a project are findable",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/repo2graph", label: "View repo \u2197" }],
   },
@@ -355,52 +405,41 @@ export const PROJECTS: Project[] = [
     teaser:
       "Turns PDFs, Office files and scans into Markdown \u2014 as a GitHub Action on every push, or in your browser with nothing uploaded.",
     tags: ["Actions", "OCR", "Markdown"],
-    stack: [
-      "GitHub Actions",
-      "Python",
-      "Tesseract OCR",
-      "LibreOffice",
-      "tesseract.js",
-      "pdf.js",
-      "Markdown",
-    ],
+    stack: ["GitHub Actions", "Python", "Tesseract OCR", "LibreOffice", "tesseract.js", "pdf.js", "Markdown"],
     overview:
-      "AI tools and code search cannot read a .pdf or an .xlsx \u2014 they read text. This does the reading for you and leaves behind Markdown anyone, or anything, can open. Point the Action at a folder of documents and it converts them on every push; or open the browser version, drop files straight in and get the same Markdown back without committing anything anywhere.",
+      "AI tools and code search cannot read a PDF or a spreadsheet — they read text. This does the reading and leaves behind Markdown that anyone, or anything, can open. Point the Action at a folder of documents and it converts them on every push; or open the browser version, drop files straight in, and get the same Markdown back without committing anything anywhere.",
     architecture: [
       {
-        label: "Extraction",
-        body: "PDFs give up their text per page; Word, PowerPoint and HTML become headings, paragraphs and lists; Excel and CSV become one Markdown table per sheet. Legacy .doc, .xls and .ppt are converted through LibreOffice first.",
+        label: "Per-format routing",
+        body: "PDFs give up their text per page; Word, PowerPoint and HTML become headings, paragraphs and lists; Excel and CSV become one Markdown table per sheet. Legacy .doc, .xls and .ppt go through LibreOffice into the modern format first.",
       },
       {
         label: "OCR fallback",
-        body: "A PDF page with almost no extractable text is treated as a scan and read with Tesseract. Auto by default, so OCR only costs time on the pages that actually need it.",
+        body: "A PDF page holding almost no extractable text is treated as a scan, rendered at the configured DPI and read with Tesseract. Whichever version has more text wins, so a page that did have text loses nothing to the attempt.",
       },
       {
         label: "Browser version",
-        body: "The same conversion runs entirely client-side on GitHub Pages. Files are read with the File API and never leave the machine \u2014 there is no upload endpoint, because a static host has nothing to upload to.",
+        body: "The same conversion runs entirely in the tab, served from GitHub Pages. Files are read with the File API and never leave the machine — there is no upload endpoint, because a static host has nothing to upload to.",
       },
       {
         label: "Batch in the browser",
-        body: "Drop a folder or a .zip and the whole lot converts at once, in a worker pool sized from the machine\u2019s core count with a matching pool of OCR workers. Results are held as Blobs so a big batch never fills the JS heap, and the folder structure survives into the downloaded zip.",
+        body: "A dropped folder or .zip converts at once in a worker pool sized from the machine's core count, with a matching pool of OCR workers. Results are held as Blobs so a big batch never fills the JS heap, and folder structure survives into the downloaded zip.",
       },
       {
         label: "Token trimming",
         body: "Compact mode drops blank lines and the headers and footers repeated on every page, and the run reports total tokens and the percentage saved.",
       },
       {
-        label: "Traceability",
-        body: "Every output file opens with a header naming the document it came from, and a manifest.json records page counts and whether OCR was needed, so any sentence traces back to its source.",
-      },
-      {
-        label: "Failure handling",
-        body: "One unreadable document does not stop the run: it is counted as failed and everything else still converts, unless you ask the job to fail on error.",
+        label: "Traceability and failures",
+        body: "Every output file opens with a header naming the document it came from, and a manifest records page counts and whether OCR was needed. One unreadable document is counted as failed and everything else still converts, unless you ask the job to fail on error.",
       },
     ],
     highlights: [
-      "Scanned pages handled by OCR without being asked",
+      "Scanned pages picked up by OCR without being asked",
       "A browser version that converts locally, with nothing uploaded",
       "Whole folders and zips at once, on as many cores as the machine has",
-      "One merged file when you want to paste a whole doc set into a model",
+      "One merged file when you want to paste a whole document set into a model",
+      "A header on every output and a manifest, so any sentence traces back to its source",
     ],
     demo: "https://www.srinidevops.com/doc2md-action/",
     links: [
@@ -453,35 +492,41 @@ export const PROJECTS: Project[] = [
     status: "In progress",
     teaser: "Type in a topic and get back a finished short-form study video: script, voiceover, render.",
     tags: ["Actions", "FFmpeg", "TTS"],
-    stack: ["GitHub Actions", "Python", "FFmpeg", "Edge-TTS", "LLM APIs", "Failover logic"],
+    stack: ["GitHub Actions", "Python", "FFmpeg", "edge-tts", "Gemini", "DeepSeek"],
     overview:
-      "Put a study topic into a workflow input and a finished short-form educational video comes out. GitHub Actions is the entire runtime, so it costs nothing to run and looks after itself between runs.",
+      "Type a topic into a workflow input and finished short-form study videos come back: researched, scripted, narrated, captioned and cut to phone shape. Four stages hand work to each other as files in a build folder rather than talking directly, so any one of them can be rerun or replaced on its own. GitHub Actions is the entire runtime — nothing is installed, nothing is hosted, and the machine disappears when the run ends.",
     architecture: [
       {
-        label: "Stage 1 — research",
-        body: "Gathers the source material for whatever topic was asked for.",
+        label: "Research",
+        body: "Takes the top three real Wikipedia articles, discarding disambiguation pages, and fits them into a 15,000-character budget by equal shares, shortest first, handing unused space back. Otherwise one enormous article crowds the other two out entirely.",
       },
       {
-        label: "Stage 2 — script generation",
-        body: "Writes the script under a strict-JSON contract, so the later stages always parse a known shape.",
+        label: "Script generation",
+        body: "Asks for twelve chunks of 25 to 35 words under a strict-JSON contract, working down a ranked list of the Gemini models that are actually free today and falling back to DeepSeek. A quota or missing-model error moves to the next one; a bad key stops immediately, because retrying will never fix it.",
       },
       {
-        label: "Stage 3 — voiceover",
-        body: "Edge-TTS turns the script into narration.",
+        label: "Validation before trust",
+        body: "The script has to parse, hold 6 to 16 chunks, and keep every chunk non-empty and under 60 words — a hand-written script goes through exactly the same gate. A bad one fails here rather than five minutes later inside a finished video.",
       },
       {
-        label: "Stage 4 — assembly",
-        body: "FFmpeg puts the audio, captions and footage together into the finished short.",
+        label: "Voice and word timings",
+        body: "edge-tts narrates each chunk and returns the start and length of every spoken word. The newer conversational voices return none at all, so the run measures the audio with ffprobe and shares the time out by word length instead, and says so in the log.",
       },
       {
-        label: "LLM failover",
-        body: "Rate limits are planned for, so the pipeline switches to another model on its own and the run finishes either way.",
+        label: "Captions and cut",
+        body: "Word timings become karaoke subtitle tags, three words to a line, with a timer covering the silence before each word — without it the highlight drifts ahead of the voice and the error compounds along the line. FFmpeg burns them into background footage scaled and cropped to 1080×1920, with padding silence and loudness normalisation.",
+      },
+      {
+        label: "Packing and background continuity",
+        body: "Chunks are packed into videos up to 55 seconds and never cut in half, so no video ends mid-sentence. Background clips play as one continuous timeline across segments, seeked with the trim filter on a rotated playlist because seeking the concat demuxer silently drops frames.",
       },
     ],
     highlights: [
-      "Runs entirely on GitHub Actions, so hosting costs nothing",
-      "Strict-JSON contract between stages",
-      "Switches models by itself to keep the run moving",
+      "Runs entirely on GitHub Actions: no install, no hosting, no video editor",
+      "Stages talk through files, so any one of them can be rerun alone",
+      "Model failover ranked by which free models actually have quota today",
+      "Caption timing pays for the silences, so it stays locked to the voice",
+      "Typed workflow input never reaches the shell: passed as an environment variable and pattern-checked",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Brainrot_Study", label: "View repo ↗" }],
   },
