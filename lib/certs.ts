@@ -10,6 +10,8 @@ export type Cert = {
 const B = "https://www.linkedin.com/learning/certificates/";
 
 export const CERTS: Cert[] = [
+  { name: "Learning Chef", date: "Aug 2026", year: "2026", cat: ["automation"], skills: ["Chef.io"], url: B + "4c1dc2fd49d5224763c386cc1cf0b743ad209ffed911ffab698cac07028b8d9b/" },
+  { name: "Learning Puppet", date: "Aug 2026", year: "2026", cat: ["automation"], skills: ["Puppet (Software)"], url: B + "061a4486ebf2c876d31f279f33aa80e4240b44af4bd6c4dbcbb8ec8977ccadfb/" },
   { name: "Microsoft Azure: Networking Concepts", date: "Jul 2026", year: "2026", cat: ["cloud", "systems"], skills: ["Microsoft Azure"], url: B + "16cac5a771e2ab6019b5f13fb8ae762510d7ee0992f9d624fefda195d83454c6/" },
   { name: "Software Architecture Foundations", date: "Jul 2026", year: "2026", cat: ["cloud"], skills: ["Software Architecture"], url: B + "889bb515436ca4669c527304b4d5128b857320830ab40e9669bf837014c82ef5/" },
   { name: "Learning Apache Tomcat", date: "Apr 2026", year: "2026", cat: ["systems"], skills: ["Tomcat"], url: B + "544fb5b80f1725964e8938b8cadf51293b6d22c5ee7efe47edb006c3478fa8a9/" },

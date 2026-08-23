@@ -1,6 +1,7 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import GlowCard from "@/components/ui/GlowCard";
+import { CERTS } from "@/lib/certs";
 
 /* No path and no `noindex` flag of its own: Next emits `noindex` for a
    not-found page already, and adding a second robots tag saying
@@ -14,7 +15,7 @@ export const metadata = pageMetadata({
 const ROUTES = [
   { href: "/", title: "Home", body: "Profile, skills, and availability.", go: "Go home" },
   { href: "/projects", title: "Projects", body: "Live tools and platform engineering builds.", go: "View projects" },
-  { href: "/certifications", title: "Certifications", body: "22 verifiable credentials.", go: "View certifications" },
+  { href: "/certifications", title: "Certifications", body: `${CERTS.length} verifiable credentials.`, go: "View certifications" },
   { href: "/contact", title: "Contact", body: "Send a message.", go: "Get in touch" },
 ];
 

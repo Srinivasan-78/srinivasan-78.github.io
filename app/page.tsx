@@ -12,10 +12,11 @@ import HeroShowcase from "@/components/HeroShowcase";
 import GlowCard from "@/components/ui/GlowCard";
 /* Counted, not typed: this line said "11 builds" while lib/projects.ts held 12. */
 import { PROJECTS } from "@/lib/projects";
+import { CERTS } from "@/lib/certs";
 
 const EXPLORE = [
   { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds and counting: live tools, a Terraform multi-cloud platform, and plenty of automation.`, go: "View projects" },
-  { href: "/certifications", title: "Certifications", body: "22 credentials in cloud, automation and infrastructure. Every one comes with a verification link.", go: "View certifications" },
+  { href: "/certifications", title: "Certifications", body: `${CERTS.length} credentials in cloud, automation and infrastructure. Every one comes with a verification link.`, go: "View certifications" },
   { href: "/contact", title: "Get in touch", body: "Always glad to talk about DevOps, cloud infrastructure and automation work.", go: "Say hello" },
 ];
 
@@ -65,7 +66,7 @@ const WORK_POSTS: Post[] = [
 const STATS: { value: number; suffix?: string; label: string }[] = [
   { value: 5, label: "years shipping" },
   { value: 15, suffix: "+", label: "microservices owned" },
-  { value: 22, label: "certifications" },
+  { value: CERTS.length, label: "certifications" },
   { value: 2, label: "clouds in production" },
 ];
 

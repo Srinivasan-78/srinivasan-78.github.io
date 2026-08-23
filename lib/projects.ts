@@ -218,6 +218,52 @@ export const PROJECTS: Project[] = [
     links: [{ url: "https://github.com/Srinivasan-78/Multi_AI", label: "View repo ↗" }],
   },
   {
+    slug: "repo2graph",
+    title: "repo2graph",
+    client: "Platform engineering",
+    category: "Code intelligence",
+    status: "Active",
+    teaser:
+      "Point it at a codebase and it draws the map: a queryable graph of who calls what, plus chunks ready for a RAG pipeline.",
+    tags: ["Python", "tree-sitter", "RAG"],
+    stack: ["Python", "tree-sitter", "Neo4j / Cypher", "GraphML", "GitHub Actions", "JSONL"],
+    overview:
+      "Reading an unfamiliar repo means drawing a map on a whiteboard: these files sit in these folders, this function calls that one, this class inherits from that one. repo2graph draws that map for you. It parses every source file with tree-sitter, turns files, folders, functions, classes and imports into a graph, and cuts the code into retrieval chunks that each carry their own graph neighbourhood in the header. Plain text search finds files that mention a thing; a graph finds the files that do it, and hands you their neighbours too.",
+    architecture: [
+      {
+        label: "Parsing",
+        body: "tree-sitter reads real code structure rather than regexes, so it works on a repo it has never seen with no configuration. Sixteen languages get full symbol and call extraction; everything else still lands on the map as files and directories.",
+      },
+      {
+        label: "Graph model",
+        body: "Files, directories, symbols and imported modules become nodes; CONTAINS, DEFINES, IMPORTS, CALLS, INHERITS and CO_CHANGE become edges. Node ids are readable enough to construct by hand, like sym:pkg/mod.py::Class.method.",
+      },
+      {
+        label: "Co-change edges",
+        body: "Reading the last N commits adds \u201cthese files keep changing together\u201d links, which are surprisingly good at revealing coupling nothing in the code makes obvious.",
+      },
+      {
+        label: "Chunking for retrieval",
+        body: "Roughly one chunk per function or class, each opening with its callers, its callees and its docstring. Embed those and a question like \u201chow does login work?\u201d matches the code that handles login, not whatever shares a few words with the question.",
+      },
+      {
+        label: "Built-in retriever",
+        body: "Lexical scoring plus a one-hop walk across the graph, so callers and callees come along with every hit. No embedding model, no vector database, no API key needed to start.",
+      },
+      {
+        label: "Exports and automation",
+        body: "Writes JSONL, GraphML and an idempotent Cypher script for Neo4j. A composite Action keeps a graph beside your own code, and a workflow_dispatch job indexes any repo from the Actions tab.",
+      },
+    ],
+    highlights: [
+      "Sixteen languages parsed with tree-sitter, zero configuration",
+      "Chunks carry their graph neighbourhood, so retrieval lands on the right code",
+      "Honest about approximation: call edges carry a confidence score",
+      "overview.md is written for a person to read first",
+    ],
+    links: [{ url: "https://github.com/Srinivasan-78/repo2graph", label: "View repo \u2197" }],
+  },
+  {
     slug: "zim-assistant",
     title: "Zim Assistant",
     client: "Platform engineering",
@@ -289,6 +335,47 @@ export const PROJECTS: Project[] = [
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
     links: [],
+  },
+  {
+    slug: "doc2md-action",
+    title: "doc2md-action",
+    client: "CI/CD & packaging",
+    category: "Actions",
+    status: "Active",
+    teaser:
+      "A GitHub Action that turns PDFs, Office files and scans into Markdown on every push, OCR included.",
+    tags: ["Actions", "OCR", "Markdown"],
+    stack: ["GitHub Actions", "Python", "Tesseract OCR", "LibreOffice", "Markdown"],
+    overview:
+      "AI tools and code search cannot read a .pdf or an .xlsx \u2014 they read text. This action does the reading on every push and leaves behind Markdown anyone, or anything, can open. Point it at a folder of documents, get back one .md per file plus an optional single merged file for pasting into a model.",
+    architecture: [
+      {
+        label: "Extraction",
+        body: "PDFs give up their text per page; Word, PowerPoint and HTML become headings, paragraphs and lists; Excel and CSV become one Markdown table per sheet. Legacy .doc, .xls and .ppt are converted through LibreOffice first.",
+      },
+      {
+        label: "OCR fallback",
+        body: "A PDF page with almost no extractable text is treated as a scan and read with Tesseract. Auto by default, so OCR only costs time on the pages that actually need it.",
+      },
+      {
+        label: "Token trimming",
+        body: "Compact mode drops blank lines and the headers and footers repeated on every page, and the run reports total tokens and the percentage saved.",
+      },
+      {
+        label: "Traceability",
+        body: "Every output file opens with a header naming the document it came from, and a manifest.json records page counts and whether OCR was needed, so any sentence traces back to its source.",
+      },
+      {
+        label: "Failure handling",
+        body: "One unreadable document does not stop the run: it is counted as failed and everything else still converts, unless you ask the job to fail on error.",
+      },
+    ],
+    highlights: [
+      "Scanned pages handled by OCR without being asked",
+      "Outputs and a run-summary table you can wire into later steps",
+      "One merged file when you want to paste a whole doc set into a model",
+    ],
+    links: [{ url: "https://github.com/Srinivasan-78/doc2md-action", label: "View repo \u2197" }],
   },
   {
     slug: "wix-installer-template",

@@ -122,8 +122,8 @@ University, Chennai, India. Graduated Aug 2021.
 ## Site map
 
 - / — home: intro, stats, selected work, capabilities.
-- /projects — 11 project write-ups with architecture notes and links.
-- /certifications — 22 verifiable credentials.
+- /projects — 14 project write-ups with architecture notes and links.
+- /certifications — 24 verifiable credentials.
 - /contact — email, LinkedIn, GitHub, and a contact form.
 - /resume.pdf — downloadable résumé.
 `;

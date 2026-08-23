@@ -55,6 +55,31 @@ export const DIAGRAM: Record<string, ReactNode> = {
       ))}
     </svg>
   ),
+  "repo2graph": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      <path d="M78 55 L150 26 M78 55 L150 84 M150 26 L222 40 M150 84 L222 74 M150 26 L150 84 M222 40 L222 74" stroke="currentColor" strokeWidth="2" {...s} opacity="0.55" />
+      <circle cx="78" cy="55" r="13" stroke="currentColor" strokeWidth="3" fill="none" />
+      <circle cx="150" cy="26" r="9" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <circle cx="150" cy="84" r="9" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <circle cx="222" cy="40" r="7" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <circle cx="222" cy="74" r="7" stroke="currentColor" strokeWidth="2.5" fill="none" />
+    </svg>
+  ),
+  "doc2md-action": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      <rect x="34" y="22" width="56" height="66" rx="5" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M46 42 H78 M46 54 H78 M46 66 H66" stroke="currentColor" strokeWidth="2.5" {...s} opacity="0.6" />
+      <rect x="46" y="34" width="32" height="14" rx="2" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.5" />
+      <path d="M104 55 H140" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M132 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <circle cx="164" cy="55" r="17" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M156 55 h16 M164 47 v16" stroke="currentColor" strokeWidth="2.5" {...s} opacity="0.7" />
+      <path d="M190 55 H226" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M218 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="240" y="30" width="30" height="50" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M248 44 H262 M248 54 H262 M248 64 H256" stroke="currentColor" strokeWidth="2" {...s} />
+    </svg>
+  ),
   "Zim Assistant": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       {[0, 1, 2].map((i) => (

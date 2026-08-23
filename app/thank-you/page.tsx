@@ -2,6 +2,7 @@ import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import GlowCard from "@/components/ui/GlowCard";
 import { PROJECTS } from "@/lib/projects";
+import { CERTS } from "@/lib/certs";
 
 // noindex: a post-submit confirmation has no standalone value in search
 // results, and indexing it invites people to land here without submitting.
@@ -14,7 +15,7 @@ export const metadata = pageMetadata({
 
 const NEXT = [
   { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds across CI/CD, disaster recovery and platform engineering.`, go: "View projects" },
-  { href: "/certifications", title: "Certifications", body: "22 credentials, each with a verification link.", go: "View certifications" },
+  { href: "/certifications", title: "Certifications", body: `${CERTS.length} credentials, each with a verification link.`, go: "View certifications" },
   { href: "/resume.pdf", title: "Résumé", body: "The one-page version, as a PDF.", go: "Download résumé", download: true },
 ];
 
