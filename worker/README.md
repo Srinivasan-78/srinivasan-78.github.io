@@ -91,7 +91,7 @@ site at it with `NEXT_PUBLIC_CHAT_API=http://localhost:8787` in `.env.local`.
 | Per-IP rate limit | Cloudflare ratelimit binding | 15 requests / 60s |
 | Message length | `src/index.ts` | 1500 chars |
 | Conversation length | `src/index.ts` | 16 turns, 12000 chars total |
-| Reply length | `maxOutputTokens` | 800 |
+| Reply length | `maxOutputTokens` | 4000 (thinking tokens come out of the same budget) |
 | Topic scope | `SYSTEM_PROMPT` in `src/knowledge.ts` | refuse anything not about Srinivasan |
 
 A request from an origin that is not on the list gets a 403 before Gemini is
@@ -122,7 +122,7 @@ This is a prompt-level boundary, which is the honest description of it: it holds
 for ordinary visitors and for the obvious jailbreak attempts, and a determined
 adversary with enough attempts may still get an off-topic answer out of it. The
 things that cap the damage if that happens are enforced in code — the origin
-allowlist, the rate limit, and the 800-token reply ceiling.
+allowlist, the rate limit, and the 4000-token reply ceiling.
 
 ## Changing what the assistant knows
 

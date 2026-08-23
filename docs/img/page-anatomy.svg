@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 740" width="1200" height="740" role="img" aria-label="A labelled wireframe of one page: progress rail, header, tool strip, hero, card sections, stage diagram, footer, and the two floating controls">
+  <style>
+    .bg { fill: #0b0c0f; }
+    .frame { fill: #121214; stroke: #2a2b31; stroke-width: 2; }
+    .block { fill: #17181c; stroke: #2a2b31; stroke-width: 1.5; }
+    .accent { fill: #2997ff; }
+    .t { font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; fill: #f5f5f7; }
+    .h { font-size: 17px; font-weight: 600; }
+    .s { font-size: 14px; fill: #a1a1a6; }
+    .k { font-size: 13px; fill: #6e6e73; letter-spacing: .08em; text-transform: uppercase; }
+    .lead { stroke: #3a3b42; stroke-width: 1.5; fill: none; stroke-dasharray: 5 5; }
+    .bar { fill: #2a2b31; }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="740" rx="18" />
+  <text class="t k" x="60" y="50">One page, and what every part of it is for</text>
+
+  <!-- browser frame -->
+  <rect class="frame" x="300" y="96" width="470" height="600" rx="16" />
+
+  <!-- progress rail -->
+  <rect class="accent" x="300" y="96" width="170" height="5" rx="2.5" />
+  <path class="lead" d="M292 100 H210" />
+  <text class="t h" x="60" y="96">Progress rail</text>
+  <text class="t s" x="60" y="118">How far down you are</text>
+
+  <!-- header -->
+  <rect class="block" x="316" y="116" width="438" height="46" rx="9" />
+  <circle class="accent" cx="342" cy="139" r="7" />
+  <rect class="bar" x="536" y="133" width="44" height="12" rx="6" />
+  <rect class="bar" x="590" y="133" width="44" height="12" rx="6" />
+  <rect class="bar" x="644" y="133" width="44" height="12" rx="6" />
+  <rect class="bar" x="698" y="133" width="44" height="12" rx="6" />
+  <path class="lead" d="M786 139 H900" />
+  <text class="t h" x="900" y="128">Header</text>
+  <text class="t s" x="900" y="150">Four links on a laptop,</text>
+  <text class="t s" x="900" y="170">a thumb wheel on a phone</text>
+
+  <!-- tool strip -->
+  <rect class="block" x="316" y="168" width="438" height="26" rx="7" />
+  <circle class="bar" cx="348" cy="181" r="7" />
+  <circle class="bar" cx="378" cy="181" r="7" />
+  <circle class="bar" cx="408" cy="181" r="7" />
+  <circle class="bar" cx="438" cy="181" r="7" />
+  <circle class="bar" cx="468" cy="181" r="7" />
+  <path class="lead" d="M786 181 H900" />
+  <text class="t h" x="900" y="206">Tool strip</text>
+  <text class="t s" x="900" y="228">Logos drifting past, no links</text>
+
+  <!-- hero -->
+  <rect class="block" x="316" y="206" width="270" height="150" rx="9" />
+  <rect class="bar" x="336" y="228" width="170" height="12" rx="6" />
+  <rect class="bar" x="336" y="254" width="230" height="20" rx="7" />
+  <rect class="bar" x="336" y="284" width="188" height="20" rx="7" />
+  <rect class="accent" x="336" y="322" width="86" height="18" rx="9" />
+  <rect class="bar" x="432" y="322" width="86" height="18" rx="9" />
+  <rect class="block" x="598" y="206" width="156" height="150" rx="9" />
+  <circle class="bar" cx="676" cy="262" r="28" />
+  <rect class="bar" x="628" y="308" width="96" height="12" rx="6" />
+  <path class="lead" d="M786 281 H900" />
+  <text class="t h" x="900" y="272">Hero</text>
+  <text class="t s" x="900" y="294">One sentence, one button,</text>
+  <text class="t s" x="900" y="314">and the tilting name card</text>
+
+  <!-- card sections -->
+  <rect class="block" x="316" y="368" width="438" height="94" rx="9" />
+  <rect class="bar" x="336" y="386" width="110" height="10" rx="5" />
+  <rect class="block" x="336" y="408" width="126" height="38" rx="7" />
+  <rect class="block" x="476" y="408" width="126" height="38" rx="7" />
+  <rect class="block" x="616" y="408" width="126" height="38" rx="7" />
+  <path class="lead" d="M786 415 H900" />
+  <text class="t h" x="900" y="382">Card sections</text>
+  <text class="t s" x="900" y="404">Skills, method, work,</text>
+  <text class="t s" x="900" y="424">projects — all the same card</text>
+
+  <!-- stage diagram -->
+  <rect class="block" x="316" y="474" width="438" height="80" rx="9" />
+  <circle class="accent" cx="364" cy="514" r="9" />
+  <path d="M382 514 H428" stroke="#3a3b42" stroke-width="2.5" fill="none" />
+  <circle class="bar" cx="446" cy="514" r="9" />
+  <path d="M464 514 H510" stroke="#3a3b42" stroke-width="2.5" fill="none" />
+  <circle class="bar" cx="528" cy="514" r="9" />
+  <path d="M546 514 H592" stroke="#3a3b42" stroke-width="2.5" fill="none" />
+  <circle class="bar" cx="610" cy="514" r="9" />
+  <path d="M628 514 H674" stroke="#3a3b42" stroke-width="2.5" fill="none" />
+  <circle class="bar" cx="692" cy="514" r="9" />
+  <path class="lead" d="M786 514 H900" />
+  <text class="t h" x="900" y="490">Stage diagram</text>
+  <text class="t s" x="900" y="512">Drawn from the project's</text>
+  <text class="t s" x="900" y="532">own stages, not a stock photo</text>
+
+  <!-- footer -->
+  <rect class="block" x="316" y="566" width="438" height="60" rx="9" />
+  <rect class="bar" x="336" y="586" width="110" height="10" rx="5" />
+  <rect class="bar" x="336" y="604" width="190" height="8" rx="4" />
+  <path class="lead" d="M292 596 H210" />
+  <text class="t h" x="60" y="590">Footer</text>
+  <text class="t s" x="60" y="612">Links, legal, copyright</text>
+
+  <!-- floating controls -->
+  <rect class="accent" x="566" y="640" width="112" height="32" rx="16" />
+  <circle class="accent" cx="722" cy="656" r="19" />
+  <path class="lead" d="M786 656 H900" />
+  <text class="t h" x="900" y="620">Floating on phones</text>
+  <text class="t s" x="900" y="642">A contact bar that follows</text>
+  <text class="t s" x="900" y="662">you down, and the chat button</text>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-label="One list of projects feeding six places: the project index, every project page, the stage diagram, the home page counter, the sitemap, and the chat assistant">
+  <style>
+    .bg { fill: #0b0c0f; }
+    .panel { fill: #121214; stroke: #2a2b31; stroke-width: 2; }
+    .source { fill: #101a26; stroke: #2997ff; stroke-width: 2.5; }
+    .t { font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; fill: #f5f5f7; }
+    .h { font-size: 18px; font-weight: 600; }
+    .m { font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace; font-size: 16px; fill: #f5f5f7; }
+    .s { font-size: 14px; fill: #a1a1a6; }
+    .k { font-size: 13px; fill: #6e6e73; letter-spacing: .08em; text-transform: uppercase; }
+    .line { stroke: #2997ff; stroke-width: 2; fill: none; opacity: .75; }
+  </style>
+  <rect class="bg" x="0" y="0" width="1200" height="520" rx="18" />
+  <text class="t k" x="60" y="52">Type it once, and it shows up in six places</text>
+
+  <rect class="source" x="60" y="180" width="330" height="150" rx="14" />
+  <text class="t m" x="90" y="228">lib/projects.ts</text>
+  <text class="t s" x="90" y="258">One list. Each entry holds the</text>
+  <text class="t s" x="90" y="280">title, the write-up, the stages,</text>
+  <text class="t s" x="90" y="302">the stack and the links.</text>
+
+  <g>
+    <rect class="panel" x="680" y="40" width="460" height="62" rx="12" />
+    <text class="t h" x="706" y="70">The projects page</text>
+    <text class="t s" x="706" y="90">One row per project, grouped by area</text>
+
+    <rect class="panel" x="680" y="118" width="460" height="62" rx="12" />
+    <text class="t h" x="706" y="148">Every project page</text>
+    <text class="t s" x="706" y="168">Built at publish time, one per entry</text>
+
+    <rect class="panel" x="680" y="196" width="460" height="62" rx="12" />
+    <text class="t h" x="706" y="226">The stage diagram</text>
+    <text class="t s" x="706" y="246">Drawn from that project's own stages</text>
+
+    <rect class="panel" x="680" y="274" width="460" height="62" rx="12" />
+    <text class="t h" x="706" y="304">The home page count</text>
+    <text class="t s" x="706" y="324">Counted, never typed, so it cannot go stale</text>
+
+    <rect class="panel" x="680" y="352" width="460" height="62" rx="12" />
+    <text class="t h" x="706" y="382">The sitemap</text>
+    <text class="t s" x="706" y="402">Every address handed to search engines</text>
+
+    <rect class="panel" x="680" y="430" width="460" height="62" rx="12" />
+    <text class="t h" x="706" y="460">The chat assistant</text>
+    <text class="t s" x="706" y="480">The worker reads the same file when it deploys</text>
+  </g>
+
+  <path class="line" d="M390 255 C520 255 540 71 672 71" />
+  <path class="line" d="M390 255 C520 255 540 149 672 149" />
+  <path class="line" d="M390 255 C520 255 540 227 672 227" />
+  <path class="line" d="M390 255 C520 255 540 305 672 305" />
+  <path class="line" d="M390 255 C520 255 540 383 672 383" />
+  <path class="line" d="M390 255 C520 255 540 461 672 461" />
+</svg>
