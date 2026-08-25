@@ -364,11 +364,23 @@ main:focus { outline: none; }
   line-height: 1.4;
 }
 
+/* Reduced motion means gentler, not silent. The blanket used to zero
+   `transition-duration` outright, which took the colour and opacity
+   transitions with it — the ones that aid comprehension rather than
+   move anything — and, because the zeroing was `!important`, it also
+   overrode the deliberately gentle fades further down this file, so
+   those were running at 0.001ms instead of their stated 200ms.
+
+   Narrowing `transition-property` instead removes exactly the class of
+   transition a vestibular system objects to — anything that travels —
+   while leaving the rest at a calm 160ms. */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow,
+      fill, stroke, filter !important;
+    transition-duration: 160ms !important;
   }
 }
 
@@ -883,6 +895,14 @@ main:focus { outline: none; }
      the eye had moved on. */
   transition: transform 180ms var(--ease-out);
 }
+/* The current page. This was an inline `text-decoration: underline` in
+   Nav.tsx, which cannot animate — the underline teleported from one link
+   to the next on every route change. The sweep is already here; the
+   active link just holds it open. */
+.lnk[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
 /* :focus-visible is never gated — a keyboard user has no pointer and
    still needs the affordance. */
 .lnk:focus-visible::after {
@@ -1327,6 +1347,22 @@ textarea.cf-input { resize: vertical; }
   box-shadow: 0 0 0 1px var(--danger);
 }
 
+/* The submit label swaps between "Send message" and the spinner in a
+   single frame. Blur is what stops that reading as two labels overlapping
+   — it bridges the two states into one, rather than crossfading two
+   legible things through each other. Keyed on `sending` in
+   ContactForm.tsx, so the span remounts and this replays. */
+.cf-submit-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: label-in 200ms var(--ease) both;
+}
+@keyframes label-in {
+  from { opacity: 0.3; filter: blur(2px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
 .cf-error {
   margin: 0.35rem 0 0;
   color: var(--danger);
@@ -1475,7 +1511,23 @@ textarea.cf-input { resize: vertical; }
      notice and the sticky CTA is too much either way. It costs one tap on
      one visit — the notice never comes back once dismissed, and the
      launcher returns the moment it goes. */
-  body:has(.cookie-notice) .chat-launcher { display: none; }
+  /* Not `display: none`. Display cannot transition, so dismissing the
+     notice used to make the launcher materialise out of nothing in the
+     corner. Held at opacity 0 it can be handed over instead: the delay
+     matches the notice's own 220ms exit, so the button starts arriving
+     as the notice finishes leaving and the two read as one movement. */
+  body:has(.cookie-notice) .chat-launcher {
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Opacity only, and `transform` deliberately left out of this list.
+     The launcher's transform is the press feedback — `:active` scales it
+     to 0.96 — and a 220ms delay written for the arrival would sit in
+     front of every tap on the device where taps are the only input. */
+  .chat-launcher {
+    transition: opacity 220ms var(--ease-out) 220ms, transform 160ms var(--ease-out),
+      border-color 0.2s ease;
+  }
 }
 
 /* ── Legal pages ──────────────────────────────────────────────────────────
@@ -1543,7 +1595,6 @@ textarea.cf-input { resize: vertical; }
   box-shadow: 0 10px 34px rgb(0 0 0 / 0.12);
   transition: transform 160ms var(--ease-out), border-color 0.2s ease;
 }
-.chat-launcher:hover { border-color: var(--accent); }
 .chat-launcher-icon { color: var(--accent); font-size: 0.9rem; line-height: 1; }
 
 .chat-panel {
@@ -1679,6 +1730,17 @@ textarea.cf-input { resize: vertical; }
   line-height: 1.6;
   color: var(--ink);
   white-space: pre-wrap;
+}
+/* The chat log was the one surface on the site where content still
+   teleported: a bubble was absent one frame and present the next. Same
+   vocabulary as `err-in` below, one step gentler — this arrives, it does
+   not announce. It runs on mount only; the assistant's bubble is
+   inserted empty and then streams, so the text fills a box that has
+   already settled. */
+.chat-msg { animation: msg-in 200ms var(--ease-out) both; }
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
 }
 .chat-msg-user { padding-left: 0.7rem; border-left: 2px solid var(--accent); }
 .chat-msg-user p { color: var(--ink-70); }
@@ -3042,15 +3104,19 @@ html:not(.dialog-open) footer {
    objects to. These selectors outrank the `*` the blanket rule uses, so
    they win on specificity without needing to fight over !important. */
 @media (prefers-reduced-motion: reduce) {
-  .cookie-notice { animation: cn-fade 200ms linear both; }
+  /* `!important` because the blanket rule above zeroes animation-duration
+     with the same weight; without it these fades are declared and then
+     immediately cut to nothing. */
+  .cookie-notice { animation: cn-fade 200ms linear both !important; }
   /* Its own keyframes, not `cn-fade` reversed. Swapping direction on an
      animation that has already finished does not restart it — the
      browser keeps the same timeline, lands past the end, and applies the
      reversed fill in one frame, which is a snap rather than a fade. */
-  .cookie-notice.is-closing { animation: cn-fade-out 160ms linear both; }
+  .cookie-notice.is-closing { animation: cn-fade-out 160ms linear both !important; }
   .cf-error,
   .cf-error-banner,
-  .chat-error { animation: err-fade 140ms linear both; }
+  .chat-error,
+  .chat-msg { animation: err-fade 140ms linear both !important; }
 }
 
 @keyframes cn-fade {
@@ -3064,4 +3130,299 @@ html:not(.dialog-open) footer {
 @keyframes err-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+/* ---------- WINDOW EDGE ----------
+   Every raised surface on the site was a fill and nothing else: a card
+   was #f5f5f7 on #ffffff, and that one step of grey was doing all of
+   the work of saying "this is a separate thing". On a bright screen it
+   holds; on a dim one, or through a phone's auto-brightness, the step
+   closes and the cards dissolve back into the page.
+
+   The fix is the same one a macOS window uses: a hairline at the edge
+   plus a shadow soft enough that you read it as depth rather than as a
+   drawn effect. The hairline is what survives when the fill contrast
+   goes; the shadow is what makes the surface sit above the page instead
+   of being a lighter patch of it.
+
+   Both are tokens, so the whole ladder moves from one place, and both
+   are deliberately weaker than they look like they should be in
+   isolation — the effect is meant to be noticed only by its absence.
+
+   --edge-color is an alpha black, not --ink-15, on purpose: it has to
+   land the same over the white page, over the grey card and over a
+   translucent panel, and a solid grey only matches one of those. */
+:root {
+  --edge-color: rgb(0 0 0 / 0.13);
+  --edge: 1px solid var(--edge-color);
+  /* Two layers: a tight one that reads as the contact shadow right
+     under the edge, and a wide, very faint one that carries the height.
+     One layer alone reads either as a border (tight only) or as a smudge
+     (wide only). */
+  --shadow-window:
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 8px 24px rgb(0 0 0 / 0.10);
+  /* A `--shadow-window-lift` used to sit here for the hover state. It
+     went when the hover stopped animating the shadow; an unread token is
+     a promise the next reader has to check. */
+}
+
+/* The flat surfaces. These all declared `border: 0` and no shadow, so
+   the border here is an addition rather than an override — box-sizing is
+   border-box site-wide, so the 1px comes out of the padding box and no
+   layout moves. */
+.card,
+.cap-tile,
+.post,
+.lb-card,
+.diagram {
+  border: var(--edge);
+  box-shadow: var(--shadow-window);
+}
+
+/* No `box-shadow` in this list, and no shadow change on hover.
+
+   The first pass raised the shadow on hover and put it in the transition
+   so it would move with the lift. It looked right and it was the wrong
+   property: `box-shadow` paints, and a 24px-blurred shadow repainted on
+   every card the pointer crosses in a grid is real work for a difference
+   nobody can name afterwards. The lift is already carried by `transform`
+   and the wash by `background` — both composited, both saying the same
+   thing.
+
+   The resting shadow stays. It is static, painted once, and it is what
+   makes the surface sit above the page. */
+.card,
+.post,
+.cap-tile {
+  transition:
+    background 0.25s var(--ease),
+    transform 160ms var(--ease-out),
+    border-color 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  a.card:hover,
+  .post:hover,
+  .cap-tile:hover {
+    border-color: rgb(0 0 0 / 0.18);
+  }
+}
+
+/* Nested surfaces get the hairline and no shadow. A stage inside the
+   diagram is on the card, not above it, and giving it its own drop
+   shadow would claim a second layer of depth that is not there. */
+.diagram-node {
+  border: var(--edge);
+}
+
+/* The floating layers already carried a border and a shadow of their
+   own — those are tuned to their size by the material-weight ladder
+   above and stay as they are. Only the border *colour* is unified, so
+   an edge over frosted glass matches an edge over paper. */
+.cookie-notice,
+.chat-launcher,
+.chat-panel,
+.cf-error-banner {
+  border-color: var(--edge-color);
+}
+
+/* Most content surfaces on the site are not the flat element itself —
+   they render inside GlowCard, which already draws the border and the
+   shadow one level up and hands the inner element a transparent fill at
+   the same radius. Drawing the edge on both paints two hairlines a
+   pixel apart, so inside a glow card the edge belongs to the wrapper
+   and the inner element gives it up. */
+.glow-card > .border-glow-inner > * {
+  border: 0;
+  box-shadow: none;
+}
+.glow-card {
+  border-color: var(--edge-color);
+  box-shadow: var(--shadow-window);
+  transition: border-color 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .glow-card:hover {
+    border-color: rgb(0 0 0 / 0.18);
+  }
+}
+
+/* Increased contrast already replaces the pale edges site-wide with a
+   real line against ink; the same applies to the surfaces that rule
+   does not name, for the same reason — a 13%-alpha hairline is the
+   first thing to vanish at that setting. */
+@media (prefers-contrast: more) {
+  .lb-card,
+  .diagram,
+  .diagram-node,
+  .glow-card {
+    border-color: var(--ink-45);
+  }
+}
+
+/* ---------- WINDOW CHROME, THE SURFACE SIDE ----------
+   WindowChrome.css styles the bar itself. What follows is the part the
+   surface has to agree to: the clipping box now holds two children
+   instead of one, and the rule above it — `> * { height: 100% }`,
+   written when there was only ever one child — would give the bar the
+   full height of the card and leave the content nothing.
+
+   A flex column is the whole fix. The bar takes its own 34px, the
+   content takes the rest, and neither has to know the other's size. */
+.glow-card > .border-glow-inner {
+  display: flex;
+  flex-direction: column;
+}
+.glow-card > .border-glow-inner > .win-bar {
+  height: var(--win-bar-h, 34px);
+  width: 100%;
+  /* Restated, because the rule that hands every child of the clipping
+     box a transparent fill still matches the bar and is what makes a
+     GlowCard's inner element take the wrapper's colour. The bar is the
+     one child that is not the card surface — it paints its own. */
+  background: var(--win-bar-bg, #3a3a3c);
+  /* The bar is the one child that keeps square corners: it is flush in
+     the top two, and the parent's overflow already rounds them. A
+     radius here would land a pixel inside that clip and read as a
+     double corner. */
+  border-radius: 0;
+}
+.glow-card > .border-glow-inner > *:not(.win-bar) {
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* Only the bottom corners are the content's to round now — the top
+     two belong to the bar. `inherit` is not per-corner in the
+     shorthand, so this reads the wrapper's radius variable directly;
+     BorderGlow sets it from the same `radius` prop the wrapper rounds
+     itself with, so the two cannot drift. */
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+/* The diagram is the one full-width surface that does not render
+   through GlowCard, so it has no bar to be handed. It gets one drawn
+   in CSS instead: same height, same lights, same trailing edge — the
+   three dots are one background-image of three radial gradients rather
+   than three elements, because a decorative pseudo-element cannot hold
+   children and adding three spans to the markup for a picture of a
+   window is not worth the DOM. */
+.diagram {
+  position: relative;
+  /* Room for the bar, which is drawn over the top edge rather than
+     laid out in the flow — the diagram's padding is a clamp() and
+     unpicking it into a flex column would change its rhythm at every
+     breakpoint. */
+  padding-top: calc(clamp(1.75rem, 4vw, 3rem) + var(--win-bar-h, 34px));
+  overflow: hidden;
+}
+.diagram::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--win-bar-h, 34px);
+  background-color: var(--win-bar-bg, #3a3a3c);
+  background-image:
+    radial-gradient(circle 6px at 20px 50%, #ee4f67 99%, transparent 100%),
+    radial-gradient(circle 6px at 40px 50%, #f5c443 99%, transparent 100%),
+    radial-gradient(circle 6px at 60px 50%, #34c98a 99%, transparent 100%);
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 720px) {
+  .glow-card > .border-glow-inner > .win-bar { height: var(--win-bar-h, 28px); }
+  .diagram {
+    padding-top: calc(clamp(1.25rem, 4vw, 3rem) + var(--win-bar-h, 28px));
+  }
+  .diagram::before {
+    height: var(--win-bar-h, 28px);
+    background-image:
+      radial-gradient(circle 5px at 16px 50%, #ee4f67 99%, transparent 100%),
+      radial-gradient(circle 5px at 32px 50%, #f5c443 99%, transparent 100%),
+      radial-gradient(circle 5px at 48px 50%, #34c98a 99%, transparent 100%);
+  }
+}
+
+/* ---------- THE ASK BUTTON ----------
+   The launcher carries a live WebGL strand behind its label. Two things
+   had to change for it to read as anything other than noise.
+
+   The fill goes dark. The strands are emissive — thin bright lines with
+   a bloom — and emissive light only reads as light against something
+   darker than itself. On the translucent white pill the launcher used to
+   be, the bright pass of a strand landed at roughly the value of the
+   surface it was drawn on, so the effect disappeared, and where it did
+   not disappear it crossed the label and ate the contrast of the one
+   piece of text on the control. Dark ground, white label: the strands
+   have somewhere to glow and the text is 15:1 against it either way.
+
+   It is also not a new idea on the page — the window bars this button
+   now sits under are the same near-black, so the darkest thing on the
+   site is consistently its chrome.
+
+   --launcher-bg is a token because the reduced-transparency rule above
+   has to restate the background to drop the blur, and it should not
+   have to know the colour to do that. */
+:root {
+  --launcher-bg: #1d1d1f;
+}
+
+.chat-launcher {
+  /* No `position` here. The launcher is already `fixed`, which is its
+     own containing block, so the canvas layer has something to be
+     absolute against — and a `position: relative` written for that
+     reason instead drops the button out of the corner and into the
+     bottom of the document flow. */
+  /* The strand canvas is a rectangle behind a pill. */
+  overflow: hidden;
+  background: color-mix(in srgb, var(--launcher-bg) 96%, transparent);
+  color: #ffffff;
+  border-color: rgb(255 255 255 / 0.16);
+}
+/* The hover rule that stood here was a byte-identical copy of the one at
+   the launcher's own declaration — and neither was gated, so a tap on a
+   phone latched the accent border until the next tap landed elsewhere.
+   One rule, gated. */
+@media (hover: hover) and (pointer: fine) {
+  .chat-launcher:hover { border-color: var(--accent); }
+}
+.chat-launcher-icon { color: #ffffff; }
+
+.chat-launcher-strands {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  /* The strands are drawn to the full width of the button and taper at
+     both ends, which is what keeps them from butting into the pill's
+     round caps. */
+  overflow: hidden;
+}
+/* The label and the icon sit above the canvas. Without this they are
+   siblings of an absolutely positioned element and lose the stacking
+   contest by source order. */
+.chat-launcher-icon,
+.chat-launcher-label {
+  position: relative;
+  z-index: 1;
+}
+
+/* Both accessibility settings the launcher already answered. The dark
+   fill survives them — it is the blur and the translucency that go, not
+   the colour — and the canvas stops itself on reduced motion from
+   inside the component, where it can stop the render loop rather than
+   just hiding a moving thing that is still costing frames. */
+@media (prefers-reduced-transparency: reduce) {
+  .chat-launcher { background: var(--launcher-bg); }
+}
+@media (prefers-contrast: more) {
+  .chat-launcher {
+    background: var(--launcher-bg);
+    border-color: #ffffff;
+  }
+  /* At this setting the strands are a low-contrast pattern behind text,
+     which is the thing the setting exists to remove. */
+  .chat-launcher-strands { display: none; }
 }

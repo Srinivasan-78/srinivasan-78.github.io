@@ -57,9 +57,36 @@
   --ow-p: 0;
   color: var(--ow-text);
   color: color-mix(in srgb, var(--ow-active) calc(var(--ow-p) * 100%), var(--ow-text));
-  font-weight: calc(300 + var(--ow-p) * 300);
-  letter-spacing: calc(-0.01em - var(--ow-p) * 0.012em);
+  /* Fixed. `font-weight` and `letter-spacing` used to be blended from
+     --ow-p, which contradicts the note above the track: both are layout
+     properties, so every frame of the wheel reflowed the text of every
+     visible option — on the touch device where this gesture actually
+     happens. The weight blend now lives on a second, bolder copy of the
+     label crossfaded by opacity, which is the same picture on the
+     compositor. */
+  font-weight: 300;
+  letter-spacing: -0.01em;
 }
+
+/* The two label layers sit on top of each other and are anchored to the
+   side the wheel grows from, so the bold copy — which is wider — spreads
+   in the same direction as the item's own transform-origin instead of
+   drifting across the centre. */
+.option-wheel__label {
+  display: block;
+}
+.option-wheel__label--strong {
+  position: absolute;
+  top: 0;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  opacity: var(--ow-p);
+  /* Decoration on top of a label that is already there and already
+     readable — never the thing carrying the text to a screen reader. */
+  pointer-events: none;
+}
+.option-wheel--left .option-wheel__label--strong { left: 0; }
+.option-wheel--right .option-wheel__label--strong { right: 0; }
 
 .option-wheel--left .option-wheel__item {
   left: var(--ow-inset);

@@ -1,0 +1,80 @@
+/* ---------- WINDOW CHROME ----------
+   The titlebar half of the macOS window treatment. The other half — the
+   hairline edge and the drop shadow — lives with the surface tokens in
+   globals.css, because those apply to surfaces that do not carry a bar.
+
+   The bar is a sibling of the card's content, not an overlay on top of
+   it. An absolutely positioned bar would need every surface to grow a
+   matching top padding, and those paddings are set in six places at
+   three different values; a sibling in a flex column takes its height
+   out of the box without any of them knowing it exists.
+
+   It is decorative, and marked so at the call site: it is a visual
+   frame around content that is already labelled by its own heading, so
+   a screen reader announcing three dots and a repeated title would be
+   reading out the picture frame. */
+
+.win-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  height: var(--win-bar-h, 34px);
+  padding: 0 14px;
+  background: var(--win-bar-bg, #3a3a3c);
+  /* The bar is flush to the top of a surface that clips to its own
+     radius, so it needs no radius of its own — the parent's overflow
+     does the corners, and a radius here would fight it by a pixel. */
+  user-select: none;
+}
+
+/* 12px on a 34px bar. The ratio matters more than either number: the
+   lights read as macOS at any size as long as they stay under half the
+   bar height with a full diameter of clearance between them. */
+.win-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  /* The lights are flat fills on a dark bar, which is what the current
+     OS draws. The inset is a half-pixel of definition so a light does
+     not bleed into the bar at fractional device ratios. */
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.12);
+}
+.win-light-close { background: #ee4f67; }
+.win-light-min { background: #f5c443; }
+.win-light-zoom { background: #34c98a; }
+
+/* Right-aligned, not centred. A centred title has to be measured
+   against the lights to stay optically centred, and it collides with
+   them on a narrow card; pushed to the trailing edge it degrades by
+   truncating, which is the failure mode that still reads as a window. */
+.win-title {
+  margin-left: auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 0.86);
+}
+
+/* The bar is chrome, not content: it does not animate, lift, or
+   otherwise answer the pointer the way the surface under it does. It
+   carried a `transition: background` here for one revision, which was
+   polish on a property that never changes — the fill is a constant. */
+
+/* A 34px bar on a tile that is 150px tall is a third of the tile. The
+   lights come down with it so the proportions hold. */
+@media (max-width: 720px) {
+  .win-bar {
+    height: var(--win-bar-h, 28px);
+    padding: 0 11px;
+    gap: 6px;
+  }
+  .win-light { width: 10px; height: 10px; }
+  .win-title { font-size: 0.62rem; }
+}

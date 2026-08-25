@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import BorderGlow from "./BorderGlow";
+import WindowChrome from "./WindowChrome";
 
 /* One place that decides what a card looks like on this site.
 
@@ -31,6 +32,14 @@ export type GlowCardProps = {
   radius?: number;
   /** Play the intro sweep once on mount. Reserved for hero surfaces. */
   animated?: boolean;
+  /* The macOS titlebar. It is on by default because the frame is the
+     card system now — a surface without it reads as an unfinished one
+     next to a grid of surfaces that have it — but any call site that
+     is not a window (a bare list row, a surface nested in another
+     card) turns it off rather than working around it. */
+  chrome?: boolean;
+  /** Ornamental label on the bar's trailing edge. No bar, no title. */
+  windowTitle?: string;
   style?: CSSProperties;
 };
 
@@ -39,6 +48,8 @@ export default function GlowCard({
   className = "",
   radius = 20,
   animated = false,
+  chrome = true,
+  windowTitle,
   style,
 }: GlowCardProps) {
   return (
@@ -55,6 +66,7 @@ export default function GlowCard({
       animated={animated}
       style={style}
     >
+      {chrome ? <WindowChrome title={windowTitle} /> : null}
       {children}
     </BorderGlow>
   );
