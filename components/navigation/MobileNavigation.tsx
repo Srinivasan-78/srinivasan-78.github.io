@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import OptionWheel, { type OptionWheelHandle } from "./OptionWheel";
-import ThemeToggle from "../ThemeToggle";
 import { useScrollLock } from "../ScrollProvider";
 import { NAV_ITEMS, activeIndex } from "@/lib/nav";
 import "./MobileNavigation.css";
@@ -162,10 +161,6 @@ export default function MobileNavigation() {
         <div className="mobile-nav__bar">
           <span className="eyebrow mobile-nav__eyebrow">Menu</span>
           <div className="mobile-nav__controls">
-            {/* The theme control sits in the bar for the same reason it
-                sits in the header row on a desktop: it belongs with the
-                chrome, not with the destinations. */}
-            <ThemeToggle />
             <button
               type="button"
               className="mobile-nav__close"

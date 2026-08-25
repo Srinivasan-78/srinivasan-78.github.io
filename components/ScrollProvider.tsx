@@ -54,6 +54,18 @@ export default function ScrollProvider({ children }: { children: React.ReactNode
     const gap = window.innerWidth - document.documentElement.clientWidth;
     if (gap > 0) document.body.style.paddingRight = `${gap}px`;
     document.body.style.overflow = "hidden";
+    /* A modal dims the page behind it *and* pushes it back, so the two
+       read as separate layers in depth rather than as one flat image
+       with a dark rectangle over it. The push itself is in globals.css;
+       this is the only place on the site that knows a modal is open at
+       all, which makes it the right place to say so.
+
+       Every dialog that pushes the page back must be outside the pushed
+       subtree — <main> is transformed, and a transformed ancestor
+       becomes the containing block for its fixed-position descendants,
+       which would trap the dialog inside the very thing it is floating
+       above. The two that lock both portal themselves to <body>. */
+    document.documentElement.classList.add("dialog-open");
   }, []);
 
   const unlock = useCallback(() => {
@@ -61,6 +73,7 @@ export default function ScrollProvider({ children }: { children: React.ReactNode
     if (locks.current > 0) return;
     document.body.style.overflow = "";
     document.body.style.paddingRight = "";
+    document.documentElement.classList.remove("dialog-open");
   }, []);
 
   const value = useMemo(() => ({ lock, unlock }), [lock, unlock]);

@@ -15,10 +15,9 @@ export default function manifest(): MetadataRoute.Manifest {
       "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.",
     start_url: "/",
     display: "browser",
-    // Matches the <meta name="theme-color"> in the layout and the site's
-    // default theme, which is the dark one.
-    background_color: "#000000",
-    theme_color: "#000000",
+    // Matches the <meta name="theme-color"> in the layout and --paper.
+    background_color: "#ffffff",
+    theme_color: "#ffffff",
     icons: [
       { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/icon-512.png", sizes: "512x512", type: "image/png" },

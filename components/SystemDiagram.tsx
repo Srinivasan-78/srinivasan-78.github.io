@@ -19,7 +19,7 @@ const stripOrdinal = (label: string) => label.replace(/^Stage\s+\d+\s*[—–-]\
    Built from HTML and CSS rather than SVG on purpose. The flow has to
    reflow from a horizontal row on a wide screen to a vertical column on
    a phone, the labels have to be selectable text a screen reader can
-   read in order, and the whole thing has to recolour with the theme.
+   read in order, and the whole thing paints from the palette tokens.
    An SVG would need a second hand-authored copy for each of those. */
 export default function SystemDiagram({
   stages,

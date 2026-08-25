@@ -10,14 +10,18 @@ import BorderGlow from "./BorderGlow";
 
    Two deliberate departures from the values in the brief:
 
-   * `backgroundColor` is the theme token rather than the literal
-     #121214. The site keeps a light theme behind the toggle, and a
-     hard-coded near-black card would be unreadable in it. In dark —
-     the default — the token resolves to exactly #121214.
+   * `backgroundColor` is the palette token rather than the literal
+     #121214 the brief specifies. Tokens are what the rest of the site
+     paints with, and a hard-coded near-black card on white paper would
+     be a black rectangle in the middle of the page.
 
-   * `glowColor` is a cool blue-white rather than the component's
-     default amber, so the proximity glow belongs to the same palette
-     as the rest of the site instead of introducing a fourth hue. */
+   * `glowColor` is a blue rather than the component's default amber, so
+     the proximity glow belongs to the same palette as the rest of the
+     site instead of introducing a fourth hue. Its lightness is set for
+     the page it lands on: the 72% the component ships is tuned to glow
+     on a black page and simply disappears into #f5f5f7, so it drops to
+     52% — dark enough to register against paper, still unmistakably the
+     site's blue. */
 
 export type GlowCardProps = {
   children: ReactNode;
@@ -46,7 +50,7 @@ export default function GlowCard({
       glowIntensity={0.6}
       edgeSensitivity={25}
       coneSpread={25}
-      glowColor="205 90 72"
+      glowColor="205 90 52"
       colors={["#38bdf8", "#c084fc", "#f472b6"]}
       animated={animated}
       style={style}

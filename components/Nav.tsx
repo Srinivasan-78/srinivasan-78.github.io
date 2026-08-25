@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "./ThemeToggle";
 import TechLoop from "./TechLoop";
 import MobileNavigation from "./navigation/MobileNavigation";
 import { NAV_ITEMS, isActiveRoute } from "@/lib/nav";
@@ -23,14 +23,42 @@ export default function Nav() {
   const pathname = usePathname();
   const isActive = (href: string) => isActiveRoute(href, pathname);
 
+  /* Whether anything is actually scrolled underneath the bar.
+
+     The header carried a 1px rule along its bottom edge at all times,
+     including at the top of the page where there is nothing under it to
+     separate from. A permanent divider is a drawn line; an edge that
+     appears only where floating chrome overlaps content is the content
+     telling you it has gone behind something. The class drives a soft
+     gradient rather than a hairline — see .nav-glass in globals.css.
+
+     One passive listener, coalesced to a frame, writing a boolean that
+     changes twice per page: at the top and away from it. */
+  const [floating, setFloating] = useState(false);
+  const queued = useRef(false);
+
+  useEffect(() => {
+    const read = () => {
+      queued.current = false;
+      setFloating(window.scrollY > 4);
+    };
+    const onScroll = () => {
+      if (queued.current) return;
+      queued.current = true;
+      requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <nav
-      className="nav-glass"
+      className={"nav-glass" + (floating ? " is-floating" : "")}
       style={{
         position: "sticky",
         top: 0,
         zIndex: 50,
-        borderBottom: "1px solid var(--ink-15)",
       }}
     >
       {/* The header is the one place on the site that still frosts what
@@ -82,7 +110,6 @@ export default function Nav() {
                 {l.label}
               </Link>
             ))}
-            <ThemeToggle />
           </div>
 
           {/* The phone's navigation: trigger here, full-screen wheel

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { haptic } from "@/lib/haptics";
 
 const ENDPOINT = "https://formspree.io/f/xrpzzlaz";
 
@@ -66,6 +67,10 @@ export default function ContactForm() {
     if (Object.keys(found).length > 0) {
       const first = (Object.keys(found) as Field[])[0];
       form.querySelector<HTMLElement>(`#${first}`)?.focus();
+      /* Fired here, alongside the focus move and the error text, rather
+         than after either — the point of the haptic is that it arrives
+         with the visual, not behind it. */
+      haptic("reject");
       return;
     }
 
@@ -78,6 +83,8 @@ export default function ContactForm() {
       });
 
       if (res.ok) {
+        // The one unambiguous success on the site: the message went.
+        haptic("commit");
         form.reset();
         router.push("/thank-you");
         return;
@@ -88,12 +95,14 @@ export default function ContactForm() {
       const body = await res.json().catch(() => null);
       const detail: string | undefined = body?.errors?.map((x: { message: string }) => x.message).join(" ");
       setStatus("error");
+      haptic("reject");
       setFormError(
         detail ||
           "That one needs another go. Try again, or email me directly at srinivasan.shyam2000@gmail.com."
       );
     } catch {
       setStatus("error");
+      haptic("reject");
       setFormError(
         "The form service is out of reach for a moment. Check your connection and try again, or email me directly at srinivasan.shyam2000@gmail.com."
       );

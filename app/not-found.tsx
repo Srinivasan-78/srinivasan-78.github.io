@@ -1,6 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import GlowCard from "@/components/ui/GlowCard";
+import Reveal from "@/components/Reveal";
+import SplitReveal from "@/components/SplitReveal";
 import { CERTS } from "@/lib/certs";
 
 /* No path and no `noindex` flag of its own: Next emits `noindex` for a
@@ -24,7 +26,7 @@ export default function NotFound() {
     <main id="content" tabIndex={-1} className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
         <span className="eyebrow">404</span>
-        <h1 className="display display-lg">Let&rsquo;s get you back on track</h1>
+        <SplitReveal as="h1" text="Let’s get you back on track" className="display display-lg" />
         <p>
           That address points somewhere else, and everything else on the site is right here
           waiting. Pick whichever one you were after.
@@ -32,7 +34,7 @@ export default function NotFound() {
       </div>
 
 
-      <div className="explore-grid" style={{ marginTop: "2rem" }}>
+      <Reveal className="explore-grid" pop style={{ marginTop: "2rem" }}>
         {ROUTES.map((r) => (
           <GlowCard key={r.href}>
             <Link href={r.href} className="card">
@@ -42,7 +44,7 @@ export default function NotFound() {
             </Link>
           </GlowCard>
         ))}
-      </div>
+      </Reveal>
     </main>
   );
 }

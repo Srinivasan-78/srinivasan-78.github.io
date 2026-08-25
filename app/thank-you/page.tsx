@@ -1,6 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import GlowCard from "@/components/ui/GlowCard";
+import Reveal from "@/components/Reveal";
+import SplitReveal from "@/components/SplitReveal";
 import { PROJECTS } from "@/lib/projects";
 import { CERTS } from "@/lib/certs";
 
@@ -24,9 +26,7 @@ export default function ThankYou() {
     <main id="content" tabIndex={-1} className="wrap" style={{ padding: "3.5rem 24px 5rem" }}>
       <div className="page-head">
       <span className="eyebrow">Message sent</span>
-      <h1 className="display display-lg">
-        Message delivered
-      </h1>
+      <SplitReveal as="h1" text="Message delivered" className="display display-lg" />
       <p>
         Thanks for writing. It has landed safely in my inbox and I read every one. You should
         hear back within a couple of working days, and for anything urgent you can reach me
@@ -38,7 +38,11 @@ export default function ThankYou() {
       </p>
       </div>
 
-      <div className="explore-grid" style={{ marginTop: "2rem" }}>
+      {/* The same grid, in the same component, as the one on the home
+          page — so it arrives the same way. It was a bare <div> here,
+          which meant the one page a visitor reaches by succeeding at
+          something was also the one page whose content simply appeared. */}
+      <Reveal className="explore-grid" pop style={{ marginTop: "2rem" }}>
         {NEXT.map((n) =>
           n.download ? (
             <GlowCard key={n.href}>
@@ -58,7 +62,7 @@ export default function ThankYou() {
             </GlowCard>
           )
         )}
-      </div>
+      </Reveal>
 
       <p style={{ marginTop: "2rem" }}>
         <Link className="lnk" href="/">

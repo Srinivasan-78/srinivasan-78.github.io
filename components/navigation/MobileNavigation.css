@@ -36,7 +36,7 @@
     calc(env(safe-area-inset-bottom) + 1rem)
     calc(env(safe-area-inset-left) + 20px);
 
-  animation: mn-in 300ms cubic-bezier(0.28, 0.11, 0.32, 1) both;
+  animation: mn-in 300ms var(--ease-out) both;
 }
 
 /* No backdrop-filter — Firefox on some platforms, older WebKit — means
@@ -46,7 +46,7 @@
 }
 
 .mobile-nav__overlay.is-closing {
-  animation: mn-out var(--mn-exit) cubic-bezier(0.4, 0, 1, 1) both;
+  animation: mn-out var(--mn-exit) var(--ease-out) both;
 }
 
 @keyframes mn-in {
@@ -63,10 +63,10 @@
 .mobile-nav__wheel {
   position: relative;
   min-height: 0;
-  animation: mn-wheel-in 420ms cubic-bezier(0.28, 0.11, 0.32, 1) 90ms both;
+  animation: mn-wheel-in 420ms var(--ease-out) 90ms both;
 }
 .is-closing .mobile-nav__wheel {
-  animation: mn-wheel-out 180ms cubic-bezier(0.4, 0, 1, 1) both;
+  animation: mn-wheel-out 180ms var(--ease-out) both;
 }
 
 @keyframes mn-wheel-in {
@@ -100,7 +100,7 @@
   font-family: var(--font-mono);
   font-size: 0.75rem;
   cursor: pointer;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), transform 160ms var(--ease-out);
 }
 .mobile-nav__close:hover,
 .mobile-nav__close:focus-visible { color: var(--ink); border-color: var(--ink-45); }

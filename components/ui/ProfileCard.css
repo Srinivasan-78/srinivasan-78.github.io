@@ -62,7 +62,11 @@
     transparent var(--behind-glow-size)
   );
   filter: blur(50px) saturate(1.1);
-  opacity: calc(0.8 * var(--card-opacity));
+  /* 0.45, not 0.8. The glow is a coloured bloom behind a card that is
+     itself dark, and how strong it needs to be depends entirely on what
+     it blooms against: on a black page it has to push to register at
+     all, on white paper the same value floods. */
+  opacity: calc(0.45 * var(--card-opacity));
   transition: opacity 200ms ease;
 }
 

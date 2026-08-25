@@ -38,22 +38,18 @@ export default function Privacy() {
 
       <h2>What the site stores in your browser</h2>
       <p>
-        The site sets no tracking cookies and no advertising cookies. It uses two entries of
+        The site sets no tracking cookies and no advertising cookies. It uses one entry of
         browser <code>localStorage</code>:
       </p>
       <ul>
-        <li>
-          <b>Theme preference</b> — remembers whether you chose the light or dark theme, so the
-          choice survives a reload.
-        </li>
         <li>
           <b>Notice dismissal</b> — remembers that you closed the privacy notice, so it is not
           shown on every page.
         </li>
       </ul>
       <p>
-        Your browser keeps both of them locally, and you can clear them any time through its
-        site-data settings. Both stay on your own device.
+        Your browser keeps it locally, and you can clear it any time through its site-data
+        settings. It stays on your own device.
       </p>
 
       <h2>Analytics</h2>

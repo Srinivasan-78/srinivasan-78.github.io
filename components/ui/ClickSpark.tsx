@@ -31,9 +31,9 @@
    `sparkColor` also accepts the name of a CSS custom property. A canvas
    cannot resolve `var()` itself — strokeStyle takes a colour, not a
    cascade — so the property is read off the document element and
-   re-read whenever the theme attribute changes. That is what lets one
-   spark follow both themes: white on the dark page, ink on the light
-   one, where a white spark was invisible. */
+   read once at mount. It is a token rather than a literal so the spark
+   and the page cannot drift apart: ink on white paper, where the white
+   spark the component ships with would be invisible. */
 
 import { useRef, useEffect, useCallback, type ReactNode } from "react";
 
@@ -78,18 +78,14 @@ export default function ClickSpark({
     }
 
     const root = document.documentElement;
-    const read = () => {
-      const value = getComputedStyle(root).getPropertyValue(sparkColor).trim();
-      // An unset property resolves to "", which would paint nothing.
-      colorRef.current = value || "#fff";
-    };
-    read();
+    const value = getComputedStyle(root).getPropertyValue(sparkColor).trim();
+    // An unset property resolves to "", which would paint nothing.
+    colorRef.current = value || "#fff";
 
-    // The theme is a data attribute on <html>, set before paint and
-    // flipped by the toggle. Same signal ThemeToggle listens to.
-    const obs = new MutationObserver(read);
-    obs.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => obs.disconnect();
+    /* Read once. This used to re-read behind a MutationObserver on
+       <html>'s data-theme, because a theme toggle could change what the
+       property resolved to at any moment. The site has one palette now,
+       so the value is fixed for the life of the page. */
   }, [sparkColor]);
 
   // Keep the canvas backing store matched to the viewport and the device

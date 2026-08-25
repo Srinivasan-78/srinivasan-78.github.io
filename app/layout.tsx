@@ -5,7 +5,7 @@ import ScrollProvider from "@/components/ScrollProvider";
 import ProgressRail from "@/components/ProgressRail";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import ThemeScript from "@/components/ThemeScript";
+import BootScript from "@/components/BootScript";
 import StickyCta from "@/components/StickyCta";
 import CookieNotice from "@/components/CookieNotice";
 import ChatWidget from "@/components/ChatWidget";
@@ -36,9 +36,10 @@ const mono = JetBrains_Mono({
 });
 
 export const viewport: Viewport = {
-  /* Matches the default theme, which is now the dark one — the browser
-     chrome on mobile tints from this before any CSS has been read. */
-  themeColor: "#000000",
+  /* Matches --paper. The browser chrome on mobile tints from this
+     before any CSS has been read, so a mismatch shows as a band of the
+     wrong colour above the page on every load. */
+  themeColor: "#ffffff",
 };
 
 export const metadata: Metadata = {
@@ -111,18 +112,14 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // data-theme is set here in the server markup rather than left to a
-    // script: dark is the unconditional default, so it must be correct
-    // even if JS never runs. ThemeScript only switches to light for a
-    // visitor who explicitly chose it.
-    //
-    // Dark is the default because the design this site follows is a dark
-    // one — black page, #121214 surfaces, one blue accent. Light is kept
-    // behind the toggle rather than dropped: it is a working theme, and
-    // some people read on a bright train.
+    // No data-theme attribute and no theme script. The site is light —
+    // white page, #f5f5f7 surfaces, one blue accent — and that is the
+    // only palette: it is declared once in :root, with color-scheme set
+    // alongside it so form controls and scrollbars follow. There is
+    // nothing for a script to correct before paint, which also means
+    // nothing can flash.
     <html
       lang="en"
-      data-theme="dark"
       className={`${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
@@ -139,7 +136,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           no subject, and running four of them at once is what made the page
           read as busy. What is left is one hairline scroll indicator. */}
       <body>
-        <ThemeScript />
+        <BootScript />
         <ProgressRail />
         <a href="#content" className="skip-link">
           Skip to content
@@ -150,9 +147,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             button. See components/ui/ClickSpark.tsx. */}
         <ClickSpark
           /* A token, not a literal: the canvas colour has to change with
-             the theme, and rgba(255,255,255,.6) is invisible on the
-             light page. ClickSpark resolves this off <html> and re-reads
-             it when data-theme flips. */
+             the page. ClickSpark resolves this off <html> at mount. */
           sparkColor="--spark"
           sparkSize={8}
           sparkRadius={12}
