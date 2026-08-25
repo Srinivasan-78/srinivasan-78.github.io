@@ -157,14 +157,20 @@ export default function ContactForm() {
         />
 
         <button type="submit" className="btn primary cf-submit">
-          {sending ? (
-            <>
-              <span className="cf-spinner" aria-hidden="true" />
-              Sending…
-            </>
-          ) : (
-            "Send message"
-          )}
+          {/* Keyed on `sending` so the span remounts on the swap and the
+              blur-in replays. Without the key React reuses the element
+              and only the text changes, which is the single-frame jump
+              this is here to bridge. */}
+          <span className="cf-submit-label" key={sending ? "sending" : "idle"}>
+            {sending ? (
+              <>
+                <span className="cf-spinner" aria-hidden="true" />
+                Sending…
+              </>
+            ) : (
+              "Send message"
+            )}
+          </span>
         </button>
       </fieldset>
 

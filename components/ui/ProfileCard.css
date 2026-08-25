@@ -83,10 +83,21 @@
   border-radius: var(--card-radius);
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
-  animation: glow-bg 12s linear infinite;
-  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px)
-    calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
-  transition: transform 1s ease;
+  /* The shadow is static. It used to be built out of --pointer-from-left
+     and --pointer-from-top, which meant a paint-only property was
+     recomputed on every frame of the tilt spring, for a card that is
+     540px tall. The offsets it produced spanned 13px horizontally and
+     26px vertically over the card's whole surface — a difference nobody
+     was reading, at the cost of a repaint per frame. */
+  box-shadow: rgba(0, 0, 0, 0.8) 2px 4px 20px -5px;
+  /* No `transition` on transform. The rule below switches it off while
+     the card is hovered or active, so during the tilt itself this never
+     applied — but the moment the pointer leaves, `.active` goes and this
+     1s `ease` came back for exactly the phase the spring is still
+     animating. The release is where the spring's overshoot lives (see
+     the REST_DISTANCE comment in ProfileCard.tsx, which exists to
+     preserve it), and a 1s ease laid over it smoothed it flat. One
+     interpolator, and it is the spring. */
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
   background: rgba(0, 0, 0, 0.9);
   backface-visibility: hidden;
@@ -358,14 +369,25 @@
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  transition: all 0.2s ease;
+  /* Named properties, not `all`. `all` swept in the backdrop-filter
+     declared on the next line, which is the one property on this button
+     that must never animate. */
+  transition: transform 160ms var(--ease-out), border-color 200ms var(--ease);
   backdrop-filter: blur(10px);
 }
 
-.pc-contact-btn:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
-  transition: all 0.2s ease;
+/* Gated: a tap on a phone latches :hover until the next tap lands
+   somewhere else, so an ungated hover lift reads as a button that got
+   stuck. */
+@media (hover: hover) and (pointer: fine) {
+  .pc-contact-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+  }
+}
+/* The press every other control on the site has. */
+.pc-contact-btn:active {
+  transform: scale(0.97);
 }
 
 .pc-content:not(.pc-avatar-content) {
@@ -416,15 +438,12 @@
   -webkit-background-clip: text;
 }
 
-@keyframes glow-bg {
-  0% {
-    --bgrotate: 0deg;
-  }
+/* `glow-bg` used to live here: a 12s infinite animation on --bgrotate,
+   a custom property nothing in this file or anywhere else in the repo
+   ever read. An unregistered custom property cannot interpolate either,
+   so it produced no pixels at all — it just kept the card's subtree
+   dirty, forever, on the busiest page of the site. */
 
-  100% {
-    --bgrotate: 360deg;
-  }
-}
 
 @keyframes holo-bg {
   0% {

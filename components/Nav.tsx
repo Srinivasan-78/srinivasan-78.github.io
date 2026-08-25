@@ -100,10 +100,11 @@ export default function Nav() {
                 href={l.href}
                 className="eyebrow lnk"
                 aria-current={isActive(l.href) ? "page" : undefined}
+                /* The underline is `.lnk[aria-current="page"]::after` in
+                   globals.css, not a text-decoration: it animates, and a
+                   text-decoration cannot. */
                 style={{
                   fontSize: "0.8rem",
-                  textDecoration: isActive(l.href) ? "underline" : "none",
-                  textUnderlineOffset: "4px",
                   color: isActive(l.href) ? "var(--accent)" : undefined,
                 }}
               >

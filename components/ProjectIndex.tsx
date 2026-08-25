@@ -82,17 +82,24 @@ function drawRow(art: Element, on: boolean) {
     if (isFilled(el)) {
       gsap.to(el, {
         opacity: on ? Number(el.dataset.o ?? 1) : 0,
-        duration: on ? 0.3 : 0.16,
-        delay: on ? 0.18 + i * 0.02 : 0,
+        duration: on ? 0.24 : 0.16,
+        delay: on ? 0.14 + i * 0.02 : 0,
         ease: "power2.out",
       });
     } else {
       const L = len.get(el) ?? 0;
       gsap.to(el, {
         strokeDashoffset: on ? 0 : L,
-        duration: on ? 0.5 : 0.22,
-        delay: on ? i * 0.04 : 0,
-        ease: on ? "power2.out" : "power2.in",
+        /* Was 0.5s with a 0.04s step, which ran ~860ms end to end on a
+           row the pointer might cross by accident. Hover is not a
+           surface that gets to spend that. */
+        duration: on ? 0.35 : 0.22,
+        delay: on ? i * 0.03 : 0,
+        /* `power2.out` both ways. The exit used to be `power2.in`, which
+           holds the line still for the first third of the retreat — the
+           part the eye is on — and then yanks it. Out-easing on the way
+           back reads as the drawing letting go. */
+        ease: "power2.out",
       });
     }
   });

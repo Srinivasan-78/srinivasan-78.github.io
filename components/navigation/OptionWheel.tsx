@@ -745,7 +745,10 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
             aria-selected={i === selected}
             onClick={() => onOptionClick(i)}
           >
-            {item}
+            <span className="option-wheel__label">{item}</span>
+            <span className="option-wheel__label option-wheel__label--strong" aria-hidden="true">
+              {item}
+            </span>
           </div>
         ))}
       </div>

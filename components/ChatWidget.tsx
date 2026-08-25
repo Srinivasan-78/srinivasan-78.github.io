@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CHAT_ENDPOINT, CHAT_SUGGESTIONS } from "@/lib/chat";
 import { OFF_TOPIC_REFUSAL } from "@/lib/assistant";
+import Strands from "./ui/Strands";
 
 type Turn = { role: "user" | "assistant"; content: string };
 
@@ -175,6 +176,34 @@ export default function ChatWidget() {
         onClick={() => setOpen((v) => !v)}
        
       >
+        <span aria-hidden="true" className="chat-launcher-strands">
+          {/* The palette is the site accent and its two neighbours, not
+              the component's default orange/violet/cyan — three unrelated
+              hues on a page that spends one would be the confetti the
+              palette comment warns about. Slow, low-amplitude and barely
+              saturated: it is a light behind a control, not a demo. */}
+          <Strands
+            colors={["#0066cc", "#4c8dff", "#06B6D4"]}
+            count={3}
+            speed={0.3}
+            amplitude={0.7}
+            waviness={0.9}
+            thickness={0.5}
+            glow={1.8}
+            taper={1.4}
+            spread={1.2}
+            intensity={0.45}
+            saturation={1.1}
+            opacity={0.7}
+            scale={4.5}
+            /* At rest it is a still frame. Continuous motion in the
+               corner of every page has no purpose beyond decoration and
+               competes with whatever the visitor is reading; answering
+               the pointer gives it one, and stops a WebGL loop that
+               otherwise runs for as long as the tab is open. */
+            playOnHover
+          />
+        </span>
         <span aria-hidden="true" className="chat-launcher-icon">
           {open ? "✕" : "◍"}
         </span>
