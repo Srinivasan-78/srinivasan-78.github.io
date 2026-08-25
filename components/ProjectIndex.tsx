@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import GlowCard from "./ui/GlowCard";
+import Reveal from "./Reveal";
+import SplitReveal from "./SplitReveal";
 import Link from "next/link";
 import gsap from "gsap";
 import { PROJECTS, type Project } from "@/lib/projects";
@@ -113,15 +115,43 @@ export default function ProjectIndex() {
     arts.forEach(armRow);
   }, []);
 
+  /* The schematic draws on mouseenter and undraws on mouseleave, which
+     is a mouse contract that a touchscreen does not honour: a tap
+     synthesises `mouseenter` and then often never sends `mouseleave`
+     until something else is tapped. So on a phone the draw fires on
+     every tap and stays armed afterwards.
+
+     The CSS guard added for hover states keeps `.pi-art` itself hidden
+     there, so nothing is visibly wrong today — but a stack of GSAP
+     tweens is still being started and left running behind an invisible
+     element, once per tap, on the device least able to spare it.
+
+     `hover: hover` rather than `pointer: fine`: the question is whether
+     the device can hover at all, which is the thing that decides
+     whether these two handlers can ever be paired. Read live rather
+     than once, so a tablet that gains a mouse mid-session is right. */
+  const canHover = useRef(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover)");
+    const apply = () => {
+      canHover.current = mq.matches;
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
   let n = 0;
 
   return (
     <main id="content" tabIndex={-1} className="pi wrap" ref={rootRef}>
       <header className="pi-head">
         <span className="eyebrow">Projects</span>
-        <h1 className="display display-lg">
-          Things I build for the love of it
-        </h1>
+        <SplitReveal
+          as="h1"
+          text="Things I build for the love of it"
+          className="display display-lg"
+        />
         <p>
           {PROJECTS.length} builds: live demos, platform experiments, and tooling I happily use
           myself. Hover a row to see its schematic, click through for the full write-up, or
@@ -134,86 +164,94 @@ export default function ProjectIndex() {
           reads as the same material as the home page rather than as a
           bare table that happens to live on the same domain. The rows
           inside keep their own behaviour. */}
-      {groups.map((g) => (
-        <GlowCard key={g.name} className="pi-glow">
-          <section className="pi-group">
-            <div className="pi-rail">
-              <span className="pi-rail-inner">
-                <h2 className="pi-rail-label">{g.name}</h2>
-                <span className="pi-rail-count">{String(g.items.length).padStart(2, "0")}</span>
-              </span>
-            </div>
+      {/* The panels arrive the way every other group of cards on the site
+          does. Plain `.reveal`, not `pop`: the scale variant is for
+          tiles, and scaling a full-width panel reads as a zoom rather
+          than as the thing arriving. */}
+      <Reveal>
+        {groups.map((g) => (
+          <GlowCard key={g.name} className="pi-glow">
+            <section className="pi-group">
+              <div className="pi-rail">
+                <span className="pi-rail-inner">
+                  <h2 className="pi-rail-label">{g.name}</h2>
+                  <span className="pi-rail-count">{String(g.items.length).padStart(2, "0")}</span>
+                </span>
+              </div>
 
-            <div className="pi-rows">
-              {g.items.map((p) => {
-                n += 1;
-                const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
-                return (
-                  <div
-                    key={p.slug}
-                    className="pi-row"
-                    onMouseEnter={(e) => {
-                      const a = e.currentTarget.querySelector(".pi-art");
-                      if (a) drawRow(a, true);
-                    }}
-                    onMouseLeave={(e) => {
-                      const a = e.currentTarget.querySelector(".pi-art");
-                      if (a) drawRow(a, false);
-                    }}
-                  >
-                    {/* The row used to be one big <Link>. A deployed project
-                        now offers a second destination — the running build —
-                        and an <a> cannot live inside an <a>, so the write-up
-                        link became an overlay stretched across the row and
-                        the demo link sits above it. Clicking anywhere still
-                        opens the write-up; only the demo pill differs. */}
-                    <Link href={`/projects/${p.slug}`} className="pi-open">
-                      <span className="sr-only">{p.title} — read the write-up</span>
-                    </Link>
+              <div className="pi-rows">
+                {g.items.map((p) => {
+                  n += 1;
+                  const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
+                  return (
+                    <div
+                      key={p.slug}
+                      className="pi-row"
+                      onMouseEnter={(e) => {
+                        if (!canHover.current) return;
+                        const a = e.currentTarget.querySelector(".pi-art");
+                        if (a) drawRow(a, true);
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!canHover.current) return;
+                        const a = e.currentTarget.querySelector(".pi-art");
+                        if (a) drawRow(a, false);
+                      }}
+                    >
+                      {/* The row used to be one big <Link>. A deployed project
+                          now offers a second destination — the running build —
+                          and an <a> cannot live inside an <a>, so the write-up
+                          link became an overlay stretched across the row and
+                          the demo link sits above it. Clicking anywhere still
+                          opens the write-up; only the demo pill differs. */}
+                      <Link href={`/projects/${p.slug}`} className="pi-open">
+                        <span className="sr-only">{p.title} — read the write-up</span>
+                      </Link>
 
-                    <span className="pi-num">{String(n).padStart(2, "0")}</span>
+                      <span className="pi-num">{String(n).padStart(2, "0")}</span>
 
-                    <span className="pi-name">
-                      {p.title}
-                      <span className="pi-status">
-                        {p.status === "Live" || p.status === "Active" ? (
-                          <i className="pi-dot" />
+                      <span className="pi-name">
+                        {p.title}
+                        <span className="pi-status">
+                          {p.status === "Live" || p.status === "Active" ? (
+                            <i className="pi-dot" />
+                          ) : null}
+                          {p.status}
+                        </span>
+                        {p.demo ? (
+                          <a
+                            href={p.demo}
+                            target="_blank"
+                            rel="noopener"
+                            className="pi-demo"
+                          >
+                            Open live build ↗
+                          </a>
                         ) : null}
-                        {p.status}
                       </span>
-                      {p.demo ? (
-                        <a
-                          href={p.demo}
-                          target="_blank"
-                          rel="noopener"
-                          className="pi-demo"
-                        >
-                          Open live build ↗
-                        </a>
-                      ) : null}
-                    </span>
 
-                    <span className="pi-teaser">{p.teaser}</span>
+                      <span className="pi-teaser">{p.teaser}</span>
 
-                    {/* The swap zone: tokens at rest, schematic on hover. */}
-                    <span className="pi-right">
-                      <span className="pi-stack">
-                        {p.stack.slice(0, 4).map((t) => (
-                          <em key={t}>{t}</em>
-                        ))}
-                        {p.stack.length > 4 && <em className="pi-more">+{p.stack.length - 4}</em>}
+                      {/* The swap zone: tokens at rest, schematic on hover. */}
+                      <span className="pi-right">
+                        <span className="pi-stack">
+                          {p.stack.slice(0, 4).map((t) => (
+                            <em key={t}>{t}</em>
+                          ))}
+                          {p.stack.length > 4 && <em className="pi-more">+{p.stack.length - 4}</em>}
+                        </span>
+                        <span className="pi-art">{art}</span>
                       </span>
-                      <span className="pi-art">{art}</span>
-                    </span>
 
-                    <span className="pi-sweep" aria-hidden="true" />
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        </GlowCard>
-      ))}
+                      <span className="pi-sweep" aria-hidden="true" />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          </GlowCard>
+        ))}
+      </Reveal>
 
       <footer className="pi-foot">
         <span className="micro">

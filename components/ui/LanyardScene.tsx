@@ -32,36 +32,31 @@ const Lanyard = dynamic(() => import("./Lanyard"), {
   loading: () => <StaticBadge />,
 });
 
-/* The badge is a printed object: its faces are artwork, not CSS, so a
-   theme switch cannot reach them the way it reaches everything else.
-   Two sets exist, and the scene picks by contrast rather than by match.
+/* The badge is a printed object: its faces are artwork, not CSS.
 
-   Matching the theme is the obvious move and it is wrong in both
-   directions — a near-black badge on a black page and a near-white one
-   on a white page are the same failure, an object that disappears into
-   its background. So the artwork runs *against* the page: the dark page
-   gets the pale badge, the light page gets the dark one. That is also
-   what a real laminated badge does, which is hang there being the one
-   thing in the room that is not the colour of the room. */
+   Two sets were drawn, one per page colour, and the scene picked
+   between them by contrast rather than by match — a near-black badge on
+   a black page and a near-white one on a white page are the same
+   failure, an object that disappears into its background. The page is
+   white and only white now, so the dark set is simply the right one and
+   there is no longer a choice to make. That is also what a real
+   laminated badge does: hang there being the one thing in the room that
+   is not the colour of the room. */
 const ART = {
-  dark: { front: "/assets/lanyard/card-front.svg", back: "/assets/lanyard/card-back.svg" },
-  light: { front: "/assets/lanyard/card-front-light.svg", back: "/assets/lanyard/card-back-light.svg" },
+  front: "/assets/lanyard/card-front.svg",
+  back: "/assets/lanyard/card-back.svg",
 } as const;
 
 /* The cord is a meshline tint rather than a texture, and it reads as
    part of the badge, so it takes the same tone. */
-const CORD = { dark: "#2e2e34", light: "#c9c9cf" } as const;
+const CORD = "#2e2e34";
 
-/** The artwork tone that stands out on a given page. */
-const toneFor = (theme: "dark" | "light") => (theme === "dark" ? "light" : "dark");
-
-
-function StaticBadge({ theme = "dark" }: { theme?: "dark" | "light" }) {
+function StaticBadge() {
   return (
     <div className="badge-static" aria-hidden="true">
       <span className="badge-cord" />
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={ART[toneFor(theme)].front} alt="" width={260} height={390} />
+      <img src={ART.front} alt="" width={260} height={390} />
     </div>
   );
 }
@@ -78,19 +73,6 @@ function connectionIsFrugal() {
 export default function LanyardScene() {
   const { ref, inView } = useInView<HTMLDivElement>("0px 0px -5% 0px");
   const [capable, setCapable] = useState(false);
-  /* Dark on the server and on the first client render, matching the
-     document's own default — the effect below corrects it before paint
-     if the visitor chose light. */
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const read = () => setTheme(root.getAttribute("data-theme") === "light" ? "light" : "dark");
-    read();
-    const obs = new MutationObserver(read);
-    obs.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => obs.disconnect();
-  }, []);
 
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -106,24 +88,18 @@ export default function LanyardScene() {
     <div ref={ref} className="lanyard-slot">
       {live ? (
         <Lanyard
-          /* Keyed on the theme: the faces are composited into the card's
-             texture atlas once, in a memo, so swapping the image props
-             alone would not redraw it. Remounting is the honest way to
-             ask for a new texture, and it costs one physics reset on a
-             control the visitor just used. */
-          key={theme}
           position={[0, -1.4, 12.5]}
           gravity={[0, -40, 0]}
           fov={20}
-          frontImage={ART[toneFor(theme)].front}
-          backImage={ART[toneFor(theme)].back}
+          frontImage={ART.front}
+          backImage={ART.back}
           imageFit="cover"
           lanyardWidth={0.5}
-          lanyardColor={CORD[toneFor(theme)]}
+          lanyardColor={CORD}
           ariaLabel="A 3D conference badge hanging from a lanyard. Drag it to swing it."
         />
       ) : (
-        <StaticBadge theme={theme} />
+        <StaticBadge />
       )}
       {/* Only claim it can be pulled when the physics build is the thing
           on screen. The fallback is a picture and says nothing. The verb

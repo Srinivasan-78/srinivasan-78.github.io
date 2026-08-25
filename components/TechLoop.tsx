@@ -67,10 +67,10 @@ export default function TechLoop() {
         speed={50}
         direction="left"
         fadeOut
-        /* The brief asks for #000000. That is exactly what --paper
-           resolves to in the dark theme this site now defaults to; in
-           the light theme it follows the page instead of punching two
-           black bars into a white header. */
+        /* Kept for the prop's sake — the strip's edge fade is done with
+           a mask in globals.css now, so nothing paints this colour. A
+           mask has no colour to get wrong, which is what the header's
+           translucent material needs. */
         fadeOutColor="var(--paper)"
         scaleOnHover
         hoverSpeed={12}

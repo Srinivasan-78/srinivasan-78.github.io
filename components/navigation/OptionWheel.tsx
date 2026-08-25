@@ -13,6 +13,7 @@ import {
   type PointerEvent as ReactPointerEvent,
   type WheelEvent as ReactWheelEvent,
 } from "react";
+import { haptic } from "@/lib/haptics";
 import "./OptionWheel.css";
 
 /* A curved option wheel: a vertical list bent around an invisible arc,
@@ -21,16 +22,38 @@ import "./OptionWheel.css";
    The interaction model is the point of it, so it is worth stating what
    the model is rather than leaving it in the arithmetic below.
 
-   There are two numbers. `target` is where the wheel is being asked to
-   sit — an item index, fractional while a finger is down. `pos` is
-   where it actually is. One requestAnimationFrame loop walks `pos`
-   toward `target` with frame-rate-independent exponential smoothing:
+   There are three numbers. `target` is where the wheel is being asked to
+   sit — an item index, fractional while a finger is down. `pos` is where
+   it actually is. `vel` is how fast `pos` is moving, in steps per
+   second. One requestAnimationFrame loop integrates a spring that pulls
+   `pos` toward `target`:
 
-       pos += (target - pos) * (1 - exp(-dt / tau))
+       a    = -w^2 * (pos - target) - 2 * zeta * w * vel
+       vel += a * dt
+       pos += vel * dt
 
-   The `1 - exp(-dt/tau)` factor is what makes it frame-rate
-   independent. A plain `pos += (target - pos) * 0.2` moves twice as far
-   per second at 120Hz as it does at 60Hz; this does not.
+   This used to be exponential smoothing — `pos += (target - pos) * k` —
+   which has no velocity term at all. That is the difference that matters
+   here, and it is worth being explicit about why:
+
+     - A flick did nothing. Smoothing only knows the distance left to
+       travel, so releasing after a fast 20px drag and releasing after a
+       slow one produced the identical motion. The wheel could be dragged
+       but never thrown.
+     - Releasing always stopped dead at the detent, because the wheel
+       arrived with no momentum to carry past it.
+     - Grabbing the wheel mid-flight restarted the motion from a standstill.
+
+   The spring fixes all three, because velocity is a number the system
+   carries rather than one it recomputes. The finger's release velocity
+   is handed to the spring directly (see `endDrag`), a re-target mid-
+   flight keeps whatever velocity `pos` already had, and where the wheel
+   lands is chosen by projecting that velocity forward rather than by
+   rounding off where the finger happened to stop.
+
+   dt is clamped, which is what keeps the integration stable across a
+   dropped frame; the spring itself is frame-rate independent because it
+   is integrated in real time rather than per frame.
 
    Neither number is React state. They live in refs, and the loop writes
    transforms, opacity and filters straight onto the option elements. A
@@ -108,6 +131,66 @@ const DRAG_THRESHOLD = 6;
 const WHEEL_SNAP_MS = 140;
 /** Below this, `pos` is close enough to `target` to stop the loop. */
 const REST_EPSILON = 0.002;
+/** And this, in steps per second, is slow enough to count as stopped. */
+const REST_VELOCITY = 0.02;
+
+/* Damping ratios. 1 is critically damped — it reaches the target and
+   stops, with no overshoot. Below 1 it overshoots and comes back.
+
+   Which one applies is decided by what caused the movement, not by
+   taste. A flick carried momentum, and momentum that stops dead at the
+   detent reads as hitting a wall, so a released drag settles at 0.8 and
+   is allowed a little overshoot. A keyboard press, a tap on an option or
+   a trackpad snap carried none, so those settle at 1: a wheel that
+   bounces when you press the down arrow is bouncing for no reason. */
+const DAMPING_GESTURE = 0.8;
+const DAMPING_DISCRETE = 1;
+
+/** Frames longer than this are treated as this long, so a dropped frame
+    or a backgrounded tab cannot integrate the spring into orbit. */
+const MAX_FRAME = 0.032;
+
+/* Deceleration for the momentum projection, and the ceiling on what it
+   is allowed to project.
+
+   0.998 is the rate a native scroll view decelerates at, and the
+   projection derived from it — velocity * 499 — is what makes a flick
+   feel like it throws the wheel rather than nudges it. The clamp is
+   because this list has five entries: without it, a hard flick on a
+   trackpad projects tens of steps, the wheel clamps to the last option
+   anyway, and the whole gesture resolves as "go to the end" no matter
+   how it was aimed. Three steps is far enough to cross the list and
+   short enough that aim still decides where it lands. */
+const DECELERATION = 0.998;
+const MAX_PROJECTED_STEPS = 3;
+
+/* Rubber-banding past the ends of a non-looping list. The further past
+   the last option the finger goes, the less the wheel follows it —
+   which says "there is nothing more here" while still tracking, where a
+   hard clamp just reads as the wheel having frozen. */
+const RUBBER = 0.55;
+/** How many steps past the end the resistance is scaled against. */
+const RUBBER_RANGE = 2.4;
+
+/** How many recent pointer samples are kept for the velocity estimate. */
+const SAMPLE_WINDOW = 5;
+/** Samples older than this are stale — a finger that paused before
+    lifting released at rest, whatever it was doing 200ms ago. */
+const SAMPLE_MAX_AGE = 120;
+
+/** Apple's momentum projection: where a throw at this velocity comes to
+    rest. Note this is the exponential-decay form, not v^2/2a. */
+function project(velocity: number) {
+  return (velocity / 1000) * DECELERATION / (1 - DECELERATION);
+}
+
+/** Progressive resistance past a boundary. `overshoot` and the result
+    are both in steps. */
+function rubberband(overshoot: number) {
+  const sign = Math.sign(overshoot);
+  const o = Math.abs(overshoot);
+  return sign * ((o * RUBBER_RANGE * RUBBER) / (RUBBER_RANGE + RUBBER * o));
+}
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(Math.max(v, lo), hi);
 
@@ -148,6 +231,13 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
 
   const posRef = useRef(startIndex);
   const targetRef = useRef(startIndex);
+  /** Current velocity of `pos`, in steps per second. Carried across the
+      handoff from finger to spring, and preserved through a re-target so
+      reversing mid-flight bends the motion instead of restarting it. */
+  const velRef = useRef(0);
+  /** Damping ratio the spring is currently running at — see the two
+      constants above. */
+  const dampingRef = useRef(DAMPING_DISCRETE);
   /** Step height in px. Measured, because fontSize is in rem. */
   const stepRef = useRef(0);
   const rafRef = useRef<number | null>(null);
@@ -161,6 +251,11 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
     startY: number;
     startTarget: number;
     moved: boolean;
+    /** Recent (y, timestamp) pairs, oldest first. The release velocity
+        comes from these rather than from the last move event alone: a
+        single pair straddling one slow frame reports a velocity the
+        finger never had. */
+    samples: { y: number; t: number }[];
   } | null>(null);
   const wheelSnapRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -218,6 +313,19 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
     }
   }, [distance]);
 
+  /* `pos` for a looping list drifts further from 0 with every wrap, and
+     nothing resets it — each grab starts from wherever the last one left
+     off. Harmless for the arithmetic, which is all relative, but the
+     numbers grow without bound over a long session. This folds it back
+     into range at the one moment it can be done without a visible jump:
+     the instant a finger takes over, when `pos` and `target` are about
+     to be set to the same value anyway. */
+  const settledPos = useCallback((pos: number) => {
+    const { count: n, loop: wrap } = cfg.current;
+    if (!wrap || n <= 0) return pos;
+    return ((pos % n) + n) % n;
+  }, []);
+
   const settledIndex = useCallback(() => {
     const { count: n, loop: wrap } = cfg.current;
     const raw = Math.round(posRef.current);
@@ -233,6 +341,13 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
       reportedRef.current = idx;
       setSelected(idx);
       playTickRef.current();
+      /* The detent, on the frame it happens. A wheel that clicks under
+         the finger is the whole reason a physical one feels precise, and
+         a selection change is exactly the kind of discrete, meaningful
+         commit that earns a haptic — as opposed to firing one
+         continuously through the drag, which trains the hand to ignore
+         it. See lib/haptics.ts for the vocabulary this belongs to. */
+      haptic("detent");
       cfg.current.onChange?.(idx, itemsRef.current[idx]);
     },
     []
@@ -255,21 +370,50 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
   const tick = useCallback(
     (ts: number) => {
       if (!lastTsRef.current) lastTsRef.current = ts;
-      const dt = Math.min((ts - lastTsRef.current) / 1000, 0.05);
+      const dt = Math.min((ts - lastTsRef.current) / 1000, MAX_FRAME);
       lastTsRef.current = ts;
 
-      const tau = Math.max(cfg.current.smoothing, 1) / 1000;
-      const k = reducedRef.current ? 1 : 1 - Math.exp(-dt / tau);
-      posRef.current += (targetRef.current - posRef.current) * k;
-
-      if (Math.abs(targetRef.current - posRef.current) < REST_EPSILON) {
+      if (reducedRef.current) {
+        /* Reduced motion gets no travel at all: the wheel is simply at
+           the option that was chosen. Springing there more slowly is
+           still springing. */
         posRef.current = targetRef.current;
+        velRef.current = 0;
+      } else {
+        /* Response, in seconds — how quickly the spring reaches the
+           target. Not a duration: a spring has no fixed one. The
+           `smoothing` prop is still the knob that sets it, read as a
+           time constant and doubled, which lands the default 180 on
+           0.36s — inside the 0.3–0.4 range that a picker wants and
+           close enough to the old feel that nothing calling this
+           component needs to be retuned. */
+        const response = (Math.max(cfg.current.smoothing, 1) / 1000) * 2;
+        const w = (2 * Math.PI) / response;
+        const zeta = dampingRef.current;
+
+        const a =
+          -(w * w) * (posRef.current - targetRef.current) - 2 * zeta * w * velRef.current;
+        velRef.current += a * dt;
+        posRef.current += velRef.current * dt;
+      }
+
+      /* Rest is both conditions, not either. Distance alone calls the
+         wheel settled at the exact moment an under-damped spring passes
+         through its target at full speed, which would cut the overshoot
+         off mid-flight — the bounce would only ever be visible on the
+         way out. */
+      if (
+        Math.abs(targetRef.current - posRef.current) < REST_EPSILON &&
+        Math.abs(velRef.current) < REST_VELOCITY
+      ) {
+        posRef.current = targetRef.current;
+        velRef.current = 0;
       }
 
       paint();
       publish(settledIndex());
 
-      if (posRef.current === targetRef.current) {
+      if (posRef.current === targetRef.current && velRef.current === 0) {
         rafRef.current = null;
         lastTsRef.current = 0;
         return;
@@ -286,10 +430,26 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
     rafRef.current = requestAnimationFrame(tick);
   }, [tick]);
 
+  /* `damping` says what kind of movement this is — a gesture that
+     carried momentum, or a discrete jump that did not — and `velocity`
+     is the finger's speed at release, in steps per second, handed
+     straight to the spring so there is no seam between the drag and the
+     animation that follows it.
+
+     Omitting `velocity` deliberately leaves whatever velocity `pos`
+     already had. That is what makes a re-target mid-flight bend the
+     motion rather than restart it: press the down arrow twice quickly
+     and the second press adds to a wheel that is already moving,
+     instead of stopping it and starting again. */
   const setTarget = useCallback(
-    (value: number) => {
+    (
+      value: number,
+      { damping = DAMPING_DISCRETE, velocity }: { damping?: number; velocity?: number } = {}
+    ) => {
       const { count: n, loop: wrap } = cfg.current;
       targetRef.current = wrap ? value : clamp(value, 0, Math.max(n - 1, 0));
+      dampingRef.current = damping;
+      if (velocity !== undefined) velRef.current = velocity;
       run();
     },
     [run]
@@ -366,11 +526,26 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!draggable || e.button !== 0) return;
+
+    /* The grab starts from `pos` — where the wheel is on screen right
+       now — not from `target`, where it was heading. Those two are the
+       same at rest and quite far apart mid-flight, and starting from the
+       target is what makes a wheel jump under a finger that catches it
+       in motion.
+
+       The spring is stopped rather than left running: the finger is the
+       authority from here on, and a spring still pulling toward its old
+       target would be fighting it. */
+    posRef.current = settledPos(posRef.current);
+    targetRef.current = posRef.current;
+    velRef.current = 0;
+
     dragRef.current = {
       id: e.pointerId,
       startY: e.clientY,
-      startTarget: targetRef.current,
+      startTarget: posRef.current,
       moved: false,
+      samples: [{ y: e.clientY, t: e.timeStamp }],
     };
     e.currentTarget.setPointerCapture(e.pointerId);
   };
@@ -378,16 +553,54 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
   const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
     if (!drag || drag.id !== e.pointerId) return;
+
+    // Kept regardless of the threshold: the velocity at release is the
+    // velocity of the last few moves, including the ones that happened
+    // before the gesture was confidently a drag.
+    drag.samples.push({ y: e.clientY, t: e.timeStamp });
+    if (drag.samples.length > SAMPLE_WINDOW) drag.samples.shift();
+
     const dy = e.clientY - drag.startY;
     if (!drag.moved && Math.abs(dy) < DRAG_THRESHOLD) return;
     drag.moved = true;
     // Pull the sheet down and earlier items come to centre, which is
     // the direction the content moves, not the direction the index does.
     const step = stepRef.current || 1;
-    targetRef.current = drag.startTarget - dy / step;
-    posRef.current = targetRef.current;
+    const raw = drag.startTarget - dy / step;
+
+    /* Past the ends of a list that does not loop, the wheel follows the
+       finger less and less rather than stopping against a wall. It is
+       still moving, so the gesture still reads as heard; it is barely
+       moving, so it also reads as "this is the end". */
+    const { count: n, loop: wrap } = cfg.current;
+    let next = raw;
+    if (!wrap && n > 0) {
+      const lo = 0;
+      const hi = n - 1;
+      if (raw < lo) next = lo + rubberband(raw - lo);
+      else if (raw > hi) next = hi + rubberband(raw - hi);
+    }
+
+    targetRef.current = next;
+    posRef.current = next;
+    velRef.current = 0;
     paint();
     publish(settledIndex());
+  };
+
+  /** Finger speed at release, in steps per second, signed the same way
+      `target` is. Measured across the newest samples still inside the
+      age window rather than the last event pair. */
+  const releaseVelocity = (samples: { y: number; t: number }[], now: number) => {
+    const step = stepRef.current || 1;
+    const fresh = samples.filter((sample) => now - sample.t <= SAMPLE_MAX_AGE);
+    if (fresh.length < 2) return 0;
+    const first = fresh[0];
+    const last = fresh[fresh.length - 1];
+    const dt = last.t - first.t;
+    if (dt <= 0) return 0;
+    // Dragging down (positive dy) lowers the index, hence the negation.
+    return -((last.y - first.y) / step) / (dt / 1000);
   };
 
   const endDrag = (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -398,7 +611,23 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
     }
     dragRef.current = null;
     // Never leave an option stranded between two positions.
-    if (drag.moved) snap();
+    if (!drag.moved) return;
+
+    /* Where the wheel lands is chosen from where the gesture was going,
+       not from where the finger happened to let go. Project the release
+       velocity forward the way a scroll view decelerates, then snap to
+       the option nearest that projected point — so a flick throws the
+       wheel past two options and a slow drag released in the same place
+       settles on the nearest one.
+
+       The velocity then goes to the spring as its initial velocity,
+       which is what removes the seam: the first frame after the finger
+       lifts is moving at exactly the speed the finger was. */
+    const v = releaseVelocity(drag.samples, e.timeStamp);
+    const projected =
+      posRef.current + clamp(project(v), -MAX_PROJECTED_STEPS, MAX_PROJECTED_STEPS);
+
+    setTarget(Math.round(projected), { damping: DAMPING_GESTURE, velocity: v });
   };
 
   const onWheel = (e: ReactWheelEvent<HTMLDivElement>) => {
@@ -406,6 +635,11 @@ const OptionWheel = forwardRef<OptionWheelHandle, OptionWheelProps>(function Opt
     targetRef.current = targetRef.current + e.deltaY / step;
     const { count: n, loop: wrap } = cfg.current;
     if (!wrap) targetRef.current = clamp(targetRef.current, 0, Math.max(n - 1, 0));
+    /* A trackpad already carries its own momentum — the browser keeps
+       sending deltas after the fingers lift — so the wheel must not add
+       a second helping of it. Critically damped, and the target is the
+       delta itself rather than a projection of it. */
+    dampingRef.current = DAMPING_DISCRETE;
     run();
     if (wheelSnapRef.current) clearTimeout(wheelSnapRef.current);
     wheelSnapRef.current = setTimeout(snap, WHEEL_SNAP_MS);

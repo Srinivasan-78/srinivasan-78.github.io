@@ -2,14 +2,38 @@
 
 /* React Bits <ProfileCard />, ported to TypeScript.
 
-   The tilt engine is upstream's, unchanged in behaviour: the same
-   exponential smoothing toward a pointer target, the same two time
-   constants (a slow one for the intro settle, a fast one thereafter),
-   the same CSS custom properties written on the wrapper, and the same
-   device-orientation path behind `enableMobileTilt`.
+   Upstream's CSS custom properties, upstream's device-orientation path
+   behind `enableMobileTilt`, and a reduced-motion guard added here: with
+   the OS setting on, the card renders centred and static rather than
+   tracking the pointer.
 
-   Added here: a reduced-motion guard. With the OS setting on, the card
-   renders centred and static rather than tracking the pointer. */
+   The tilt engine itself is not upstream's. It was exponential
+   smoothing — `current += (target - current) * k` — which has no
+   velocity term, and the missing velocity is felt in one specific
+   place: the moment the pointer leaves.
+
+   Sweeping off the edge of a card is a throw. The hand is moving, and it
+   has a direction and a speed at the instant it leaves. Smoothing knows
+   only the distance left to the centre, so it discarded all of that and
+   glided the card home along the same path at the same rate whether the
+   pointer drifted off or was flicked off. The card felt like it was
+   being retracted rather than released.
+
+   It is two springs now, one per axis, and they are separate springs
+   rather than one spring on the 2D distance — a single one desyncs the
+   moment X and Y are moving at different speeds, which is most of the
+   time. Each carries its own velocity, so:
+
+     - while a pointer is on the card the springs are critically damped
+       and simply track it, because a card that overshoots the cursor
+       you are aiming with reads as loose, not lively;
+
+     - when the pointer leaves, its exit velocity is handed to the
+       springs as their initial velocity and the damping drops to 0.8,
+       so the card carries the throw through the centre and settles
+       back. Bounce here is earned: a gesture with momentum preceded it.
+
+   The intro settle keeps its own slower response, unchanged in feel. */
 
 import React, { useEffect, useRef, useCallback, useMemo, type CSSProperties } from "react";
 import "./ProfileCard.css";
@@ -89,9 +113,31 @@ const ProfileCardComponent = ({
     let currentY = 0;
     let targetX = 0;
     let targetY = 0;
+    /* One velocity per axis, in px/s. These are what the smoothing this
+       replaced had no equivalent of. */
+    let velX = 0;
+    let velY = 0;
 
-    const DEFAULT_TAU = 0.14;
-    const INITIAL_TAU = 0.6;
+    /* Response, in seconds: how quickly the spring reaches the target.
+       Not a duration — a spring has none; its settle time falls out of
+       these two numbers. The pair mirrors the time constants this used
+       to run on, so the tracking still feels the way it did.
+
+       Damping ratio: 1 reaches the target and stops. Below 1 it
+       overshoots and comes back. Which applies is decided by what caused
+       the movement, never by taste — see the note at the top. */
+    const DEFAULT_RESPONSE = 0.28;
+    const INITIAL_RESPONSE = 1.2;
+    const DAMPING_TRACKING = 1;
+    const DAMPING_RELEASE = 0.8;
+    /* Longer frames than this are clamped, so a dropped frame or a
+       backgrounded tab cannot integrate the spring into orbit. */
+    const MAX_FRAME = 0.032;
+    /** Below both of these, on both axes, the card has arrived. */
+    const REST_DISTANCE = 0.05;
+    const REST_VELOCITY = 0.5;
+
+    let damping = DAMPING_TRACKING;
     let initialUntil = 0;
 
     const setVarsFromXY = (x: number, y: number) => {
@@ -126,18 +172,35 @@ const ProfileCardComponent = ({
     const step = (ts: number) => {
       if (!running) return;
       if (lastTs === 0) lastTs = ts;
-      const dt = (ts - lastTs) / 1000;
+      const dt = Math.min((ts - lastTs) / 1000, MAX_FRAME);
       lastTs = ts;
 
-      const tau = ts < initialUntil ? INITIAL_TAU : DEFAULT_TAU;
-      const k = 1 - Math.exp(-dt / tau);
+      const response = ts < initialUntil ? INITIAL_RESPONSE : DEFAULT_RESPONSE;
+      const w = (2 * Math.PI) / response;
 
-      currentX += (targetX - currentX) * k;
-      currentY += (targetY - currentY) * k;
+      /* Semi-implicit integration, per axis. Acceleration is the pull
+         toward the target minus the drag on the current velocity; the
+         new velocity is what moves the position, which is what keeps
+         this stable at the frame lengths a browser actually delivers. */
+      const ax = -(w * w) * (currentX - targetX) - 2 * damping * w * velX;
+      const ay = -(w * w) * (currentY - targetY) - 2 * damping * w * velY;
+      velX += ax * dt;
+      velY += ay * dt;
+      currentX += velX * dt;
+      currentY += velY * dt;
 
       setVarsFromXY(currentX, currentY);
 
-      const stillFar = Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05;
+      /* Rest is distance *and* velocity, not distance alone. An
+         under-damped spring passes through its target at full speed, and
+         a distance-only test calls it settled at exactly that instant —
+         which would cut the overshoot off mid-flight, so the release
+         bounce would never be seen. */
+      const stillFar =
+        Math.abs(targetX - currentX) > REST_DISTANCE ||
+        Math.abs(targetY - currentY) > REST_DISTANCE ||
+        Math.abs(velX) > REST_VELOCITY ||
+        Math.abs(velY) > REST_VELOCITY;
 
       if (stillFar || document.hasFocus()) {
         rafId = requestAnimationFrame(step);
@@ -162,11 +225,35 @@ const ProfileCardComponent = ({
       setImmediate(x: number, y: number) {
         currentX = x;
         currentY = y;
+        velX = 0;
+        velY = 0;
         setVarsFromXY(currentX, currentY);
       },
       setTarget(x: number, y: number) {
         targetX = x;
         targetY = y;
+        /* Deliberately does not touch the velocity. A re-target that
+           reset it would stop the card dead every time the pointer moved
+           — sixty times a second — and re-accelerate from nothing. Left
+           alone, the spring bends its existing motion toward the new
+           target, which is the whole reason a moving pointer feels like
+           it is dragging the card rather than teleporting it. */
+        damping = DAMPING_TRACKING;
+        start();
+      },
+      /* The release. `vx`/`vy` are the pointer's own velocity at the
+         instant it left the card, in px/s, handed to the springs as
+         their initial velocity so the first frame after the pointer is
+         gone is moving at exactly the speed the pointer was — no seam
+         between the gesture and the animation that follows it. */
+      release(vx: number, vy: number) {
+        const shell = shellRef.current;
+        if (!shell) return;
+        targetX = shell.clientWidth / 2;
+        targetY = shell.clientHeight / 2;
+        velX = vx;
+        velY = vy;
+        damping = DAMPING_RELEASE;
         start();
       },
       toCenter() {
@@ -202,11 +289,42 @@ const ProfileCardComponent = ({
      pointer — so touch has no business driving the tilt engine. */
   const isTiltPointer = (event: PointerEvent) => event.pointerType !== "touch";
 
+  /* A short history of where the pointer has been, so the velocity at
+     the moment it leaves comes from the last few moves rather than from
+     one event pair — a single pair straddling one slow frame reports a
+     speed the hand never had. Samples older than the window are dropped:
+     a pointer that paused on the card before drifting off left at rest,
+     whatever it was doing 150ms earlier. */
+  const samplesRef = useRef<{ x: number; y: number; t: number }[]>([]);
+  const SAMPLE_WINDOW = 5;
+  const SAMPLE_MAX_AGE = 120;
+
+  const pushSample = (x: number, y: number, t: number) => {
+    const samples = samplesRef.current;
+    samples.push({ x, y, t });
+    if (samples.length > SAMPLE_WINDOW) samples.shift();
+  };
+
+  /** Pointer velocity in px/s, per axis, across the fresh samples. */
+  const pointerVelocity = (now: number) => {
+    const fresh = samplesRef.current.filter((sample) => now - sample.t <= SAMPLE_MAX_AGE);
+    if (fresh.length < 2) return { vx: 0, vy: 0 };
+    const first = fresh[0];
+    const last = fresh[fresh.length - 1];
+    const dt = last.t - first.t;
+    if (dt <= 0) return { vx: 0, vy: 0 };
+    return {
+      vx: ((last.x - first.x) / dt) * 1000,
+      vy: ((last.y - first.y) / dt) * 1000,
+    };
+  };
+
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
       const shell = shellRef.current;
       if (!shell || !tiltEngine || !isTiltPointer(event)) return;
       const { x, y } = getOffsets(event, shell);
+      pushSample(x, y, event.timeStamp);
       tiltEngine.setTarget(x, y);
     },
     [tiltEngine]
@@ -225,30 +343,44 @@ const ProfileCardComponent = ({
       }, ANIMATION_CONFIG.ENTER_TRANSITION_MS);
 
       const { x, y } = getOffsets(event, shell);
+      // A fresh entry is a fresh gesture; whatever the pointer was doing
+      // before it arrived is not part of it.
+      samplesRef.current = [{ x, y, t: event.timeStamp }];
       tiltEngine.setTarget(x, y);
     },
     [tiltEngine]
   );
 
-  const handlePointerLeave = useCallback(() => {
-    const shell = shellRef.current;
-    if (!shell || !tiltEngine) return;
+  const handlePointerLeave = useCallback(
+    (event: PointerEvent) => {
+      const shell = shellRef.current;
+      if (!shell || !tiltEngine) return;
 
-    tiltEngine.toCenter();
+      /* The exit itself is a sample — it is the last and most relevant
+         one, and on a fast sweep it can be the only one inside the
+         window. */
+      const { x, y } = getOffsets(event, shell);
+      pushSample(x, y, event.timeStamp);
+      const { vx, vy } = pointerVelocity(event.timeStamp);
+      samplesRef.current = [];
 
-    const checkSettle = () => {
-      const { x, y, tx, ty } = tiltEngine.getCurrent();
-      const settled = Math.hypot(tx - x, ty - y) < 0.6;
-      if (settled) {
-        shell.classList.remove("active");
-        leaveRafRef.current = null;
-      } else {
-        leaveRafRef.current = requestAnimationFrame(checkSettle);
-      }
-    };
-    if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
-    leaveRafRef.current = requestAnimationFrame(checkSettle);
-  }, [tiltEngine]);
+      tiltEngine.release(vx, vy);
+
+      const checkSettle = () => {
+        const { x, y, tx, ty } = tiltEngine.getCurrent();
+        const settled = Math.hypot(tx - x, ty - y) < 0.6;
+        if (settled) {
+          shell.classList.remove("active");
+          leaveRafRef.current = null;
+        } else {
+          leaveRafRef.current = requestAnimationFrame(checkSettle);
+        }
+      };
+      if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
+      leaveRafRef.current = requestAnimationFrame(checkSettle);
+    },
+    [tiltEngine]
+  );
 
   const handleDeviceOrientation = useCallback(
     (event: DeviceOrientationEvent) => {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useScrollLock } from "./ScrollProvider";
 import { useInView } from "@/lib/useInView";
 import GlowCard from "./ui/GlowCard";
@@ -125,11 +126,84 @@ const ART: Record<string, React.ReactNode> = {
   ),
 };
 
+/** Matches the exit animation on `.lb.is-closing` in globals.css. */
+const LB_EXIT_MS = 240;
+
 export default function WorkGrid({ posts }: { posts: Post[] }) {
   const [open, setOpen] = useState<number | null>(null);
+  /* The dialog has to stay mounted while it animates out, so closing is
+     a state of its own rather than the absence of one. `open` is still
+     what decides *which* project is shown; `closing` decides whether the
+     thing on screen is arriving or leaving. */
+  const [closing, setClosing] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  /* Viewport coordinates of the centre of the tile that was pressed.
+     The lightbox grows out of this point, so the panel is visibly the
+     tile you tapped rather than a modal that happened to appear. */
+  const originRef = useRef<{ x: number; y: number } | null>(null);
+  const exitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /* The portal target only exists in the browser, so nothing renders on
+     the server or on the first client pass — which is also what keeps
+     the two agreeing. Same pattern as <MobileNavigation>. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const active = open === null ? null : posts[open];
+
+  const openAt = useCallback((index: number, el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    originRef.current = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    setClosing(false);
+    setOpen(index);
+  }, []);
+
+  const close = useCallback(() => {
+    setOpen((o) => {
+      if (o === null) return o;
+      setClosing(true);
+      return o;
+    });
+  }, []);
+
+  // Unmount only once the exit has had its time.
+  useEffect(() => {
+    if (!closing) return;
+    exitTimer.current = setTimeout(() => {
+      setOpen(null);
+      setClosing(false);
+    }, LB_EXIT_MS);
+    return () => {
+      if (exitTimer.current) clearTimeout(exitTimer.current);
+      exitTimer.current = null;
+    };
+  }, [closing]);
+
+  /* transform-origin is resolved against the card's own box, but the
+     origin we have is in viewport coordinates — and the card does not
+     exist to be measured until it is mounted. So it is converted here,
+     in a layout effect, before the browser paints the first frame of the
+     animation. Clamped well outside the card so a tile at the edge of a
+     wide grid still gives a usable origin rather than an extreme one.
+
+     Falls back to the centre if the dialog was opened by a keyboard with
+     no pointer position behind it. */
+  useLayoutEffect(() => {
+    const el = cardRef.current;
+    const origin = originRef.current;
+    if (!el) return;
+    if (!origin) {
+      el.style.removeProperty("--lb-x");
+      el.style.removeProperty("--lb-y");
+      return;
+    }
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const pct = (v: number, size: number) =>
+      `${Math.max(-50, Math.min(150, (v / size) * 100)).toFixed(1)}%`;
+    el.style.setProperty("--lb-x", pct(origin.x - r.left, r.width));
+    el.style.setProperty("--lb-y", pct(origin.y - r.top, r.height));
+  }, [open]);
   const { lock, unlock } = useScrollLock();
   /* Not wrapped in <Reveal> because the tiles are this component's own
      children, not a caller's — the group class goes straight on the grid
@@ -144,7 +218,7 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
     lock();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(null);
+      if (e.key === "Escape") close();
     };
     document.addEventListener("keydown", onKey);
 
@@ -153,7 +227,7 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
       unlock();
       lastFocus.current?.focus();
     };
-  }, [open, lock, unlock]);
+  }, [open, lock, unlock, close]);
 
   return (
     <>
@@ -166,7 +240,7 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
             <button
               type="button"
               className="post"
-              onClick={() => setOpen(i)}
+              onClick={(e) => openAt(i, e.currentTarget)}
               aria-haspopup="dialog"
             >
               <div className="post-body">
@@ -182,19 +256,29 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
         ))}
       </div>
 
-      {active && (
+      {/* Portalled to <body> rather than left where it is written.
+
+          Opening it locks the scroll, and the lock is what marks the
+          document as having a modal open — which pushes <main> back with
+          a transform. A transformed element becomes the containing block
+          for every fixed-position descendant it has, so a dialog left
+          inside <main> would be pushed back along with the page it is
+          supposed to be floating above, and its `position: fixed` would
+          resolve against <main> instead of the viewport. Out of the
+          subtree, it is unaffected by both. */}
+      {mounted && active && createPortal(
         <div
-          className="lb"
+          className={"lb" + (closing ? " is-closing" : "")}
           role="dialog"
           aria-modal="true"
           aria-label={active.title}
           onClick={(e) => {
-            if (e.target === e.currentTarget) setOpen(null);
+            if (e.target === e.currentTarget) close();
           }}
         >
           <GlowCard className="lb-glow" radius={22} animated>
-            <div className="lb-card">
-              <button ref={closeRef} type="button" className="lb-close" onClick={() => setOpen(null)}>
+            <div ref={cardRef} className="lb-card">
+              <button ref={closeRef} type="button" className="lb-close" onClick={close}>
                 close
               </button>
               <div className="lb-cover">{ART[active.title]}</div>
@@ -222,7 +306,8 @@ export default function WorkGrid({ posts }: { posts: Post[] }) {
               )}
             </div>
           </GlowCard>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

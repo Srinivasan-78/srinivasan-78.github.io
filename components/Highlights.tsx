@@ -13,8 +13,8 @@ import SectionHead from "./SectionHead";
    Same drawings, same groupings, same tools — on the card the rest of
    the site is made of, with every list visible. The scenes keep their
    circular clip, because that is the composition they were drawn for;
-   their colours are theme tokens now rather than the baked-in dark hexes
-   they carried, so they hold in the light theme too. */
+   their colours are palette tokens now rather than the baked-in hexes
+   they carried, so they follow the page rather than fighting it. */
 
 type Skill = { label: string; title: string; items: string[]; svg: string };
 

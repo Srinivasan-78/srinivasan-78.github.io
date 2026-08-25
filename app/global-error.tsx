@@ -4,10 +4,10 @@ import "./globals.css";
 
 /* The last resort: this replaces the root layout, so it has to bring its
    own <html> and <body> and cannot use anything the layout provides — no
-   header, no footer, no theme script, no fonts loaded through next/font's
-   variables. It is styled from the stylesheet's own tokens with
-   data-theme="dark" set literally, which is the site's default theme, so
-   the page still reads as this site rather than as a browser error.
+   header, no footer, no boot script, no fonts loaded through next/font's
+   variables. It is styled from the stylesheet's own tokens, which carry
+   the site's one palette on :root, so the page still reads as this site
+   rather than as a browser error.
 
    Kept deliberately plain. A boundary that itself depends on components is
    a boundary that can fail the same way as the thing it is catching. */
@@ -19,7 +19,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en">
       <body>
         <main
           className="wrap"

@@ -94,10 +94,15 @@
   overflow: visible;
 }
 
-.logoloop--scale-hover .logoloop__item:hover img,
-.logoloop--scale-hover .logoloop__item:hover .logoloop__node {
-  transform: scale(1.2);
-  transform-origin: center center;
+/* Gated: a tap on a touchscreen fakes a hover and leaves it applied, so
+   ungated this left a logo stuck at 1.2x until something else was
+   tapped. */
+@media (hover: hover) and (pointer: fine) {
+  .logoloop--scale-hover .logoloop__item:hover img,
+  .logoloop--scale-hover .logoloop__item:hover .logoloop__node {
+    transform: scale(1.2);
+    transform-origin: center center;
+  }
 }
 
 .logoloop--scale-hover .logoloop__node {
