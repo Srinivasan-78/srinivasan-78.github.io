@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CHAT_ENDPOINT, CHAT_SUGGESTIONS } from "@/lib/chat";
-import { OFF_TOPIC_REFUSAL } from "@/lib/assistant";
+import { CHAT_LIMITS, OFF_TOPIC_REFUSAL } from "@/lib/assistant";
 import Strands from "./ui/Strands";
 
 type Turn = { role: "user" | "assistant"; content: string };
@@ -60,10 +60,26 @@ export default function ChatWidget() {
       const question = text.trim();
       if (!question || busy) return;
 
-      /* The worker rejects anything past 16 turns, so the oldest are dropped
-         here rather than letting a long conversation dead-end on a 400. The
-         slice has to start on a user turn — the API requires it. */
-      const kept = [...turns, { role: "user" as const, content: question }].slice(-13);
+      /* The worker rejects a conversation that is past either of its caps, so
+         the oldest turns are dropped here rather than letting a long
+         conversation dead-end on a 400 the visitor can only escape by
+         resetting.
+
+         Both caps, not just the turn count: sixteen turns at the 1500-char
+         message limit is 24000 characters, which clears the turn check and
+         fails the character one. Newest first, keeping whatever fits, then
+         reversed back into order — and the result has to start on a user
+         turn, which the API requires. */
+      const all = [...turns, { role: "user" as const, content: question }];
+      const kept: Turn[] = [];
+      let budget = CHAT_LIMITS.maxTotalChars;
+      for (let i = all.length - 1; i >= 0 && kept.length < CHAT_LIMITS.maxTurns; i--) {
+        const turn = all[i];
+        if (turn.content.length > budget) break;
+        budget -= turn.content.length;
+        kept.push(turn);
+      }
+      kept.reverse();
       while (kept.length > 1 && kept[0].role !== "user") kept.shift();
       const history: Turn[] = kept;
       /* The visible log keeps everything; only what goes to the model is
@@ -296,7 +312,7 @@ export default function ChatWidget() {
             ref={inputRef}
             className="chat-input"
             rows={2}
-            maxLength={1500}
+            maxLength={CHAT_LIMITS.maxMessageChars}
             placeholder="Ask about his experience, projects, or availability…"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}

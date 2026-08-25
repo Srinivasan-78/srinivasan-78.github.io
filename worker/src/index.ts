@@ -1,4 +1,5 @@
 import { SYSTEM_PROMPT } from "./knowledge";
+import { CHAT_LIMITS } from "../../lib/assistant";
 
 export interface Env {
   GEMINI_API_KEY: string;
@@ -24,10 +25,12 @@ const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODE
 const MAX_OUTPUT_TOKENS = 4000;
 
 /* Caps, in the order an abusive request would hit them. They bound spend and
-   latency per request — the per-IP rate limiter bounds requests per visitor. */
-const MAX_MESSAGE_CHARS = 1500;
-const MAX_TURNS = 16;
-const MAX_TOTAL_CHARS = 12000;
+   latency per request — the per-IP rate limiter bounds requests per visitor.
+
+   Imported rather than declared: the widget trims against the same numbers
+   before it sends, and a copy here is a copy that can drift. */
+const { maxMessageChars: MAX_MESSAGE_CHARS, maxTurns: MAX_TURNS, maxTotalChars: MAX_TOTAL_CHARS } =
+  CHAT_LIMITS;
 
 /* SSE frame delimiter. The spec allows LF, CR, or CRLF line endings, so a
    blank line is any of the three doubled up. */
