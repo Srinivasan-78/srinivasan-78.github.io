@@ -65,6 +65,23 @@ export const DIAGRAM: Record<string, ReactNode> = {
       <circle cx="222" cy="74" r="7" stroke="currentColor" strokeWidth="2.5" fill="none" />
     </svg>
   ),
+  /* The pile that grows with every turn, funnelled down to one small
+     result — which is the whole argument tokenmiser makes. */
+  tokenmiser: (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      {[3, 5, 7].map((n, i) => (
+        <g key={i}>
+          {Array.from({ length: n }, (_, k) => (
+            <rect key={k} x={24 + i * 30} y={82 - k * 11} width="22" height="8" rx="2" stroke="currentColor" strokeWidth="2" fill="none" opacity={0.5 + i * 0.25} />
+          ))}
+        </g>
+      ))}
+      <path d="M126 55 H158" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M150 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M168 26 H236 L208 58 V84 L196 76 V58 Z" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="252" y="48" width="24" height="14" rx="3" stroke="currentColor" strokeWidth="2.5" fill="none" />
+    </svg>
+  ),
   "doc2md-action": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <rect x="34" y="22" width="56" height="66" rx="5" stroke="currentColor" strokeWidth="3" fill="none" />
