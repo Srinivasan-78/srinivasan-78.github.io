@@ -1518,6 +1518,13 @@ textarea.cf-input { resize: vertical; }
      as the notice finishes leaving and the two read as one movement. */
   body:has(.cookie-notice) .chat-launcher {
     opacity: 0;
+    /* `visibility`, not just `pointer-events`. An element at opacity 0 is
+       still in the tab order — the previous `display: none` took it out
+       of the document, and dropping to opacity alone quietly handed
+       keyboard users an invisible button to land on. Visibility is a
+       discrete property, so it flips at the end of the transition on the
+       way out and at the start on the way in. */
+    visibility: hidden;
     pointer-events: none;
   }
   /* Opacity only, and `transform` deliberately left out of this list.
@@ -1525,8 +1532,9 @@ textarea.cf-input { resize: vertical; }
      to 0.96 — and a 220ms delay written for the arrival would sit in
      front of every tap on the device where taps are the only input. */
   .chat-launcher {
-    transition: opacity 220ms var(--ease-out) 220ms, transform 160ms var(--ease-out),
-      border-color 0.2s ease;
+    visibility: visible;
+    transition: opacity 220ms var(--ease-out) 220ms, visibility 0s linear 220ms,
+      transform 160ms var(--ease-out), border-color 0.2s ease;
   }
 }
 

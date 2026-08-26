@@ -284,8 +284,8 @@ export const PROJECTS: Project[] = [
     status: "Active",
     teaser:
       "Point it at a codebase and it draws the map: a queryable graph of who calls what, plus chunks ready for a RAG pipeline.",
-    tags: ["Python", "tree-sitter", "RAG"],
-    stack: ["Python", "tree-sitter", "Neo4j / Cypher", "GraphML", "GitHub Actions", "JSONL"],
+    tags: ["tree-sitter", "RAG", "GitHub Action"],
+    stack: ["Python", "tree-sitter", "Neo4j / Cypher", "GraphML", "GitHub Actions", "GitHub Marketplace", "JSONL"],
     overview:
       "Point it at a codebase and it draws the map. Every folder, file, function, class and import becomes a node, and every containment, call, import, inheritance and co-change becomes an edge. Plain text search finds the files that mention login; the graph finds the function that does the login and hands you its callers and callees with it. It also cuts the code into retrieval chunks that each carry that neighbourhood in their header, which is usually the thing a RAG pipeline was missing.",
     architecture: [
@@ -310,8 +310,16 @@ export const PROJECTS: Project[] = [
         body: "Lexical scoring plus a one-hop walk across the graph, so the surrounding code comes along with every hit. No embedding model, no vector database and no API key needed to start.",
       },
       {
-        label: "Outputs and automation",
-        body: "A single self-contained graph.html, an overview written for a person to read first, and JSONL, GraphML and idempotent Cypher for everything else. A composite Action keeps a fresh graph beside your own code, and a dispatch job maps any repo from the Actions tab.",
+        label: "Outputs, split two ways",
+        body: "human/ holds a single self-contained graph.html, an overview written to be read first, and a pre-laid-out GraphML for yEd or Gephi. agent/ holds the JSONL nodes, edges and chunks, an idempotent Cypher script for Neo4j, and a manifest that describes every other file — so a program needs nothing else to make sense of the folder.",
+      },
+      {
+        label: "Published as a Marketplace Action",
+        body: "Srinivasan-78/repo2graph@v1 is one step in any workflow: point it at the checkout or at another repo, and it uploads the graph as an artifact, writes the first 40 lines of the overview into the job summary, and exposes node, edge and chunk counts as outputs. commit-branch force-pushes the result to an orphan branch, so a pipeline can curl a current chunks.jsonl instead of rebuilding one.",
+      },
+      {
+        label: "Parallel parsing",
+        body: "Files are read one per processor core, capped at eight, so a large repository finishes in a minute or two. The number of workers changes only the wall clock: the graph that comes out is identical either way.",
       },
     ],
     highlights: [
@@ -320,8 +328,61 @@ export const PROJECTS: Project[] = [
       "graph.html is one file: no server, no install, drag, zoom and search in a browser",
       "Honest about approximation: name-matched calls carry a confidence score, and a missing edge never proves a missing call",
       "Entrypoints are marked and ranked by reach, so the main paths through a project are findable",
+      "On the GitHub Marketplace at v1, so keeping a fresh graph beside your own code is three lines of YAML",
+      "It indexes itself: a workflow re-runs on every push to main and weekly, and publishes the graph to a branch",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/repo2graph", label: "View repo \u2197" }],
+    links: [
+      { url: "https://github.com/marketplace/actions/repo2graph", label: "GitHub Marketplace \u2197" },
+      { url: "https://github.com/Srinivasan-78/repo2graph", label: "View repo \u2197" },
+    ],
+  },
+  {
+    slug: "tokenmiser",
+    title: "tokenmiser",
+    client: "Platform engineering",
+    category: "Developer tooling",
+    status: "Active",
+    teaser:
+      "Fifteen skills that teach Claude Code to spend fewer tokens on the same work, and two scripts that prove whether it actually worked.",
+    tags: ["Claude Code", "Token cost", "Measurement"],
+    stack: ["Node.js", "Python", "Bash", "Claude Code skills", "Markdown", "JSONL"],
+    overview:
+      "A model has no memory, so every message re-sends the entire conversation from the beginning. That is what you are billed for, and it means message forty in a long session can cost fifteen times what message one cost even if you only typed \u201cyes, do that\u201d. tokenmiser goes after the size of that pile rather than the length of the reply, which is where most advice stops and where under a tenth of the tokens live. Fifteen Markdown skills each take one contributor to the pile \u2014 the always-on rulebook, the conversation history, the tool output, the reply \u2014 and squeeze it, and a PreToolUse hook cuts the noisiest tool output before it ever gets into the context. Nothing runs in the background, nothing leaves the machine, and every claim it makes is checked against the session logs Claude Code already writes.",
+    architecture: [
+      {
+        label: "The pile, not the reply",
+        body: "Each turn re-sends the rulebook, the whole session so far, and everything any tool printed. A single test run that dumped 10,000 lines is not paid for once \u2014 it is re-sent with every message for the rest of the session. That is the trap the whole toolkit is built around.",
+      },
+      {
+        label: "Fifteen skills, one lever each",
+        body: "Every skill is a Markdown file of instructions and nothing else, and Claude reads the full file only when you invoke it. They split across the four buckets: context size (audit, compress, tools), history (session, prompt), retrieval and tool output (read, delegate, hooks), and the reply itself (speak, git, model).",
+      },
+      {
+        label: "The filter hook",
+        body: "A PreToolUse hook rewrites a noisy command before its output reaches the model: test runners keep failures plus context, builds keep errors, installers keep the tail, git log gets an --oneline head. Anything already piped, redirected or joined with && is left completely alone, because appending a pipe there would change what actually runs.",
+      },
+      {
+        label: "Exit codes survive the filter",
+        body: "Every rewritten command ends with exit ${PIPESTATUS[0]} and a one-line marker, so a hidden failure can never read as a pass. Custom rules go in a JSON file rather than the script, an environment variable turns it off for one shell, and the hook ships a --selftest.",
+      },
+      {
+        label: "Measure before you type",
+        body: "A report totals the always-on context \u2014 the CLAUDE.md, the settings, the description of every installed skill \u2014 and names what is fat. That number is paid at the start of every session, forever, whether any of it gets used or not.",
+      },
+      {
+        label: "Session accounting",
+        body: "The bench script reads the usage the API already reported into the local session logs, deduplicated by request id because Claude Code writes several lines per reply. It compares two runs per turn rather than in total, since a harder task honestly costs more \u2014 totals are not a score.",
+      },
+    ],
+    highlights: [
+      "The filter hook is usually the biggest single win, because it removes tokens from every later turn as well as this one",
+      "Filtered commands preserve the real exit status, so a quiet failure can never be mistaken for a pass",
+      "Bench figures are deduplicated by request id; tools that skip that step report sessions two to three times larger than they are",
+      "A change that saves 30% and gets the answer wrong is recorded as a loss \u2014 the results log has a column for saying so",
+      "Honest about its own cost: fifteen installed skills advertise roughly 1.5k tokens per session, and status prints your figure",
+      "No network call anywhere in the repository, and the installer prints its plan and asks before writing",
+    ],
+    links: [{ url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" }],
   },
   {
     slug: "zim-assistant",
