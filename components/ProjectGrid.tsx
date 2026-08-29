@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌​​‌‌​​​‌​‌​‌​​​‌‌‌​‌‌​​‌​​​‌​​​​‌‌​​‌‌​‌​​‌​‌‌​‌‌‌‌​‌​​​‌‌‌​​‌​​‌‌‌​​​​‌‌‌​​​‌​‌‌​‌‌‌​​‌​‌‌​‌​​‌‌​‌‌‌​​‌‌‌​‌‌‌​‌​‌‌‌‌‌​‌​​‌​​​​‌​‌​‌​‌​‌​​​‌‌‌​‌​‌‌‌‌‌​​‌‌​​‌​​‌​​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​‌‌​‌​‌‌​‌​‌‌​​​​​‌​‌‌​‌​‌​‌​‌‌​​‌‌‌​​​‌​​‌‌​‌​​​‌​​​​‌​​​‌‌‌​​‌​‌​‌‌​​​​‌‌​‌​​​​‌‌​‌​​‌​‌​‌​​‌​​​‌‌​‌‌​​​‌‌​‌‌​​‌‌​​‌‌‌​‌‌‌‌​‌​​‌‌‌​​​​​‌​‌​​‌​​​‌‌​‌​‌​​‌‌​​‌​​‌​​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.MLTvD3Kz98qnZnw_HUG_2M
+ * Fingerprint: AMK1._kX-Vq4B9XhiR66gzpR52J
  */
 /* Schematic art only. The card component that used to live here was
    unreferenced — ProjectIndex renders the rows and pulls just these two
@@ -155,6 +155,20 @@ export const DIAGRAM: Record<string, ReactNode> = {
           {i < 3 && <path d={`M${90 + i * 76} 47 l8 8 -8 8`} stroke="currentColor" strokeWidth="2.5" {...s} />}
         </g>
       ))}
+    </svg>
+  ),
+  "Minecraft Server Setup": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      <rect x="20" y="38" width="52" height="34" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M32 50 H60 M32 60 H50" stroke="currentColor" strokeWidth="2" {...s} />
+      <path d="M80 55 H118" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M110 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <circle cx="146" cy="55" r="18" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M146 41 V33 M146 77 V69 M132 55 H124 M168 55 H160" stroke="currentColor" strokeWidth="2.5" {...s} opacity="0.6" />
+      <path d="M176 55 H214" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M206 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="228" y="30" width="48" height="50" rx="5" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M228 46 H276 M244 30 V46 M260 46 V80" stroke="currentColor" strokeWidth="2" {...s} />
     </svg>
   ),
   "Matter Test Harness Image Builder": (

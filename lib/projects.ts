@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​​‌‌‌​​‌​‌​​​‌‌‌​‌​‌​​​​​​‌‌​‌‌​​‌​​‌‌​​​‌​‌‌​​​​‌‌‌‌​‌​​‌‌‌​​‌‌​‌‌‌​​‌​​‌​​​‌​‌​‌‌​‌‌‌‌​​‌‌​​​​​‌​​​‌​​​‌‌‌​​‌​​‌‌​‌​​‌​​‌‌​‌‌‌​‌‌‌​​​‌​‌‌​​​‌​​‌‌‌​​‌​​‌​​​‌‌‌​‌​​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌‌‌​‌‌‌​​‌‌‌​​‌​‌​‌‌​​​​‌​‌​​‌‌​‌‌‌‌​​‌​‌‌‌​​​‌​​‌‌​​‌​​​‌‌​‌‌​​​‌‌​​‌‌​‌‌​‌​​‌​​‌‌​​​​​‌​‌‌​‌​​‌‌​‌‌‌‌​‌​‌​​‌​​​‌‌‌​​​​‌‌‌​​​‌​‌‌‌​‌​‌​‌‌‌‌​‌​​​‌‌​​​‌​‌​​‌​​‌​‌‌‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.m9GP6LXzsrEo0Dri7qbrGO
+ * Fingerprint: AMK1.aw9XSyq263i0ZoR8quz1Iv
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -597,6 +597,57 @@ export const PROJECTS: Project[] = [
       "Typed workflow input never reaches the shell: passed as an environment variable and pattern-checked",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/Brainrot_Study", label: "View repo ↗" }],
+  },
+  {
+    slug: "minecraft-server-setup",
+    title: "Minecraft Server Setup",
+    client: "CI/CD & packaging",
+    category: "GitOps",
+    status: "Active",
+    teaser:
+      "A game server run entirely by editing text files: push to main, and a robot backs up, deploys and verifies.",
+    tags: ["GitOps", "Actions", "systemd"],
+    stack: ["GitHub Actions", "Bash", "systemd", "SSH / rsync", "Linux", "PaperMC"],
+    overview:
+      "A Minecraft server that runs 24/7 on an ordinary Linux box and is administered without ever logging into it. The repository is the source of truth: difficulty, whitelist, ops, memory and game version are files in config/, and a push to main is the deployment. GitHub Actions is the only moving part on the GitHub side — a fresh runner unlocks a deploy key, rsyncs the repo across, backs the world up, applies the change and checks the service came back. The host stays a completely normal machine, so it can be any cloud VM, VPS or Pi you can SSH into.",
+    architecture: [
+      {
+        label: "The repo is the server",
+        body: "config/ holds server.env, server.properties, ops.json, whitelist.json and banned-players.json. Whatever those files say is what the host ends up running, so every change has an author, a date and a revert — and drift on the box loses the argument.",
+      },
+      {
+        label: "Three workflows, one shared start",
+        body: "provision, deploy and backup all begin with the same composite action: write the deploy key and rsync the repo. They share a concurrency group so only one may touch the machine at a time — two runners restarting the server at once would be a mess.",
+      },
+      {
+        label: "Backup before touching anything",
+        body: "The deploy takes a world archive first, then swaps the jar, syncs config and restarts. A change that turns out to be a bad idea always has yesterday's world sitting behind it.",
+      },
+      {
+        label: "A backup that isn't corrupt",
+        body: "You cannot tar a live world mid-write, so backup.sh sends save-off and save-all flush into the running server, waits, archives, then save-on — under a shell trap, so saving is switched back on even if the archive step dies. Seven archives are kept.",
+      },
+      {
+        label: "Version switching by symlink",
+        body: "server.jar is a symlink into jars/, and old jars are never deleted. Upgrading is one line of server.env; rolling back is reverting that line. Download URLs are resolved from Mojang's manifest or PaperMC's API, skipping any build with a pre-release marker so `latest` never lands friends on a beta.",
+      },
+      {
+        label: "Clean shutdowns",
+        body: "run.sh holds the console FIFO open with sleep infinity, because a server that reads EOF on stdin decides the operator has left and quits. It also traps SIGTERM and types `stop` into the console instead of letting Java die mid-save, with 180 seconds allowed for it.",
+      },
+      {
+        label: "Least privilege on the host",
+        body: "The service runs as a dedicated no-login user under NoNewPrivileges, ProtectHome, ProtectSystem=full and a single ReadWritePaths, restarting on failure. The deploy user gets a sudoers file listing named scripts rather than blanket root.",
+      },
+    ],
+    highlights: [
+      "Administered entirely through pull requests and pushes — nobody SSHes in to change a setting",
+      "Every deploy backs up first, and provisioning is idempotent, so re-running it is never destructive",
+      "The placeholder UUIDs deliberately fail the deploy, rather than quietly shipping a server nobody can op",
+      "Nothing GitHub-specific is installed on the host: any Debian-family box you can SSH into works",
+      "Honest about the trade: port 22 must stay open to the internet because runners have no fixed IPs, and push access to main is effectively root",
+    ],
+    links: [{ url: "https://github.com/Srinivasan-78/Minecraft_Server_Setup", label: "View repo ↗" }],
   },
   {
     slug: "matter-test-harness-image-builder",
