@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌‌​‌‌​‌​‌​​​‌‌​​‌‌​‌‌‌‌​​‌​‌​​‌​​‌​‌‌​‌​‌‌​‌‌‌‌​‌​​​‌​‌‌​‌​‌‌​​​‌‌​‌‌‌​‌‌‌​‌​‌‌​​‌​‌‌‌​‌​​​‌‌‌‌​​​​‌​​‌​‌‌​‌‌‌​​‌‌​​‌‌​‌‌​​‌​​​​​‌​​‌‌‌​​‌​‌​‌​​​‌​​‌‌​​​‌​‌​‌‌‌‌‌​‌​​​​​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.Cj3yIkz-cwYtxKs6A9Q1_A
+ */
 /* The wheel owns its geometry; the page around it owns nothing of it.
    Every rule here is namespaced under .option-wheel so dropping the
    component into any layout cannot reach anything else. */

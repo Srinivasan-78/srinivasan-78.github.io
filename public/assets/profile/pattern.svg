@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​​‌​​​‌​‌​​‌‌​‌‌​‌​‌​​‌​​​‌​‌​‌‌‌​​‌​​‌‌​​‌‌‌​‌‌‌​​‌​​‌​‌​‌​​​‌​​​​‌​​‌‌‌​‌‌​​‌​‌​​​​​‌‌‌​​‌‌​‌‌​​‌‌​​​‌‌​‌‌​​‌​​‌​​‌​‌‌‌​‌‌‌​‌‌​‌​​‌​‌​‌​​‌‌​‌‌‌​​​​​‌‌​‌​‌​​​‌​‌‌​‌⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.kdSjErgrTBvPsf6IwiSpj-
+-->
 <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
   <!-- Luminance mask for the profile card's holographic sheen. Black
        hides the sheen, light lets it through, so a mostly-black tile

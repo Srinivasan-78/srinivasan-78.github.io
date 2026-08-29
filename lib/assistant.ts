@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌‌​​‌​​​‌​‌‌​​​​​‌‌‌​​‌​‌​‌​‌​​​‌‌​​‌​‌​​‌‌‌​​‌​‌​‌​‌‌‌​‌‌​‌‌‌​​‌​‌‌‌‌‌​​‌‌‌​​‌​‌‌​​​​‌​‌‌​‌‌​‌​‌‌​​​‌‌​​‌‌​​​‌​‌‌‌​‌‌‌​‌​​​​​‌​‌‌​‌‌​​​‌‌‌‌​​​​​‌‌​‌‌​​‌‌​‌​​​​‌​‌​​​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.rdX9Te9Wn_9amc1wAlx6hP
+ */
 /* Shared between the site bundle and the Cloudflare worker, which are built
    separately — the refusal has to be one literal in one place or the widget
    will eventually stop recognising what the model was told to say. */

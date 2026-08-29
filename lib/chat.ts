@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​‌‌​​‌‌‌​‌‌​​‌​‌​‌​‌​​‌​​​‌‌​‌‌​​‌‌‌​‌‌‌​‌​​​‌​​​‌​​​‌‌​​‌‌‌‌​​​​​‌‌​‌​​​‌​​​‌​​​‌‌‌​​​​​‌‌‌​​​​​‌‌‌​​​‌​‌​​​‌‌​​‌​‌​‌​‌​​‌‌‌​​​​​‌‌‌​​‌​‌​​‌​‌​​‌​​‌‌‌‌​‌​‌​​‌​​‌‌‌​​​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.VgeR6wDFx4DppqFU89JORp
+ */
 /* The Cloudflare Worker that fronts the Gemini API. Read at build time and
    inlined into the bundle, because a static export has no runtime in which to
    look it up. The pipeline sets it from the worker deploy that just ran and

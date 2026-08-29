@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌​​‌​​‌​‌‌​‌​​‌​​‌‌​‌‌​​‌‌​‌​‌​​‌‌​‌​​‌​‌​​​​‌‌​​‌​‌‌​‌​​‌‌​‌​‌​‌‌​‌‌‌‌​‌​‌​​​‌​​‌‌​​‌​​‌​‌​​​​​‌‌​‌‌​​​‌​‌​‌​​​‌‌​‌​‌​​‌‌‌‌​‌​​‌​​​​‌‌​​‌‌​​​‌​‌‌‌‌​​‌​‌​‌‌​​​​‌‌​​‌‌​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.EIi6jiC-5oQ2PlTjzC1yXf
+ */
 /* The site's navigation, in one place.
 
    The header row and the mobile wheel are different interfaces onto the
