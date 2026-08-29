@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌‌‌​‌‌‌​​‌‌‌​​‌​‌​‌‌​​​​‌​‌​​‌‌​‌‌‌‌​​‌​‌‌‌​​​‌​​‌‌​​‌​​​‌‌​‌‌​​​‌‌​​‌‌​‌‌​‌​​‌​​‌‌​​​​​‌​‌‌​‌​​‌‌​‌‌‌‌​‌​‌​​‌​​​‌‌‌​​​​‌‌‌​​​‌​‌‌‌​‌​‌​‌‌‌‌​‌​​​‌‌​​​‌​‌​​‌​​‌​‌‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌​​‌​‌​‌‌​​‌​‌​‌​‌​​​​​‌‌​​‌​‌​‌​​‌‌‌​​​‌‌‌​​​​‌‌‌‌​​‌​‌‌‌‌​‌​​‌​‌​‌‌‌​‌‌​​‌​‌​‌‌‌​​‌​​‌‌​‌​‌‌​‌​​‌​‌​​‌‌‌​​​‌​‌​​​​​‌​​‌​‌‌​‌​​‌‌‌​​​​​‌‌​‌​​​‌‌​​‌​​​​‌‌‌​​​​‌‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.aw9XSyq263i0ZoR8quz1Iv
+ * Fingerprint: AMK1.LeePeN8yzWerkJqA-84d8p
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -390,6 +390,56 @@ export const PROJECTS: Project[] = [
       "No network call anywhere in the repository, and the installer prints its plan and asks before writing",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" }],
+  },
+  {
+    slug: "authormark-watch",
+    title: "authormark-watch",
+    client: "Platform engineering",
+    category: "Provenance",
+    status: "Active",
+    teaser:
+      "One scheduled job that checks every repo I own still carries its authorship watermarks \u2014 from outside, with a checker nobody inside can neuter.",
+    tags: ["Provenance", "Actions", "Bash"],
+    stack: ["Bash", "Node.js", "GitHub Actions", "GitHub CLI", "Fine-grained PAT"],
+    overview:
+      "Every source file across my repositories opens with an authormark header: copyright, author, licence, a keyed fingerprint and an invisible zero-width mark. A per-repo workflow can check its own files, but only if someone remembered to add one \u2014 and a repo that has never been set up is exactly the repo that reports nothing. This is the backstop. Daily, it enumerates every non-archived, non-fork repo in the account, clones each one shallow, and reports anything unmarked, stripped or drifted into a single GitHub issue that is updated in place and closed automatically when everything is clean again.",
+    architecture: [
+      {
+        label: "Checked from outside",
+        body: "watch.sh always runs its own copy of authormark.mjs, never the one vendored inside the repo being checked. Anyone who strips the headers from a repo could just as easily edit that repo's checker to exit 0 \u2014 its CI would go green while lying. A copy they do not control closes that hole.",
+      },
+      {
+        label: "Three verdicts, not two",
+        body: "A repo with no .authormark.json at all is unmarked; a repo whose files went missing or stale is drifted, reported with the count; a clone that failed is recorded as unchecked rather than quietly counted as passing. A repo nobody could look at is not a repo that is fine.",
+      },
+      {
+        label: "One issue, never a stream",
+        body: "Findings go into a single open issue found by title, edited in place with a short re-scan comment each day, and closed with a note once every repo is clean. A daily job that opens a daily issue gets muted within a week, and a muted alarm is not an alarm.",
+      },
+      {
+        label: "Least-privilege token",
+        body: "The built-in GITHUB_TOKEN cannot see other repositories, so the job runs on a fine-grained PAT scoped to read-only contents and metadata plus issue write. If that secret is missing, the run fails with that reason spelled out rather than a confusing clone error.",
+      },
+      {
+        label: "Deliberate exclusions",
+        body: "A SKIP list leaves alone the repos that may hold work which is not mine to claim, and archived repositories and forks drop out automatically. A watermark asserts authorship, so where authorship is shared it is better to assert nothing.",
+      },
+      {
+        label: "Same script locally",
+        body: "./watch.sh runs against your gh session with no token setup, and REPORT=0 prints the report without touching an issue \u2014 so the scan can be tried by hand before it is trusted on a schedule.",
+      },
+    ],
+    highlights: [
+      "Catches the case a per-repo check structurally cannot: a brand-new repo nobody set up",
+      "Verification lives outside the repository under test, so a tampered checker cannot vouch for itself",
+      "Exactly one issue, updated and auto-closed \u2014 the alert stays worth reading",
+      "A clone that fails is reported as unchecked, never mistaken for clean",
+      "Runs on a read-only token that can do nothing but look and file an issue",
+    ],
+    /* No public link: the repository is private, and it names which repos are
+       excluded from watermarking, which is not a list worth publishing. The
+       detail page reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "zim-assistant",

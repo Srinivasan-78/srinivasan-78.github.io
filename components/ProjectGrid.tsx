@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​‌‌​‌​‌‌​‌​‌‌​​​​​‌​‌‌​‌​‌​‌​‌‌​​‌‌‌​​​‌​​‌‌​‌​​​‌​​​​‌​​​‌‌‌​​‌​‌​‌‌​​​​‌‌​‌​​​​‌‌​‌​​‌​‌​‌​​‌​​​‌‌​‌‌​​​‌‌​‌‌​​‌‌​​‌‌‌​‌‌‌‌​‌​​‌‌‌​​​​​‌​‌​​‌​​​‌‌​‌​‌​​‌‌​​‌​​‌​​‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌​‌​​‌​​‌​​‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​​‌​​​​‌‌​‌‌​‌‌​‌​‌‌​​‌​​​‌​​‌​‌‌​‌‌​‌‌​​​‌​‌​‌​​​‌​​​‌‌‌​‌‌​‌‌‌​​‌‌‌​​‌​​‌‌‌​​​‌​‌​​‌​​​​‌​​​​‌​​‌‌​‌‌‌‌​‌‌‌​‌‌​​‌​​​‌​‌​‌‌‌​‌​​​​‌‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1._kX-Vq4B9XhiR66gzpR52J
+ * Fingerprint: AMK1.LRJs2CmdKlTGnrqHBovEt2
  */
 /* Schematic art only. The card component that used to live here was
    unreferenced — ProjectIndex renders the rows and pulls just these two
@@ -87,6 +87,23 @@ export const DIAGRAM: Record<string, ReactNode> = {
       <path d="M150 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
       <path d="M168 26 H236 L208 58 V84 L196 76 V58 Z" stroke="currentColor" strokeWidth="3" {...s} />
       <rect x="252" y="48" width="24" height="14" rx="3" stroke="currentColor" strokeWidth="2.5" fill="none" />
+    </svg>
+  ),
+  /* A ring of repos, one eye outside them: the check never runs from
+     inside the thing it is checking. */
+  "authormark-watch": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      {[[112, 26], [112, 84], [176, 26], [176, 84]].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <rect x={x - 22} y={y - 12} width="44" height="24" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" opacity="0.75" />
+          <path d={`M${x - 12} ${y} H${x + 8}`} stroke="currentColor" strokeWidth="2" {...s} opacity="0.5" />
+        </g>
+      ))}
+      <path d="M60 55 H86 M214 55 H240" stroke="currentColor" strokeWidth="2" {...s} opacity="0.5" />
+      <path d="M22 55 q22 -20 44 0 q-22 20 -44 0 z" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <circle cx="44" cy="55" r="7" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <rect x="244" y="30" width="34" height="50" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M252 44 H270 M252 54 H270 M252 64 H264" stroke="currentColor" strokeWidth="2" {...s} opacity="0.7" />
     </svg>
   ),
   "doc2md-action": (
