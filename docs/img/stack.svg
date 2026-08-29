@@ -1,3 +1,10 @@
+<!--
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌‌‌​‌‌​​‌​​​​‌‌​​‌‌‌​​‌​‌‌​​​‌‌​‌‌‌​‌​​​‌‌​​​​‌​‌‌‌​​‌‌​‌​​‌​​‌​‌​​​‌​​​​‌‌​‌​‌​‌​‌‌​​‌​‌​​‌‌​‌​‌​‌‌​‌​​‌​​‌​‌​​‌​​​‌​​​‌​‌‌​​‌​​‌‌‌​​‌​‌‌‌​​‌​​‌​​​​​‌​‌​​‌‌​​​​‌‌‌​​​⁠
+  Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+  Author: https://github.com/Srinivasan-78
+  SPDX-License-Identifier: MIT
+  Fingerprint: AMK1.EvC9ctasID5YMZJDY9rAL8
+-->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" role="img" aria-label="How the site is put together: a static page in the browser, files from GitHub Pages, a chat worker on Cloudflare, and two outside services">
   <style>
     .bg { fill: #0b0c0f; }

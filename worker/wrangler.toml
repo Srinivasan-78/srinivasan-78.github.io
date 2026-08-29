@@ -1,3 +1,8 @@
+# @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​​‌‌​​​​​‌‌‌​‌‌‌​​‌‌‌​​‌​‌​‌‌​‌​​​‌‌​‌​‌​​‌‌​​‌​​‌​‌‌​​​​‌‌‌​​‌‌​‌​​‌‌‌‌​‌​​‌‌‌​​‌‌‌​​​​​‌​‌​​‌‌​‌​​​​‌​​‌‌‌​​​‌​​‌‌‌​​​​​‌‌​‌​‌​‌​‌​​​‌​​‌‌‌​​​​‌‌‌​​​​​‌‌​​‌​​​‌​‌‌​‌​⁠
+# Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+# Author: https://github.com/Srinivasan-78
+# SPDX-License-Identifier: MIT
+# Fingerprint: AMK1.Y0w9Z52XsONpSBq85Q8pdZ
 name = "srini-chat"
 main = "src/index.ts"
 compatibility_date = "2026-08-01"

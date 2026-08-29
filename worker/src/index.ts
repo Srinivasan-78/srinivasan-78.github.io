@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​​‌‌​‌‌‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌‌​‌​​​‌‌‌​‌‌​​‌​​​‌‌​​‌‌​​​‌​​​‌‌‌​​​​‌​​‌​‌‌​‌​‌‌​‌​​‌​‌​​‌‌​‌​‌​​‌‌​‌​​‌​‌​​‌‌‌​‌​​​‌​‌​‌‌‌​‌​​​​‌‌​‌‌​‌​‌‌​‌​​​‌‌​​‌​‌​‌‌​​‌‌​‌‌‌​​‌​‌​​​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.g754tvFb8KZSSJtWCkFVnP
+ */
 import { SYSTEM_PROMPT } from "./knowledge";
 import { CHAT_LIMITS } from "../../lib/assistant";
 

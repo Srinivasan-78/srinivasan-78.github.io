@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​​‌‌​​​​​​‌‌‌​​‌​‌​​​​‌‌​‌‌​​‌‌‌​‌‌​​​‌​​‌‌‌​​‌‌​‌​​‌​​​​‌​​‌​​‌​‌​​‌​​‌​‌​​‌‌‌​​‌​​​‌​‌​​‌‌​​‌​​​‌‌​‌​‌​‌‌‌​‌‌‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌​‌​​​​​‌​‌​​‌‌​​‌‌‌​​‌​​‌‌​​‌‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.A09CgbsHIINE25wgomPS93
+ */
 /* meshline registers two custom elements with react-three-fiber at
    runtime, through `extend()`. TypeScript has no way to learn about them
    from that call, so the JSX intrinsics are declared here — the same

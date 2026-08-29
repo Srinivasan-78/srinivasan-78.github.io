@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌​​‌‌‌‌​‌‌​‌​‌​​​‌​‌‌​‌​‌​​‌​​‌​‌‌‌​‌​​​‌‌‌‌​‌​​‌‌​‌​​‌​​‌‌​‌​​​‌​‌​‌​​​​‌‌​‌‌​​‌​​‌​​​​‌​‌​‌​​​‌‌​‌​‌‌​‌‌‌‌​‌​​‌‌​‌‌​‌​‌​​​‌​‌​‌​‌​​‌‌​‌​​​‌​​​‌​‌​‌‌​​‌​​‌‌​​​‌‌‌​‌​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.cOj-Itzi4T6HTkzmESDVLu
+ */
 /* React Bits BorderGlow stylesheet, upstream as-published.
    Project-level tuning (shadow weight, inner surface, focus ring) lives
    under `.glow-card` in app/globals.css rather than being edited here,

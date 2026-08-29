@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​​‌‌‌​​​​‌‌​​​‌​​​‌‌​‌‌​​​‌​‌‌​‌​‌​​​​‌​​‌​​​‌​​​​‌‌​​​​​‌​‌​‌‌​​‌​​‌‌‌​​‌​‌​‌‌‌​​‌‌‌​​‌​​‌‌​​​‌​‌​​‌​​​​‌​‌​‌‌​​​‌‌‌​​‌​‌​​​‌​‌​‌​‌‌​​‌​‌​​‌‌‌‌​‌‌​‌‌​​​‌​​‌‌​‌​​‌‌​‌​​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.38b6-BD0VNW91HV9EYOlM4
+ */
 const BOOT_SCRIPT = `
 (function(){
   // Marks that scripting is live. The scroll-reveal transition in

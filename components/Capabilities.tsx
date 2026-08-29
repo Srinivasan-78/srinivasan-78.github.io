@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​​‌‌​‌​‌​‌‌‌​​‌​​​‌‌​‌​‌​‌​‌‌​​​​‌‌​​‌‌​​‌‌​​‌‌​​‌​‌‌‌‌‌​‌​‌‌​‌​​‌‌‌​‌​‌​‌‌‌​‌‌​​‌​​​​‌‌​‌​‌​​​‌​‌‌​​‌‌‌​‌‌​‌‌‌​​​‌​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌‌‌​‌​​‌​‌​​‌​‌​‌‌​​‌​​‌​​‌​​‌‌​​‌​⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.g5r5Xff_ZuvCQgn-OWJVI2
+ */
 import Reveal from "./Reveal";
 import SectionHead from "./SectionHead";
 import GlowCard from "./ui/GlowCard";

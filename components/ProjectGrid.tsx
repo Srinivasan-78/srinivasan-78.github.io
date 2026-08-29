@@ -1,3 +1,10 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌​​‌‌​​​‌​‌​‌​​​‌‌‌​‌‌​​‌​​​‌​​​​‌‌​​‌‌​‌​​‌​‌‌​‌‌‌‌​‌​​​‌‌‌​​‌​​‌‌‌​​​​‌‌‌​​​‌​‌‌​‌‌‌​​‌​‌‌​‌​​‌‌​‌‌‌​​‌‌‌​‌‌‌​‌​‌‌‌‌‌​‌​​‌​​​​‌​‌​‌​‌​‌​​​‌‌‌​‌​‌‌‌‌‌​​‌‌​​‌​​‌​​‌‌​‌⁠
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ * Fingerprint: AMK1.MLTvD3Kz98qnZnw_HUG_2M
+ */
 /* Schematic art only. The card component that used to live here was
    unreferenced — ProjectIndex renders the rows and pulls just these two
    exports, so the dead component and its duplicate Project/Accent types
