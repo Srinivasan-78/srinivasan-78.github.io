@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌​‌​​‌​​‌​​‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​​‌​​​​‌‌​‌‌​‌‌​‌​‌‌​​‌​​​‌​​‌​‌‌​‌‌​‌‌​​​‌​‌​‌​​​‌​​​‌‌‌​‌‌​‌‌‌​​‌‌‌​​‌​​‌‌‌​​​‌​‌​​‌​​​​‌​​​​‌​​‌‌​‌‌‌‌​‌‌‌​‌‌​​‌​​​‌​‌​‌‌‌​‌​​​​‌‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.LRJs2CmdKlTGnrqHBovEt2
+ * Fingerprint: AMK1.Dsra0t6EP_FpgdhFw8gwU_
  */
 /* Schematic art only. The card component that used to live here was
    unreferenced — ProjectIndex renders the rows and pulls just these two
@@ -141,7 +141,7 @@ export const DIAGRAM: Record<string, ReactNode> = {
       ))}
     </svg>
   ),
-  "Simple-Actions": (
+  "GitHub Actions Snippets": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       {["Build", "Sign", "Release", "Purge"].map((_, i) => (
         <g key={i}>
@@ -174,7 +174,7 @@ export const DIAGRAM: Record<string, ReactNode> = {
       ))}
     </svg>
   ),
-  "Minecraft Server Setup": (
+  "Minecraft Server GitOps": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <rect x="20" y="38" width="52" height="34" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
       <path d="M32 50 H60 M32 60 H50" stroke="currentColor" strokeWidth="2" {...s} />
@@ -201,7 +201,7 @@ export const DIAGRAM: Record<string, ReactNode> = {
       <path d="M240 34 a20 30 0 0 1 20 30 v10 a20 30 0 0 1 -20 -30 z" stroke="currentColor" strokeWidth="2.5" fill="none" />
     </svg>
   ),
-  ImgAutomation: (
+  "Pi Image Build Automation": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <rect x="30" y="30" width="56" height="48" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
       <path d="M100 55 H150" stroke="currentColor" strokeWidth="3" {...s} />
@@ -212,7 +212,7 @@ export const DIAGRAM: Record<string, ReactNode> = {
       <path d="M252 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} opacity="0.7" />
     </svg>
   ),
-  SpeedTestDD: (
+  "dd Block-Size Benchmark": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <path d="M24 90 H276" stroke="currentColor" strokeWidth="2" {...s} opacity="0.5" />
       {[18, 30, 46, 66, 52, 38, 26].map((h, i) => (
