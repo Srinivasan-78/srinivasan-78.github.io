@@ -109,23 +109,52 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Srinivasan Vijayaraghavan",
-  url: "https://www.srinidevops.com/",
-  image: "https://www.srinidevops.com/og.png",
-  jobTitle: "DevOps Engineer",
-  description:
-    "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
-  email: "mailto:srinivasan.shyam2000@gmail.com",
-  address: { "@type": "PostalAddress", addressLocality: "Bangalore", addressCountry: "IN" },
-  worksFor: { "@type": "Organization", name: "Thomson Reuters" },
-  alumniOf: { "@type": "CollegeOrUniversity", name: "Madras Institute of Technology, Anna University" },
-  knowsAbout: [
-    "DevOps", "CI/CD", "Amazon Web Services", "Microsoft Azure", "Ansible", "Chef", "Puppet",
-    "Terraform", "Docker", "GitHub Actions", "Kubernetes", "Datadog", "Infrastructure as Code",
-    "Disaster Recovery",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.srinidevops.com/#website",
+      url: "https://www.srinidevops.com/",
+      name: "Srinivasan Vijayaraghavan — DevOps Engineer",
+      description:
+        "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
+      publisher: { "@id": "https://www.srinidevops.com/#person" },
+      inLanguage: "en",
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.srinidevops.com/#person",
+      name: "Srinivasan Vijayaraghavan",
+      url: "https://www.srinidevops.com/",
+      image: "https://www.srinidevops.com/og.png",
+      jobTitle: "DevOps Engineer",
+      description:
+        "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
+      email: "mailto:srinivasan.shyam2000@gmail.com",
+      address: { "@type": "PostalAddress", addressLocality: "Bangalore", addressCountry: "IN" },
+      worksFor: { "@type": "Organization", name: "Thomson Reuters" },
+      alumniOf: { "@type": "CollegeOrUniversity", name: "Madras Institute of Technology, Anna University" },
+      knowsAbout: [
+        "DevOps",
+        "CI/CD",
+        "Amazon Web Services",
+        "Microsoft Azure",
+        "Ansible",
+        "Chef",
+        "Puppet",
+        "Terraform",
+        "Docker",
+        "GitHub Actions",
+        "Kubernetes",
+        "Datadog",
+        "Infrastructure as Code",
+        "Disaster Recovery",
+      ],
+      sameAs: [
+        "https://www.linkedin.com/in/srini-solution-architect/",
+        "https://github.com/Srinivasan-78",
+      ],
+    },
   ],
-  sameAs: ["https://www.linkedin.com/in/srini-solution-architect/", "https://github.com/Srinivasan-78"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

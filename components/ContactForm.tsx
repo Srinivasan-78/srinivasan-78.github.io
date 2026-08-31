@@ -10,6 +10,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { haptic } from "@/lib/haptics";
+import { FiSend, FiAlertCircle } from "react-icons/fi";
 
 const ENDPOINT = "https://formspree.io/f/xrpzzlaz";
 
@@ -17,22 +18,19 @@ type Field = "name" | "email" | "message";
 type Errors = Partial<Record<Field, string>>;
 type Status = "idle" | "sending" | "error";
 
-/* Mirrors what Formspree itself will reject, so the common mistakes are
-   caught before a round trip rather than after one. Deliberately loose on
-   email — the only reliable test of an address is sending to it. */
 function validate(values: Record<Field, string>): Errors {
   const errors: Errors = {};
 
-  if (!values.name.trim()) errors.name = "Your name, please.";
-  else if (values.name.trim().length < 2) errors.name = "A little more of your name, please.";
+  if (!values.name.trim()) errors.name = "Please enter your name.";
+  else if (values.name.trim().length < 2) errors.name = "Please provide a valid name.";
 
   const email = values.email.trim();
-  if (!email) errors.email = "Your email, so I can reply.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = "Please check that email address.";
+  if (!email) errors.email = "Please enter your email so I can reply.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = "Please enter a valid email address.";
 
   const message = values.message.trim();
-  if (!message) errors.message = "A message, please.";
-  else if (message.length < 10) errors.message = "A bit more detail would help. Ten characters or more.";
+  if (!message) errors.message = "Please write a brief message.";
+  else if (message.length < 10) errors.message = "Please provide a little more detail (10+ characters).";
 
   return errors;
 }
@@ -43,9 +41,8 @@ export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [formError, setFormError] = useState<string | null>(null);
-  // Errors appear only after the first submit attempt, so the form does not
-  // scold someone who is still filling in the first field.
   const [submitted, setSubmitted] = useState(false);
+  const [messageLength, setMessageLength] = useState(0);
 
   const readValues = (form: HTMLFormElement): Record<Field, string> => {
     const data = new FormData(form);
@@ -56,8 +53,6 @@ export default function ContactForm() {
     };
   };
 
-  // Live-clears a field's error once it becomes valid, so the message goes
-  // away as the problem is fixed rather than only on the next submit.
   const revalidate = () => {
     if (!submitted || !formRef.current) return;
     setErrors(validate(readValues(formRef.current)));
@@ -74,9 +69,6 @@ export default function ContactForm() {
     if (Object.keys(found).length > 0) {
       const first = (Object.keys(found) as Field[])[0];
       form.querySelector<HTMLElement>(`#${first}`)?.focus();
-      /* Fired here, alongside the focus move and the error text, rather
-         than after either — the point of the haptic is that it arrives
-         with the visual, not behind it. */
       haptic("reject");
       return;
     }
@@ -90,28 +82,25 @@ export default function ContactForm() {
       });
 
       if (res.ok) {
-        // The one unambiguous success on the site: the message went.
         haptic("commit");
         form.reset();
         router.push("/thank-you");
         return;
       }
 
-      // Formspree returns field-level problems in an `errors` array; anything
-      // else is a service-side failure we can only describe generically.
       const body = await res.json().catch(() => null);
       const detail: string | undefined = body?.errors?.map((x: { message: string }) => x.message).join(" ");
       setStatus("error");
       haptic("reject");
       setFormError(
         detail ||
-          "That one needs another go. Try again, or email me directly at srinivasan.shyam2000@gmail.com."
+          "Submission failed. Please try again or email me directly at srinivasan.shyam2000@gmail.com."
       );
     } catch {
       setStatus("error");
       haptic("reject");
       setFormError(
-        "The form service is out of reach for a moment. Check your connection and try again, or email me directly at srinivasan.shyam2000@gmail.com."
+        "Network connection error. Please try again or email me directly at srinivasan.shyam2000@gmail.com."
       );
     }
   }
@@ -121,122 +110,113 @@ export default function ContactForm() {
   return (
     <form
       ref={formRef}
-      // action/method are kept so the form still submits the ordinary way if
-      // JavaScript never loads; onSubmit intercepts whenever it does.
       action={ENDPOINT}
       method="POST"
       onSubmit={onSubmit}
       noValidate
-      className="contact-form"
+      className="space-y-6"
     >
-      <fieldset disabled={sending} className="cf-fields">
-        <Field
-          id="name"
-          label="Name"
-          error={errors.name}
-          onInput={revalidate}
-          autoComplete="name"
-        />
-        <Field
-          id="email"
-          label="Email"
-          type="email"
-          error={errors.email}
-          onInput={revalidate}
-          autoComplete="email"
-        />
-        <Field
-          id="message"
-          label="Message"
-          error={errors.message}
-          onInput={revalidate}
-          textarea
-        />
+      <fieldset disabled={sending} className="space-y-5">
+        
+        {/* Name Field */}
+        <div>
+          <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b] mb-2">
+            Your Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            onInput={revalidate}
+            autoComplete="name"
+            placeholder="Jane Doe"
+            className={`w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-[#09090c] border text-[#1d1d1f] dark:text-[#f5f5f7] placeholder-[#86868b] dark:placeholder-[#6e6e73] text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all ${
+              errors.name ? "border-red-500 ring-1 ring-red-500" : "border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
+            }`}
+          />
+          {errors.name && (
+            <p className="mt-1.5 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-1">
+              <FiAlertCircle className="w-3 h-3" />
+              {errors.name}
+            </p>
+          )}
+        </div>
 
-        {/* Honeypot — real people never see it, bots fill everything in. */}
-        <input
-          type="text"
-          name="_gotcha"
-          tabIndex={-1}
-          autoComplete="off"
-          aria-hidden="true"
-          className="cf-honeypot"
-        />
+        {/* Email Field */}
+        <div>
+          <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b] mb-2">
+            Email Address
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            onInput={revalidate}
+            autoComplete="email"
+            placeholder="jane@company.com"
+            className={`w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-[#09090c] border text-[#1d1d1f] dark:text-[#f5f5f7] placeholder-[#86868b] dark:placeholder-[#6e6e73] text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all ${
+              errors.email ? "border-red-500 ring-1 ring-red-500" : "border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
+            }`}
+          />
+          {errors.email && (
+            <p className="mt-1.5 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-1">
+              <FiAlertCircle className="w-3 h-3" />
+              {errors.email}
+            </p>
+          )}
+        </div>
 
-        <button type="submit" className="btn primary cf-submit">
-          {/* Keyed on `sending` so the span remounts on the swap and the
-              blur-in replays. Without the key React reuses the element
-              and only the text changes, which is the single-frame jump
-              this is here to bridge. */}
-          <span className="cf-submit-label" key={sending ? "sending" : "idle"}>
-            {sending ? (
-              <>
-                <span className="cf-spinner" aria-hidden="true" />
-                Sending…
-              </>
-            ) : (
-              "Send message"
-            )}
-          </span>
+        {/* Message Field */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b]">
+              Message
+            </label>
+            <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b]">
+              {messageLength > 0 ? `${messageLength} chars (10 min)` : "10 min chars"}
+            </span>
+          </div>
+          <textarea
+            id="message"
+            name="message"
+            rows={5}
+            onInput={(e) => {
+              setMessageLength(e.currentTarget.value.length);
+              revalidate();
+            }}
+            placeholder="Tell me about the role, project, or infrastructure challenge..."
+            className={`w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-[#09090c] border text-[#1d1d1f] dark:text-[#f5f5f7] placeholder-[#86868b] dark:placeholder-[#6e6e73] text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all resize-y ${
+              errors.message ? "border-red-500 ring-1 ring-red-500" : "border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
+            }`}
+          />
+          {errors.message && (
+            <p className="mt-1.5 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-1">
+              <FiAlertCircle className="w-3 h-3" />
+              {errors.message}
+            </p>
+          )}
+        </div>
+
+        {/* Honeypot */}
+        <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="hidden" />
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={sending}
+          className="w-full py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 shadow-xl"
+        >
+          <FiSend className="w-4 h-4" />
+          <span>{sending ? "Sending message..." : "Send Message"}</span>
         </button>
       </fieldset>
 
-      {/* One polite live region for both states: screen readers announce the
-          in-flight status and the failure without a second announcement
-          fighting it. */}
-      <p className="cf-status" role="status" aria-live="polite">
-        {sending ? "Sending your message…" : ""}
-      </p>
-
       {formError && (
-        <div className="cf-error-banner" role="alert">
-          <span className="eyebrow">submit — try again</span>
-          <p>{formError}</p>
+        <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-2">
+          <FiAlertCircle className="w-4 h-4 flex-shrink-0" />
+          <span>{formError}</span>
         </div>
       )}
     </form>
-  );
-}
-
-function Field({
-  id,
-  label,
-  error,
-  textarea,
-  type = "text",
-  onInput,
-  autoComplete,
-}: {
-  id: Field;
-  label: string;
-  error?: string;
-  textarea?: boolean;
-  type?: string;
-  onInput: () => void;
-  autoComplete?: string;
-}) {
-  const describedBy = error ? `${id}-error` : undefined;
-  const shared = {
-    id,
-    name: id,
-    onInput,
-    autoComplete,
-    "aria-invalid": error ? true : undefined,
-    "aria-describedby": describedBy,
-    className: `cf-input${error ? " cf-input-error" : ""}`,
-  } as const;
-
-  return (
-    <div className="cf-field">
-      <label htmlFor={id} className="eyebrow cf-label">
-        {label}
-      </label>
-      {textarea ? <textarea {...shared} rows={5} /> : <input {...shared} type={type} />}
-      {error && (
-        <p id={`${id}-error`} className="cf-error">
-          {error}
-        </p>
-      )}
-    </div>
   );
 }

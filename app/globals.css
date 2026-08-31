@@ -5,6 +5,10 @@
  * SPDX-License-Identifier: MIT
  * Fingerprint: AMK1.uzd-KSg2ynmQ2Ebn_K35uP
  */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ---------- TYPE ----------
    Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,
    which self-hosts them at build time and exposes them as --font-sans

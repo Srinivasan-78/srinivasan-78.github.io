@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   return routes.map(([path, priority]) => ({
-    url: `${BASE}${path}`,
+    url: path === "" ? `${BASE}/` : `${BASE}${path}`,
     lastModified: new Date(),
     priority,
   }));

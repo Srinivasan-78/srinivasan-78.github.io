@@ -6,221 +6,219 @@
  * Fingerprint: AMK1.3VWOdzeE6YvUBZ3yRcdP01
  */
 import Link from "next/link";
-import WorkGrid, { type Post } from "@/components/WorkGrid";
-import SplitReveal from "@/components/SplitReveal";
-import Highlights from "@/components/Highlights";
-import HowIWork from "@/components/HowIWork";
-import Capabilities from "@/components/Capabilities";
-import Reveal from "@/components/Reveal";
-import SectionHead from "@/components/SectionHead";
-import SystemDiagram from "@/components/SystemDiagram";
-import { CountUp } from "@/components/Bits";
-import HeroShowcase from "@/components/HeroShowcase";
-import GlowCard from "@/components/ui/GlowCard";
-/* Counted, not typed: this line said "11 builds" while lib/projects.ts held 12. */
 import { PROJECTS } from "@/lib/projects";
 import { CERTS } from "@/lib/certs";
-import { NumberWord } from "@/lib/words";
+import AppleSkillsExperience from "@/components/AppleSkillsExperience";
+import AppleEnterpriseExperience from "@/components/AppleEnterpriseExperience";
+import AppleWorkAuthorization from "@/components/AppleWorkAuthorization";
+import SystemDiagram from "@/components/SystemDiagram";
+import { CountUp } from "@/components/Bits";
+import AppleHeroPipeline from "@/components/AppleHeroPipeline";
+import {
+  FiArrowUpRight,
+  FiDownload,
+  FiGlobe,
+  FiZap,
+} from "react-icons/fi";
 
-const EXPLORE = [
-  { href: "/projects", title: "Projects", body: `${PROJECTS.length} builds and counting: live tools, a Terraform multi-cloud platform, and plenty of automation.`, go: "View projects" },
-  { href: "/certifications", title: "Certifications", body: `${CERTS.length} credentials in cloud, automation and infrastructure. Every one comes with a verification link.`, go: "View certifications" },
-  { href: "/contact", title: "Get in touch", body: "Always glad to talk about DevOps, cloud infrastructure and automation work.", go: "Say hello" },
+const STATS = [
+  { value: 5, suffix: " Years", label: "Keeping production running at scale" },
+  { value: 15, suffix: "+", label: "Microservices architected & maintained" },
+  { value: CERTS.length, label: "Verified industry credentials earned" },
+  { value: 2, suffix: " Clouds", label: "Deep production experience (AWS & Azure)" },
 ];
 
-const WORK_POSTS: Post[] = [
-  {
-    tag: "Thomson Reuters",
-    title: "Parallelized migration framework",
-    body: "I built a migration framework on Azure Storage with custom runners, delta detection and AzCopy. Transfers that used to take a whole weekend finished in a fraction of the time, and the team got their weekends back. Proudest thing I shipped there.",
-    stack: ["Azure Storage", "AzCopy", "Custom runners", "Delta detection"],
-  },
-  {
-    tag: "Thomson Reuters",
-    title: "Self-service DR & CI/CD suite",
-    body: "I moved provisioning, config promotion, multi-instance operations and DR failover into GitHub Actions workflows that anyone on the team can run for themselves. What used to need a specialist and a runbook is now a button, available to everyone.",
-    stack: ["GitHub Actions", "DR automation", "Self-service"],
-  },
-  {
-    tag: "Thomson Reuters",
-    title: "Fail-fast validation framework",
-    body: "An Apache validation layer that confirms service state, HTTP 200s, NLB convergence and healthchecks before a deploy moves on. Every build that reaches a user has already proved it is healthy.",
-    stack: ["Apache", "NLB", "Healthchecks", "Datadog"],
-  },
-  {
-    tag: "GraniteRiverLabs",
-    title: "Project MATTER — CSA protocol",
-    body: "Deployment pipelines for Project MATTER, the Connectivity Standards Alliance's smart-home interoperability standard. I also wrote the Zigbee automation that the device interoperability tests still run on.",
-    stack: ["Matter / CSA", "Zigbee", "Embedded CI"],
-  },
-  {
-    tag: "GraniteRiverLabs",
-    title: "One-click Docker release pipeline",
-    body: "Docker image tagging, pushing and deployment for frontend and backend, automated end to end, and I built it solo. Releases went from a long checklist to a single click.",
-    stack: ["Docker", "Release automation", "Solo build"],
-  },
-  {
-    tag: "GraniteRiverLabs",
-    title: "Wireshark THREAD installer",
-    body: "A custom Windows Wireshark installer for THREAD protocol analysis, shipped through GitLab CI and refined over several rounds. It is public as a merge request, and the team adopted it for their own work.",
-    stack: ["Wireshark", "THREAD", "GitLab CI", "WiX"],
-    link: {
-      url: "https://gitlab.com/wireshark/wireshark/-/merge_requests/11008#note_1684405826",
-      label: "View the merge request",
-    },
-  },
-];
-
-const STATS: { value: number; suffix?: string; label: string }[] = [
-  { value: 5, label: "years shipping" },
-  { value: 15, suffix: "+", label: "microservices owned" },
-  { value: CERTS.length, label: "certifications" },
-  { value: 2, label: "clouds in production" },
-];
-
-/* The stages a release actually moves through on the platform this site
-   is about, plus the path back. This is the home page's hero visual. */
 const RELEASE_FLOW = [
-  { label: "Commit", note: "PR opened" },
-  { label: "Build", note: "image tagged, pushed" },
-  { label: "Gate", note: "backup, then health checks" },
-  { label: "Promote", note: "config, one region first" },
-  { label: "Verify", note: "HTTP 200, NLB converged" },
-];
-
-const REGIONS: [string, string][] = [
-  ["us-east", "US citizen"],
-  ["ap-south", "OCI — indefinite right to work in India"],
+  { label: "Commit", note: "Automated PR linting & test suite" },
+  { label: "Build", note: "Lean immutable container image tagged" },
+  { label: "Gate", note: "Synthetic health & latency verified" },
+  { label: "Promote", note: "Gradual zero-downtime traffic shift" },
+  { label: "Verify", note: "Error rate nominal & Datadog OK" },
 ];
 
 export default function Page() {
   return (
-    <main id="content" tabIndex={-1}>
-      {/* The hero used to carry eight things at once: a status pill, a
-          location, a scrambling headline, an avatar, a word that cycled
-          forever, a bio paragraph, four counters and two buttons. The
-          counters have moved down to a section of their own; the avatar
-          and the rotating word are gone. What is left is the sentence,
-          who is saying it, and one thing to do about it. */}
-      <header className="hero">
-        <div className="wrap">
-          <HeroShowcase>
-            <p className="eyebrow hero-status">
-              Srinivasan Vijayaraghavan · DevOps / SRE · Bangalore, IN
-            </p>
+    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white">
+      
+      {/* 1. Human-Centered Hero Section */}
+      <header className="relative pt-16 pb-16 px-6 max-w-6xl mx-auto flex flex-col items-center text-center overflow-hidden">
+        
+        {/* Status Eyebrow */}
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-[#34c759]" />
+          <span>Srinivasan Vijayaraghavan · DevOps & Cloud Architecture · Bangalore, IN</span>
+        </div>
 
-            <SplitReveal
-              as="h1"
-              text="I make releases calm and predictable."
-              className="display display-xl"
-            />
+        {/* Clear, Human Headline */}
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-5xl mb-6 text-[#1d1d1f] dark:text-white">
+          I build infrastructure that makes shipping software feel easy.
+        </h1>
 
-            <p className="hero-bio">
-              Five years building the release, upgrade and disaster-recovery automation behind a
-              multi-tenant Azure platform. Pipelines, health gates, rehearsed rollback paths. And
-              at 2am, I&rsquo;m the one you want on the call.
-            </p>
+        {/* Calm, Grounded Description */}
+        <p className="text-lg sm:text-xl font-normal text-[#6e6e73] dark:text-[#86868b] max-w-3xl mx-auto leading-relaxed mb-8">
+          Five years automating releases, cloud migrations, and disaster recovery across AWS and Azure. I design resilient systems so engineering teams can focus on building products, not fighting deployments.
+        </p>
 
-            <div className="hero-actions">
-              <Link href="/contact" className="btn primary">
-                Get in touch
-              </Link>
-              <a href="/resume.pdf" className="btn" download>
-                Download résumé
-              </a>
-            </div>
-          </HeroShowcase>
+        {/* Dual Primary Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 z-20">
+          <Link
+            href="/contact"
+            className="px-8 py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl"
+          >
+            Get in touch
+          </Link>
+          <a
+            href="/resume.pdf"
+            download
+            className="px-7 py-3.5 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-semibold text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
+          >
+            <FiDownload className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+            Download Résumé
+          </a>
+          <Link
+            href="/projects"
+            className="px-7 py-3.5 rounded-full bg-transparent text-[#6e6e73] hover:text-[#1d1d1f] dark:text-[#86868b] dark:hover:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
+          >
+            <span>Explore all {PROJECTS.length} builds</span>
+            <FiArrowUpRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* Calm Architecture Blueprint Showcase */}
+        <div className="w-full max-w-5xl">
+          <AppleHeroPipeline />
         </div>
       </header>
 
-      {/* Skills and availability lead the page. They are the two things a
-          reader is here to check first — what this person works with,
-          and whether they can be hired where the reader is — so they sit
-          directly under the hero rather than four sections down. */}
-      <Highlights />
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead label="Availability" title="Where I can work" />
-          <div className="regions">
-            {REGIONS.map(([region, note]) => (
-              <div className="region" key={region}>
-                <span className="region-code">{region}</span>
-                <span className="region-note">{note}</span>
+      {/* 2. Key Metrics */}
+      <section className="py-14 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {STATS.map((st) => (
+            <div
+              key={st.label}
+              className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl hover:border-black/20 dark:hover:border-white/20 transition-all flex flex-col justify-between"
+            >
+              <div className="text-3xl sm:text-4xl font-extrabold text-[#1d1d1f] dark:text-white tracking-tight font-mono mb-2">
+                <CountUp value={st.value} suffix={st.suffix} />
               </div>
-            ))}
+              <div className="text-xs font-medium text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+                {st.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. Release Reliability Architecture */}
+      <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <span className="text-xs font-mono uppercase tracking-widest text-amber-600 dark:text-[#e5a93b] block mb-2">
+            Reliability by Design
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1d1d1f] dark:text-white mb-3">
+            How I approach zero-downtime releases.
+          </h2>
+          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg">
+            Every step is automated, measured, and verified before user traffic touches it. If something looks off, traffic reverts immediately.
+          </p>
+        </div>
+
+        <SystemDiagram
+          stages={RELEASE_FLOW}
+          returnPath="Rollback executes the exact same pipeline in reverse — verified & automated"
+          caption="Production release architecture across Azure & AWS. Automated health gates verify HTTP 200 responses, latency budgets, and service dependencies before routing traffic."
+        />
+      </section>
+
+      {/* 4. Skills & Disciplines (Interactive Engineering Matrix) - Placed above Selected Experience */}
+      <AppleSkillsExperience />
+
+      {/* 5. Enterprise Experience (Apple Case Study Matrix) */}
+      <AppleEnterpriseExperience />
+
+      {/* 6. Personal Projects & Tooling (Card-free Showcase Gateway to Projects) */}
+      <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
+        <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
+          
+          <div className="max-w-2xl space-y-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#0066cc] dark:text-[#2997ff]">
+              <span>Side Projects & Tools</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white">
+              Things I&rsquo;ve built on the side.
+            </h2>
+
+            <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg leading-relaxed">
+              Practical tools, deployment orchestrators, and browser utilities I use in my day-to-day workflow.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] justify-center md:justify-start">
+              <span>• {PROJECTS.length} Production Builds</span>
+              <span>• Self-Healing Pipelines</span>
+              <span>• Open Source Tools</span>
+            </div>
           </div>
-          <p className="region-foot eyebrow">
-            Ready to start without sponsorship · based in Bangalore
+
+          <div className="flex flex-col sm:flex-row md:flex-col items-center gap-3 w-full md:w-auto flex-shrink-0">
+            <Link
+              href="/projects"
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
+            >
+              <span>Explore All {PROJECTS.length} Projects</span>
+              <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+            </Link>
+            <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b]">
+              Interactive filters, live demos & source code
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 7. Creative Work Authorization Terminal */}
+      <AppleWorkAuthorization />
+
+      {/* 8. Human Closing Banner */}
+      <section className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#f5f5f7] to-white dark:from-[#09090c] dark:to-black border-t border-black/10 dark:border-white/10">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="w-14 h-14 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/15 mx-auto flex items-center justify-center mb-6 shadow-sm">
+            <FiZap className="w-6 h-6 text-amber-600 dark:text-[#e5a93b]" />
+          </div>
+
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white mb-4">
+            Let&rsquo;s build something dependable together.
+          </h2>
+          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+            I&rsquo;m open to senior DevOps, Site Reliability Engineering, and Cloud Architecture roles. Let&rsquo;s talk about what your team is building.
           </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/contact"
+              className="w-full sm:w-auto px-10 py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-base transition-all hover:scale-105 active:scale-95 shadow-xl"
+            >
+              Start a Conversation
+            </Link>
+            <a
+              href="https://www.linkedin.com/in/srini-solution-architect/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-medium text-base transition-all flex items-center justify-center gap-2"
+            >
+              <FiGlobe className="w-4 h-4 text-[#0066cc] dark:text-[#2997ff]" />
+              LinkedIn Profile
+            </a>
+          </div>
+
+          <div className="mt-8 text-xs text-[#6e6e73] dark:text-[#86868b] flex flex-wrap items-center justify-center gap-6">
+            <span>✓ US Citizen (No visa sponsorship needed)</span>
+            <span>✓ OCI Cardholder (India)</span>
+            <span>✓ 5 Years Enterprise Cloud Track Record</span>
+          </div>
         </div>
       </section>
 
-      {/* Full-bleed: the one visual on the page gets the whole width, and
-          the change of width is what separates it from the column above
-          rather than a rule. */}
-      <section className="section section-bleed">
-        <div className="wrap">
-          <SystemDiagram
-            stages={RELEASE_FLOW}
-            returnPath="Rollback runs the same pipeline, rehearsed and ready"
-            caption="How a release moves through the Azure platform I work on. Each stage earns its way to the next, and the path back is just as automated."
-          />
-        </div>
-      </section>
-
-      {/* Standard width, not the prose column: four counters squeezed into
-          692px leave each label about 140px, which wraps every one of
-          them onto two lines. */}
-      <section className="section">
-        <div className="wrap">
-          <Reveal className="stats" stagger={0.08}>
-            {STATS.map((st) => (
-              <div key={st.label}>
-                <CountUp
-                  value={st.value}
-                  suffix={st.suffix}
-                  className="stat-num"
-                  style={{ display: "block" }}
-                />
-                <div className="eyebrow">{st.label}</div>
-              </div>
-            ))}
-          </Reveal>
-        </div>
-      </section>
-
-      <HowIWork />
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead label="Selected work" title="Things I shipped and stand behind" />
-          <p className="sec-lede">
-            {NumberWord(WORK_POSTS.length)} of them, across CI/CD, disaster recovery, large
-            migrations and embedded protocol work. Each card carries the stack it was built on.
-          </p>
-          <WorkGrid posts={WORK_POSTS} />
-        </div>
-      </section>
-
-      <Capabilities />
-
-      <section className="section">
-        <div className="wrap">
-          <SectionHead label="Explore" title="Plenty more to see" />
-          <Reveal className="explore-grid" pop>
-            {EXPLORE.map((e) => (
-              <GlowCard key={e.href}>
-                <Link href={e.href} className="card">
-                  <h3 className="card-title">{e.title}</h3>
-                  <p className="card-body">{e.body}</p>
-                  <span className="go">{e.go}</span>
-                </Link>
-              </GlowCard>
-            ))}
-          </Reveal>
-        </div>
-      </section>
     </main>
   );
 }

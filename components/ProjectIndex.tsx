@@ -7,283 +7,347 @@
  */
 "use client";
 
-import { useEffect, useRef } from "react";
-import GlowCard from "./ui/GlowCard";
-import Reveal from "./Reveal";
-import SplitReveal from "./SplitReveal";
+import { useState, useMemo } from "react";
 import Link from "next/link";
-import gsap from "gsap";
-import { PROJECTS, type Project } from "@/lib/projects";
-import { DIAGRAM, FALLBACK } from "./ProjectGrid";
+import GlowCard from "./ui/GlowCard";
+import { PROJECTS } from "@/lib/projects";
+import {
+  FiArrowUpRight,
+  FiExternalLink,
+  FiGithub,
+  FiLayers,
+  FiSearch,
+  FiCheckCircle,
+  FiTerminal,
+  FiZap,
+} from "react-icons/fi";
 
-/* A manifest, not a gallery.
-
-   One full-bleed row per project. The right-hand column carries the
-   stack tokens at rest and swaps to the project's line-art schematic
-   on hover — and the schematic doesn't fade in, it *draws* itself,
-   stroke by stroke. That is the one flourish this page gets, and it
-   works because the existing art is already pure `currentColor` line
-   work: every stroked element has a real arc length, so it can be
-   dashed and unrolled. Nothing had to be redrawn.
-
-   Group headings are set vertically down a sticky left rail rather
-   than as horizontal bars. Horizontal headings cost a full row of
-   vertical space each and break the column of names; a vertical rail
-   labels the section continuously while you scroll it, and keeps every
-   project name on one unbroken left edge. */
-
-type Group = { name: string; items: Project[] };
-
-/* Contiguous runs in source order, so re-ordering the array in
-   lib/projects.ts is the only thing needed to re-order this page. */
-function groupProjects(list: Project[]): Group[] {
-  const out: Group[] = [];
-  for (const p of list) {
-    const tail = out[out.length - 1];
-    if (tail && tail.name === p.client) tail.items.push(p);
-    else out.push({ name: p.client, items: [p] });
-  }
-  return out;
-}
-
-const len = new WeakMap<SVGGeometryElement, number>();
-
-function geometry(art: Element) {
-  return Array.from(
-    art.querySelectorAll<SVGGeometryElement>("path, rect, circle, ellipse, line, polyline, polygon")
-  );
-}
-
-/* Filled shapes have no stroke to unroll, so they pop in on a short
-   delay instead. Their authored opacity is stashed on the element the
-   first time we touch it — several schematics stagger opacity across a
-   series of bars, and resetting them all to 1 would flatten that. */
-function isFilled(el: SVGGeometryElement) {
-  const f = el.getAttribute("fill");
-  return !!f && f !== "none";
-}
-
-function armRow(art: Element) {
-  geometry(art).forEach((el) => {
-    if (isFilled(el)) {
-      if (!el.dataset.o) el.dataset.o = el.getAttribute("opacity") ?? "1";
-      gsap.set(el, { opacity: 0 });
-    } else {
-      let L = len.get(el);
-      if (L == null) {
-        try {
-          L = el.getTotalLength();
-        } catch {
-          L = 0;
-        }
-        len.set(el, L);
-      }
-      gsap.set(el, { strokeDasharray: L, strokeDashoffset: L });
-    }
-  });
-}
-
-function drawRow(art: Element, on: boolean) {
-  geometry(art).forEach((el, i) => {
-    gsap.killTweensOf(el);
-    if (isFilled(el)) {
-      gsap.to(el, {
-        opacity: on ? Number(el.dataset.o ?? 1) : 0,
-        duration: on ? 0.24 : 0.16,
-        delay: on ? 0.14 + i * 0.02 : 0,
-        ease: "power2.out",
-      });
-    } else {
-      const L = len.get(el) ?? 0;
-      gsap.to(el, {
-        strokeDashoffset: on ? 0 : L,
-        /* Was 0.5s with a 0.04s step, which ran ~860ms end to end on a
-           row the pointer might cross by accident. Hover is not a
-           surface that gets to spend that. */
-        duration: on ? 0.35 : 0.22,
-        delay: on ? i * 0.03 : 0,
-        /* `power2.out` both ways. The exit used to be `power2.in`, which
-           holds the line still for the first third of the retreat — the
-           part the eye is on — and then yanks it. Out-easing on the way
-           back reads as the drawing letting go. */
-        ease: "power2.out",
-      });
-    }
-  });
-}
+const CATEGORIES = [
+  "All",
+  "Platform",
+  "Infrastructure",
+  "Developer tooling",
+  "Utility",
+  "Actions",
+  "Client build",
+];
 
 export default function ProjectIndex() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const groups = groupProjects(PROJECTS);
+  const [selectedCat, setSelectedCat] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const arts = Array.from(root.querySelectorAll(".pi-art"));
-    if (reduced) {
-      // Leave the art fully drawn; CSS handles the swap on hover.
-      root.classList.add("pi-static");
-      return;
-    }
-    arts.forEach(armRow);
-  }, []);
+  const liveDemosCount = useMemo(
+    () => PROJECTS.filter((p) => !!p.demo).length,
+    []
+  );
 
-  /* The schematic draws on mouseenter and undraws on mouseleave, which
-     is a mouse contract that a touchscreen does not honour: a tap
-     synthesises `mouseenter` and then often never sends `mouseleave`
-     until something else is tapped. So on a phone the draw fires on
-     every tap and stays armed afterwards.
+  const filteredProjects = useMemo(() => {
+    return PROJECTS.filter((p) => {
+      const matchesCat =
+        selectedCat === "All" ||
+        p.category.toLowerCase() === selectedCat.toLowerCase();
 
-     The CSS guard added for hover states keeps `.pi-art` itself hidden
-     there, so nothing is visibly wrong today — but a stack of GSAP
-     tweens is still being started and left running behind an invisible
-     element, once per tap, on the device least able to spare it.
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        p.teaser.toLowerCase().includes(q) ||
+        p.stack.some((tech) => tech.toLowerCase().includes(q)) ||
+        p.category.toLowerCase().includes(q);
 
-     `hover: hover` rather than `pointer: fine`: the question is whether
-     the device can hover at all, which is the thing that decides
-     whether these two handlers can ever be paired. Read live rather
-     than once, so a tablet that gains a mouse mid-session is right. */
-  const canHover = useRef(true);
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover)");
-    const apply = () => {
-      canHover.current = mq.matches;
-    };
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
+      return matchesCat && matchesSearch;
+    });
+  }, [selectedCat, searchQuery]);
 
-  let n = 0;
+  const featuredProject = PROJECTS.find(
+    (p) => p.slug === "self-healing-deployment"
+  );
 
   return (
-    <main id="content" tabIndex={-1} className="pi wrap" ref={rootRef}>
-      <header className="pi-head">
-        <span className="eyebrow">Projects</span>
-        <SplitReveal
-          as="h1"
-          text="Things I build for the love of it"
-          className="display display-lg"
-        />
-        <p>
-          {PROJECTS.length} builds: live demos, platform experiments, and tooling I happily use
-          myself. Hover a row to see its schematic, click through for the full write-up, or
-          open a live build straight from its row.
+    <main
+      id="content"
+      tabIndex={-1}
+      className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white"
+    >
+      {/* 1. Hero Section */}
+      <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+          <FiLayers className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+          <span>Platform Engineering & Open Source</span>
+        </div>
+
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
+          Things I build for the craft of it.
+        </h1>
+
+        <p className="text-base sm:text-xl font-normal text-[#6e6e73] dark:text-[#86868b] max-w-2xl mx-auto leading-relaxed mb-8">
+          {PROJECTS.length} platform orchestrators, deployment tools, and cloud utilities. Designed to solve real infrastructure problems and tested in production.
         </p>
+
+        {/* Quick Stats Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-[#6e6e73] dark:text-[#86868b] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#34c759]" />
+            <span>{PROJECTS.length} Total Builds</span>
+          </div>
+          <div>•</div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#0066cc] dark:bg-[#2997ff]" />
+            <span>{liveDemosCount} Live Hosted Deployments</span>
+          </div>
+          <div>•</div>
+          <div>100% Tested Architecture</div>
+        </div>
+
+        {/* Search Input & Category Filters */}
+        <div className="max-w-3xl mx-auto space-y-4">
+          <div className="relative">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#86868b]" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by project name, technology (e.g. Docker, Ansible, Python, Azure)..."
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            {CATEGORIES.map((cat) => {
+              const count =
+                cat === "All"
+                  ? PROJECTS.length
+                  : PROJECTS.filter(
+                      (p) => p.category.toLowerCase() === cat.toLowerCase()
+                    ).length;
+              const isSelected = selectedCat === cat;
+
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCat(cat)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                    isSelected
+                      ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
+                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                  }`}
+                >
+                  <span>{cat}</span>
+                  <span
+                    className={`text-[10px] font-mono ${
+                      isSelected ? "opacity-75" : "text-[#86868b] dark:text-[#a1a1a6]"
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </header>
 
-      {/* Each group is a panel now, on the same surface, radius and
-          proximity glow as every other card on the site — so the index
-          reads as the same material as the home page rather than as a
-          bare table that happens to live on the same domain. The rows
-          inside keep their own behaviour. */}
-      {/* One Reveal per panel, not one around the list. The list is
-          taller than the viewport, and useInView fires at a 1%
-          threshold, so a single wrapper crossed it on load: every panel
-          flipped to is-in at once and finished arriving while it was
-          still below the fold. Scrolling the page showed nothing move.
+      {/* 2. Flagship Featured Highlight (Shown when filter is "All" and no search) */}
+      {selectedCat === "All" && !searchQuery && featuredProject && (
+        <section className="px-6 max-w-6xl mx-auto mb-12">
+          <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/15 dark:border-white/15 backdrop-blur-xl shadow-xl relative overflow-hidden">
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
+              <div className="space-y-4 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-[#e5a93b] text-xs font-mono font-medium">
+                  <FiZap className="w-3.5 h-3.5" />
+                  <span>Featured Flagship Build</span>
+                </div>
 
-          This is deliberately not how the card grids elsewhere work —
-          those are one Reveal staggering its own children, which is
-          right for a grid you can see all of. Here the stagger between
-          panels is traded for each panel arriving as you reach it, and
-          with one child apiece Reveal's own stagger is inert.
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+                  {featuredProject.title}
+                </h2>
 
-          Plain `.reveal`, not `pop`: the scale variant is for tiles, and
-          scaling a full-width panel reads as a zoom rather than as the
-          thing arriving. */}
-      {groups.map((g) => (
-        <Reveal key={g.name} className="pi-panel">
-          <GlowCard className="pi-glow">
-            <section className="pi-group">
-              <div className="pi-rail">
-                <span className="pi-rail-inner">
-                  <h2 className="pi-rail-label">{g.name}</h2>
-                  <span className="pi-rail-count">{String(g.items.length).padStart(2, "0")}</span>
-                </span>
+                <p className="text-sm sm:text-base text-[#424245] dark:text-[#a1a1a6] leading-relaxed">
+                  {featuredProject.overview}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {featuredProject.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-[#a1a1a6]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <div className="pi-rows">
-                {g.items.map((p) => {
-                  n += 1;
-                  const art = DIAGRAM[p.schematic ?? p.title] ?? FALLBACK;
-                  return (
-                    <div
-                      key={p.slug}
-                      className="pi-row"
-                      onMouseEnter={(e) => {
-                        if (!canHover.current) return;
-                        const a = e.currentTarget.querySelector(".pi-art");
-                        if (a) drawRow(a, true);
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!canHover.current) return;
-                        const a = e.currentTarget.querySelector(".pi-art");
-                        if (a) drawRow(a, false);
-                      }}
-                    >
-                      {/* The row used to be one big <Link>. A deployed project
-                          now offers a second destination — the running build —
-                          and an <a> cannot live inside an <a>, so the write-up
-                          link became an overlay stretched across the row and
-                          the demo link sits above it. Clicking anywhere still
-                          opens the write-up; only the demo pill differs. */}
-                      <Link href={`/projects/${p.slug}`} className="pi-open">
-                        <span className="sr-only">{p.title} — read the write-up</span>
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0 pt-2 lg:pt-0">
+                {featuredProject.demo && (
+                  <a
+                    href={featuredProject.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-7 py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    <span>Launch Live Demo</span>
+                    <FiExternalLink className="w-4 h-4" />
+                  </a>
+                )}
+                <Link
+                  href={`/projects/${featuredProject.slug}`}
+                  className="px-7 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 text-[#1d1d1f] dark:text-white border border-black/10 dark:border-white/10 font-semibold text-sm transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  <span>System Architecture</span>
+                  <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 3. Bento Project Matrix */}
+      <section className="px-6 max-w-6xl mx-auto">
+        <div className="flex items-center justify-between mb-6 text-xs text-[#6e6e73] dark:text-[#86868b] font-mono px-2">
+          <span>Showing {filteredProjects.length} builds</span>
+          <span>Filter: {selectedCat}</span>
+        </div>
+
+        {filteredProjects.length === 0 ? (
+          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
+            <FiTerminal className="w-8 h-8 mx-auto text-[#86868b] mb-3" />
+            <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
+              No projects found matching &ldquo;{searchQuery}&rdquo;
+            </h3>
+            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+              Try searching for &ldquo;Docker&rdquo;, &ldquo;Ansible&rdquo;, &ldquo;Azure&rdquo;, or &ldquo;Python&rdquo;.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedCat("All");
+              }}
+              className="px-5 py-2 rounded-full text-xs font-semibold bg-black text-white dark:bg-white dark:text-black"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((proj) => {
+              const hasDemo = !!proj.demo;
+              const sourceLink = proj.links.find(
+                (l) => l.label.includes("Source") || l.label.includes("repo")
+              );
+
+              return (
+                <GlowCard key={proj.slug}>
+                  <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
+                    <div>
+                      {/* Header: Category & Status */}
+                      <div className="flex items-center justify-between gap-2 mb-4">
+                        <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] uppercase tracking-wider">
+                          {proj.category}
+                        </span>
+                        <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6]">
+                          {proj.status === "Live" || proj.status === "Active" ? (
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#34c759]" />
+                          ) : (
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-600 dark:bg-[#e5a93b]" />
+                          )}
+                          <span>{proj.status}</span>
+                        </div>
+                      </div>
+
+                      {/* Title */}
+                      <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2.5 group-hover:text-[#0066cc] dark:group-hover:text-[#f5f5f7] transition-colors leading-snug">
+                        {proj.title}
+                      </h2>
+
+                      {/* Teaser */}
+                      <p className="text-xs sm:text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-6">
+                        {proj.teaser}
+                      </p>
+
+                      {/* Stack Badges */}
+                      <div className="flex flex-wrap gap-1.5 mb-6">
+                        {proj.stack.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#424245] dark:text-[#a1a1a6]"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Footer Actions */}
+                    <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold">
+                      <Link
+                        href={`/projects/${proj.slug}`}
+                        className="inline-flex items-center gap-1 text-[#1d1d1f] dark:text-white hover:text-amber-600 dark:hover:text-[#e5a93b] transition-colors"
+                      >
+                        <span>Read Overview</span>
+                        <FiArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
                       </Link>
 
-                      <span className="pi-num">{String(n).padStart(2, "0")}</span>
-
-                      <span className="pi-name">
-                        {p.title}
-                        <span className="pi-status">
-                          {p.status === "Live" || p.status === "Active" ? (
-                            <i className="pi-dot" />
-                          ) : null}
-                          {p.status}
-                        </span>
-                        {p.demo ? (
+                      <div className="flex items-center gap-3">
+                        {hasDemo && (
                           <a
-                            href={p.demo}
+                            href={proj.demo}
                             target="_blank"
-                            rel="noopener"
-                            className="pi-demo"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[#0066cc] dark:text-[#2997ff] hover:underline"
+                            title="Open live hosted demo"
                           >
-                            Open live build ↗
+                            <span>Live App</span>
+                            <FiExternalLink className="w-3 h-3" />
                           </a>
-                        ) : null}
-                      </span>
-
-                      <span className="pi-teaser">{p.teaser}</span>
-
-                      {/* The swap zone: tokens at rest, schematic on hover. */}
-                      <span className="pi-right">
-                        <span className="pi-stack">
-                          {p.stack.slice(0, 4).map((t) => (
-                            <em key={t}>{t}</em>
-                          ))}
-                          {p.stack.length > 4 && <em className="pi-more">+{p.stack.length - 4}</em>}
-                        </span>
-                        <span className="pi-art">{art}</span>
-                      </span>
-
-                      <span className="pi-sweep" aria-hidden="true" />
+                        )}
+                        {sourceLink && (
+                          <a
+                            href={sourceLink.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[#6e6e73] hover:text-[#1d1d1f] dark:text-[#86868b] dark:hover:text-white transition-colors"
+                            title="View source code on GitHub"
+                          >
+                            <FiGithub className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
-            </section>
-          </GlowCard>
-        </Reveal>
-      ))}
+                  </article>
+                </GlowCard>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
-      <footer className="pi-foot">
-        <span className="micro">
-          (hover for schematic · click for the write-up · &ldquo;open live build&rdquo; runs the real
-          thing)
-        </span>
-        <span className="micro">(the public ones live on github.com/Srinivasan-78)</span>
+      {/* 4. Footer Note */}
+      <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#6e6e73] dark:text-[#86868b] space-y-2 border-t border-black/10 dark:border-white/10 pt-10">
+        <p>Built with care by Srinivasan Vijayaraghavan.</p>
+        <p>
+          Explore all repositories on{" "}
+          <a
+            href="https://github.com/Srinivasan-78"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#1d1d1f] dark:text-white hover:underline"
+          >
+            GitHub ↗
+          </a>
+          .
+        </p>
       </footer>
     </main>
   );
