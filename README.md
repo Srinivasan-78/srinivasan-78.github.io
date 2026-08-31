@@ -199,46 +199,30 @@ Add a project to `lib/projects.ts` and it:
 5. Injects into the XML sitemap (`app/sitemap.ts`) for search engines.
 6. Reaches the streaming AI assistant on the next deploy.
 
-The same single-source-of-truth pattern is used across:
 - `lib/certs.ts`: 24 certifications and skills, feeding both `/certifications` and the homepage metrics counter.
 - `lib/nav.ts`: Primary navigation routes, shared by the desktop header and mobile 3D wheel.
-- `lib/assistant.ts`: Chat guardrails and refusal prompts, synchronized between the frontend widget and Cloudflare Worker.
+- `lib/knowledge.ts`: Self-contained, deterministic knowledge engine powering the interactive site assistant.
 
 ---
 
-## 7. The chat button, and where the secret lives
+## 7. The interactive assistant: zero latency, zero server costs
 
-Every page has a chat button. Ask it about Srinivasan's experience and an AI answers,
-word by word as it is streamed.
-
-This is the one thing a pile of static files cannot do on its own:
-**talking to an AI needs an API key**, a key is a secret that costs money when used, and
-a static page cannot hold a private secret.
-
-So the key sits in a **Cloudflare Worker** — a tiny edge service — and the page talks to the worker instead.
+Every page has a chat assistant. Ask it about Srinivasan's experience, US/India work authorization, 21 builds, enterprise case studies, or tech stack and it answers smoothly in real-time.
 
 ```mermaid
-sequenceDiagram
-    participant P as 🌐 The page
-    participant W as ☁️ The worker
-    participant G as 🤖 Gemini API
-
-    P->>W: "What's his Azure experience?"<br/>(no key attached)
-    Note over W: The key lives securely here
-    W->>G: question + key + profile knowledge
-    G-->>W: answer token stream
-    W-->>P: streamed Server-Sent Events (SSE)
-    Note over P: Text renders smoothly<br/>token-by-token in real time
+flowchart LR
+    A["👤 Visitor Question"] --> B["⚡ Client-Side Intent Matcher<br/>(lib/knowledge.ts)"]
+    B --> C["Deterministic Knowledge Graph"]
+    C --> D["Instant Streaming Stream<br/>(16ms token typewriter)"]
+    D --> E["✨ Verified Answer & Action Links"]
 ```
 
-### Edge Security & Rate Limiting
+### Key Engineering Decisions:
+1. **Deterministic & 100% Verified**: Zero AI hallucinations. Quotes exact verified credentials, timelines, metrics, and architecture links.
+2. **Zero External Dependencies**: No Cloudflare Worker, no external API keys, no monthly server costs, and no rate limit failures.
+3. **100% Offline & Instant**: Operates locally with 0ms network latency across static hosting and local development.
+4. **Contextual Action Links & Follow-up Chips**: Provides 1-click links to download résumés, view project blueprints, and ask follow-up questions.
 
-Every request to the worker passes five automated validation gates:
-1. **Origin Verification**: Requests from unauthorized origins receive `403 Forbidden`.
-2. **Rate Limiting**: IP-based rate limiter capped at 15 messages per minute (`429 Too Many Requests`).
-3. **Message Length Cap**: Maximum 1,500 characters per message (`400 Bad Request`).
-4. **Context Window Cap**: Conversations capped at 16 turns and 12,000 characters.
-5. **Output Token Ceiling**: Responses capped at 4,000 tokens.
 
 ---
 
@@ -326,18 +310,12 @@ components/                 Modular UI and architecture components
   ui/GlowCard               Proximity mesh border-glow card container
 
 lib/                        Centralized datasets and shared utilities
-  projects.ts               19 project architectural records
+  projects.ts               21 project architectural records
   certs.ts                  24 verified credentials and skill groupings
   nav.ts                    Canonical route definitions
-  chat.ts · assistant.ts    AI streaming protocols and safety boundaries
+  knowledge.ts · chat.ts    Deterministic knowledge base & query matcher
   seo.ts                    Structured metadata and social graph builder
   haptics.ts · useInView.ts Vibration feedback & viewport trigger hooks
-
-worker/                     Cloudflare Worker backend for AI assistant
-  src/index.ts              Rate limiting, origin gating, Gemini stream proxy
-  src/knowledge.ts          Domain guardrails and approved context
-  src/profile.ts            Curated engineering résumé background
-  wrangler.toml             Worker configuration and allowed origins
 
 public/                     Static assets, icons, résumé PDF, CNAME
 .github/workflows/deploy.yml GitHub Actions static export deployment pipeline
@@ -351,13 +329,10 @@ Publishing is controlled via GitHub Actions:
 
 ```mermaid
 flowchart TD
-    A["Click 'Run workflow' in Actions"] --> B["1 · Deploy Cloudflare AI Worker"]
-    B --> B1["Validate types & upload Gemini key secret"]
-    B1 --> B2["Pass Worker endpoint to web build"]
-    B2 --> C["2 · Compile Next.js Static Export"]
-    C --> C1["Generate 32 static pages into out/"]
-    C1 --> D["3 · Deploy to GitHub Pages"]
-    D --> E["🌍 Live at srinidevops.com"]
+    A["Click 'Run workflow' in Actions"] --> B["1 · Compile Next.js Static Export"]
+    B --> B1["Generate 34 static pages into out/"]
+    B1 --> C["2 · Deploy to GitHub Pages"]
+    C --> D["🌍 Live at srinidevops.com"]
 ```
 
 ---
@@ -375,16 +350,7 @@ npm run dev          # http://localhost:3000
 
 # 3. Typecheck and build production export
 npm run typecheck    # verify TypeScript strict types
-npm run build        # compile 32 static export pages into out/
-```
-
-To run the local AI assistant worker:
-
-```bash
-cd worker
-npm install
-echo "GEMINI_API_KEY=your_key_here" > .dev.vars
-npm run dev          # http://localhost:8787
+npm run build        # compile 34 static export pages into out/
 ```
 
 ---
@@ -395,3 +361,4 @@ npm run dev          # http://localhost:8787
 - **LinkedIn**: [linkedin.com/in/srini-solution-architect](https://www.linkedin.com/in/srini-solution-architect/)
 - **GitHub**: [github.com/Srinivasan-78](https://github.com/Srinivasan-78)
 - **Location**: Bangalore, India (Authorized for US & India employment)
+

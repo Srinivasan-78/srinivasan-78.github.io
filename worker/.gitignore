@@ -1,3 +1,0 @@
-# Wrangler's local secret file — same class of thing as .env, never committed.
-.dev.vars
-.wrangler/

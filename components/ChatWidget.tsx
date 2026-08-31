@@ -8,48 +8,60 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CHAT_ENDPOINT, CHAT_SUGGESTIONS } from "@/lib/chat";
-import { CHAT_LIMITS, OFF_TOPIC_REFUSAL } from "@/lib/assistant";
+import Link from "next/link";
+import { CHAT_SUGGESTIONS } from "@/lib/chat";
+import { matchKnowledgeQuery, type KnowledgeMatchResult } from "@/lib/knowledge";
 import Strands from "./ui/Strands";
+import { FiArrowUpRight, FiCornerDownLeft } from "react-icons/fi";
 
-type Turn = { role: "user" | "assistant"; content: string };
+interface Turn {
+  role: "user" | "assistant";
+  content: string;
+  followUps?: string[];
+  actionLink?: {
+    label: string;
+    url: string;
+  };
+}
 
 const GREETING =
-  "Happy to answer anything about Srinivasan's work: his experience, projects, certifications, or the best way to reach him.";
+  "Happy to answer anything about Srinivasan's work: his 5+ years of DevOps experience, US & India work authorization, 21 open-source builds, enterprise migrations, or contact details.";
 
-/* One assistant reply is streamed at a time, so a single ref is enough to
-   cancel an in-flight request when the panel closes or the widget unmounts. */
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const abortRef = useRef<AbortController | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => () => abortRef.current?.abort(), []);
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => clearTimer(), [clearTimer]);
 
   useEffect(() => {
     if (open) {
       inputRef.current?.focus();
       return;
     }
-    /* Closing the panel drops the answer nobody is going to read, rather than
-       leaving the worker streaming tokens into a hidden div. */
-    abortRef.current?.abort();
-  }, [open]);
+    clearTimer();
+  }, [open, clearTimer]);
 
-  /* Pinned to the newest line as tokens arrive. `turns` changes on every
-     delta, which is exactly the cadence the scroll needs. */
+  /* Auto-scroll pinned to the newest message */
   useEffect(() => {
     const el = logRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [turns, busy]);
 
+  /* Keyboard shortcut: Escape to close */
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -63,130 +75,72 @@ export default function ChatWidget() {
   }, [open]);
 
   const send = useCallback(
-    async (text: string) => {
+    (text: string) => {
       const question = text.trim();
       if (!question || busy) return;
 
-      /* The worker rejects a conversation that is past either of its caps, so
-         the oldest turns are dropped here rather than letting a long
-         conversation dead-end on a 400 the visitor can only escape by
-         resetting.
-
-         Both caps, not just the turn count: sixteen turns at the 1500-char
-         message limit is 24000 characters, which clears the turn check and
-         fails the character one. Newest first, keeping whatever fits, then
-         reversed back into order — and the result has to start on a user
-         turn, which the API requires. */
-      const all = [...turns, { role: "user" as const, content: question }];
-      const kept: Turn[] = [];
-      let budget = CHAT_LIMITS.maxTotalChars;
-      for (let i = all.length - 1; i >= 0 && kept.length < CHAT_LIMITS.maxTurns; i--) {
-        const turn = all[i];
-        if (turn.content.length > budget) break;
-        budget -= turn.content.length;
-        kept.push(turn);
-      }
-      kept.reverse();
-      while (kept.length > 1 && kept[0].role !== "user") kept.shift();
-      const history: Turn[] = kept;
-      /* The visible log keeps everything; only what goes to the model is
-         trimmed. */
-      setTurns([...turns, { role: "user", content: question }, { role: "assistant", content: "" }]);
+      clearTimer();
       setDraft("");
-      setError(null);
       setBusy(true);
 
-      const controller = new AbortController();
-      abortRef.current = controller;
+      // Match against client-side deterministic knowledge engine
+      const match: KnowledgeMatchResult = matchKnowledgeQuery(question);
 
-      /* Appends into the placeholder assistant turn the send just pushed —
-         always the last entry, so no id bookkeeping is needed. */
-      const append = (chunk: string) =>
-        setTurns((prev) => {
-          const next = [...prev];
-          const last = next[next.length - 1];
-          if (last?.role === "assistant") next[next.length - 1] = { ...last, content: last.content + chunk };
-          return next;
-        });
+      // Push user turn and blank assistant turn
+      setTurns((prev) => [
+        ...prev,
+        { role: "user", content: question },
+        { role: "assistant", content: "" },
+      ]);
 
-      try {
-        const res = await fetch(CHAT_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history }),
-          signal: controller.signal,
-        });
+      const fullText = match.answer;
+      let currentIndex = 0;
+      const chunkSize = Math.max(1, Math.floor(fullText.length / 30));
 
-        if (!res.ok || !res.body) {
-          const detail = await res.json().catch(() => null);
-          throw new Error(
-            (detail as { error?: string } | null)?.error ?? "The assistant is taking a short break. Please try again in a moment.",
-          );
+      const typeNextChunk = () => {
+        currentIndex += chunkSize;
+        if (currentIndex >= fullText.length) {
+          // Streaming completed
+          setTurns((prev) => {
+            const next = [...prev];
+            const last = next[next.length - 1];
+            if (last?.role === "assistant") {
+              next[next.length - 1] = {
+                role: "assistant",
+                content: fullText,
+                followUps: match.followUps,
+                actionLink: match.actionLink,
+              };
+            }
+            return next;
+          });
+          setBusy(false);
+          timerRef.current = null;
+        } else {
+          setTurns((prev) => {
+            const next = [...prev];
+            const last = next[next.length - 1];
+            if (last?.role === "assistant") {
+              next[next.length - 1] = {
+                ...last,
+                content: fullText.slice(0, currentIndex),
+              };
+            }
+            return next;
+          });
+          timerRef.current = setTimeout(typeNextChunk, 16);
         }
+      };
 
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-
-        /* Handles one complete SSE frame. Throws to end the reply with a
-           message the visitor sees. */
-        const handleFrame = (frame: string) => {
-          const line = frame.split("\n").find((l) => l.startsWith("data:"));
-          if (!line) return;
-          /* A frame that is not JSON is skipped, not thrown on — one
-             malformed line should not discard a reply that is otherwise
-             arriving correctly. */
-          let event:
-            | { type: "delta"; text: string }
-            | { type: "notice"; message: string }
-            | { type: "done" }
-            | { type: "error"; message: string };
-          try {
-            event = JSON.parse(line.slice(5).trim());
-          } catch {
-            return;
-          }
-          if (event.type === "delta") append(event.text);
-          /* A notice keeps the partial answer and explains why it stops —
-             a truncated reply that says nothing reads as a broken widget. */
-          else if (event.type === "notice") setError(event.message);
-          else if (event.type === "error") throw new Error(event.message);
-        };
-
-        /* SSE frames are separated by a blank line and can be split across
-           network chunks, so the tail of the buffer is kept until it is. */
-        for (;;) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buffer += decoder.decode(value, { stream: true });
-          const frames = buffer.split("\n\n");
-          buffer = frames.pop() ?? "";
-          for (const frame of frames) handleFrame(frame);
-        }
-        /* A stream cut short leaves a final frame with no trailing blank line
-           after it. Dropping that lost the end of the answer with no sign
-           anything had gone wrong. */
-        buffer += decoder.decode();
-        if (buffer.trim()) handleFrame(buffer);
-      } catch (err) {
-        const aborted = (err as Error).name === "AbortError";
-        if (!aborted) setError(err instanceof Error ? err.message : "That one didn't come through. Please try again.");
-        /* Drops the empty placeholder so the log does not keep a blank
-           assistant bubble under the error — or, when the panel was closed
-           before a single token arrived, no bubble at all. */
-        setTurns((prev) => {
-          const last = prev[prev.length - 1];
-          return last?.role === "assistant" && last.content === "" ? prev.slice(0, -1) : prev;
-        });
-      } finally {
-        setBusy(false);
-        abortRef.current = null;
-      }
+      // Slight initial typing delay for natural conversational feel
+      timerRef.current = setTimeout(typeNextChunk, 40);
     },
-    [busy, turns],
+    [busy, clearTimer],
   );
 
-  if (!CHAT_ENDPOINT) return null;
+  const lastAssistantTurn = turns
+    .filter((t) => t.role === "assistant" && !busy)
+    .pop();
 
   return (
     <>
@@ -197,14 +151,8 @@ export default function ChatWidget() {
         aria-expanded={open}
         aria-controls="site-chat-panel"
         onClick={() => setOpen((v) => !v)}
-       
       >
         <span aria-hidden="true" className="chat-launcher-strands">
-          {/* The palette is the site accent and its two neighbours, not
-              the component's default orange/violet/cyan — three unrelated
-              hues on a page that spends one would be the confetti the
-              palette comment warns about. Slow, low-amplitude and barely
-              saturated: it is a light behind a control, not a demo. */}
           <Strands
             colors={["#0066cc", "#4c8dff", "#06B6D4"]}
             count={3}
@@ -219,11 +167,6 @@ export default function ChatWidget() {
             saturation={1.1}
             opacity={0.7}
             scale={4.5}
-            /* At rest it is a still frame. Continuous motion in the
-               corner of every page has no purpose beyond decoration and
-               competes with whatever the visitor is reading; answering
-               the pointer gives it one, and stops a WebGL loop that
-               otherwise runs for as long as the tab is open. */
             playOnHover
           />
         </span>
@@ -243,17 +186,17 @@ export default function ChatWidget() {
       >
         <header className="chat-head">
           <div className="chat-head-row">
-            <span className="eyebrow">
-              <i className="pulse" /> Site assistant
+            <span className="eyebrow flex items-center gap-1.5 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+              <i className="pulse" /> Portfolio Assistant
             </span>
             {turns.length > 0 ? (
               <button
                 type="button"
-                className="chat-reset"
+                className="chat-reset text-xs font-mono text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white"
                 onClick={() => {
-                  abortRef.current?.abort();
+                  clearTimer();
                   setTurns([]);
-                  setError(null);
+                  setBusy(false);
                   inputRef.current?.focus();
                 }}
               >
@@ -261,47 +204,90 @@ export default function ChatWidget() {
               </button>
             ) : null}
           </div>
-          <p>Answers come from this site and his résumé. Do double-check anything important.</p>
+          <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+            Instant answers about experience, work authorization, 21 builds & skills.
+          </p>
         </header>
 
         <div className="chat-log" ref={logRef}>
-          <p className="chat-greeting">{GREETING}</p>
+          <p className="chat-greeting text-xs leading-relaxed">{GREETING}</p>
 
-          {turns.map((turn, i) => {
-            /* The model is instructed to refuse off-topic questions with this
-               exact sentence, so an exact match is a reliable signal to label
-               the reply as blocked rather than styling it as a real answer. */
-            const blocked = turn.role === "assistant" && turn.content.trim() === OFF_TOPIC_REFUSAL;
-            return (
-              <div
-                key={i}
-                className={"chat-msg chat-msg-" + turn.role + (blocked ? " chat-msg-blocked" : "")}
-              >
-                <span className="eyebrow">
-                  {turn.role === "user" ? "You" : blocked ? "Out of scope" : "Assistant"}
-                </span>
-                <p aria-live={turn.role === "assistant" ? "polite" : undefined}>
-                  {turn.content || (busy ? "…" : "")}
-                </p>
-              </div>
-            );
-          })}
+          {turns.map((turn, i) => (
+            <div
+              key={i}
+              className={"chat-msg chat-msg-" + turn.role}
+            >
+              <span className="eyebrow text-[11px] font-mono mb-1 block">
+                {turn.role === "user" ? "You" : "Assistant"}
+              </span>
+              <p className="whitespace-pre-line text-sm leading-relaxed" aria-live={turn.role === "assistant" ? "polite" : undefined}>
+                {turn.content || (busy ? "…" : "")}
+              </p>
 
-          {error ? (
-            <p className="chat-error" role="alert">
-              {error}
-            </p>
-          ) : null}
+              {/* Action Link button inside assistant message if present */}
+              {turn.role === "assistant" && turn.actionLink && turn.content && (
+                <div className="mt-3 pt-2 border-t border-black/10 dark:border-white/10">
+                  {turn.actionLink.url.startsWith("/") ? (
+                    <Link
+                      href={turn.actionLink.url}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15 text-[#1d1d1f] dark:text-white border border-black/10 dark:border-white/10 transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      <span>{turn.actionLink.label}</span>
+                      <FiArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+                    </Link>
+                  ) : (
+                    <a
+                      href={turn.actionLink.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15 text-[#1d1d1f] dark:text-white border border-black/10 dark:border-white/10 transition-colors"
+                    >
+                      <span>{turn.actionLink.label}</span>
+                      <FiArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
 
-          {turns.length === 0 ? (
+          {/* Initial starter suggestions */}
+          {turns.length === 0 && (
             <div className="chat-suggestions">
               {CHAT_SUGGESTIONS.map((s) => (
-                <button key={s} type="button" className="chat-chip" onClick={() => send(s)}>
+                <button
+                  key={s}
+                  type="button"
+                  className="chat-chip text-xs"
+                  onClick={() => send(s)}
+                >
                   {s}
                 </button>
               ))}
             </div>
-          ) : null}
+          )}
+
+          {/* Follow-up suggestion pills from the most recent assistant turn */}
+          {turns.length > 0 && !busy && lastAssistantTurn?.followUps && (
+            <div className="pt-2">
+              <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider block mb-2">
+                Suggested follow-ups:
+              </span>
+              <div className="chat-suggestions">
+                {lastAssistantTurn.followUps.map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    className="chat-chip text-xs"
+                    onClick={() => send(f)}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <form
@@ -319,21 +305,23 @@ export default function ChatWidget() {
             ref={inputRef}
             className="chat-input"
             rows={2}
-            maxLength={CHAT_LIMITS.maxMessageChars}
-            placeholder="Ask about his experience, projects, or availability…"
+            maxLength={1000}
+            placeholder="Ask about experience, US work status, projects…"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => {
-              /* Enter sends, Shift+Enter breaks the line — the convention
-                 every other chat box on the web uses. */
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 send(draft);
               }
             }}
           />
-          <button type="submit" className="btn primary chat-send" disabled={busy || !draft.trim()}>
-            {busy ? "…" : "Send"}
+          <button
+            type="submit"
+            className="btn primary chat-send inline-flex items-center justify-center gap-1 font-semibold text-xs"
+            disabled={busy || !draft.trim()}
+          >
+            {busy ? "…" : <><FiCornerDownLeft className="w-3.5 h-3.5" /><span>Send</span></>}
           </button>
         </form>
       </div>
