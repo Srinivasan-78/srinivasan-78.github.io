@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​​‌‌​‌​​​‌​​​‌‌‌​​‌‌​‌​​​‌​‌​‌​‌​‌‌​‌‌‌‌​‌‌​‌​​‌​‌​‌​‌​​​‌​​​‌‌​​‌​​​​‌​​‌‌​‌‌​‌​‌‌‌​‌‌‌​‌‌​​‌​‌​‌‌​‌​​‌​‌‌​​​​‌​​‌‌​‌​​​‌​​‌‌​‌​​‌‌​​‌​​‌‌​​​‌‌​‌​‌‌​​‌​‌​‌‌​‌​​‌‌‌‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​​​‌‌​​​‌​​​‌‌​​‌​​‌​​​‌‌​​‌‌‌‌​​​​‌​‌​‌​‌​‌​​​​‌‌​‌​​​‌‌​​‌​​​‌​​​‌‌‌​‌‌​​‌‌‌​​​​​‌​​‌​​‌​‌‌​‌‌​​​​‌​‌‌​‌​​‌‌​​‌​​‌‌​‌​​​​‌‌​​‌​‌​‌​​‌​​​​‌​‌​‌‌‌​‌‌​‌​‌‌​‌​​‌‌‌‌​‌​​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.S4G4UoiTFBmweia4M2cYZz
+ * Fingerprint: AMK1.0b2FxUCFDvpIl-2heHWkOG
  */
 "use client";
 
@@ -71,9 +71,19 @@ const ART = {
   back: "/assets/lanyard/card-back.svg",
 } as const;
 
-/* The cord is a meshline tint rather than a texture, and it reads as
-   part of the badge, so it takes the same tone. */
-const CORD = "#2e2e34";
+/* The cord is a meshline tint rather than a texture. It hangs over the
+   page, not over the badge, so unlike the card it cannot take one tone
+   and keep it: #2e2e34 on white paper is a cord, and on `--paper: #000`
+   it is the page. Measured, every cord pixel came back 0,0,0 against a
+   0,0,0 background — the badge appeared to hang from nothing, which is
+   the symptom that started this whole hunt and which had nothing to do
+   with meshline's resolution.
+
+   The CSS fallback already had this right: `.badge-cord` is drawn with
+   `var(--ink-15)`, which inverts with the theme. These are the same idea
+   reached by hand, matching the `--ink-45` pair in each palette. */
+const CORD_LIGHT = "#2e2e34";
+const CORD_DARK = "#8e8e93";
 
 function StaticBadge() {
   return (
@@ -119,6 +129,19 @@ export default function LanyardScene() {
     };
   }, []);
 
+  /* Same MutationObserver ClickSpark uses to keep its canvas colour in
+     step with the toggle. Effect-time, and starting false, so the
+     prerendered markup and the first client paint agree. */
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const root = document.documentElement;
+    const read = () => setDark(root.getAttribute("data-theme") === "dark");
+    read();
+    const obs = new MutationObserver(read);
+    obs.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
+  }, []);
+
   const live = capable && inView;
 
   return (
@@ -132,7 +155,8 @@ export default function LanyardScene() {
           backImage={ART.back}
           imageFit="cover"
           lanyardWidth={0.5}
-          lanyardColor={CORD}
+          lanyardColor={dark ? CORD_DARK : CORD_LIGHT}
+          lanyardTextured={!dark}
           ariaLabel="A 3D conference badge hanging from a lanyard. Drag it to swing it."
         />
       ) : (

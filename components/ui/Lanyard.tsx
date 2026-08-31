@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌‌​​‌‌​​‌‌​​​‌‌​‌‌​​‌​​​‌​​​​‌​​‌‌‌‌​​​​‌​​‌‌​​​‌​‌​‌​‌​‌‌​​​​‌​‌​​‌‌‌​​‌‌​‌‌‌​​‌‌‌​​​​​‌​​​‌‌​​‌‌‌​​​​​‌‌​​​​‌​‌‌‌‌​​‌​‌‌​‌​​‌​‌‌‌​‌​‌​‌​‌​‌​​​‌​‌‌‌‌‌​‌​​​‌‌‌​‌‌​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌‌​‌‌‌​​‌​‌‌​‌​​‌​​​‌‌‌​‌‌​‌​​‌​‌‌​‌‌​‌​‌‌​​​‌​​‌‌​​​​‌​‌​‌​​​‌​‌‌​‌​‌​​‌‌​​​‌​​‌‌​​‌​‌​‌‌​​​‌‌​​‌​‌‌​‌​‌​‌‌​‌​​‌​‌​‌‌‌​‌​‌​‌‌‌​​‌‌​‌​‌​‌‌‌​​​​​‌​‌​​‌‌​‌‌​‌​‌​​‌​​​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.5fcdBxLUaNnpFpayiuT_Gm
+ * Fingerprint: AMK1.PnZGimbaQjbec-ZWW5pSjE
  */
 /* eslint-disable react/no-unknown-property */
 "use client";
@@ -80,6 +80,8 @@ export type LanyardProps = {
   lanyardWidth?: number;
   /** Tint multiplied into the band texture. Upstream is always white. */
   lanyardColor?: string;
+  /** Sample the woven band texture. Off makes the ribbon a flat tint. */
+  lanyardTextured?: boolean;
   /** Accessible description of the object the canvas draws. */
   ariaLabel?: string;
 };
@@ -95,6 +97,7 @@ export default function Lanyard({
   lanyardImage = null,
   lanyardWidth = 1,
   lanyardColor = "white",
+  lanyardTextured = true,
   ariaLabel = "Draggable 3D badge on a lanyard",
 }: LanyardProps) {
   /* The `isMobile` switch that used to live here is gone. It keyed off
@@ -122,6 +125,7 @@ export default function Lanyard({
               lanyardImage={lanyardImage}
               lanyardWidth={lanyardWidth}
               lanyardColor={lanyardColor}
+              lanyardTextured={lanyardTextured}
             />
           </Physics>
           <Environment blur={0.75}>
@@ -169,6 +173,7 @@ type BandProps = {
   lanyardImage?: string | null;
   lanyardWidth?: number;
   lanyardColor?: string;
+  lanyardTextured?: boolean;
 };
 
 type CardGLTF = {
@@ -185,6 +190,7 @@ function Band({
   lanyardImage = null,
   lanyardWidth = 1,
   lanyardColor = "white",
+  lanyardTextured = true,
 }: BandProps) {
   /* `resolution` is upstream's 1000x1000 replaced by the real canvas size.
      Worth being precise about what this does, because it is easy to
@@ -200,7 +206,7 @@ function Band({
      of both values confirm it. The gain is that the aspect is now true
      at any canvas shape and follows a resize, rather than being right
      only when the canvas happens to be square. Practical effect at this
-     size is about 12% on the cord's width.
+     size is about a quarter of the cord's width, measured.
 
      Selector form, not bare `useThree()`: the identity selector compares
      against the whole store object, which is replaced on every `set()`,
@@ -468,12 +474,14 @@ function Band({
           /* Upstream hard-codes white. The band is a ribbon whose
              control points bunch together near the clip, so wherever it
              doubles back on itself the twist catches the light and
-             reads as a knot hanging in mid-air. Tinting it lets the
-             cord sit against a dark page as a cord. */
+             reads as a knot hanging in mid-air. Tinting settles that —
+             but the tint has to come from the caller and has to follow
+             the theme, because this ribbon hangs over the page rather
+             than over the badge. See the CORD pair in LanyardScene. */
           color={lanyardColor}
           depthTest={false}
           resolution={[Math.max(1, size.width), Math.max(1, size.height)]}
-          useMap
+          useMap={lanyardTextured}
           map={texture}
           repeat={[-4, 1]}
           lineWidth={lanyardWidth}
