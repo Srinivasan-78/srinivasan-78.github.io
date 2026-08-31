@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌​‌​‌‌​​‌‌​‌‌‌​​​‌‌​​​​​‌‌​‌‌​‌​‌‌​​‌‌​​‌‌​​‌​‌​‌​​​​‌‌​​‌‌‌​​‌​​‌‌​‌‌‌​‌‌‌​‌‌​​‌​​‌​‌‌​‌​‌​‌‌‌​‌​‌‌​‌​​‌​​‌​​​​‌​​​​​‌​​‌‌‌​​​​‌‌‌​​​‌​‌​‌​​​​​‌‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​​‌‌​‌​​​​‌‌​​​‌​‌‌‌​​‌​​‌‌​​​‌‌​‌‌​​‌​‌​‌‌​​‌‌​​‌​‌​‌‌‌​‌‌​​‌​‌​‌​‌​​​​​​‌‌​​‌​​‌​​‌‌​​​​‌‌​​​‌​‌‌‌​​‌‌​‌​​‌​‌​​‌​​​​​‌​‌‌​​‌​​​‌‌​‌‌‌​​‌​​‌​‌​​‌‌‌​‌​​​‌‌​‌‌‌​​‌​‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.BcVVn0mfeC97vKWZHA8qPp
+ * Fingerprint: AMK1._41rcefWeP2L1sJAdnJtnS
  */
 /* ---------- TYPE ----------
    Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,
@@ -3591,12 +3591,14 @@ html[data-theme="dark"] .nav-glass::after {
 /* Shadows that are not on the --shadow-window token, and so have to be
    named. The floating panels do not need one: they already carry the
    inverted hairline from --edge-color, which separates them from black
-   in a way a black shadow cannot. The badge's 0.45-alpha shadow is the
-   worst of them — 60px of black blur over black. */
+   in a way a black shadow cannot.
+
+   `.badge-static img` is deliberately not in this list. It is the
+   no-WebGL fallback for the lanyard badge, and it has to keep matching
+   the 3D badge beside it and the same badge in light mode. */
 html[data-theme="dark"] .chat-launcher,
 html[data-theme="dark"] .chat-panel,
-html[data-theme="dark"] .cookie-notice,
-html[data-theme="dark"] .badge-static img {
+html[data-theme="dark"] .cookie-notice {
   box-shadow: none;
 }
 
@@ -3612,13 +3614,18 @@ html[data-theme="dark"] .badge-static img {
   }
 }
 
-/* The last two textures. The profile card's foil is a sheen and a glare
-   dimmed until they read as light falling on a surface — over white
-   that is a plausible surface, over black it is a smear on a slab. The
-   launcher's strand canvas is emissive line work behind a label, which
-   is the same low-contrast moving pattern the prefers-contrast rule
-   above already removes, for the same reason. Both go by paint only;
-   neither is in the layout. */
-html[data-theme="dark"] .pc-quiet .pc-shine,
-html[data-theme="dark"] .pc-quiet .pc-glare { opacity: 0; }
-html[data-theme="dark"] .chat-launcher-strands { display: none; }
+/* Nothing decorative is switched off below this point, and that is the
+   rule rather than an omission.
+
+   "Remove the glass" means the backdrop-filters above, and "the shadows
+   are bad" means the two tokens above. It does not mean the motion. The
+   strand canvas, the border-glow sweep, the profile card's foil and the
+   bloom behind it are the site's effects, not its textures: they are
+   painted against their own surfaces, they animate, and dark mode is
+   not a reason for any of them to stop. Flattening them made the same
+   object look like two different objects depending on the theme, which
+   is worse than the problem it was solving.
+
+   The profile card in particular is dark in both themes on purpose — a
+   laminated badge is the one thing in the room that is not the colour
+   of the room — so it takes no dark-mode treatment at all. */

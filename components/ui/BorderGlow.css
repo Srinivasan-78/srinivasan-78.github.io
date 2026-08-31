@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​‌​​​‌​​​​‌‌​​​‌​‌‌​‌‌​​​‌​​​​​‌​​‌‌​‌‌​​‌​​​​​‌​‌​‌​​​​​‌‌​‌‌‌‌​‌‌​​‌​‌​​‌‌​‌‌‌​‌‌​​‌​‌​‌‌‌​‌‌​​‌​‌​‌​‌​‌‌​​‌​‌​​‌‌​​​​​‌‌‌‌​​‌​‌​‌​​‌​​‌‌​‌‌​​​‌‌​‌​‌​​‌‌​‌​​‌​‌​‌​​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌​​‌‌‌‌​‌‌​‌​‌​​​‌​‌‌​‌​‌​​‌​​‌​‌‌‌​‌​​​‌‌‌‌​‌​​‌‌​‌​​‌​​‌‌​‌​​​‌​‌​‌​​​​‌‌​‌‌​​‌​​‌​​​​‌​‌​‌​​​‌‌​‌​‌‌​‌‌‌‌​‌​​‌‌​‌‌​‌​‌​​​‌​‌​‌​‌​​‌‌​‌​​​‌​​​‌​‌​‌‌​​‌​​‌‌​​​‌‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.jD1lA6APoe7evUe0yRljiS
+ * Fingerprint: AMK1.cOj-Itzi4T6HTkzmESDVLu
  */
 /* React Bits BorderGlow stylesheet, upstream as-published.
    Project-level tuning (shadow weight, inner surface, focus ring) lives
@@ -150,34 +150,4 @@
   position: relative;
   overflow: auto;
   z-index: 1;
-}
-
-/* ---------- DARK MODE: flat surface ----------
-   Additive only. Every rule below is scoped to html[data-theme="dark"],
-   so light mode keeps the treatment above untouched.
-
-   Two separate problems, both of them the page being near-black:
-
-   The six stacked rgba(0,0,0,0.1) shadows are a lift built for a light
-   page. Black on near-black is not a soft edge, it is nothing at all —
-   the card loses its lower edge and the whole stack costs six blur
-   passes to paint something invisible. The 1px hairline the card
-   already carries is what separates it from the page here, so the
-   shadow just goes.
-
-   The decorative layers are colour built for contrast against a light
-   surface. `soft-light` on ::after and `plus-lighter` on the outer glow
-   both key off what is underneath them; over #120F17 on a near-black
-   page the first turns to muddy noise and the second blooms far harder
-   than it was tuned to. Zeroing opacity leaves geometry, stacking and
-   the hover transitions exactly as they are and paints nothing. */
-
-html[data-theme="dark"] .border-glow-card {
-  box-shadow: none;
-}
-
-html[data-theme="dark"] .border-glow-card::before,
-html[data-theme="dark"] .border-glow-card::after,
-html[data-theme="dark"] .border-glow-card > .edge-light {
-  opacity: 0;
 }
