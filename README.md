@@ -207,7 +207,8 @@ Add a project to `lib/projects.ts` and it:
 
 ## 7. The interactive assistant: zero latency, zero server costs
 
-Every page has a chat assistant. Ask it about Srinivasan's experience, US/India work authorization, 21 builds, enterprise case studies, or tech stack and it answers smoothly in real-time.
+Every page has a chat assistant. Ask it about Srinivasan's experience, US/India work authorization, 20 builds, enterprise case studies, or tech stack and it answers smoothly in real-time.
+
 
 ```mermaid
 flowchart LR
@@ -310,7 +311,7 @@ components/                 Modular UI and architecture components
   ui/GlowCard               Proximity mesh border-glow card container
 
 lib/                        Centralized datasets and shared utilities
-  projects.ts               21 project architectural records
+  projects.ts               20 project architectural records
   certs.ts                  24 verified credentials and skill groupings
   nav.ts                    Canonical route definitions
   knowledge.ts · chat.ts    Deterministic knowledge base & query matcher

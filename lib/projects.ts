@@ -962,60 +962,10 @@ export const PROJECTS: Project[] = [
     ],
     links: [],
   },
-  {
-    slug: "pumpkin-mc",
-    title: "Pumpkin (Rust Minecraft Engine)",
-    schematic: "Pumpkin (Rust Minecraft Engine)",
-    client: "Systems Engineering",
-    category: "Game Architecture",
-    status: "Active",
-    teaser:
-      "A blazingly fast, multi-threaded Minecraft server implementation written from scratch in Rust, optimized for extreme concurrency and minimal memory footprint.",
-    tags: ["Rust", "Networking", "Concurrency"],
-    stack: ["Rust", "Tokio", "Rayon", "Custom Network Protocol", "Zero-Copy Deserialization", "Docker", "Cross-Platform"],
-    overview:
-      "A high-performance Minecraft server architecture written entirely in Rust to challenge the legacy JVM server model. By leveraging Rust's zero-cost abstractions, fearless concurrency, and deterministic memory management without garbage collection pauses, Pumpkin delivers sub-millisecond tick times, handles thousands of concurrent packet streams, and runs on a fraction of the RAM required by traditional Java servers. It implements the native Minecraft network protocol, custom ECS (Entity Component System) state pipelines, chunk generation caching, and multi-threaded packet serialization.",
-    architecture: [
-      {
-        label: "Async network reactor",
-        body: "Tokio-powered non-blocking I/O event loop manages thousands of concurrent client TCP streams with zero-copy packet framing and snappy connection multiplexing.",
-      },
-      {
-        label: "Lock-free world state",
-        body: "World chunks and spatial coordinates are partitioned into concurrent memory segments, eliminating thread contention and global mutex locks during player movement.",
-      },
-      {
-        label: "Zero GC pause latency",
-        body: "Manual memory allocation and compile-time lifetime checks eliminate Java-style garbage collection stop-the-world spikes, maintaining a rock-solid 20 TPS (Ticks Per Second).",
-      },
-      {
-        label: "Rayon parallel computation",
-        body: "Heavy physics, block updates, and collision queries are distributed across available CPU cores using Rayon work-stealing threads.",
-      },
-      {
-        label: "Strict protocol compliance",
-        body: "Full implementation of the standard Minecraft packet protocol specification with automated fuzz testing and packet roundtrip validation.",
-      },
-      {
-        label: "Containerized deployment",
-        body: "Packaged as a hyper-lean multi-stage Alpine scratch Docker container weighing under 25MB with automated CI/CD cross-compilation.",
-      },
-    ],
-    highlights: [
-      "Zero garbage collection pauses ensures consistent sub-millisecond tick latency under heavy load",
-      "Memory footprint reduced by up to 80% compared to traditional JVM server runtimes",
-      "Multi-threaded work-stealing pipeline scales seamlessly across all available CPU cores",
-      "Strict wire protocol conformance validated via automated client connection fuzzing",
-      "Minimalist 25MB container image ready for one-command Kubernetes or bare-metal deployment",
-    ],
-    links: [
-      { url: "https://github.com/Srinivasan-78/Pumpkin", label: "Source ↗" },
-      { url: "https://pumpkinmc.org/", label: "Project Site ↗" },
-    ],
-  },
 ];
 
 export function projectBySlug(slug: string) {
   return PROJECTS.find((p) => p.slug === slug);
 }
+
 

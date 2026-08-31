@@ -1,3 +1,9 @@
+/*!
+ * @authormark v1 -- do not remove (authorship watermark)
+ * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
+ * Author: https://github.com/Srinivasan-78
+ * SPDX-License-Identifier: MIT
+ */
 export interface KnowledgeEntry {
   id: string;
   category: "identity" | "experience" | "projects" | "skills" | "authorization" | "certifications" | "contact" | "general";
@@ -114,7 +120,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     ],
     actionLink: {
       label: "View Matter Image Builder Project",
-      url: "/projects/matter-test-harness",
+      url: "/projects/matter-test-harness-image-builder",
     },
   },
 
@@ -135,7 +141,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       "The Master Bot & Repository Supervisor is an autonomous platform supervisor that continuously audits, secures, and maintains every repository in Srinivasan's GitHub account. It enforces @authormark cryptographic watermarks, automatically opens ready-to-merge fix PRs with keyed HMAC signatures, scans for leaked PATs/API keys, lints code hygiene, tags PR sizes (size/XS to size/XL), and consolidates findings into a single daily dashboard issue to eliminate alert fatigue.",
     followUps: [
       "Tell me about the automatch project",
-      "Tell me about the Pumpkin Rust Minecraft project",
+      "Tell me about his Self-Healing Deployment pipeline",
       "Explore all projects",
     ],
     actionLink: {
@@ -160,7 +166,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     answer:
       "automatch is an intelligent resume-to-job matching and candidate screening engine. It parses complex multi-column PDFs and DOCX files, normalizes skills using a canonical knowledge graph (via spaCy), and executes 5-dimension deterministic scoring (tech stack, domain depth, leadership, certifications, recency). It generates explainable match reports detailing strengths and gaps with zero data leakage.",
     followUps: [
-      "Tell me about the Pumpkin Minecraft project",
+      "Tell me about the Master Bot project",
       "What NLP and Python tools does he use?",
       "View all projects",
     ],
@@ -170,32 +176,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     },
   },
 
-  // 7. Projects - Pumpkin (Rust Minecraft Server)
-  {
-    id: "pumpkin_mc",
-    category: "projects",
-    keywords: [
-      "pumpkin", "rust", "minecraft", "game server", "tokio", "concurrency", "rayon", "network protocol", "tps"
-    ],
-    patterns: [
-      /pumpkin/i,
-      /rust\s+(minecraft|server)/i,
-      /game\s+architecture/i,
-    ],
-    answer:
-      "Pumpkin is a blazingly fast, multi-threaded Minecraft server implementation built from scratch in Rust. It utilizes Tokio for non-blocking asynchronous packet I/O, Rayon for work-stealing parallel computation, and lock-free world chunk memory. By eliminating JVM garbage collection pauses, Pumpkin maintains a rock-solid 20 TPS with an 80% smaller RAM footprint in a 25MB container.",
-    followUps: [
-      "What is his experience with Rust?",
-      "Tell me about his Self-Healing Deployment pipeline",
-      "Explore all 21 projects",
-    ],
-    actionLink: {
-      label: "View Pumpkin Project",
-      url: "/projects/pumpkin-mc",
-    },
-  },
-
-  // 8. Projects - Self-Healing Deployment Pipeline
+  // 7. Projects - Self-Healing Deployment Pipeline
   {
     id: "self_healing",
     category: "projects",
@@ -330,7 +311,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
 // Conversational greetings & conversational fallbacks
 const GREETING_RESPONSE = {
   answer:
-    "Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), 21 open-source builds, and technical skills.",
+    "Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), 20 open-source builds, and technical skills.",
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
@@ -355,7 +336,7 @@ const THANKS_RESPONSE = {
 
 const OFF_TOPIC_RESPONSE = {
   answer:
-    "I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, 21 project builds, certifications, and work authorization. Here are some topics you might find helpful:",
+    "I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, 20 project builds, certifications, and work authorization. Here are some topics you might find helpful:",
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",

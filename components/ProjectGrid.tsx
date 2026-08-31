@@ -174,6 +174,28 @@ export const DIAGRAM: Record<string, ReactNode> = {
       ))}
     </svg>
   ),
+  "Study Brainrot Generator": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      {["Research", "Script", "TTS", "Render"].map((_, i) => (
+        <g key={i}>
+          <circle cx={38 + i * 76} cy="55" r="16" stroke="currentColor" strokeWidth="2.5" fill="none" />
+          {i < 3 && <path d={`M${54 + i * 76} 55 H${98 + i * 76}`} stroke="currentColor" strokeWidth="2.5" {...s} />}
+          {i < 3 && <path d={`M${90 + i * 76} 47 l8 8 -8 8`} stroke="currentColor" strokeWidth="2.5" {...s} />}
+        </g>
+      ))}
+    </svg>
+  ),
+  "brainrot-study": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      {["Research", "Script", "TTS", "Render"].map((_, i) => (
+        <g key={i}>
+          <circle cx={38 + i * 76} cy="55" r="16" stroke="currentColor" strokeWidth="2.5" fill="none" />
+          {i < 3 && <path d={`M${54 + i * 76} 55 H${98 + i * 76}`} stroke="currentColor" strokeWidth="2.5" {...s} />}
+          {i < 3 && <path d={`M${90 + i * 76} 47 l8 8 -8 8`} stroke="currentColor" strokeWidth="2.5" {...s} />}
+        </g>
+      ))}
+    </svg>
+  ),
   "Minecraft Server GitOps": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
       <rect x="20" y="38" width="52" height="34" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
@@ -234,19 +256,42 @@ export const DIAGRAM: Record<string, ReactNode> = {
       <path d="M250 48 H276 M250 58 H276" stroke="currentColor" strokeWidth="2" {...s} opacity="0.7" />
     </svg>
   ),
-  "Pumpkin (Rust Minecraft Engine)": (
+  "Azure Pipeline Trigger": (
     <svg viewBox="0 0 300 110" aria-hidden="true">
-      <rect x="40" y="30" width="50" height="50" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
-      <rect x="52" y="42" width="8" height="8" fill="currentColor" />
-      <rect x="70" y="42" width="8" height="8" fill="currentColor" />
-      <path d="M52 64 H78" stroke="currentColor" strokeWidth="2" {...s} />
+      <rect x="30" y="32" width="64" height="46" rx="5" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M44 48 L56 60 L80 44" stroke="currentColor" strokeWidth="2.5" {...s} />
       <path d="M102 55 H148" stroke="currentColor" strokeWidth="3" {...s} />
       <path d="M140 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
-      <circle cx="178" cy="55" r="18" stroke="currentColor" strokeWidth="2.5" fill="none" />
-      <path d="M170 55 H186 M178 47 V63" stroke="currentColor" strokeWidth="2.5" {...s} />
-      <path d="M208 55 H254" stroke="currentColor" strokeWidth="3" {...s} />
-      <path d="M246 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
-      <rect x="264" y="38" width="22" height="34" rx="3" stroke="currentColor" strokeWidth="2" fill="none" />
+      <circle cx="180" cy="55" r="18" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M180 43 V67 M168 55 H192" stroke="currentColor" strokeWidth="2.5" {...s} />
+      <path d="M206 55 H252" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M244 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="260" y="38" width="24" height="34" rx="4" stroke="currentColor" strokeWidth="2" fill="none" />
+    </svg>
+  ),
+  "Pi Image Shrink": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      <rect x="30" y="24" width="70" height="62" rx="5" stroke="currentColor" strokeWidth="2.5" fill="none" opacity="0.5" />
+      <path d="M110 55 H154" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M146 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="170" y="34" width="46" height="42" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M226 55 H264" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M256 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+    </svg>
+  ),
+  "Master Bot & Repository Supervisor": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      {[[112, 26], [112, 84], [176, 26], [176, 84]].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <rect x={x - 22} y={y - 12} width="44" height="24" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" opacity="0.75" />
+          <path d={`M${x - 12} ${y} H${x + 8}`} stroke="currentColor" strokeWidth="2" {...s} opacity="0.5" />
+        </g>
+      ))}
+      <path d="M60 55 H86 M214 55 H240" stroke="currentColor" strokeWidth="2" {...s} opacity="0.5" />
+      <path d="M22 55 q22 -20 44 0 q-22 20 -44 0 z" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <circle cx="44" cy="55" r="7" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <rect x="244" y="30" width="34" height="50" rx="4" stroke="currentColor" strokeWidth="3" fill="none" />
+      <path d="M252 44 H270 M252 54 H270 M252 64 H264" stroke="currentColor" strokeWidth="2" {...s} opacity="0.7" />
     </svg>
   ),
 };
