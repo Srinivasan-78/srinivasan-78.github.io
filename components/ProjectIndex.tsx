@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​‌​​‌​‌‌​‌​​‌​‌​​‌​​‌‌‌‌​​‌‌​​‌​​​‌​‌‌​‌​‌​‌​‌​​​​‌‌​‌​‌​‌‌​​‌‌​​​‌‌​​​‌​‌​​‌​​‌​‌​​​‌​​​‌​‌​​​‌​‌‌‌‌​‌​​​‌‌​​‌​​​‌‌‌​​​​​‌‌​​‌‌​‌​‌‌​​‌​​‌‌‌​​‌​‌​‌​‌​​​‌‌​​​‌‌​‌​‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​‌‌​‌​​​​‌​​‌​‌‌​‌​‌‌​​​​‌‌​‌​‌​​​‌‌​​​​​‌​​‌‌​​​‌‌​‌‌​‌​‌​‌‌​‌​​‌‌​​​‌‌​‌​​‌‌‌‌​‌​‌​​​​​‌​​​​​‌​‌​‌‌​‌​​‌​‌​‌‌‌​‌​​‌‌‌‌​‌​​​​‌​​‌​​​​​‌​‌‌​‌​‌​​‌​​‌‌‌‌​‌‌‌​‌‌​​‌​‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.VKJO2-T5f1IDQz283Y9TcW
+ * Fingerprint: AMK1.jhKXj0LmZcOPAZWOBAjOvV
  */
 "use client";
 
@@ -178,10 +178,21 @@ export default function ProjectIndex() {
           reads as the same material as the home page rather than as a
           bare table that happens to live on the same domain. The rows
           inside keep their own behaviour. */}
-      {/* The panels arrive the way every other group of cards on the site
-          does. Plain `.reveal`, not `pop`: the scale variant is for
-          tiles, and scaling a full-width panel reads as a zoom rather
-          than as the thing arriving. */}
+      {/* One Reveal per panel, not one around the list. The list is
+          taller than the viewport, and useInView fires at a 1%
+          threshold, so a single wrapper crossed it on load: every panel
+          flipped to is-in at once and finished arriving while it was
+          still below the fold. Scrolling the page showed nothing move.
+
+          This is deliberately not how the card grids elsewhere work —
+          those are one Reveal staggering its own children, which is
+          right for a grid you can see all of. Here the stagger between
+          panels is traded for each panel arriving as you reach it, and
+          with one child apiece Reveal's own stagger is inert.
+
+          Plain `.reveal`, not `pop`: the scale variant is for tiles, and
+          scaling a full-width panel reads as a zoom rather than as the
+          thing arriving. */}
       {groups.map((g) => (
         <Reveal key={g.name} className="pi-panel">
           <GlowCard className="pi-glow">

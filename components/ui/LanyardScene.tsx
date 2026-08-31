@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌​​​​‌​​​‌‌​‌​‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌‌​​​‌​​‌‌​​​‌​‌‌​​‌​​​‌‌​​‌‌​​‌‌​‌​‌​​‌‌​​‌‌​​‌​​‌‌​​​‌‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌​‌​​‌​‌​‌‌​‌​​‌​‌​​‌‌​‌‌‌‌​​​​‌​‌​‌​‌​‌​​​‌​‌​‌​‌​​‌​​‌​​‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​​‌‌​‌​​​‌​​​‌‌‌​​‌‌​‌​​​‌​‌​‌​‌​‌‌​‌‌‌‌​‌‌​‌​​‌​‌​‌​‌​​​‌​​​‌‌​​‌​​​​‌​​‌‌​‌‌​‌​‌‌‌​‌‌‌​‌‌​​‌​‌​‌‌​‌​​‌​‌‌​​​​‌​​‌‌​‌​​​‌​​‌‌​‌​​‌‌​​‌​​‌‌​​​‌‌​‌​‌‌​​‌​‌​‌‌​‌​​‌‌‌‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.5B5siq1dfjfLwwiZSxUERJ
+ * Fingerprint: AMK1.S4G4UoiTFBmweia4M2cYZz
  */
 "use client";
 
@@ -21,7 +21,9 @@ import { useInView } from "@/lib/useInView";
      * the badge has actually scrolled into view,
      * the OS is not asking for reduced motion,
      * the connection is not one the visitor is trying to conserve —
-       Data Saver on, or a 2G/slow-2G effective type.
+       Data Saver on, or a 2G/slow-2G effective type,
+     * the window is at least 721px wide and the primary pointer is a
+       fine one that can hover.
 
    It is also gated to pointer devices, which is a reversal: width used
    to be excluded on the grounds that a phone renders it perfectly well
@@ -38,6 +40,12 @@ import { useInView } from "@/lib/useInView";
    1366 across and is still a thumb. The width term stays as a floor —
    the badge is a 2.4 MB model in a column that is only worth spending
    on a screen wide enough to show it beside the form.
+
+   Note this narrows the touch case rather than removing it. Both queries
+   describe the *primary* pointing device, so a laptop with a touchscreen
+   matches them and its owner can still put a finger on the badge. The
+   pointercancel guard in Lanyard.tsx is what makes that survivable, and
+   it is load-bearing, not a belt-and-braces duplicate of this gate.
 
    Anyone the gate turns away gets the static badge below: the same
    artwork, hanging from the same cord, drawn in CSS. It is a fallback,
@@ -131,10 +139,10 @@ export default function LanyardScene() {
         <StaticBadge />
       )}
       {/* Only claim it can be pulled when the physics build is the thing
-          on screen. The fallback is a picture and says nothing. There is
-          one string now rather than a pointer/touch pair, because the
-          gate above means the only visitor who ever sees this has a
-          cursor. */}
+          on screen. The fallback is a picture and says nothing. One
+          string rather than the old pointer/touch pair: the touch half
+          was swapped in by `@media (pointer: coarse)`, and nothing that
+          matches the gate above can match that too. */}
       {live && <p className="micro lanyard-caption">(drag the badge)</p>}
     </div>
   );

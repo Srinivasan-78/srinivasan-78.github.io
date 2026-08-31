@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​‌​​​‌‌‌​‌​‌‌​​‌​‌​​‌‌​​​‌‌​‌​​​​‌‌‌‌​​​​‌‌‌‌​‌​​‌‌‌​​​‌​‌‌‌​‌​‌​‌‌​‌‌‌‌​‌‌​‌‌​​​‌​‌​​​​​‌‌​​‌​​​​‌‌​‌​‌​‌​‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​​​‌​​​‌​​​‌‌‌​‌​‌​‌‌‌​‌​​​‌‌​‌​​​​‌​‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌‌​​‌‌​​‌‌​​​‌‌​‌‌​​‌​​​‌​​​​‌​​‌‌‌‌​​​​‌​​‌‌​​​‌​‌​‌​‌​‌‌​​​​‌​‌​​‌‌‌​​‌‌​‌‌‌​​‌‌‌​​​​​‌​​​‌‌​​‌‌‌​​​​​‌‌​​​​‌​‌‌‌‌​​‌​‌‌​‌​​‌​‌‌‌​‌​‌​‌​‌​‌​​​‌​‌‌‌‌‌​‌​​​‌‌‌​‌‌​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.xGYLhxzquolPd5SOTDuthR
+ * Fingerprint: AMK1.5fcdBxLUaNnpFpayiuT_Gm
  */
 /* eslint-disable react/no-unknown-property */
 "use client";
@@ -186,14 +186,27 @@ function Band({
   lanyardWidth = 1,
   lanyardColor = "white",
 }: BandProps) {
-  /* meshline converts lineWidth into screen space using `resolution`, so
-     a resolution that does not match the drawing buffer scales the ribbon
-     by the ratio between them. Upstream hard-codes 1000x1000; this canvas
-     is about 400x468 CSS px, which shrinks the band to roughly a third of
-     the intended width and, at lanyardWidth 0.5, to something too thin to
-     see — the badge appeared to hang from nothing. Reading the live size
-     keeps the cord the width it is asked for, and follows a resize. */
-  const { size } = useThree();
+  /* `resolution` is upstream's 1000x1000 replaced by the real canvas size.
+     Worth being precise about what this does, because it is easy to
+     assume it is the pixel-width divisor and it is not: meshline only
+     uses `resolution` that way under `sizeAttenuation: 0`, and the
+     default is 1, so that branch is compiled out here. What survives is
+     `aspect = resolution.x / resolution.y`, which is applied uniformly to
+     the clip position and therefore cancels under the perspective divide
+     for everything except the ribbon's width.
+
+     So this is a correctness fix to the ribbon's perpendicular, not a
+     visibility fix — the cord rendered fine before, and A/B screenshots
+     of both values confirm it. The gain is that the aspect is now true
+     at any canvas shape and follows a resize, rather than being right
+     only when the canvas happens to be square. Practical effect at this
+     size is about 12% on the cord's width.
+
+     Selector form, not bare `useThree()`: the identity selector compares
+     against the whole store object, which is replaced on every `set()`,
+     so `Band` would re-render on `setDpr`, `setEvents` and any
+     `performance.regress()` as well as on resize. */
+  const size = useThree((s) => s.size);
   const band = useRef<THREE.Mesh & { geometry: MeshLineGeometry }>(null);
   const fixed = useRef<RapierRigidBody>(null);
   const j1 = useRef<RapierRigidBody & { lerped?: THREE.Vector3 }>(null);
@@ -322,15 +335,29 @@ function Band({
 
      These listen to the real DOM events, so they hold whatever r3f's
      synthetic layer decides to do, and they are only attached while a
-     drag is actually in flight. */
+     drag is actually in flight.
+
+     `lostpointercapture` and `blur` are here because pointerup and
+     pointercancel between them do not cover everything. Press on the
+     badge, drag, then alt-tab and let go in another window: capture is
+     lost and the button comes up somewhere this document never hears
+     about. r3f answers lostpointercapture the same way it answers
+     pointercancel — cancelPointer, which raises onPointerOut and no up —
+     so without these the badge freezes exactly as it did before. That
+     path is a mouse path, which is to say the only kind of visitor this
+     scene now has. */
   useEffect(() => {
     if (!dragged) return;
     const release = () => drag(false);
     window.addEventListener("pointerup", release);
     window.addEventListener("pointercancel", release);
+    window.addEventListener("lostpointercapture", release);
+    window.addEventListener("blur", release);
     return () => {
       window.removeEventListener("pointerup", release);
       window.removeEventListener("pointercancel", release);
+      window.removeEventListener("lostpointercapture", release);
+      window.removeEventListener("blur", release);
     };
   }, [dragged]);
 
@@ -400,10 +427,17 @@ function Band({
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={(e) => {
-              (e.target as Element).releasePointerCapture(e.pointerId);
+              /* The window guard above may already have ended the drag
+                 and, with it, the capture — releasing a pointer id the
+                 element no longer holds throws InvalidPointerId from
+                 inside an event handler. */
+              try {
+                (e.target as Element).releasePointerCapture(e.pointerId);
+              } catch {
+                /* already released */
+              }
               drag(false);
             }}
-            onPointerCancel={() => drag(false)}
             onPointerDown={(e) => {
               (e.target as Element).setPointerCapture(e.pointerId);
               drag(
@@ -438,7 +472,7 @@ function Band({
              cord sit against a dark page as a cord. */
           color={lanyardColor}
           depthTest={false}
-          resolution={[size.width, size.height]}
+          resolution={[Math.max(1, size.width), Math.max(1, size.height)]}
           useMap
           map={texture}
           repeat={[-4, 1]}
