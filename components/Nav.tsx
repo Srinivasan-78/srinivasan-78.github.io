@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌‌‌‌​‌​​‌‌‌​‌​‌​​‌‌​‌​​​‌‌​​​​‌​‌​​‌​​​​‌‌‌‌​‌​​‌‌​‌‌‌‌​‌‌​‌​​‌​‌​​‌‌​‌​‌​​‌​​​​‌​‌​​​​​‌‌​​‌‌​​‌‌‌​​‌‌​​‌‌​‌​​​‌​​‌​‌‌​‌​‌‌​‌​​‌​‌​‌​​​‌​‌​‌​‌​​‌‌​‌​‌​‌‌​‌‌‌‌​‌‌​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​‌​‌‌​‌‌​​​​‌​‌‌​‌​‌‌​​​‌​​‌‌‌​‌‌‌​‌​​‌​‌​​‌​​‌​​​​‌​​​‌​​​‌​​‌‌‌​​‌​​​​​‌​‌‌​‌‌​​​‌‌‌‌​‌​​‌​‌​​​‌​‌‌​​​​‌​‌​‌​​‌‌​‌​‌‌‌‌‌​‌‌​‌‌‌​​‌‌‌​‌‌‌​‌​‌‌‌‌‌​‌​​‌​​​​‌​‌​​​‌​‌‌​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Mzu4aHzoiMHPfs4KZTU5om
+ * Fingerprint: AMK1.Ul-bwJHDNAlzQaS_nw_HQg
  */
 "use client";
 
@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import TechLoop from "./TechLoop";
+import ThemeToggle from "./ThemeToggle";
 import MobileNavigation from "./navigation/MobileNavigation";
 import { NAV_ITEMS, isActiveRoute } from "@/lib/nav";
 
@@ -118,6 +119,11 @@ export default function Nav() {
                 {l.label}
               </Link>
             ))}
+
+            {/* Last in the row, after the routes: it is a preference, not
+                a destination. Hidden with the rest of .nav-links below
+                720px — the phone gets its own copy in the wheel. */}
+            <ThemeToggle />
           </div>
 
           {/* The phone's navigation: trigger here, full-screen wheel

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌‌​‌‌​‌​‌​‌​‌​‌​‌​​‌‌​‌​‌​​‌​‌​​‌​‌​​‌​​‌‌​‌‌‌‌​‌‌​‌‌​​​‌‌‌​​​‌​‌​‌​‌‌​​‌​​​‌​​​‌​‌​​​​​‌​​‌​‌‌​‌‌​‌‌​​​​‌‌​​‌​​‌‌​‌​​​​‌‌‌‌​​​​‌​‌​​‌​​‌​‌​‌​​​‌‌‌‌​‌​​‌​​‌‌​‌​‌​​​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌​​‌​​​​‌​‌‌​​​​‌‌​​​‌‌​‌‌‌​‌‌​​‌​‌‌‌‌‌​​‌‌​‌​​​‌​​‌​​​​‌‌‌​​​‌​‌‌​‌​‌​​‌‌‌​‌​​​‌‌‌​‌​​​‌‌‌‌​​​​‌‌​‌‌​‌​‌‌​​​​‌​‌​​​​​‌​‌​​​​‌‌​‌​‌​​​​​‌‌‌‌​​​​‌​​‌‌‌‌​‌‌‌​​​​​‌‌​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.-mUMJRolqVDPKl2hxRTzMA
+ * Fingerprint: AMK1.aHXcv_4HqjttxmaACPxOpb
  */
 "use client";
 
@@ -37,10 +37,11 @@
 
    `sparkColor` also accepts the name of a CSS custom property. A canvas
    cannot resolve `var()` itself — strokeStyle takes a colour, not a
-   cascade — so the property is read off the document element and
-   read once at mount. It is a token rather than a literal so the spark
-   and the page cannot drift apart: ink on white paper, where the white
-   spark the component ships with would be invisible. */
+   cascade — so the property is read off the document element at mount
+   and re-read when data-theme changes. It is a token rather than a
+   literal so the spark and the page cannot drift apart: ink on white
+   paper, where the white spark the component ships with would be
+   invisible, and white again once the page goes dark. */
 
 import { useRef, useEffect, useCallback, type ReactNode } from "react";
 
@@ -85,14 +86,21 @@ export default function ClickSpark({
     }
 
     const root = document.documentElement;
-    const value = getComputedStyle(root).getPropertyValue(sparkColor).trim();
-    // An unset property resolves to "", which would paint nothing.
-    colorRef.current = value || "#fff";
+    const read = () => {
+      const value = getComputedStyle(root).getPropertyValue(sparkColor).trim();
+      // An unset property resolves to "", which would paint nothing.
+      colorRef.current = value || "#fff";
+    };
+    read();
 
-    /* Read once. This used to re-read behind a MutationObserver on
-       <html>'s data-theme, because a theme toggle could change what the
-       property resolved to at any moment. The site has one palette now,
-       so the value is fixed for the life of the page. */
+    /* Re-read on a theme change. --spark is ink on the light page and
+       white on the dark one — a canvas cannot hold a var(), so the
+       resolved value has to be refreshed when data-theme flips or the
+       spark keeps painting the outgoing theme's colour, which on this
+       palette means painting black on black. */
+    const obs = new MutationObserver(read);
+    obs.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
   }, [sparkColor]);
 
   // Keep the canvas backing store matched to the viewport and the device

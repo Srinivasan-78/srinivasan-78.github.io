@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌‌​​​​‌​‌​​​​‌​​‌​​‌​​​​‌​‌‌​​‌​‌​​‌​​​​‌​​‌‌‌‌​‌‌​​‌‌​​‌​​​​‌‌​‌‌​​​‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌​​‌​​​​‌​​​‌‌​​​‌​​‌‌​​‌​​‌​‌​‌​‌​‌‌‌​​​​​‌​‌​​‌‌​‌​​‌‌‌‌​‌‌​‌​​​​‌​​‌‌​​​‌​​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌​​​‌‌​​‌‌​‌​​​​‌‌‌​​‌‌​‌​​​‌​‌​‌‌​‌‌​‌​‌​​‌‌​​​‌​​‌‌​​​‌‌​‌​‌​​‌​‌‌‌‌‌​‌​​‌‌‌​​‌‌​‌‌‌‌​​‌‌​​​​​‌​‌​‌​​​​‌‌​‌‌‌​‌‌​‌‌‌​​‌​​‌‌​​​‌‌​‌‌‌‌​‌​​‌​​‌​‌​‌‌​​‌​‌​‌​‌​‌​‌​‌‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.5aBHYHOfCcwvB12UpSOhLH
+ * Fingerprint: AMK1.YFhsEmLLj_No0T7nLoIYU_
  */
 /* ---------- TYPE ----------
    Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,
@@ -35,7 +35,8 @@
    validation has to read as a problem, and a problem coloured the same
    as a call to action reads as neither. */
 
-:root {
+:root,
+html[data-theme="light"] {
   color-scheme: light;
 
   /* White paper, near-black ink, one step of grey between them for a
@@ -111,8 +112,62 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Legacy accent names, all resolving to the one accent. Any of these
-   still in the markup or in an inline style now paints the same blue. */
+/* The dark palette. Only the colour tokens are restated — type, layout
+   and easing are theme-independent and stay inherited from the block
+   above, which still matches (:root is this same <html> element).
+
+   Nothing here is reachable until BootScript sets data-theme, so a
+   visitor with JS off gets the light palette exactly as before. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  /* Neutral, not tinted. Dark here is a real black with a lifted grey
+     for raised surfaces, and the off-white ink is warm enough not to
+     vibrate against it. */
+  --paper: #000000;
+  /* #121214 rather than #1d1d1f. Card surfaces sit one step off black
+     instead of two: the panel still separates from the page, and the
+     type on it gains the contrast the lighter grey was spending.
+     Borders and washes are translucent white rather than opaque greys,
+     so a card stacked on a card does not flatten into one slab. */
+  --paper-raised: #121214;
+  --ink: #f5f5f7;
+  --ink-70: #a1a1a6;
+  --ink-45: #86868b;
+  --ink-15: rgba(255, 255, 255, 0.1);
+  --ink-08: rgba(255, 255, 255, 0.055);
+
+  --accent: #2997ff;
+  --accent-wash: #0b1c2c;
+  --accent-line: #1b3a5c;
+  /* White on #2997ff is 3.02:1 — fine for a 4px rule, a failure for the
+     label on the primary button. The fill drops to the light theme's
+     blue (4.7:1 with white) while links and the focus ring keep the
+     brighter one they need against black. */
+  --accent-solid: #0071e3;
+  --danger: #ff6961;
+  /* White, because the ink-coloured spark the light page uses is
+     invisible on black. ClickSpark re-reads this when data-theme
+     changes. */
+  --spark: rgba(255, 255, 255, 0.6);
+}
+
+/* The palette switch. Everything it needs — the pill, the type, the
+   focus ring — it either carries inline or inherits from the global
+   :focus-visible rule; this is only the hover state, which an inline
+   style cannot express. Gated like every other hover on the site, so a
+   tap on a phone does not leave it stuck lit. The transition-property
+   is already in the reduced-motion whitelist above, which clamps it to
+   160ms for anyone who asked for less movement. */
+[data-theme-toggle] {
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-theme-toggle]:hover { color: var(--ink); border-color: var(--ink-45); }
+}
+
+/* Legacy accent names, all resolving to the one accent. Declared on the
+   same element as the palettes above, so var(--accent) here computes to
+   whichever theme's accent won the cascade. */
 :root {
   --sage: var(--accent);
   --slate: var(--accent);
@@ -2189,6 +2244,13 @@ textarea.cf-input { resize: vertical; }
   .glow-card .cap-tile:hover {
     background: rgba(0, 0, 0, 0.03);
   }
+  /* A black wash on a near-black card is no wash at all — dark inverts
+     it to white at the weight this surface was originally tuned for. */
+  html[data-theme="dark"] .glow-card .card:hover,
+  html[data-theme="dark"] .glow-card .post:hover,
+  html[data-theme="dark"] .glow-card .cap-tile:hover {
+    background: rgba(255, 255, 255, 0.035);
+  }
 }
 /* Keyboard parity. The glow answers a pointer, which a keyboard user
    does not have, so the focus ring is lifted onto the wrapper — the
@@ -2501,6 +2563,7 @@ textarea.cf-input { resize: vertical; }
 /* The row hover wash matches the one every card uses. */
 @media (hover: hover) and (pointer: fine) {
   .pi-glow .pi-row:hover { background: rgba(0, 0, 0, 0.03); }
+  html[data-theme="dark"] .pi-glow .pi-row:hover { background: rgba(255, 255, 255, 0.035); }
 }
 /* The rail clears the sticky header plus the tooling strip. */
 .pi-glow .pi-rail-inner { top: 120px; }
@@ -2604,6 +2667,7 @@ main.wrap {
   .pd-top > a.lnk,
   .nav-links button[aria-pressed],
   .mobile-nav__foot button[aria-pressed],
+  .mobile-nav__controls button[aria-pressed],
   .sticky-cta .btn,
   .nav-toggle {
     display: inline-flex;
