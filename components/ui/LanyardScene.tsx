@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​‌​‌​​‌‌​‌‌‌​​‌​​​‌‌​‌​​​‌‌​‌‌‌‌​‌‌​​‌​‌​‌​‌​‌‌​​‌‌​​‌​‌​‌​​​​‌​​‌​​‌​‌​​‌‌‌​‌‌​​‌‌‌​‌‌‌​‌​​​​​‌​‌‌​‌​‌‌​‌​​​​‌‌​‌​‌​‌​​​‌‌​‌‌​​​‌​​​‌​​​‌‌​‌‌​​​​‌‌‌​​‌​‌​​‌‌​​​‌‌​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌​​​​‌​​​‌‌​‌​‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌‌​​​‌​​‌‌​​​‌​‌‌​​‌​​​‌‌​​‌‌​​‌‌​‌​‌​​‌‌​​‌‌​​‌​​‌‌​​​‌‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌​‌​​‌​‌​‌‌​‌​​‌​‌​​‌‌​‌‌‌‌​​​​‌​‌​‌​‌​‌​​​‌​‌​‌​‌​​‌​​‌​​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.pSr4oeVeBJvwAkCTlDl9Lo
+ * Fingerprint: AMK1.5B5siq1dfjfLwwiZSxUERJ
  */
 "use client";
 
@@ -23,12 +23,21 @@ import { useInView } from "@/lib/useInView";
      * the connection is not one the visitor is trying to conserve —
        Data Saver on, or a 2G/slow-2G effective type.
 
-   Screen width is deliberately NOT one of the conditions any more. It
-   was, and that was the wrong axis: a phone renders this perfectly well,
-   the drag reads better under a thumb than under a cursor, and "small
-   screen" has not meant "weak device or metered link" for years. The
-   things that actually cost the visitor — payload on a metered
-   connection, motion they asked not to see — are what gate it now.
+   It is also gated to pointer devices, which is a reversal: width used
+   to be excluded on the grounds that a phone renders it perfectly well
+   and the drag reads better under a thumb. Rendering was never the
+   problem. The gesture is. The canvas has to allow the page to scroll
+   through it, so `touch-action: pan-y` hands vertical drags to the
+   browser — and a vertical drag on the badge is the obvious thing to
+   try. The browser takes the gesture, the pointer is cancelled, and the
+   pull dies halfway. A cursor has no such conflict, because a mouse
+   drag is never also a scroll.
+
+   `(hover: hover) and (pointer: fine)` rather than width alone, because
+   width does not mean what it needs to here: an iPad Pro is 1024 or
+   1366 across and is still a thumb. The width term stays as a floor —
+   the badge is a 2.4 MB model in a column that is only worth spending
+   on a screen wide enough to show it beside the form.
 
    Anyone the gate turns away gets the static badge below: the same
    artwork, hanging from the same cord, drawn in CSS. It is a fallback,
@@ -81,12 +90,25 @@ export default function LanyardScene() {
   const { ref, inView } = useInView<HTMLDivElement>("0px 0px -5% 0px");
   const [capable, setCapable] = useState(false);
 
+  /* Both queries are read in an effect, never in render or a useState
+     initialiser: <html> is prerendered at build time with the static
+     badge in place, so touching window during render would be a
+     hydration mismatch. Listening to `change` on the media queries
+     rather than to `resize` also keeps this off the scroll path — on a
+     phone the URL bar collapsing fires resize, and this would be
+     re-evaluated for it. */
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const decide = () => setCapable(!motion.matches && !connectionIsFrugal());
+    const pointer = window.matchMedia("(min-width: 721px) and (hover: hover) and (pointer: fine)");
+    const decide = () =>
+      setCapable(pointer.matches && !motion.matches && !connectionIsFrugal());
     decide();
     motion.addEventListener("change", decide);
-    return () => motion.removeEventListener("change", decide);
+    pointer.addEventListener("change", decide);
+    return () => {
+      motion.removeEventListener("change", decide);
+      pointer.removeEventListener("change", decide);
+    };
   }, []);
 
   const live = capable && inView;
@@ -109,15 +131,11 @@ export default function LanyardScene() {
         <StaticBadge />
       )}
       {/* Only claim it can be pulled when the physics build is the thing
-          on screen. The fallback is a picture and says nothing. The verb
-          follows the input: you drag with a pointer, you pull with a
-          thumb, and the touch copy is swapped in by CSS. */}
-      {live && (
-        <p className="micro lanyard-caption">
-          <span className="lanyard-caption-pointer">(drag the badge)</span>
-          <span className="lanyard-caption-touch">(pull the badge)</span>
-        </p>
-      )}
+          on screen. The fallback is a picture and says nothing. There is
+          one string now rather than a pointer/touch pair, because the
+          gate above means the only visitor who ever sees this has a
+          cursor. */}
+      {live && <p className="micro lanyard-caption">(drag the badge)</p>}
     </div>
   );
 }

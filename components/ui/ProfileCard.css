@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌‌‌​‌​‌​‌‌‌​​‌‌​‌​​‌‌‌‌​‌‌​‌‌‌​​‌​‌​​​​​‌‌​‌‌​​​​‌‌​‌‌​​‌​‌‌​​‌​‌‌​‌​​‌​​‌‌‌​​​​​‌‌​​​​​​‌‌​​​​​‌‌​​​​‌​‌​‌​​​‌​​‌‌​​​‌​​‌‌​​‌‌​‌​‌​‌‌​​‌‌‌​‌‌​​‌​‌​‌​​​‌‌​‌‌​​​‌‌​​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌​​‌​​​‌​‌​‌‌​‌‌‌‌​‌​​​‌​‌​‌‌​​​​‌​​‌‌​‌‌​​‌​​‌‌‌‌​‌‌​‌‌​​​‌‌‌‌​‌​​‌‌​​‌‌‌​‌​​‌​‌‌​‌​​​‌‌‌​​‌‌​‌​‌​‌‌​‌​​​​‌‌​‌​​‌​‌​‌​​‌‌​‌‌‌​‌‌‌​‌‌‌​‌‌​​‌‌​‌‌​​​‌​​​‌‌​​‌‌‌​‌​​​​‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.TusOnPl6Yi800aQ13VvTle
+ * Fingerprint: AMK1.nEoEa6OlzgKG5hiSwvlFt0
  */
 /* React Bits ProfileCard stylesheet.
 
@@ -346,6 +346,19 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  /* The `height: 100%` above does not resolve here. `.pc-card *` makes
+     every descendant a grid item placed at `grid-area: 1/-1`, and against
+     that placement the percentage falls back to `auto` — so a 500x700
+     monogram in a 34px circle laid out 32x44.8, losing its bottom 29% to
+     the circle's `overflow: hidden` and sitting well below centre.
+     `object-fit: cover` still applied, which is why a computed-style dump
+     looked correct and only a measured box showed the bug.
+
+     `aspect-ratio` fixes it at the source rather than fighting the
+     cascade: the box is square because it is declared square, whatever
+     the height resolves to, and `cover` does the cropping it was always
+     meant to do. */
+  aspect-ratio: 1;
 }
 
 .pc-user-text {

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​​‌‌​‌​​​​‌‌​​​‌​‌‌‌​​‌​​‌‌​​​‌‌​‌‌​​‌​‌​‌‌​​‌‌​​‌​‌​‌‌‌​‌‌​​‌​‌​‌​‌​​​​​​‌‌​​‌​​‌​​‌‌​​​​‌‌​​​‌​‌‌‌​​‌‌​‌​​‌​‌​​‌​​​​​‌​‌‌​​‌​​​‌‌​‌‌‌​​‌​​‌​‌​​‌‌‌​‌​​​‌‌​‌‌‌​​‌​‌​​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌‌‌‌​‌​​‌‌​​‌​​​​‌​‌‌​‌​‌​​‌​‌‌​‌​‌​​‌‌​‌‌​​‌‌‌​​‌‌​​‌​​‌‌‌‌​​‌​‌‌​‌‌‌​​‌‌​‌‌​‌​‌​‌​​​‌​​‌‌​​‌​​‌​​​‌​‌​‌‌​​​‌​​‌‌​‌‌‌​​‌​‌‌‌‌‌​‌​​‌​‌‌​​‌‌​​‌‌​​‌‌​‌​‌​‌‌‌​‌​‌​‌​‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1._41rcefWeP2L1sJAdnJtnS
+ * Fingerprint: AMK1.uzd-KSg2ynmQ2Ebn_K35uP
  */
 /* ---------- TYPE ----------
    Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,
@@ -2350,8 +2350,9 @@ textarea.cf-input { resize: vertical; }
   pointer-events: none;
 }
 /* The fallback badge: same artwork, hanging from a hairline cord,
-   drawn in two elements. Shown on phones, on tablets, and whenever
-   reduced motion is set. */
+   drawn in two elements. Shown on phones and tablets, on any narrow
+   window, and whenever reduced motion or a metered connection is
+   signalled — which is to say everywhere the draggable one is not. */
 .badge-static {
   display: flex;
   flex-direction: column;
@@ -2539,8 +2540,12 @@ textarea.cf-input { resize: vertical; }
 .pi { padding-bottom: 3rem; }
 .pi-head { padding-top: 3.5rem; }
 
-/* Panels stack with the same gap the card grids use. */
-.pi-glow + .pi-glow { margin-top: 1rem; }
+/* Panels stack with the same gap the card grids use. Each panel is its
+   own reveal wrapper, so the gap is between the wrappers — one Reveal
+   around the whole list meant a full-page-height element crossed the
+   observer's 1% threshold on load, and every panel finished arriving
+   while it was still below the fold. */
+.pi-panel + .pi-panel { margin-top: 1rem; }
 .pi-glow { height: auto; }
 
 /* `clip`, not `hidden`. Both are needed to keep the panel's corners,
@@ -2638,14 +2643,9 @@ main.wrap {
 .contact-badge .lanyard-slot { height: clamp(360px, 52vh, 520px); }
 .contact-badge .lanyard-wrapper,
 .contact-badge .badge-static { max-width: 420px; margin: 0 auto; min-height: 0; }
-/* The caption names the gesture the visitor actually has. Keyed to
-   pointer, not hover: a laptop with a touchscreen has both, and the
-   thing that decides whether you drag or pull is what you are using. */
-.lanyard-caption-touch { display: none; }
-@media (pointer: coarse) {
-  .lanyard-caption-pointer { display: none; }
-  .lanyard-caption-touch { display: inline; }
-}
+/* The caption used to swap "drag" for "pull" on a coarse pointer. The
+   scene is now gated to `(hover: hover) and (pointer: fine)`, so the
+   touch half could never render and the swap has gone with it. */
 
 /* ---------- TOUCH TARGETS AND TOUCH TYPE ----------
    Measured, not guessed: an automated pass over /, /projects,

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌​​​​‌‌​​‌‌​‌​‌​​‌‌​​‌​​‌​​‌‌‌‌​‌‌​‌​​‌​‌‌​‌‌​​​​‌‌​‌‌​​‌​​‌‌‌​​‌‌‌​​​‌​‌​‌​‌​​​‌‌​​‌‌‌​‌​​​​‌​​‌‌‌‌​​​​​‌‌​‌​​​​‌​‌‌​‌​‌​​​‌‌‌​​‌‌​‌‌​​‌​‌‌​‌​​‌​​‌‌​​​‌‌​‌​​‌​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​‌​​‌​‌‌​‌​​‌​‌​​‌​​‌‌‌‌​​‌‌​​‌​​​‌​‌‌​‌​‌​‌​‌​​​​‌‌​‌​‌​‌‌​​‌‌​​​‌‌​​​‌​‌​​‌​​‌​‌​​​‌​​​‌​‌​​​‌​‌‌‌‌​‌​​​‌‌​​‌​​​‌‌‌​​​​​‌‌​​‌‌​‌​‌‌​​‌​​‌‌‌​​‌​‌​‌​‌​​​‌‌​​​‌‌​‌​‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.5C52Oil6NqTgBx4-G6ZLiP
+ * Fingerprint: AMK1.VKJO2-T5f1IDQz283Y9TcW
  */
 "use client";
 
@@ -182,9 +182,9 @@ export default function ProjectIndex() {
           does. Plain `.reveal`, not `pop`: the scale variant is for
           tiles, and scaling a full-width panel reads as a zoom rather
           than as the thing arriving. */}
-      <Reveal>
-        {groups.map((g) => (
-          <GlowCard key={g.name} className="pi-glow">
+      {groups.map((g) => (
+        <Reveal key={g.name} className="pi-panel">
+          <GlowCard className="pi-glow">
             <section className="pi-group">
               <div className="pi-rail">
                 <span className="pi-rail-inner">
@@ -264,8 +264,8 @@ export default function ProjectIndex() {
               </div>
             </section>
           </GlowCard>
-        ))}
-      </Reveal>
+        </Reveal>
+      ))}
 
       <footer className="pi-foot">
         <span className="micro">

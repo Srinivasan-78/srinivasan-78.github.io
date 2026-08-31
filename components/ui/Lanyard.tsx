@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌​​​‌‌​​‌‌‌‌​​​​‌‌‌​​‌​​‌‌​​​‌​​‌‌​​‌‌​​‌‌​‌​‌‌​‌​‌​‌​‌​‌​​​‌‌‌​‌​‌‌​‌​​‌‌​‌‌‌‌​‌​​‌​‌​​‌‌‌‌​​​​‌‌​‌‌​‌​‌​​‌​​​​‌​‌‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​​‌‌​​‌​​‌‌​‌​​‌​‌‌‌​​​​​‌‌​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​‌​​​‌‌‌​‌​‌‌​​‌​‌​​‌‌​​​‌‌​‌​​​​‌‌‌‌​​​​‌‌‌‌​‌​​‌‌‌​​​‌​‌‌‌​‌​‌​‌‌​‌‌‌‌​‌‌​‌‌​​​‌​‌​​​​​‌‌​​‌​​​​‌‌​‌​‌​‌​‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​​​‌​​​‌​​​‌‌‌​‌​‌​‌‌‌​‌​​​‌‌​‌​​​​‌​‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.kFxrbfkUGZoJxmH_mi2ipb
+ * Fingerprint: AMK1.xGYLhxzquolPd5SOTDuthR
  */
 /* eslint-disable react/no-unknown-property */
 "use client";
@@ -28,7 +28,7 @@
      through the client-only wrapper in LanyardScene.tsx. */
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, extend, useFrame } from "@react-three/fiber";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF, useTexture, Environment, Lightformer } from "@react-three/drei";
 import {
   BallCollider,
@@ -97,29 +97,25 @@ export default function Lanyard({
   lanyardColor = "white",
   ariaLabel = "Draggable 3D badge on a lanyard",
 }: LanyardProps) {
-  const [isMobile, setIsMobile] = useState(
-    () => typeof window !== "undefined" && window.innerWidth < 768
-  );
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
+  /* The `isMobile` switch that used to live here is gone. It keyed off
+     `window.innerWidth < 768` — a breakpoint that appears nowhere else
+     in this codebase — and dropped dpr, physics rate, clearcoat and
+     curve resolution on a phone. LanyardScene now refuses to mount this
+     component at all below 721px or on a coarse pointer, so every one of
+     those branches was dead: the quality knobs are simply set to the
+     values a pointer device was always getting. */
   return (
     <div className="lanyard-wrapper" role="img" aria-label={ariaLabel}>
       <Canvas
         camera={{ position, fov }}
-        dpr={[1, isMobile ? 1.5 : 2]}
+        dpr={[1, 2]}
         gl={{ alpha: transparent }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
         <Suspense fallback={null}>
-          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Physics gravity={gravity} timeStep={1 / 60}>
             <Band
-              isMobile={isMobile}
               frontImage={frontImage}
               backImage={backImage}
               imageFit={imageFit}
@@ -167,7 +163,6 @@ export default function Lanyard({
 type BandProps = {
   maxSpeed?: number;
   minSpeed?: number;
-  isMobile?: boolean;
   frontImage?: string | null;
   backImage?: string | null;
   imageFit?: "cover" | "contain";
@@ -184,7 +179,6 @@ type CardGLTF = {
 function Band({
   maxSpeed = 50,
   minSpeed = 0,
-  isMobile = false,
   frontImage = null,
   backImage = null,
   imageFit = "cover",
@@ -192,6 +186,14 @@ function Band({
   lanyardWidth = 1,
   lanyardColor = "white",
 }: BandProps) {
+  /* meshline converts lineWidth into screen space using `resolution`, so
+     a resolution that does not match the drawing buffer scales the ribbon
+     by the ratio between them. Upstream hard-codes 1000x1000; this canvas
+     is about 400x468 CSS px, which shrinks the band to roughly a third of
+     the intended width and, at lanyardWidth 0.5, to something too thin to
+     see — the badge appeared to hang from nothing. Reading the live size
+     keeps the cord the width it is asked for, and follows a resize. */
+  const { size } = useThree();
   const band = useRef<THREE.Mesh & { geometry: MeshLineGeometry }>(null);
   const fixed = useRef<RapierRigidBody>(null);
   const j1 = useRef<RapierRigidBody & { lerped?: THREE.Vector3 }>(null);
@@ -303,6 +305,35 @@ function Band({
     }
   }, [hovered, dragged]);
 
+  /* The release guard, on the window rather than on the mesh.
+     `onPointerUp` above only fires when the pointer is still ours at the
+     end of the gesture. A drag the browser takes back never gets there:
+     `touch-action: pan-y` on the wrapper says a vertical swipe belongs
+     to the page, so the first such move raises `pointercancel`, and r3f
+     answers that by calling cancelPointer — which fires onPointerOut and
+     never synthesises an up.
+
+     Left unhandled, `dragged` stays set: the body is pinned at
+     `kinematicPosition` and useFrame keeps driving it from a
+     `state.pointer` that has stopped updating, so the badge hangs frozen
+     in mid-air and never responds again. Measured after one vertical
+     swipe, its centre moved 0.00px over the following four seconds — on
+     a phone and on a touchscreen laptop alike.
+
+     These listen to the real DOM events, so they hold whatever r3f's
+     synthetic layer decides to do, and they are only attached while a
+     drag is actually in flight. */
+  useEffect(() => {
+    if (!dragged) return;
+    const release = () => drag(false);
+    window.addEventListener("pointerup", release);
+    window.addEventListener("pointercancel", release);
+    return () => {
+      window.removeEventListener("pointerup", release);
+      window.removeEventListener("pointercancel", release);
+    };
+  }, [dragged]);
+
   useFrame((state, delta) => {
     if (dragged) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
@@ -333,7 +364,7 @@ function Band({
       curve.points[1].copy(j2.current.lerped as THREE.Vector3);
       curve.points[2].copy(j1.current.lerped as THREE.Vector3);
       curve.points[3].copy(fixed.current.translation() as THREE.Vector3);
-      band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
+      band.current.geometry.setPoints(curve.getPoints(32));
       ang.copy(card.current.angvel() as THREE.Vector3);
       rot.copy(card.current.rotation() as unknown as THREE.Vector3);
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, true);
@@ -372,6 +403,7 @@ function Band({
               (e.target as Element).releasePointerCapture(e.pointerId);
               drag(false);
             }}
+            onPointerCancel={() => drag(false)}
             onPointerDown={(e) => {
               (e.target as Element).setPointerCapture(e.pointerId);
               drag(
@@ -385,7 +417,7 @@ function Band({
               <meshPhysicalMaterial
                 map={cardMap}
                 map-anisotropy={16}
-                clearcoat={isMobile ? 0 : 1}
+                clearcoat={1}
                 clearcoatRoughness={0.15}
                 roughness={0.9}
                 metalness={0.8}
@@ -406,7 +438,7 @@ function Band({
              cord sit against a dark page as a cord. */
           color={lanyardColor}
           depthTest={false}
-          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
+          resolution={[size.width, size.height]}
           useMap
           map={texture}
           repeat={[-4, 1]}
