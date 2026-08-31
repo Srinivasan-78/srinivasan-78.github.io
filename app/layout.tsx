@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌​‌​​​​​‌​​​​‌‌​‌​‌‌​‌​​‌​‌​​‌​​‌‌​​​‌​​‌‌​​​‌‌​‌​‌‌‌‌‌​‌​‌​‌​​​‌‌​‌​​​​‌​​​​​‌​‌‌​​​‌‌​‌​‌​​‌​​‌​​‌‌‌​​‌‌​‌‌​​​‌‌​​​​‌​‌‌‌‌​​‌​‌‌​‌‌‌‌​‌​​‌‌‌‌​​‌‌‌​​‌​​‌‌​‌‌‌​​‌‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌‌​​​​‌​‌​​‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌​‌‌‌​​​‌​‌‌​​‌‌‌​‌‌​‌‌​​​‌‌​​​​‌​‌‌‌​​​‌​‌​‌​‌​​​‌‌​‌​‌‌​​‌‌​‌​‌​‌‌​​‌‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌‌​‌​​‌‌​​‌‌​​​‌‌​‌​​​‌​​​​​‌​​‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.PPCZRbc_ThAcRNlayoO977
+ * Fingerprint: AMK1.aaI95qglaqTk5fNMOZf4A5
  */
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
@@ -45,8 +45,19 @@ const mono = JetBrains_Mono({
 export const viewport: Viewport = {
   /* Matches --paper. The browser chrome on mobile tints from this
      before any CSS has been read, so a mismatch shows as a band of the
-     wrong colour above the page on every load. */
-  themeColor: "#ffffff",
+     wrong colour above the page on every load.
+
+     Two entries, because there are two --paper values now. These are
+     matched by the OS preference rather than by data-theme — the
+     browser resolves them itself, with no stylesheet and no script — so
+     a visitor who has explicitly chosen the palette their OS is not set
+     to gets the other bar. That is the whole of what this can express,
+     and a one-colour bar would be wrong for half of visitors instead of
+     a few. */
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -119,12 +130,15 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // No data-theme attribute and no theme script. The site is light —
-    // white page, #f5f5f7 surfaces, one blue accent — and that is the
-    // only palette: it is declared once in :root, with color-scheme set
-    // alongside it so form controls and scrollbars follow. There is
-    // nothing for a script to correct before paint, which also means
-    // nothing can flash.
+    // No data-theme attribute here, deliberately. The server cannot know
+    // the visitor's stored choice or their OS setting, so it renders the
+    // attribute unset — which the stylesheet reads as light, the same
+    // palette this page has always shipped. BootScript then writes the
+    // real value before the first paint, so there is nothing to flash.
+    //
+    // suppressHydrationWarning is what makes that legal: BootScript has
+    // already changed <html> by the time React hydrates, and without it
+    // React would flag the attribute it did not render.
     <html
       lang="en"
       className={`${sans.variable} ${mono.variable}`}

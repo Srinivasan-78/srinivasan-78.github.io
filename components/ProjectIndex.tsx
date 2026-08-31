@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌​​‌‌‌‌​​‌​‌​​‌​​​​‌​​​‌‌‌​​‌‌​​​​​‌​‌​​‌​​‌‌​‌​​‌​​‌‌​‌‌​​‌​‌​‌‌‌​​‌‌‌​​​​​‌​‌‌​‌​‌​​‌‌​​​‌‌​‌​‌​​‌‌‌‌​​‌​‌‌​‌‌‌​​‌‌​​‌‌‌​​‌‌‌​​​​‌​​​‌​​​‌‌‌​‌​​​‌‌‌​‌​‌​‌​‌‌​​‌​‌​​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌​​​​‌‌​​‌‌​‌​‌​​‌‌​​‌​​‌​​‌‌‌‌​‌‌​‌​​‌​‌‌​‌‌​​​​‌‌​‌‌​​‌​​‌‌‌​​‌‌‌​​​‌​‌​‌​‌​​​‌‌​​‌‌‌​‌​​​​‌​​‌‌‌‌​​​​​‌‌​‌​​​​‌​‌‌​‌​‌​​​‌‌‌​​‌‌​‌‌​​‌​‌‌​‌​​‌​​‌‌​​​‌‌​‌​​‌​‌​‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.RyHG0Ri6W8-Ljyng8DtuYB
+ * Fingerprint: AMK1.5C52Oil6NqTgBx4-G6ZLiP
  */
 "use client";
 
@@ -272,7 +272,7 @@ export default function ProjectIndex() {
           (hover for schematic · click for the write-up · &ldquo;open live build&rdquo; runs the real
           thing)
         </span>
-        <span className="micro">(all public on github.com/Srinivasan-78)</span>
+        <span className="micro">(the public ones live on github.com/Srinivasan-78)</span>
       </footer>
     </main>
   );

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​​‌‌‌​​​​‌‌​​​‌​​​‌‌​‌‌​​​‌​‌‌​‌​‌​​​​‌​​‌​​​‌​​​​‌‌​​​​​‌​‌​‌‌​​‌​​‌‌‌​​‌​‌​‌‌‌​​‌‌‌​​‌​​‌‌​​​‌​‌​​‌​​​​‌​‌​‌‌​​​‌‌‌​​‌​‌​​​‌​‌​‌​‌‌​​‌​‌​​‌‌‌‌​‌‌​‌‌​​​‌​​‌‌​‌​​‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​​‌‌​‌‌​​‌​​​‌‌​​‌‌​​​​‌​‌‌‌‌​‌​​‌‌‌​‌​​​‌​​​‌​‌​‌​​​​‌‌​‌‌‌​‌‌‌​‌​‌​​​​​‌‌​‌​‌​​‌‌‌‌​​​​‌‌​‌​‌​​‌​​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌​​​‌​‌​‌​​​​‌​​‌‌​‌​​‌​‌​‌‌​​‌​​‌‌​​​‌​​‌‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.38b6-BD0VNW91HV9EYOlM4
+ * Fingerprint: AMK1.X6FaztECwPjxjOmiEBiY13
  */
 const BOOT_SCRIPT = `
 (function(){
@@ -14,17 +14,37 @@ const BOOT_SCRIPT = `
   // Scoped to html.js, set here before paint, so no-JS simply skips the
   // animation and shows the content.
   document.documentElement.classList.add('js');
+
+  // Resolve the theme before the first paint. An explicit choice, once
+  // made, outranks the OS setting for good; until then the OS decides.
+  // The attribute is always written, so the CSS never has to duplicate
+  // the dark palette behind a prefers-color-scheme query.
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = (stored === 'light' || stored === 'dark')
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    // Private-mode localStorage throws. Light is the server-rendered
+    // default, so leaving the attribute unset lands on the same palette.
+  }
 })();
 `;
 
-/* One job, and it has to happen before the first paint: set html.js,
-   which is what gates the scroll-reveal transition.
+/* Two jobs, both of which have to happen before the first paint.
 
-   This was ThemeScript, and its other half read a stored theme
-   preference and switched the document to light for a visitor who had
-   chosen it. There is no longer anything to choose — the site is dark,
-   the palette is defined once in :root, and the toggle that wrote that
-   preference is gone — so the branch and the name went with it.
+   One: set html.js, which is what gates the scroll-reveal transition.
+   Without it a visitor with JS blocked would get a page of invisible
+   headings, so the animation is scoped to html.js and no-JS simply
+   shows the content.
+
+   Two: set data-theme. <html> ships from the server with no attribute,
+   which the stylesheet reads as light — so light is what a no-JS
+   visitor gets, unchanged. This script is what upgrades that to the
+   visitor's stored choice, or to their OS preference if they have not
+   made one, and it runs before anything is painted, so neither shows
+   as a flash.
 
    Note it renders inside <body>, not <head> — App Router does not
    reliably execute a raw inline <script> placed in <head>. */

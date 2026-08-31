@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​‌​‌‌‌​​‌‌​​​‌​‌​​‌‌​‌​​‌‌​‌‌‌​‌​‌​​‌‌​‌‌​​​‌​​‌​‌‌​‌​​‌‌‌​​‌​​‌‌‌​​​‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌‌​​​​​‌​‌​​​‌​‌‌​​‌‌‌​‌‌‌​​‌​​​‌​‌‌​‌​‌‌​​‌​​​​‌‌​​​​​‌​​‌​​‌​‌​​​​‌‌​‌‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.xoU8SqvbpV23xv8qhn_-1f
+ * Fingerprint: AMK1.SW1M7SbZrqe-pQgr-d0ICq
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -189,7 +189,10 @@ export const PROJECTS: Project[] = [
       "Push to main, live in about a minute — there is no build server anywhere",
     ],
     demo: "https://vfactorsolutions.com/",
-    links: [{ url: "https://vfactorsolutions.com/", label: "Visit site ↗" }],
+    links: [
+      { url: "https://vfactorsolutions.com/", label: "Visit site ↗" },
+      { url: "https://github.com/Srinivasan-78/vfactor-solutions-site", label: "Source ↗" },
+    ],
   },
   {
     slug: "multi-cloud-free-tier-platform",
