@@ -1032,20 +1032,7 @@ main:focus { outline: none; }
 
 /* ---------- PROJECT DETAIL ---------- */
 .pd-hero { padding: 2.5rem 0 1rem; }
-.pd-arch { display: grid; gap: 0; margin-top: 1.5rem; border-top: 1px solid var(--ink-15); }
-.pd-arch > div {
-  display: grid; grid-template-columns: minmax(140px, 220px) 1fr;
-  gap: 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--ink-15);
-}
-.pd-arch h3 {
-  margin: 0; font-family: var(--font-mono); font-weight: 400;
-  font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--ink-45);
-}
-.pd-arch p { margin: 0; color: var(--ink-70); font-size: 0.88rem; }
-@media (max-width: 640px) {
-  .pd-arch > div { grid-template-columns: 1fr; gap: 0.35rem; }
-}
+
 
 /* ---------- CERTIFICATIONS ----------
    A card grid in the site's own material. What was here before — the

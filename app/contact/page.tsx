@@ -28,7 +28,7 @@ export default function Contact() {
           <span>Direct Contact · Bangalore, IN</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
           Let&rsquo;s work together.
         </h1>
 

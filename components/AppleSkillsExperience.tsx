@@ -258,7 +258,7 @@ export default function AppleSkillsExperience() {
           <span>Skills</span>
         </div>
         
-        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tightest leading-[1.18] pb-1 text-[#1d1d1f] dark:text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight pb-1 text-[#1d1d1f] dark:text-white mb-4">
           What I love working with.
         </h2>
         

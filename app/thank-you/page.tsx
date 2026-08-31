@@ -37,7 +37,7 @@ export default function ThankYou() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-3xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
+        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-3xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
           Thank you for reaching out.
         </h1>
 

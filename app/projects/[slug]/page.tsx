@@ -49,21 +49,21 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
         </Link>
 
         <div className="pd-hero mb-12">
-          <span className="eyebrow text-amber-600 dark:text-[#e5a93b] block mb-2 font-mono text-xs uppercase tracking-wider">
-            {p.client} · {p.category}
-          </span>
-          <SplitReveal as="h1" text={p.title} className="display display-xl font-extrabold tracking-tightest mb-4" />
-          <p className="pd-teaser text-lg sm:text-xl text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-6 max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4 backdrop-blur-md">
+            <span>{p.client} · {p.category}</span>
+          </div>
+          <SplitReveal as="h1" text={p.title} className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-4 text-[#1d1d1f] dark:text-white" />
+          <p className="text-base sm:text-xl text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-6 max-w-3xl">
             {p.teaser}
           </p>
 
-          <div className="micro-row flex items-center gap-4 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6]">
-            <span className="micro micro-bright flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6]">
+            <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#34c759]" />
               Status: {p.status}
             </span>
             <span>·</span>
-            <span className="micro">{p.stack.length} technologies in stack</span>
+            <span>{p.stack.length} technologies in stack</span>
           </div>
         </div>
       </div>
@@ -79,37 +79,86 @@ export default function ProjectDetail({ params }: { params: { slug: string } }) 
       </section>
 
       <div className="wrap max-w-5xl mx-auto px-6 py-12 space-y-12">
-        <section className="pd-section space-y-3">
-          <h2 className="eyebrow text-amber-600 dark:text-[#e5a93b] text-xs font-mono uppercase tracking-wider">Overview</h2>
-          <p className="pd-prose text-base leading-relaxed text-[#424245] dark:text-[#a1a1a6]">{p.overview}</p>
+        <section className="space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+            <span>Overview</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+            Architecture Overview
+          </h2>
+          <p className="text-base sm:text-lg leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
+            {p.overview}
+          </p>
         </section>
 
-        <section className="pd-section space-y-4">
-          <h2 className="eyebrow text-amber-600 dark:text-[#e5a93b] text-xs font-mono uppercase tracking-wider">How it works</h2>
-          <div className="pd-arch grid grid-cols-1 md:grid-cols-2 gap-6">
-            {p.architecture.map((a) => (
-              <div key={a.label} className="p-6 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 space-y-2">
-                <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white">{a.label}</h3>
-                <p className="text-sm leading-relaxed text-[#6e6e73] dark:text-[#86868b]">{a.body}</p>
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+              <span>Architecture Breakdown</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+              How it works
+            </h2>
+            <p className="text-sm sm:text-base text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+              Core mechanics, failure recovery paths, and system design decisions.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {p.architecture.map((a, index) => (
+              <div
+                key={a.label}
+                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-amber-600 dark:text-[#e5a93b]">
+                      Step {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="w-2 h-2 rounded-full bg-[#34c759]" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2.5 leading-snug">
+                    {a.label}
+                  </h3>
+                  <p className="text-sm sm:text-base leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
+                    {a.body}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="pd-section space-y-3">
-          <h2 className="eyebrow text-amber-600 dark:text-[#e5a93b] text-xs font-mono uppercase tracking-wider">Highlights</h2>
-          <ul className="pd-list space-y-2 text-sm text-[#424245] dark:text-[#a1a1a6] list-disc pl-5">
+        <section className="space-y-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+              <span>Key Takeaways</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+              Engineering Highlights
+            </h2>
+          </div>
+          <ul className="space-y-2.5 text-sm sm:text-base text-[#424245] dark:text-[#a1a1a6]">
             {p.highlights.map((h) => (
-              <li key={h} className="leading-relaxed">{h}</li>
+              <li key={h} className="flex items-start gap-2.5 leading-relaxed">
+                <span className="text-emerald-600 dark:text-[#34c759] font-bold mt-0.5">•</span>
+                <span>{h}</span>
+              </li>
             ))}
           </ul>
         </section>
 
-        <section className="pd-section space-y-3">
-          <h2 className="eyebrow text-amber-600 dark:text-[#e5a93b] text-xs font-mono uppercase tracking-wider">Stack</h2>
-          <div className="pd-stack flex flex-wrap gap-2">
+        <section className="space-y-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+              <span>Stack & Tools</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+              Technologies Used
+            </h2>
+          </div>
+          <div className="flex flex-wrap gap-2">
             {p.stack.map((t) => (
-              <span key={t} className="px-3 py-1 rounded-lg text-xs font-mono bg-[#f5f5f7] dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-[#a1a1a6]">
+              <span key={t} className="px-3.5 py-1.5 rounded-lg text-xs font-mono bg-[#f5f5f7] dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-[#a1a1a6]">
                 {t}
               </span>
             ))}

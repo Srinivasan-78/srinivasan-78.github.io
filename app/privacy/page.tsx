@@ -23,12 +23,14 @@ export default function Privacy() {
     <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
       <div className="wrap legal py-16 px-6 max-w-4xl mx-auto space-y-8">
         <div className="page-head mb-8">
-          <span className="eyebrow text-amber-600 dark:text-[#e5a93b]">Legal</span>
-          <SplitReveal as="h1" text="Privacy Policy" className="display display-lg" />
-          <p className="eyebrow text-[#6e6e73] dark:text-[#86868b]">Last updated: {UPDATED}</p>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
+            <span>Legal & Privacy</span>
+          </div>
+          <SplitReveal as="h1" text="Privacy Policy" className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-2 text-[#1d1d1f] dark:text-white" />
+          <p className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b]">Last updated: {UPDATED}</p>
         </div>
 
-        <p className="text-base leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
+        <p className="text-base sm:text-lg leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
           This is a personal portfolio, and your visit stays refreshingly simple. It&rsquo;s a
           static site with no application server, no user accounts and no database behind it. Below
           is exactly what happens to your data when you visit.

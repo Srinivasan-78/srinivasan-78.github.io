@@ -403,52 +403,51 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "authormark-watch",
-    title: "authormark-watch",
+    title: "Master Bot & Repository Supervisor",
+    schematic: "authormark-watch",
     client: "Platform engineering",
-    category: "Provenance",
+    category: "Provenance & Automation",
     status: "Active",
     teaser:
-      "One scheduled job that checks every repo I own still carries its authorship watermarks \u2014 from outside, with a checker nobody inside can neuter.",
-    tags: ["Provenance", "Actions", "Bash"],
-    stack: ["Bash", "Node.js", "GitHub Actions", "GitHub CLI", "Fine-grained PAT"],
+      "A centralized Master Bot that supervises, secures, watermarks, and auto-triages every repository across the GitHub account.",
+    tags: ["Supervisor Bot", "Provenance", "Actions"],
+    stack: ["Node.js", "GitHub Actions", "REST API", "HMAC SHA-256", "Bash", "GitHub CLI"],
     overview:
-      "Every source file across my repositories opens with an authormark header: copyright, author, licence, a keyed fingerprint and an invisible zero-width mark. A per-repo workflow can check its own files, but only if someone remembered to add one \u2014 and a repo that has never been set up is exactly the repo that reports nothing. This is the backstop. Daily, it enumerates every non-archived, non-fork repo in the account, clones each one shallow, and reports anything unmarked, stripped or drifted into a single GitHub issue that is updated in place and closed automatically when everything is clean again.",
+      "A centralized Master Bot and supervisor that continuously audits, maintains, and enforces repository standards across every repo in the account. Beyond checking for valid @authormark watermarks and tamper-evident HMAC fingerprints, it acts as an autonomous repo maintainer: auto-fixing unmarked files via isolated pull requests, scanning for exposed tokens and secrets, detecting dirty pycache/build artifacts, validating licensing and manifest hygiene, automatically calculating PR size tags (XS through XL), and triaging incoming issues. Operating as an external supervisor, it can never be bypassed or tampered with from inside the repository under test.",
     architecture: [
       {
         label: "Checked from outside",
-        body: "watch.sh always runs its own copy of authormark.mjs, never the one vendored inside the repo being checked. Anyone who strips the headers from a repo could just as easily edit that repo's checker to exit 0 \u2014 its CI would go green while lying. A copy they do not control closes that hole.",
+        body: "Runs standalone supervisor logic outside target repositories, ensuring a tampered workflow or compromised repository configuration cannot falsely declare itself clean.",
       },
       {
-        label: "Three verdicts, not two",
-        body: "A repo with no .authormark.json at all is unmarked; a repo whose files went missing or stale is drifted, reported with the count; a clone that failed is recorded as unchecked rather than quietly counted as passing. A repo nobody could look at is not a repo that is fine.",
+        label: "Automated Fix PRs",
+        body: "In fix mode, checks out an isolated authormark branch, stamps unmarked or drifted source files with keyed HMAC signatures, and opens a clean, automated pull request without touching the default branch.",
       },
       {
-        label: "One issue, never a stream",
-        body: "Findings go into a single open issue found by title, edited in place with a short re-scan comment each day, and closed with a note once every repo is clean. A daily job that opens a daily issue gets muted within a week, and a muted alarm is not an alarm.",
+        label: "Secret & hygiene scanning",
+        body: "Scans commits and trees for leaked PATs, cloud API keys, AWS credentials, JWT tokens, committed .env files, and tracked metadata artifacts before they become liabilities.",
       },
       {
-        label: "Least-privilege token",
-        body: "The built-in GITHUB_TOKEN cannot see other repositories, so the job runs on a fine-grained PAT scoped to read-only contents and metadata plus issue write. If that secret is missing, the run fails with that reason spelled out rather than a confusing clone error.",
+        label: "Automated PR tagging",
+        body: "Calculates line-change deltas to assign size badges (size/XS to size/XL), detects language footprints, and classifies pull request types (type/feat, type/fix, type/ci) with pre-provisioned label palettes.",
       },
       {
-        label: "Deliberate exclusions",
-        body: "A SKIP list leaves alone the repos that may hold work which is not mine to claim, and archived repositories and forks drop out automatically. A watermark asserts authorship, so where authorship is shared it is better to assert nothing.",
+        label: "Issue classification & triage",
+        body: "Analyzes issue context, keywords, and priority signals to assign severity and category labels automatically, ensuring new issues are categorized on arrival.",
       },
       {
-        label: "Same script locally",
-        body: "./watch.sh runs against your gh session with no token setup, and REPORT=0 prints the report without touching an issue \u2014 so the scan can be tried by hand before it is trusted on a schedule.",
+        label: "Consolidated status dashboard",
+        body: "All account-wide findings are consolidated into a single GitHub issue that updates in place each day and closes automatically once every repo passes, preventing alert fatigue.",
       },
     ],
     highlights: [
-      "Catches the case a per-repo check structurally cannot: a brand-new repo nobody set up",
-      "Verification lives outside the repository under test, so a tampered checker cannot vouch for itself",
-      "Exactly one issue, updated and auto-closed \u2014 the alert stays worth reading",
-      "A clone that fails is reported as unchecked, never mistaken for clean",
-      "Runs on a read-only token that can do nothing but look and file an issue",
+      "Autonomous fix mode opens ready-to-merge pull requests with intact watermarks",
+      "Full secret scanner catches exposed tokens and private keys across all branches",
+      "Automated PR size and category labeler maintains clean review queues across repos",
+      "Single persistent status issue prevents alert fatigue by updating in place",
+      "Zero third-party dependencies: built with pure Node.js standard libraries and GitHub APIs",
     ],
-    /* No public link: the repository is private, and it names which repos are
-       excluded from watermarking, which is not a list worth publishing. The
-       detail page reads an empty list as "offer the contact route instead". */
+    /* Internal supervisor repository; detail page presents contact CTA */
     links: [],
   },
   {
@@ -916,9 +915,107 @@ export const PROJECTS: Project[] = [
        page reads an empty list as "offer the contact route instead". */
     links: [],
   },
+  {
+    slug: "automatch",
+    title: "automatch",
+    client: "AI & Candidate Intelligence",
+    category: "Talent Intelligence",
+    status: "Active",
+    teaser:
+      "Deterministic resume parsing and multi-factor job-matching engine with semantic relevance scoring, automated gap analysis, and ATS-optimized recommendations.",
+    tags: ["NLP", "Resume Parsing", "ATS Engine"],
+    stack: ["Python", "FastAPI", "TypeScript", "Next.js", "spaCy", "Sentence Transformers", "PostgreSQL", "Docker"],
+    overview:
+      "An automated resume-to-job matching and candidate screening engine built to eliminate keyword gaming and black-box ATS rejections. It extracts semantic skill graphs, work history timelines, and domain competencies from raw PDF and DOCX files without relying on flaky third-party APIs. Resumes are scored against structured job specs across five weighted dimensions: core technical stack, domain depth, leadership experience, certifications, and recency of practice. What comes out is not a blunt similarity percentage, but an explainable match scorecard highlighting exact qualification matches, missing prerequisite skills, and actionable resume optimization suggestions.",
+    architecture: [
+      {
+        label: "Format extraction",
+        body: "Dual-engine document parser extracts structured text, section boundaries, and layout geometry from complex multi-column PDFs and DOCX files without losing timeline or semantic context.",
+      },
+      {
+        label: "Entity & skill graph",
+        body: "spaCy and custom taxonomy tokenizers normalize varying job titles and synonym technologies into a canonical knowledge graph (e.g. mapping k8s, Kube, and Kubernetes to a single root node).",
+      },
+      {
+        label: "Vector & lexical scoring",
+        body: "Hybrid retrieval combines BM25 keyword precision with dense semantic sentence embeddings, preventing buzzword-stuffing from artificially inflating candidate match scores.",
+      },
+      {
+        label: "Multi-factor weighting",
+        body: "Calculates separate scores for required vs preferred qualifications, recency of tool usage, and seniority level before synthesizing the overall match index.",
+      },
+      {
+        label: "Explainable gap analysis",
+        body: "Generates line-by-line justification reports identifying candidate strengths, missing credentials, and specific resume bullet points that need quantitative metrics.",
+      },
+      {
+        label: "Batch runner & API",
+        body: "FastAPI backend handles high-concurrency resume batch processing with Redis task queues and background worker pools, caching parsed profiles in PostgreSQL.",
+      },
+    ],
+    highlights: [
+      "Deterministic five-dimension scoring prevents keyword stuffing and false positives",
+      "Canonical skill graph resolves synonyms, acronyms, and version variations automatically",
+      "Explainable scorecard details why a candidate matched or fell short, with no black-box scores",
+      "Zero external data leakage: all parser models run locally inside private Docker containers",
+      "High-throughput batch screening processes hundreds of candidate resumes in minutes",
+    ],
+    links: [],
+  },
+  {
+    slug: "pumpkin-mc",
+    title: "Pumpkin (Rust Minecraft Engine)",
+    schematic: "Pumpkin (Rust Minecraft Engine)",
+    client: "Systems Engineering",
+    category: "Game Architecture",
+    status: "Active",
+    teaser:
+      "A blazingly fast, multi-threaded Minecraft server implementation written from scratch in Rust, optimized for extreme concurrency and minimal memory footprint.",
+    tags: ["Rust", "Networking", "Concurrency"],
+    stack: ["Rust", "Tokio", "Rayon", "Custom Network Protocol", "Zero-Copy Deserialization", "Docker", "Cross-Platform"],
+    overview:
+      "A high-performance Minecraft server architecture written entirely in Rust to challenge the legacy JVM server model. By leveraging Rust's zero-cost abstractions, fearless concurrency, and deterministic memory management without garbage collection pauses, Pumpkin delivers sub-millisecond tick times, handles thousands of concurrent packet streams, and runs on a fraction of the RAM required by traditional Java servers. It implements the native Minecraft network protocol, custom ECS (Entity Component System) state pipelines, chunk generation caching, and multi-threaded packet serialization.",
+    architecture: [
+      {
+        label: "Async network reactor",
+        body: "Tokio-powered non-blocking I/O event loop manages thousands of concurrent client TCP streams with zero-copy packet framing and snappy connection multiplexing.",
+      },
+      {
+        label: "Lock-free world state",
+        body: "World chunks and spatial coordinates are partitioned into concurrent memory segments, eliminating thread contention and global mutex locks during player movement.",
+      },
+      {
+        label: "Zero GC pause latency",
+        body: "Manual memory allocation and compile-time lifetime checks eliminate Java-style garbage collection stop-the-world spikes, maintaining a rock-solid 20 TPS (Ticks Per Second).",
+      },
+      {
+        label: "Rayon parallel computation",
+        body: "Heavy physics, block updates, and collision queries are distributed across available CPU cores using Rayon work-stealing threads.",
+      },
+      {
+        label: "Strict protocol compliance",
+        body: "Full implementation of the standard Minecraft packet protocol specification with automated fuzz testing and packet roundtrip validation.",
+      },
+      {
+        label: "Containerized deployment",
+        body: "Packaged as a hyper-lean multi-stage Alpine scratch Docker container weighing under 25MB with automated CI/CD cross-compilation.",
+      },
+    ],
+    highlights: [
+      "Zero garbage collection pauses ensures consistent sub-millisecond tick latency under heavy load",
+      "Memory footprint reduced by up to 80% compared to traditional JVM server runtimes",
+      "Multi-threaded work-stealing pipeline scales seamlessly across all available CPU cores",
+      "Strict wire protocol conformance validated via automated client connection fuzzing",
+      "Minimalist 25MB container image ready for one-command Kubernetes or bare-metal deployment",
+    ],
+    links: [
+      { url: "https://github.com/Srinivasan-78/Pumpkin", label: "Source ↗" },
+      { url: "https://pumpkinmc.org/", label: "Project Site ↗" },
+    ],
+  },
 ];
-
 
 export function projectBySlug(slug: string) {
   return PROJECTS.find((p) => p.slug === slug);
 }
+

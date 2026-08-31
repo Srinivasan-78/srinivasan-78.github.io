@@ -64,7 +64,7 @@ export default function CertIndex() {
           <span>Continuous Learning & Verification</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
           Certifications & verified skills.
         </h1>
 

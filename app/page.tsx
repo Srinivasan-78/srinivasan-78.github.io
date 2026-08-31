@@ -50,7 +50,7 @@ export default function Page() {
         </div>
 
         {/* Clear, Human Headline */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-5xl mb-6 text-[#1d1d1f] dark:text-white">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-5xl mb-6 text-[#1d1d1f] dark:text-white">
           I build infrastructure that makes shipping software feel easy.
         </h1>
 
@@ -112,13 +112,13 @@ export default function Page() {
       {/* 3. Release Reliability Architecture */}
       <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="text-xs font-mono uppercase tracking-widest text-amber-600 dark:text-[#e5a93b] block mb-2">
-            Reliability by Design
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1d1d1f] dark:text-white mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4 backdrop-blur-md">
+            <span>Reliability by Design</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white mb-4">
             How I approach zero-downtime releases.
           </h2>
-          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg">
+          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             Every step is automated, measured, and verified before user traffic touches it. If something looks off, traffic reverts immediately.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function Page() {
         <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
           
           <div className="max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#0066cc] dark:text-[#2997ff]">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
               <span>Side Projects & Tools</span>
             </div>
 

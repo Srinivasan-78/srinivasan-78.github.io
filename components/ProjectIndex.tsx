@@ -22,19 +22,14 @@ import {
   FiZap,
 } from "react-icons/fi";
 
-const CATEGORIES = [
-  "All",
-  "Platform",
-  "Infrastructure",
-  "Developer tooling",
-  "Utility",
-  "Actions",
-  "Client build",
-];
-
 export default function ProjectIndex() {
   const [selectedCat, setSelectedCat] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const categories = useMemo(() => {
+    const cats = Array.from(new Set(PROJECTS.map((p) => p.category)));
+    return ["All", ...cats];
+  }, []);
 
   const liveDemosCount = useMemo(
     () => PROJECTS.filter((p) => !!p.demo).length,
@@ -76,7 +71,7 @@ export default function ProjectIndex() {
           <span>Platform Engineering & Open Source</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
           Things I build for the craft of it.
         </h1>
 
@@ -122,7 +117,7 @@ export default function ProjectIndex() {
           </div>
 
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            {CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const count =
                 cat === "All"
                   ? PROJECTS.length

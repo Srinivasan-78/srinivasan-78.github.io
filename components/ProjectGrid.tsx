@@ -220,6 +220,35 @@ export const DIAGRAM: Record<string, ReactNode> = {
       ))}
     </svg>
   ),
+  automatch: (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      <rect x="24" y="24" width="60" height="62" rx="5" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M36 40 H72 M36 52 H72 M36 64 H56" stroke="currentColor" strokeWidth="2" {...s} opacity="0.7" />
+      <path d="M96 55 H136" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M128 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <circle cx="160" cy="55" r="18" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M152 55 l6 6 12 -12" stroke="currentColor" strokeWidth="2.5" {...s} />
+      <path d="M188 55 H228" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M220 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="240" y="32" width="46" height="46" rx="5" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M250 48 H276 M250 58 H276" stroke="currentColor" strokeWidth="2" {...s} opacity="0.7" />
+    </svg>
+  ),
+  "Pumpkin (Rust Minecraft Engine)": (
+    <svg viewBox="0 0 300 110" aria-hidden="true">
+      <rect x="40" y="30" width="50" height="50" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <rect x="52" y="42" width="8" height="8" fill="currentColor" />
+      <rect x="70" y="42" width="8" height="8" fill="currentColor" />
+      <path d="M52 64 H78" stroke="currentColor" strokeWidth="2" {...s} />
+      <path d="M102 55 H148" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M140 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <circle cx="178" cy="55" r="18" stroke="currentColor" strokeWidth="2.5" fill="none" />
+      <path d="M170 55 H186 M178 47 V63" stroke="currentColor" strokeWidth="2.5" {...s} />
+      <path d="M208 55 H254" stroke="currentColor" strokeWidth="3" {...s} />
+      <path d="M246 47 l8 8 -8 8" stroke="currentColor" strokeWidth="3" {...s} />
+      <rect x="264" y="38" width="22" height="34" rx="3" stroke="currentColor" strokeWidth="2" fill="none" />
+    </svg>
+  ),
 };
 
 export const FALLBACK = (
