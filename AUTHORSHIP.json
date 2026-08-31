@@ -3,10 +3,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-08-29T13:56:52.306Z",
+  "sealedAt": "2026-08-30T21:21:02.169Z",
   "fileCount": 92,
-  "digest": "65ea43b2f488ef2a14fa5792bba3c3a22340cbafae3e0367e443fa213cd85917",
-  "proof": "e77cf2a573c97658216c4078da8097dd4f2448ffa50efb46c525a664b7d7b4c4",
+  "digest": "f0c64aba4d447d14580c4e32700b3e3dae60bb0cad1f5d663d7f725f6bfc3c78",
+  "proof": "47e88fda2db57d2153db4d0a0830e7c5b30c5eb99908a93e85ecb0b514962139",
   "files": [
     {
       "path": ".github/workflows/authormark.yml",
@@ -185,8 +185,8 @@
     },
     {
       "path": "components/ProjectGrid.tsx",
-      "sha256": "bae8c2059ef1db1efbb67979fafa412eb00017d480ddd42525a7fb3f2e8b1628",
-      "bytes": 12109
+      "sha256": "aa6ffc48c4e5c0920c4751796355efccb851f3f7f3c92ffdfe8e762a811c7123",
+      "bytes": 13758
     },
     {
       "path": "components/ProjectIndex.tsx",
@@ -370,8 +370,8 @@
     },
     {
       "path": "lib/projects.ts",
-      "sha256": "362c095d34d18b0e13fedd4db9ec734b1d57e5e33810ed0f4e5f3e259307875c",
-      "bytes": 44346
+      "sha256": "cd3334c127f737725560b58b197acab753792c919e38c08bc7e1f65067ecf919",
+      "bytes": 57972
     },
     {
       "path": "lib/seo.ts",

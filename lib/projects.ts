@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​‌​‌​‌​‌‌​‌‌‌‌​‌​​‌​‌‌​‌‌‌​​​​​‌​‌​​​‌​‌‌​​​‌​​‌‌​‌​​​​‌​​​‌​‌​‌​​​​‌​​‌‌​‌‌‌​​‌​‌​​​​​‌​​‌‌​​​‌​​‌​‌‌​‌​‌‌​​​​‌‌‌​‌‌‌​‌​‌​‌‌​​‌‌‌​‌‌‌​‌​‌​‌​‌​‌‌‌‌​​​​‌​​‌‌​‌​‌​‌‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.SUoKpQbhEBnPLKXwVwUxM_
+ * Fingerprint: AMK1.xoU8SqvbpV23xv8qhn_-1f
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -286,11 +286,11 @@ export const PROJECTS: Project[] = [
       "A provider that speaks the common OpenAI shape needs three config lines and no new code",
       "Honest about the limit: an origin check stops casual abuse, and provider spend caps are the real backstop",
     ],
-    /* No public link. The repository is Srinivasan-78/multi-ai-toolkit and is
-       private, so the old Multi_AI button answered 404 to an anonymous
-       visitor; the hosted page it pointed at is no longer published either.
-       Restore both the moment the repository is public — the detail page
-       reads an empty list as "offer the contact route instead". */
+    /* No public link: the repository is private, so an anonymous visitor gets a
+       404 from it. The hosted page was served from a Pages site that no longer
+       exists either — the repo has Pages disabled — so the demo button is gone
+       rather than pointing at a dead URL. Restore both the moment it is public
+       and published. */
     links: [],
   },
   {
@@ -481,70 +481,15 @@ export const PROJECTS: Project[] = [
       "Runs on ordinary homelab hardware",
       "One command starts the whole stack",
     ],
-    /* No public link. The repository is Srinivasan-78/kiwix-homelab and is
-       private, so the old Homelabbing button answered 404 to an anonymous
-       visitor. Restore the entry the moment the repository is public — the
-       detail page reads an empty list as "offer the contact route instead". */
-    links: [],
-  },
-  {
-    slug: "azure-pipeline-trigger",
-    title: "Azure Pipeline Trigger",
-    client: "CI/CD & packaging",
-    category: "Release promotion",
-    status: "Active",
-    teaser:
-      "One button in GitHub starts a deployment in Azure DevOps, streams its logs back, and files the result.",
-    tags: ["Actions", "Azure DevOps", "Datadog"],
-    stack: ["GitHub Actions", "Azure DevOps REST API", "Bash", "curl", "jq", "Datadog"],
-    overview:
-      "Promoting a release used to mean leaving GitHub: open Azure DevOps, find the right pipeline, remember the right parameters, start it, then sit refreshing a page in a second tab. This is the telephone line between the two. A dispatch form asks which service, which version and which direction, hands those straight to the Azure pipeline as template parameters, then follows the run to the end — printing Azure's own logs into the GitHub run as they appear and shipping the final verdict to Datadog. You press one button and never change tab.",
-    architecture: [
-      {
-        label: "A form you cannot typo",
-        body: "Direction and service are dropdowns and the version is free text, so a subscription name cannot be mistyped. The run title is composed from all three, which makes a list of past promotions readable without opening any of them.",
-      },
-      {
-        label: "Trigger, checked twice",
-        body: "One POST to the pipelines REST API. The step checks the HTTP status and the returned run id, because a 401 and a successful start both come back as JSON and only one of them carries an id. A failure prints Azure's own message and stops there.",
-      },
-      {
-        label: "Streaming a service that does not stream",
-        body: "Azure DevOps never pushes logs; you have to keep asking. The job polls the run state and the timeline every 15 seconds and prints each log id exactly once, keyed off a list of ids already seen.",
-      },
-      {
-        label: "A list, not a high-water mark",
-        body: "Log ids are handed out per task and do not always arrive in increasing order, so remembering only the highest id seen would silently skip any log that turns up below it. Keeping the whole set is the difference between complete output and quietly missing tasks.",
-      },
-      {
-        label: "One more pass after the end",
-        body: "The loop does not stop the moment Azure reports a finished state — it goes round once more. A pipeline usually writes its last few lines between the second-to-last poll and finishing, and without that extra pass those lines are never fetched.",
-      },
-      {
-        label: "Bounded, and audited",
-        body: "MAX_WAIT_MINUTES caps a wedged run at two hours rather than holding a runner to GitHub's six-hour limit, a concurrency group keeps two promotions of the same service apart, and the final status, version and service go to Datadog so next month the question of when something was promoted still has an answer.",
-      },
-      {
-        label: "Secrets that stay secrets",
-        body: "Tokens reach the shell through step env: rather than being interpolated into the script — ${{ }} is substituted before bash parses the line, so a value containing shell syntax would otherwise be executed. The checkout credential is not persisted into .git/config, and the workspace is wiped before and after.",
-      },
-    ],
-    highlights: [
-      "A failed Azure deployment shows up as a failed GitHub run, not a green tick with bad news in the log",
-      "Log ids are tracked as a set, so out-of-order tasks are never skipped",
-      "The extra poll after completion is what stops the last lines of a pipeline going missing",
-      "A wedged pipeline times out with that reason rather than holding a runner all day",
-      "Honest about the trade: polling keeps a GitHub runner alive for the whole deployment",
-    ],
-    /* No public link. The repository is Srinivasan-78/azure-pipeline-trigger and is
-       private — it is templated with placeholder org, project and service names, but
-       the surrounding deployment repo it checks out is not public. The detail page
-       reads an empty list as "offer the contact route instead". */
+    /* No public link. https://github.com/Srinivasan-78/kiwix-homelab is private,
+       so the button that pointed at it was a dead CTA. Restore the entry the
+       moment the repository is public — the detail page reads an empty list as
+       "offer the contact route instead". */
     links: [],
   },
   {
     slug: "simple-actions",
-    title: "Simple-Actions",
+    title: "GitHub Actions Snippets",
     client: "CI/CD & packaging",
     category: "Pipelines",
     status: "Reference",
@@ -577,7 +522,7 @@ export const PROJECTS: Project[] = [
       "Windows and Linux packaging in one set of templates",
       "Artifact cleanup is part of the pipeline itself",
     ],
-    /* No public link. The repository is Srinivasan-78/github-actions-snippets and is
+    /* No public link. https://github.com/Srinivasan-78/github-actions-snippets is
        private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
@@ -664,7 +609,7 @@ export const PROJECTS: Project[] = [
       "Upgrade path is right from the first release",
       "Drops into any MSBuild desktop project",
     ],
-    /* No public link. The repository is Srinivasan-78/wix-installer-template and is
+    /* No public link. https://github.com/Srinivasan-78/wix-installer-template is
        private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
@@ -672,7 +617,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "brainrot-study",
-    title: "Brainrot Study",
+    title: "Study Brainrot Generator",
     schematic: "Brainrot Study — automated video pipeline",
     client: "CI/CD & packaging",
     category: "Automation",
@@ -719,7 +664,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "minecraft-server-setup",
-    title: "Minecraft Server Setup",
+    title: "Minecraft Server GitOps",
     client: "CI/CD & packaging",
     category: "GitOps",
     status: "Active",
@@ -802,7 +747,7 @@ export const PROJECTS: Project[] = [
       "Captures the fully built state, ready to flash",
       "PiShrink keeps the image a sane size",
     ],
-    /* No public link. The repository is Srinivasan-78/matter-th-pi-image and is
+    /* No public link. https://github.com/Srinivasan-78/matter-th-pi-image is
        private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
@@ -810,7 +755,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "imgautomation",
-    title: "ImgAutomation",
+    title: "Pi Image Build Automation",
     client: "Hardware & imaging",
     category: "Hardware",
     status: "Active",
@@ -838,70 +783,106 @@ export const PROJECTS: Project[] = [
       "Build artifacts stay off the card being imaged",
       "Clean handoff to the image builder",
     ],
-    /* No public link. The repository is Srinivasan-78/pi-image-build-automation and is
+    /* No public link. https://github.com/Srinivasan-78/pi-image-build-automation is
        private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
     links: [],
   },
   {
-    slug: "pi-image-shrink",
-    title: "PiShrink, hardened",
-    client: "Hardware & imaging",
-    category: "Imaging",
+    slug: "azure-pipeline-trigger",
+    title: "Azure Pipeline Trigger",
+    client: "CI/CD & packaging",
+    category: "Pipelines",
     status: "Active",
     teaser:
-      "A fork of PiShrink that stops it failing quietly: real exit-code capture, an off-by-one in the partition end, and mounts that are actually checked.",
-    tags: ["Bash", "ext4", "Fork"],
-    stack: ["Bash", "parted", "e2fsprogs", "losetup", "gzip / xz", "Raspberry Pi"],
+      "One button in GitHub starts an Azure DevOps release, streams its logs back, and records the result.",
+    tags: ["Actions", "Azure DevOps", "Datadog"],
+    stack: ["GitHub Actions", "Azure DevOps REST API", "Bash", "curl", "jq", "Datadog"],
     overview:
-      "PiShrink is Drew Bonasera's script for shrinking a Raspberry Pi image: it cuts the empty space out of the last ext4 partition, truncates the file, and leaves behind a first-boot hook that grows the filesystem back to fill whatever card you write it to. It is the last stage of my imaging pipeline, which is how I found the parts of it that break. This fork keeps the design and fixes the failure handling — the class of bug that does not announce itself, because the script keeps going and hands you an image instead of an error.",
+      "GitHub and Azure DevOps do not talk to each other, so promoting a release meant leaving one tab, finding the right pipeline in the other, remembering the right parameters, and then refreshing a page until it finished. This is the telephone line between them: a dispatch form with three dropdowns triggers the Azure pipeline over its REST API, then polls it and copies its logs into the GitHub run as they appear. Success or failure is shipped to Datadog, so months later there is still an answer to which version went where, and whether it worked.",
     architecture: [
       {
-        label: "Exit codes that were never captured",
-        body: "`if ! cmd; then rc=$?` reads the exit status of the negation, which is always 1, not the status of the command. Every compression and resize failure was therefore reported as rc 1 whatever actually went wrong. Running the command, then capturing $?, then testing it restores the real number.",
+        label: "A form instead of a runbook",
+        body: "Direction, version and service are workflow_dispatch inputs, two of them dropdowns, so a subscription name cannot be typo'd. All three are handed to the pipeline as templateParameters and the run title repeats them, which makes a list of past runs readable at a glance.",
       },
       {
-        label: "An off-by-one at the partition end",
-        body: "parted's end offset is inclusive, so `partstart + partnewsize` describes a partition one sector longer than the filesystem inside it. Subtracting one makes the wall land where the filing cabinet actually ends.",
+        label: "Trigger, then verify",
+        body: "One POST starts the run. The step checks the HTTP status as well as the returned id, because a 401 with an error body and a successful run both come back as JSON — only one of them has an id, and neither is an exception.",
       },
       {
-        label: "Mounts that were assumed to work",
-        body: "Upstream mounts the loop device and immediately moves rc.local.bak over rc.local, or writes a zero file, without checking the mount succeeded. On a failed mount that writes into the host's own filesystem instead. Both paths are now conditional, and the zeroing path exits rather than continuing.",
+        label: "Pulling logs that are not pushed",
+        body: "Azure does not stream logs out, so the job polls the timeline every 15 seconds and prints any log id it has not printed before, tracked as a seen-list rather than a high-water mark. One final pass runs after the pipeline finishes, so the last lines are never lost.",
       },
       {
-        label: "losetup failure, detected",
-        body: "If attaching the partition fails there is nothing to work on, but the script carried on with an empty $loopback. It now reports the offset it tried and exits 7.",
+        label: "Credentials never in the script",
+        body: "The PAT and pipeline id arrive as step env vars rather than being interpolated into the shell, and the trigger call is silent — an earlier verbose curl printed the Basic auth header, which GitHub's secret masking cannot catch because the base64 is not the secret it was given.",
       },
       {
-        label: "Cleanup that cannot make things worse",
-        body: "The exit trap unmounted and detached unconditionally, so a run that died before either existed ran umount and losetup against empty strings. Both are guarded, and the variables are initialised before the trap can fire.",
+        label: "A bounded wait",
+        body: "The poll loop has a timeout, so a wedged pipeline fails the job with that reason instead of holding a runner for six hours until GitHub kills it.",
       },
       {
-        label: "Small correctness debts",
-        body: "`return -1` is not valid in bash and becomes 255; ZIPTOOLS=(\"gzip xz\") is one element, not two, so the tool check never matched; `ls -lh | cut -d ' ' -f 5` picks the wrong column whenever the listing pads. awk, a real 1, and a real array each fix one.",
-      },
-      {
-        label: "Waiting for the kernel, not for a guess",
-        body: "A blind `sleep 3` after attaching the device is either too long or not long enough. `udevadm settle` waits for exactly the event that matters, with the sleep kept as a fallback where udev is absent.",
+        label: "The result outlives the run",
+        body: "Status, timestamp, service, version and the GitHub run id go to Datadog at the end, and a failed deployment exits non-zero so the GitHub run is red too.",
       },
     ],
     highlights: [
-      "The upstream bug class is silent failure: fixing exit-code capture is what makes the rest visible",
-      "A mount that fails no longer writes into the host filesystem by mistake",
-      "The partition end is inclusive — one sector, and the filesystem no longer disagrees with its own partition",
-      "udevadm settle instead of a fixed sleep, so a slow machine is not a race",
-      "Upstream is Drewsif/PiShrink, MIT; this fork changes about 50 lines and keeps the design",
+      "One button: no second tab, no remembering pipeline parameters",
+      "Azure's logs appear inside the GitHub run while it is still going",
+      "A run that fails in Azure fails in GitHub — the two never disagree",
+      "Secrets travel through env, never through string interpolation into a shell",
+      "Honest about the cost: polling keeps a runner alive for the whole deployment",
     ],
-    /* No public link: the repository is private. Note also that this is a fork of
-       https://github.com/Drewsif/PiShrink (MIT) rather than original work, and the
-       write-up above says so — the value here is the hardening, not the script.
-       The detail page reads an empty list as "offer the contact route instead". */
+    /* No public link. https://github.com/Srinivasan-78/azure-pipeline-trigger is
+       private, so a button pointing at it would be a dead CTA. The detail page
+       reads an empty list as "offer the contact route instead". */
+    links: [],
+  },
+  {
+    slug: "pi-image-shrink",
+    title: "Pi Image Shrink",
+    client: "Hardware & imaging",
+    category: "Hardware",
+    status: "Complete",
+    teaser:
+      "Cuts a Raspberry Pi backup image down to the space actually used, and grows it back on first boot.",
+    tags: ["Bash", "Raspberry Pi", "Imaging"],
+    stack: ["Bash", "Raspberry Pi", "ext4 / resize2fs", "losetup", "gzip / xz"],
+    overview:
+      "A raw copy of a 64 GB card is a 64 GB file even when only 8 GB is in use, because dd copies the empty space too. This shrinks the filesystem and the partition to what is actually there, then plants a first-boot hook that expands it again to fill whatever card it lands on. It is the step that makes an image small enough to publish, and it is the piece the Matter harness image builder hands its output to.",
+    architecture: [
+      {
+        label: "Shrink",
+        body: "Checks the filesystem, resizes it to its minimum, then moves the partition end to match. Getting that end offset right is the whole job — one sector out and the image will not mount.",
+      },
+      {
+        label: "Grow back on first boot",
+        body: "A hook added inside the image expands the filesystem the first time it starts, so a shrunk image is not a smaller machine, just a smaller file.",
+      },
+      {
+        label: "Compression",
+        body: "Optionally gzip or xz the result, in parallel where the tool supports it, since a mostly-empty image compresses extremely well.",
+      },
+      {
+        label: "Refusing the wrong target",
+        body: "The script tests that it was handed a regular file, so pointing it at a block device like /dev/sda fails immediately rather than halfway through resizing a live disk.",
+      },
+    ],
+    highlights: [
+      "A 64 GB card becomes a file you can actually upload",
+      "Expands itself on first boot, so nothing is lost by shrinking",
+      "Refuses a block device rather than damaging one",
+      "Distinct exit codes per failure, so a build script can tell what went wrong",
+    ],
+    /* No public link. https://github.com/Srinivasan-78/pi-image-shrink is private,
+       so a button pointing at it would be a dead CTA. It is derived from
+       Drewsif/PiShrink, which is public and credited in the repository. */
     links: [],
   },
   {
     slug: "speedtestdd",
-    title: "SpeedTestDD",
+    title: "dd Block-Size Benchmark",
     client: "Utilities",
     category: "Benchmark",
     status: "Complete",
@@ -929,7 +910,7 @@ export const PROJECTS: Project[] = [
       "Answers one narrow question properly",
       "Run it once before a long imaging job",
     ],
-    /* No public link. The repository is Srinivasan-78/dd-blocksize-benchmark and is
+    /* No public link. https://github.com/Srinivasan-78/dd-blocksize-benchmark is
        private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
