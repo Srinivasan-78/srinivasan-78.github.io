@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌​​‌​‌​‌‌​​‌​‌​‌​‌​​​​​‌‌​​‌​‌​‌​​‌‌‌​​​‌‌‌​​​​‌‌‌‌​​‌​‌‌‌‌​‌​​‌​‌​‌‌‌​‌‌​​‌​‌​‌‌‌​​‌​​‌‌​‌​‌‌​‌​​‌​‌​​‌‌‌​​​‌​‌​​​​​‌​​‌​‌‌​‌​​‌‌‌​​​​​‌‌​‌​​​‌‌​​‌​​​​‌‌‌​​​​‌‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​‌​‌​‌​‌‌​‌‌‌‌​‌​​‌​‌‌​‌‌‌​​​​​‌​‌​​​‌​‌‌​​​‌​​‌‌​‌​​​​‌​​​‌​‌​‌​​​​‌​​‌‌​‌‌‌​​‌​‌​​​​​‌​​‌‌​​​‌​​‌​‌‌​‌​‌‌​​​​‌‌‌​‌‌‌​‌​‌​‌‌​​‌‌‌​‌‌‌​‌​‌​‌​‌​‌‌‌‌​​​​‌​​‌‌​‌​‌​‌‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.LeePeN8yzWerkJqA-84d8p
+ * Fingerprint: AMK1.SUoKpQbhEBnPLKXwVwUxM_
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -86,10 +86,10 @@ export const PROJECTS: Project[] = [
       "A failed build never becomes an outage, because nothing is torn down before the swap",
       "Every tunable lives in one group_vars file, with secrets kept separate",
     ],
-    demo: "https://www.srinidevops.com/Self-Healing-Deployment/",
+    demo: "https://www.srinidevops.com/self-healing-deployment/",
     links: [
-      { url: "https://www.srinidevops.com/Self-Healing-Deployment/", label: "Open demo ↗" },
-      { url: "https://github.com/Srinivasan-78/Self-Healing-Deployment", label: "Source ↗" },
+      { url: "https://www.srinidevops.com/self-healing-deployment/", label: "Open demo ↗" },
+      { url: "https://github.com/Srinivasan-78/self-healing-deployment", label: "Source ↗" },
     ],
   },
   {
@@ -137,8 +137,11 @@ export const PROJECTS: Project[] = [
       "Click position is flipped and unscaled from screen pixels to PDF points",
       "The one tool that needs a server says so, rather than quietly uploading your file",
     ],
-    demo: "https://www.srinidevops.com/pdf/",
-    links: [{ url: "https://www.srinidevops.com/pdf/", label: "Open tool ↗" }],
+    demo: "https://www.srinidevops.com/browser-pdf-tools/",
+    links: [
+      { url: "https://www.srinidevops.com/browser-pdf-tools/", label: "Open tool ↗" },
+      { url: "https://github.com/Srinivasan-78/browser-pdf-tools", label: "Source ↗" },
+    ],
   },
   {
     slug: "vfactor-solutions",
@@ -186,7 +189,10 @@ export const PROJECTS: Project[] = [
       "Push to main, live in about a minute — there is no build server anywhere",
     ],
     demo: "https://vfactorsolutions.com/",
-    links: [{ url: "https://vfactorsolutions.com/", label: "Visit site ↗" }],
+    links: [
+      { url: "https://vfactorsolutions.com/", label: "Visit site ↗" },
+      { url: "https://github.com/Srinivasan-78/vfactor-solutions-site", label: "Source ↗" },
+    ],
   },
   {
     slug: "multi-cloud-free-tier-platform",
@@ -233,7 +239,7 @@ export const PROJECTS: Project[] = [
       "Cloud credentials encrypted at rest and never handed back out",
       "Honest about its edges: Azure and Oracle modules are still stubs, and state locking is local",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/Multicloud", label: "View repo ↗" }],
+    links: [{ url: "https://github.com/Srinivasan-78/multicloud-free-tier", label: "View repo ↗" }],
   },
   {
     slug: "multi-ai-toolkit",
@@ -280,8 +286,12 @@ export const PROJECTS: Project[] = [
       "A provider that speaks the common OpenAI shape needs three config lines and no new code",
       "Honest about the limit: an origin check stops casual abuse, and provider spend caps are the real backstop",
     ],
-    demo: "https://www.srinidevops.com/Multi_AI/",
-    links: [{ url: "https://github.com/Srinivasan-78/Multi_AI", label: "View repo ↗" }],
+    /* No public link. The repository is Srinivasan-78/multi-ai-toolkit and is
+       private, so the old Multi_AI button answered 404 to an anonymous
+       visitor; the hosted page it pointed at is no longer published either.
+       Restore both the moment the repository is public — the detail page
+       reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "repo2graph",
@@ -471,7 +481,66 @@ export const PROJECTS: Project[] = [
       "Runs on ordinary homelab hardware",
       "One command starts the whole stack",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/Homelabbing", label: "View repo ↗" }],
+    /* No public link. The repository is Srinivasan-78/kiwix-homelab and is
+       private, so the old Homelabbing button answered 404 to an anonymous
+       visitor. Restore the entry the moment the repository is public — the
+       detail page reads an empty list as "offer the contact route instead". */
+    links: [],
+  },
+  {
+    slug: "azure-pipeline-trigger",
+    title: "Azure Pipeline Trigger",
+    client: "CI/CD & packaging",
+    category: "Release promotion",
+    status: "Active",
+    teaser:
+      "One button in GitHub starts a deployment in Azure DevOps, streams its logs back, and files the result.",
+    tags: ["Actions", "Azure DevOps", "Datadog"],
+    stack: ["GitHub Actions", "Azure DevOps REST API", "Bash", "curl", "jq", "Datadog"],
+    overview:
+      "Promoting a release used to mean leaving GitHub: open Azure DevOps, find the right pipeline, remember the right parameters, start it, then sit refreshing a page in a second tab. This is the telephone line between the two. A dispatch form asks which service, which version and which direction, hands those straight to the Azure pipeline as template parameters, then follows the run to the end — printing Azure's own logs into the GitHub run as they appear and shipping the final verdict to Datadog. You press one button and never change tab.",
+    architecture: [
+      {
+        label: "A form you cannot typo",
+        body: "Direction and service are dropdowns and the version is free text, so a subscription name cannot be mistyped. The run title is composed from all three, which makes a list of past promotions readable without opening any of them.",
+      },
+      {
+        label: "Trigger, checked twice",
+        body: "One POST to the pipelines REST API. The step checks the HTTP status and the returned run id, because a 401 and a successful start both come back as JSON and only one of them carries an id. A failure prints Azure's own message and stops there.",
+      },
+      {
+        label: "Streaming a service that does not stream",
+        body: "Azure DevOps never pushes logs; you have to keep asking. The job polls the run state and the timeline every 15 seconds and prints each log id exactly once, keyed off a list of ids already seen.",
+      },
+      {
+        label: "A list, not a high-water mark",
+        body: "Log ids are handed out per task and do not always arrive in increasing order, so remembering only the highest id seen would silently skip any log that turns up below it. Keeping the whole set is the difference between complete output and quietly missing tasks.",
+      },
+      {
+        label: "One more pass after the end",
+        body: "The loop does not stop the moment Azure reports a finished state — it goes round once more. A pipeline usually writes its last few lines between the second-to-last poll and finishing, and without that extra pass those lines are never fetched.",
+      },
+      {
+        label: "Bounded, and audited",
+        body: "MAX_WAIT_MINUTES caps a wedged run at two hours rather than holding a runner to GitHub's six-hour limit, a concurrency group keeps two promotions of the same service apart, and the final status, version and service go to Datadog so next month the question of when something was promoted still has an answer.",
+      },
+      {
+        label: "Secrets that stay secrets",
+        body: "Tokens reach the shell through step env: rather than being interpolated into the script — ${{ }} is substituted before bash parses the line, so a value containing shell syntax would otherwise be executed. The checkout credential is not persisted into .git/config, and the workspace is wiped before and after.",
+      },
+    ],
+    highlights: [
+      "A failed Azure deployment shows up as a failed GitHub run, not a green tick with bad news in the log",
+      "Log ids are tracked as a set, so out-of-order tasks are never skipped",
+      "The extra poll after completion is what stops the last lines of a pipeline going missing",
+      "A wedged pipeline times out with that reason rather than holding a runner all day",
+      "Honest about the trade: polling keeps a GitHub runner alive for the whole deployment",
+    ],
+    /* No public link. The repository is Srinivasan-78/azure-pipeline-trigger and is
+       private — it is templated with placeholder org, project and service names, but
+       the surrounding deployment repo it checks out is not public. The detail page
+       reads an empty list as "offer the contact route instead". */
+    links: [],
   },
   {
     slug: "simple-actions",
@@ -508,8 +577,8 @@ export const PROJECTS: Project[] = [
       "Windows and Linux packaging in one set of templates",
       "Artifact cleanup is part of the pipeline itself",
     ],
-    /* No public link. https://github.com/Srinivasan-78/Simple-Actions answered 404 to an
-       anonymous request, so the button that pointed at it was a dead CTA.
+    /* No public link. The repository is Srinivasan-78/github-actions-snippets and is
+       private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
     links: [],
@@ -595,8 +664,8 @@ export const PROJECTS: Project[] = [
       "Upgrade path is right from the first release",
       "Drops into any MSBuild desktop project",
     ],
-    /* No public link. https://github.com/Srinivasan-78/WixTemplate answered 404 to an
-       anonymous request, so the button that pointed at it was a dead CTA.
+    /* No public link. The repository is Srinivasan-78/wix-installer-template and is
+       private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
     links: [],
@@ -646,7 +715,7 @@ export const PROJECTS: Project[] = [
       "Caption timing pays for the silences, so it stays locked to the voice",
       "Typed workflow input never reaches the shell: passed as an environment variable and pattern-checked",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/Brainrot_Study", label: "View repo ↗" }],
+    links: [{ url: "https://github.com/Srinivasan-78/study-brainrot-generator", label: "View repo ↗" }],
   },
   {
     slug: "minecraft-server-setup",
@@ -697,7 +766,7 @@ export const PROJECTS: Project[] = [
       "Nothing GitHub-specific is installed on the host: any Debian-family box you can SSH into works",
       "Honest about the trade: port 22 must stay open to the internet because runners have no fixed IPs, and push access to main is effectively root",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/Minecraft_Server_Setup", label: "View repo ↗" }],
+    links: [{ url: "https://github.com/Srinivasan-78/minecraft-server-gitops", label: "View repo ↗" }],
   },
   {
     slug: "matter-test-harness-image-builder",
@@ -733,8 +802,8 @@ export const PROJECTS: Project[] = [
       "Captures the fully built state, ready to flash",
       "PiShrink keeps the image a sane size",
     ],
-    /* No public link. https://github.com/Srinivasan-78/ImgCreation answered 404 to an
-       anonymous request, so the button that pointed at it was a dead CTA.
+    /* No public link. The repository is Srinivasan-78/matter-th-pi-image and is
+       private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
     links: [],
@@ -769,10 +838,65 @@ export const PROJECTS: Project[] = [
       "Build artifacts stay off the card being imaged",
       "Clean handoff to the image builder",
     ],
-    /* No public link. https://github.com/Srinivasan-78/ImgAutomation answered 404 to an
-       anonymous request, so the button that pointed at it was a dead CTA.
+    /* No public link. The repository is Srinivasan-78/pi-image-build-automation and is
+       private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
+    links: [],
+  },
+  {
+    slug: "pi-image-shrink",
+    title: "PiShrink, hardened",
+    client: "Hardware & imaging",
+    category: "Imaging",
+    status: "Active",
+    teaser:
+      "A fork of PiShrink that stops it failing quietly: real exit-code capture, an off-by-one in the partition end, and mounts that are actually checked.",
+    tags: ["Bash", "ext4", "Fork"],
+    stack: ["Bash", "parted", "e2fsprogs", "losetup", "gzip / xz", "Raspberry Pi"],
+    overview:
+      "PiShrink is Drew Bonasera's script for shrinking a Raspberry Pi image: it cuts the empty space out of the last ext4 partition, truncates the file, and leaves behind a first-boot hook that grows the filesystem back to fill whatever card you write it to. It is the last stage of my imaging pipeline, which is how I found the parts of it that break. This fork keeps the design and fixes the failure handling — the class of bug that does not announce itself, because the script keeps going and hands you an image instead of an error.",
+    architecture: [
+      {
+        label: "Exit codes that were never captured",
+        body: "`if ! cmd; then rc=$?` reads the exit status of the negation, which is always 1, not the status of the command. Every compression and resize failure was therefore reported as rc 1 whatever actually went wrong. Running the command, then capturing $?, then testing it restores the real number.",
+      },
+      {
+        label: "An off-by-one at the partition end",
+        body: "parted's end offset is inclusive, so `partstart + partnewsize` describes a partition one sector longer than the filesystem inside it. Subtracting one makes the wall land where the filing cabinet actually ends.",
+      },
+      {
+        label: "Mounts that were assumed to work",
+        body: "Upstream mounts the loop device and immediately moves rc.local.bak over rc.local, or writes a zero file, without checking the mount succeeded. On a failed mount that writes into the host's own filesystem instead. Both paths are now conditional, and the zeroing path exits rather than continuing.",
+      },
+      {
+        label: "losetup failure, detected",
+        body: "If attaching the partition fails there is nothing to work on, but the script carried on with an empty $loopback. It now reports the offset it tried and exits 7.",
+      },
+      {
+        label: "Cleanup that cannot make things worse",
+        body: "The exit trap unmounted and detached unconditionally, so a run that died before either existed ran umount and losetup against empty strings. Both are guarded, and the variables are initialised before the trap can fire.",
+      },
+      {
+        label: "Small correctness debts",
+        body: "`return -1` is not valid in bash and becomes 255; ZIPTOOLS=(\"gzip xz\") is one element, not two, so the tool check never matched; `ls -lh | cut -d ' ' -f 5` picks the wrong column whenever the listing pads. awk, a real 1, and a real array each fix one.",
+      },
+      {
+        label: "Waiting for the kernel, not for a guess",
+        body: "A blind `sleep 3` after attaching the device is either too long or not long enough. `udevadm settle` waits for exactly the event that matters, with the sleep kept as a fallback where udev is absent.",
+      },
+    ],
+    highlights: [
+      "The upstream bug class is silent failure: fixing exit-code capture is what makes the rest visible",
+      "A mount that fails no longer writes into the host filesystem by mistake",
+      "The partition end is inclusive — one sector, and the filesystem no longer disagrees with its own partition",
+      "udevadm settle instead of a fixed sleep, so a slow machine is not a race",
+      "Upstream is Drewsif/PiShrink, MIT; this fork changes about 50 lines and keeps the design",
+    ],
+    /* No public link: the repository is private. Note also that this is a fork of
+       https://github.com/Drewsif/PiShrink (MIT) rather than original work, and the
+       write-up above says so — the value here is the hardening, not the script.
+       The detail page reads an empty list as "offer the contact route instead". */
     links: [],
   },
   {
@@ -805,8 +929,8 @@ export const PROJECTS: Project[] = [
       "Answers one narrow question properly",
       "Run it once before a long imaging job",
     ],
-    /* No public link. https://github.com/Srinivasan-78/SpeedTestDD answered 404 to an
-       anonymous request, so the button that pointed at it was a dead CTA.
+    /* No public link. The repository is Srinivasan-78/dd-blocksize-benchmark and is
+       private, so the button that pointed at it was a dead CTA.
        Restore the entry the moment the repository is public — the detail
        page reads an empty list as "offer the contact route instead". */
     links: [],
