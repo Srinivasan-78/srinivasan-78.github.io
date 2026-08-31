@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌​​​‌‌​​‌‌​‌​​​​‌‌‌​​‌‌​‌​​​‌​‌​‌‌​‌‌​‌​‌​​‌‌​​​‌​​‌‌​​​‌‌​‌​‌​​‌​‌‌‌‌‌​‌​​‌‌‌​​‌‌​‌‌‌‌​​‌‌​​​​​‌​‌​‌​​​​‌‌​‌‌‌​‌‌​‌‌‌​​‌​​‌‌​​​‌‌​‌‌‌‌​‌​​‌​​‌​‌​‌‌​​‌​‌​‌​‌​‌​‌​‌‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌​‌​‌‌​​‌‌​‌‌‌​​​‌‌​​​​​‌‌​‌‌​‌​‌‌​​‌‌​​‌‌​​‌​‌​‌​​​​‌‌​​‌‌‌​​‌​​‌‌​‌‌‌​‌‌‌​‌‌​​‌​​‌​‌‌​‌​‌​‌‌‌​‌​‌‌​‌​​‌​​‌​​​​‌​​​​​‌​​‌‌‌​​​​‌‌‌​​​‌​‌​‌​​​​​‌‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.YFhsEmLLj_No0T7nLoIYU_
+ * Fingerprint: AMK1.BcVVn0mfeC97vKWZHA8qPp
  */
 /* ---------- TYPE ----------
    Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,
@@ -3505,3 +3505,120 @@ html:not(.dialog-open) footer {
      which is the thing the setting exists to remove. */
   .chat-launcher-strands { display: none; }
 }
+
+/* ---------- DARK: FLAT SURFACES ----------
+   Every treatment on this site was tuned against white paper, and three
+   of them do not survive the move to black.
+
+   A backdrop blur needs a backdrop with something in it. Over white,
+   content passing under the header averages to a light haze and the bar
+   still reads as one surface. Over black there is nothing to average
+   toward — the blur samples whatever colour happens to be scrolling
+   past, the 1.4 saturation boost amplifies it (the comment at the
+   .nav-glass declaration already says so), and the bar smears through
+   the hue of the section underneath it. That is the "haywire texture
+   through the nav bar".
+
+   A drop shadow needs a surface lighter than the shadow. `rgb(0 0 0 /
+   0.10)` under a card on #000000 paints nothing at all where the page
+   is black and paints mud where the card sits over another raised
+   surface, so twenty cards each spend a 24px-blurred paint on a
+   difference that is either invisible or wrong.
+
+   And --edge-color is an alpha *black*, chosen because it had to land
+   the same over white paper, grey card and frosted panel. On black it
+   lands on none of them: the hairline that is supposed to survive when
+   the fill contrast closes is the first thing to go.
+
+   So dark takes the shape the file already reaches for in three other
+   places — prefers-reduced-transparency, the no-backdrop-filter
+   @supports fallbacks, prefers-contrast — and takes it as the default:
+   blur off, fill opaque, depth carried by a light hairline instead of a
+   dark shadow. Same colours, same tokens, same reasoning, applied for a
+   different reason.
+
+   Nothing here changes a box, a radius, a z-index or a duration. A dark
+   visitor gets the same page at the same size moving the same way; only
+   the material is flatter. */
+
+/* The two tokens the whole ladder hangs off. Inverting --edge-color
+   gives every card, tile, post, diagram, lightbox and floating panel a
+   hairline that is actually visible, and it costs one declaration
+   instead of nineteen. --shadow-window goes to none in the same breath:
+   with a readable edge there is nothing left for the shadow to say, and
+   on this background it could not say it anyway. */
+html[data-theme="dark"] {
+  --edge-color: rgb(255 255 255 / 0.12);
+  --shadow-window: none;
+}
+
+/* Glass to solid. The selector list is the one the
+   prefers-reduced-transparency block above already uses, and so are the
+   fills — .nav-glass and .sticky-cta are page chrome and take --paper,
+   the floating panels take --paper-raised, and the launcher keeps its
+   own near-black token. Killing the blur without taking the fill opaque
+   is the failure mode this file warns about twice; both halves are in
+   the same rule so they cannot drift apart. */
+html[data-theme="dark"] .nav-glass,
+html[data-theme="dark"] .mobile-nav__overlay,
+html[data-theme="dark"] .chat-launcher,
+html[data-theme="dark"] .chat-panel,
+html[data-theme="dark"] .sticky-cta,
+html[data-theme="dark"] .cookie-notice {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-theme="dark"] .nav-glass,
+html[data-theme="dark"] .sticky-cta { background: var(--paper); }
+html[data-theme="dark"] .mobile-nav__overlay,
+html[data-theme="dark"] .chat-panel,
+html[data-theme="dark"] .cookie-notice { background: var(--paper-raised); }
+html[data-theme="dark"] .chat-launcher { background: var(--launcher-bg); }
+
+/* The header's floating edge. The gradient this replaces is a fade to
+   7% ink, and ink in dark is #f5f5f7 — so the "soft shadow under the
+   bar" arrives as a 14px white glow bleeding down over the content, the
+   one thing a plain bar must not do.
+
+   The pseudo-element stays, at the same position and the same height,
+   because it is what carries the fade-in on .is-floating and that
+   motion is not mine to change. Only what it paints changes: one
+   hairline at the top of the box instead of a gradient filling it. */
+html[data-theme="dark"] .nav-glass::after {
+  background: linear-gradient(to bottom, var(--ink-15) 0 1px, transparent 1px);
+}
+
+/* Shadows that are not on the --shadow-window token, and so have to be
+   named. The floating panels do not need one: they already carry the
+   inverted hairline from --edge-color, which separates them from black
+   in a way a black shadow cannot. The badge's 0.45-alpha shadow is the
+   worst of them — 60px of black blur over black. */
+html[data-theme="dark"] .chat-launcher,
+html[data-theme="dark"] .chat-panel,
+html[data-theme="dark"] .cookie-notice,
+html[data-theme="dark"] .badge-static img {
+  box-shadow: none;
+}
+
+/* The hover edge is the same problem one level down: the resting border
+   is now light, so darkening it on hover reads as the card going away.
+   Same step in the other direction. */
+@media (hover: hover) and (pointer: fine) {
+  html[data-theme="dark"] a.card:hover,
+  html[data-theme="dark"] .post:hover,
+  html[data-theme="dark"] .cap-tile:hover,
+  html[data-theme="dark"] .glow-card:hover {
+    border-color: rgb(255 255 255 / 0.24);
+  }
+}
+
+/* The last two textures. The profile card's foil is a sheen and a glare
+   dimmed until they read as light falling on a surface — over white
+   that is a plausible surface, over black it is a smear on a slab. The
+   launcher's strand canvas is emissive line work behind a label, which
+   is the same low-contrast moving pattern the prefers-contrast rule
+   above already removes, for the same reason. Both go by paint only;
+   neither is in the layout. */
+html[data-theme="dark"] .pc-quiet .pc-shine,
+html[data-theme="dark"] .pc-quiet .pc-glare { opacity: 0; }
+html[data-theme="dark"] .chat-launcher-strands { display: none; }

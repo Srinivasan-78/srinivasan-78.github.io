@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌‌‌​‌​‌​‌‌‌​​‌‌​‌​​‌‌‌‌​‌‌​‌‌‌​​‌​‌​​​​​‌‌​‌‌​​​​‌‌​‌‌​​‌​‌‌​​‌​‌‌​‌​​‌​​‌‌‌​​​​​‌‌​​​​​​‌‌​​​​​‌‌​​​​‌​‌​‌​​​‌​​‌‌​​​‌​​‌‌​​‌‌​‌​‌​‌‌​​‌‌‌​‌‌​​‌​‌​‌​​​‌‌​‌‌​​​‌‌​​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​‌​‌‌​​​‌‌​‌‌‌‌​​‌​‌‌‌​​‌​​‌‌​​‌‌‌​‌​​​‌​​​​‌‌​‌‌​​‌​‌‌​​​​‌‌‌​​​‌​‌​‌‌‌‌‌​​‌‌​​​​​‌​‌‌​​​​‌​‌​​‌​​‌​​​​‌‌​​‌‌​‌​​​‌​​​​‌​​​‌‌‌​​​​‌‌​​​‌‌​‌​​‌​​‌​‌‌‌​‌​‌​​‌‌​‌​​​‌‌​​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.TusOnPl6Yi800aQ13VvTle
+ * Fingerprint: AMK1.ecyrgD6Xq_0XRC4B8cIu4e
  */
 /* React Bits ProfileCard stylesheet.
 
@@ -615,4 +615,30 @@
   .pc-card {
     transition: none !important;
   }
+}
+
+/* ---------- DARK MODE: card edge ----------
+   Additive only, and deliberately just the one rule.
+
+   Almost nothing in this file needs a dark variant, because almost
+   nothing in it is painted against the page. The card is an opaque
+   rgba(0,0,0,0.9) box in both themes, so the holo shine, the glare, the
+   two backdrop-filters in the user-info panel and the contact button,
+   and the gradient-clipped name are all sampling or blending against
+   the card's own dark interior — they look identical whatever the page
+   behind them is doing, and flattening them in dark mode would make the
+   two themes disagree for no gain. `.pc-behind` is the same story from
+   the other side: it is a bloom tuned in this file specifically for a
+   dark page (see the 0.45 note above), so it is already correct here.
+
+   The card's drop shadow is the one thing that does fall on the page,
+   and rgba(0,0,0,0.8) landing on near-black is invisible. Worse, it was
+   the only thing separating an almost-black card from an almost-black
+   background, so without it the card has no outer edge at all. Swapped
+   for a 1px hairline ring, which is what reads at this contrast — drawn
+   as a spread shadow rather than a `border` so the card's box, its
+   aspect-ratio and its 30px radius are all untouched. */
+
+html[data-theme="dark"] .pc-card {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
