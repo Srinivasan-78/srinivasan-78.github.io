@@ -117,7 +117,7 @@ export default function ContactForm() {
       className="space-y-6"
     >
       <fieldset disabled={sending} className="space-y-5">
-        
+
         {/* Name Field */}
         <div>
           <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b] mb-2">

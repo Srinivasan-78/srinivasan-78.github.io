@@ -151,7 +151,7 @@ export default function AppleEnterpriseExperience() {
 
   return (
     <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-      
+
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
@@ -212,7 +212,7 @@ export default function AppleEnterpriseExperience() {
           return (
             <GlowCard key={item.id}>
               <article className="p-7 sm:p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group relative overflow-hidden">
-                
+
                 <div>
                   {/* Top Bar: Company Badge & Category */}
                   <div className="flex items-center justify-between gap-2 mb-5">

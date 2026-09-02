@@ -20,7 +20,7 @@ export const metadata = pageMetadata({
 export default function Contact() {
   return (
     <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white">
-      
+
       {/* 1. Human Hero Section */}
       <header className="pt-20 pb-16 px-6 max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
@@ -40,7 +40,7 @@ export default function Contact() {
       {/* 2. Main Contact Grid */}
       <section className="px-6 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left Column: Form */}
           <div className="lg:col-span-7 p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl">
             <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2">
@@ -55,7 +55,7 @@ export default function Contact() {
 
           {/* Right Column: Direct Channels & Status */}
           <div className="lg:col-span-5 space-y-4">
-            
+
             {/* Quick Availability Card */}
             <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2.5 mb-2">
@@ -74,7 +74,7 @@ export default function Contact() {
 
             {/* Direct Channel Cards */}
             <div className="space-y-3">
-              
+
               {/* Email with copy-to-clipboard feedback */}
               <CopyEmailCard />
 

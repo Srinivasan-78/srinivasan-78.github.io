@@ -129,7 +129,7 @@ export default function AppleWorkAuthorization() {
 
   return (
     <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-      
+
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
@@ -161,7 +161,7 @@ export default function AppleWorkAuthorization() {
           <FiClock className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Live Operations Clocks:</span>
         </div>
-        
+
         <div className="flex flex-wrap items-center gap-4 sm:gap-8">
           <div className="flex items-center gap-2">
             <span className="text-[#6e6e73] dark:text-[#86868b]">🇺🇸 US Eastern (EST):</span>
@@ -180,7 +180,7 @@ export default function AppleWorkAuthorization() {
 
       {/* Interactive Dual-Clearance Terminal */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
+
         {/* Left Column: Jurisdiction Selector */}
         <div className="lg:col-span-4 space-y-3">
           {CLEARANCE_DATA.map((item) => {
@@ -221,7 +221,7 @@ export default function AppleWorkAuthorization() {
         <div className="lg:col-span-8">
           <GlowCard>
             <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 relative overflow-hidden">
-              
+
               {/* Top Pass Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/10 dark:border-white/10">
                 <div className="flex items-center gap-3">

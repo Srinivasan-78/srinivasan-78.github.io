@@ -39,10 +39,10 @@ const RELEASE_FLOW = [
 export default function Page() {
   return (
     <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white">
-      
+
       {/* 1. Human-Centered Hero Section */}
       <header className="relative pt-16 pb-16 px-6 max-w-6xl mx-auto flex flex-col items-center text-center overflow-hidden">
-        
+
         {/* Status Eyebrow */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-[#34c759]" />
@@ -139,7 +139,7 @@ export default function Page() {
       {/* 6. Personal Projects & Tooling (Card-free Showcase Gateway to Projects) */}
       <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
         <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
-          
+
           <div className="max-w-2xl space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
               <span>Side Projects & Tools</span>

@@ -250,18 +250,18 @@ export default function AppleSkillsExperience() {
 
   return (
     <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-      
+
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-14">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4 backdrop-blur-md">
           <FiCpu className="w-3.5 h-3.5" />
           <span>Skills</span>
         </div>
-        
+
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight pb-1 text-[#1d1d1f] dark:text-white mb-4">
           What I love working with.
         </h2>
-        
+
         <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg leading-relaxed">
           Five years of hands-on enterprise infrastructure experience. Select any discipline to inspect real-world production use cases, architectures, and capabilities.
         </p>
@@ -294,7 +294,7 @@ export default function AppleSkillsExperience() {
 
       {/* Interactive Workbench: Left List + Right Inspector Card */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
+
         {/* Left Column: Skill Buttons in Current Domain */}
         <div className="lg:col-span-5 space-y-3">
           <div className="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 mb-4">
@@ -342,7 +342,7 @@ export default function AppleSkillsExperience() {
         {/* Right Column: Deep Production Inspector Card */}
         <div className="lg:col-span-7">
           <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl relative overflow-hidden shadow-xl transition-all">
-            
+
             {/* Header Badge */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-6 border-b border-black/10 dark:border-white/10">
               <div>

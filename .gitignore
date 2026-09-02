@@ -10,3 +10,7 @@ out/
 
 # OS/editor cruft
 .DS_Store
+
+# Master Bot hygiene additions
+__pycache__/
+*.py[cod]
