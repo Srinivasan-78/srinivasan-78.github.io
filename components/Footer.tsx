@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-black/10 dark:border-white/10 py-12 px-6 bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors duration-300">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        
+
         {/* Copyright & Location */}
         <div className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono text-center md:text-left">
           <span>© {currentYear} Srinivasan Vijayaraghavan · Bangalore, IN</span>

@@ -29,7 +29,7 @@ export default function NotFound() {
   return (
     <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
       <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center">
-        
+
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <span>Error 404 · Page Not Found</span>

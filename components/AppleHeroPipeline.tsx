@@ -79,7 +79,7 @@ export default function AppleHeroPipeline() {
 
   return (
     <div className="w-full rounded-3xl bg-[#f5f5f7]/90 dark:bg-[#09090c]/90 border border-black/10 dark:border-white/10 p-6 sm:p-8 backdrop-blur-2xl shadow-xl dark:shadow-2xl relative overflow-hidden text-left my-8 transition-colors duration-300">
-      
+
       {/* Header bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/10 dark:border-white/10">
         <div>
