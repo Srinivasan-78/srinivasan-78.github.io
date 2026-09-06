@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​‌​​‌‌​‌​​​‌‌​​‌​‌​‌​​​‌‌‌​‌​​‌​‌​​‌‌​‌‌​​​‌​​‌‌‌​​‌​‌​‌​​​‌‌​​‌​​​​‌‌​​​‌​‌​​‌‌‌‌​‌​‌​‌​‌​​‌‌​​‌​​​‌‌‌​​​​‌‌​‌‌​​​‌‌​‌‌‌​​‌‌‌​‌​‌​‌​​​‌​‌​‌‌‌​‌​‌​‌‌‌​​​‌​‌​​​‌‌​​‌‌​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​​‌​‌‌​‌​‌‌​‌‌​‌​‌​​‌​‌‌​‌​​‌‌‌‌​‌​​​​‌​​‌​​​‌​‌​‌‌​​‌​‌​‌​‌‌​‌​​‌​​​‌​‌​‌​‌‌​​​​‌‌‌​​​‌​‌‌​​‌​‌​‌​​​​‌‌​‌‌‌​‌‌‌​‌​‌‌​‌​​‌​‌​‌​‌​‌​​​‌​‌​‌​‌‌​​‌​‌‌‌‌​​‌​‌​​​‌​​​‌‌​‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.e4eGJlNTd1OU28lnuEuqFo
+ * Fingerprint: AMK1.3-mKOBEeZEXqeCwZUEYyDo
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -21,8 +21,13 @@ export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const p = projectBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const p = projectBySlug(slug);
   if (!p) return {};
   return pageMetadata({
     title: p.title,
@@ -31,8 +36,13 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   });
 }
 
-export default function ProjectDetail({ params }: { params: { slug: string } }) {
-  const p = projectBySlug(params.slug);
+export default async function ProjectDetail({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const p = projectBySlug(slug);
   if (!p) notFound();
 
   const actions =
