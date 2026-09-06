@@ -8,6 +8,8 @@
 import type { MetadataRoute } from "next";
 import { PROJECTS } from "@/lib/projects";
 
+export const dynamic = "force-static";
+
 const BASE = "https://www.srinidevops.com";
 
 /* Generated at build time so routes can never drift from the app

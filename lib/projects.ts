@@ -199,14 +199,14 @@ export const PROJECTS: Project[] = [
     status: "Work in progress",
     teaser:
       "One dashboard provisions free-tier compute across four clouds with Terraform, and an hourly sweep keeps every account tidy.",
-    tags: ["Terraform", "FastAPI", "Multi-tenant"],
-    stack: ["Terraform", "FastAPI", "Celery", "Redis", "Next.js", "Postgres", "Docker Compose"],
+    tags: ["Terraform", "Flask", "Ansible", "Multi-tenant"],
+    stack: ["Terraform", "Python (Flask)", "Ansible", "Docker Compose", "PostgreSQL", "Bash Worker", "Fernet"],
     overview:
       "One dashboard that provisions real compute on AWS, GCP, Azure or Oracle Cloud with Terraform, strictly inside each provider's free tier, then lists it all in one place and tears it down automatically after 24 hours. It owns no hardware: you supply your own cloud credentials and it acts on your behalf, more valet than rental company. Provisioning is the straightforward part — the interesting work is making a surprise bill structurally impossible.",
     architecture: [
       {
         label: "Request path",
-        body: "Next.js to FastAPI to Redis to a Celery worker to Terraform. Building an instance takes one to three minutes, so the API saves the row, queues the job and answers pending in about 50ms rather than holding the browser open.",
+        body: "A clean Flask app factory saves credentials and state-change requests to PostgreSQL with a connection pool. Building an instance takes one to three minutes, so the API inserts a pending row and answers in 50ms while the frontend refreshes via 5-second HTML partial polling.",
       },
       {
         label: "The browser never picks the machine",
@@ -221,20 +221,21 @@ export const PROJECTS: Project[] = [
         body: "Each user and provider gets its own Terraform workspace, with the module files symlinked rather than copied — one blueprint, many private state files — and every database query scoped by user, so another tenant's resource simply 404s.",
       },
       {
-        label: "Hourly sweep",
-        body: "Celery beat fires on the hour, queues a destroy for anything past its expiry and the worker runs terraform destroy. Resources live 24 to 25 hours, comfortably inside every provider's monthly allowance.",
+        label: "Worker & hourly sweeper",
+        body: "Lean shell daemons replace heavy message brokers: worker.sh claims pending jobs and drives Ansible playbooks (provision.yml / destroy.yml), while sweeper.sh runs an hourly loop to flag expired resources for automated teardown.",
       },
       {
-        label: "Credentials",
-        body: "Cloud keys are Fernet-encrypted before they reach Postgres and decrypted only by the worker, only at provision or destroy time. Listing credentials returns providers and dates, never a payload; passwords are bcrypt, sessions are JWT.",
+        label: "Credentials & encryption",
+        body: "Cloud keys are Fernet-encrypted before reaching PostgreSQL and decrypted in memory only by the worker playbooks at provision or destroy time. User passwords use bcrypt; session state is managed via secure session cookies.",
       },
     ],
     highlights: [
       "Free-tier enforcement in four layers, two of them below the API",
+      "Lean orchestration: worker.sh and sweeper.sh replace Celery with Ansible playbooks",
       "Every resource is destroyed within 25 hours, forgotten or not",
       "Per-tenant Terraform state, with shared modules by symlink",
-      "Cloud credentials encrypted at rest and never handed back out",
-      "Honest about its edges: Azure and Oracle modules are still stubs, and state locking is local",
+      "Cloud credentials encrypted at rest with Fernet and never exposed",
+      "Honest about its edges: Azure and Oracle modules are stubs, and state locking is local",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/multicloud-free-tier", label: "View repo ↗" }],
   },
@@ -281,6 +282,7 @@ export const PROJECTS: Project[] = [
       "Provider routing lives in config.yaml, so swapping one is not a code change",
       "Locally, Claude runs through the CLI login rather than a metered API key",
       "A provider that speaks the common OpenAI shape needs three config lines and no new code",
+      "Automated pytest test suite with GitHub Actions matrix CI on Python 3.10 and 3.12",
       "Honest about the limit: an origin check stops casual abuse, and provider spend caps are the real backstop",
     ],
     /* No public link — the repository is private. */
@@ -304,8 +306,8 @@ export const PROJECTS: Project[] = [
         body: "tree-sitter reads real code structure rather than guessing from words, so a repo it has never seen needs no configuration. Sixteen languages get full symbol and call extraction, and every other file still lands on the map in its folder, so nothing goes missing.",
       },
       {
-        label: "Graph model",
-        body: "CONTAINS, DEFINES, IMPORTS, CALLS, CALLS_EXTERNAL, INHERITS and CO_CHANGE, across repo, directory, file, symbol, module and external nodes. Node ids are readable enough to write by hand, like sym:pkg/mod.py::Class.method.",
+        label: "Zero-dependency graph model",
+        body: "CONTAINS, DEFINES, IMPORTS, CALLS, CALLS_EXTERNAL, INHERITS and CO_CHANGE, across repo, directory, file, symbol, module and external nodes. Built with pure-Python structures that drop external graph packages like networkx, writing directly to JSONL, GraphML, Cypher, and interactive HTML.",
       },
       {
         label: "Co-change edges",
@@ -334,6 +336,7 @@ export const PROJECTS: Project[] = [
     ],
     highlights: [
       "Sixteen languages parsed with tree-sitter, zero configuration",
+      "Zero external graph dependencies: pure Python models eliminate networkx bloat",
       "Chunks carry their graph neighbourhood, so retrieval lands on the right code",
       "graph.html is one file: no server, no install, drag, zoom and search in a browser",
       "Honest about approximation: name-matched calls carry a confidence score, and a missing edge never proves a missing call",
@@ -391,6 +394,7 @@ export const PROJECTS: Project[] = [
       "A change that saves 30% and gets the answer wrong is recorded as a loss \u2014 the results log has a column for saying so",
       "Honest about its own cost: fifteen installed skills advertise roughly 1.5k tokens per session, and status prints your figure",
       "No network call anywhere in the repository, and the installer prints its plan and asks before writing",
+      "20 automated smoke tests running in CI on push and PR with zero external network dependencies",
     ],
     links: [{ url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" }],
   },
@@ -431,16 +435,22 @@ export const PROJECTS: Project[] = [
         label: "Consolidated status dashboard",
         body: "All account-wide findings are consolidated into a single GitHub issue that updates in place each day and closes automatically once every repo passes, preventing alert fatigue.",
       },
+      {
+        label: "Reusable Composite Action",
+        body: "Provides Srinivasan-78/authormark-watch@main, a reusable GitHub Action that external workflows invoke with zero setup to verify watermarks or enforce repository security gates on CI.",
+      },
     ],
     highlights: [
       "Autonomous fix mode opens ready-to-merge pull requests with intact watermarks",
       "Full secret scanner catches exposed tokens and private keys across all branches",
       "Automated PR size and category labeler maintains clean review queues across repos",
+      "Reusable composite action enables one-line integration across any repository",
       "Single persistent status issue prevents alert fatigue by updating in place",
       "Zero third-party dependencies: built with pure Node.js standard libraries and GitHub APIs",
     ],
-    /* Internal supervisor repository; detail page presents contact CTA */
-    links: [],
+    links: [
+      { url: "https://github.com/Srinivasan-78/authormark-watch", label: "View repo ↗" },
+    ],
   },
   {
     slug: "zim-assistant",
@@ -605,7 +615,7 @@ export const PROJECTS: Project[] = [
     status: "In progress",
     teaser: "Type in a topic and get back a finished short-form study video: script, voiceover, render.",
     tags: ["Actions", "FFmpeg", "TTS"],
-    stack: ["GitHub Actions", "Python", "FFmpeg", "edge-tts", "Gemini", "DeepSeek"],
+    stack: ["GitHub Actions", "Python", "FFmpeg", "edge-tts", "google-genai", "openai", "DeepSeek"],
     overview:
       "Type a topic into a workflow input and finished short-form study videos come back: researched, scripted, narrated, captioned and cut to phone shape. Four stages hand work to each other as files in a build folder rather than talking directly, so any one of them can be rerun or replaced on its own. GitHub Actions is the entire runtime — nothing is installed, nothing is hosted, and the machine disappears when the run ends.",
     architecture: [
@@ -695,6 +705,50 @@ export const PROJECTS: Project[] = [
     links: [{ url: "https://github.com/Srinivasan-78/minecraft-server-gitops", label: "View repo ↗" }],
   },
   {
+    slug: "pi-image-tools",
+    title: "Pi Image Tools (Unified Monorepo)",
+    client: "Hardware & imaging",
+    category: "Hardware",
+    status: "Active",
+    teaser:
+      "Unified Raspberry Pi appliance pipeline: disk benchmarking, unattended multi-reboot bootstrapping, Matter Test Harness provisioning, and compressed image generation with auto-expansion.",
+    tags: ["Raspberry Pi", "Bash", "Appliance Imaging"],
+    stack: ["Bash", "Raspberry Pi", "Ubuntu Server", "Docker", "Matter / CHIP", "dcfldd", "PiShrink", "sysctl IPv6"],
+    overview:
+      "A complete, four-stage appliance engineering suite that turns a stock Raspberry Pi running 64-bit Ubuntu into a certified, reproducible, production-ready system image. It unifies storage throughput benchmarking, an unattended multi-reboot bootstrap engine, comprehensive Matter (CHIP) Test Harness provisioning, and filesystem-level partition shrinking into a single, cohesive workflow. The pipeline runs end-to-end without manual intervention, surviving intermediate system restarts and outputting an auto-expanding, compressed .img ready for immediate mass flashing.",
+    architecture: [
+      {
+        label: "Stage 1: Storage throughput benchmark (bench/)",
+        body: "Sweeps 18 block sizes between 512 B and 64 MB using dd_test.sh, systematically clearing the kernel page cache (echo 3 > /proc/sys/vm/drop_caches) before every pass to pinpoint the fastest transfer rate for the target card reader.",
+      },
+      {
+        label: "Stage 2: Unattended bootstrap engine (automation/)",
+        body: "Survives multiple machine reboots via an idempotent sentinel block in ~/.bashrc. Upon system restart, control.sh resumes execution of single_script.sh automatically, self-deleting upon final completion to leave clean user logins.",
+      },
+      {
+        label: "Stage 3: Matter appliance provisioning (matter-image/)",
+        body: "Deploys the full CSA Matter Test Harness: configures wpa_supplicant services, kernel modules (ip6table_filter), and IPv6 router advertisement sysctls (accept_ra=2) essential for Thread border router communication, then builds Docker containers and syncs PAA certificates.",
+      },
+      {
+        label: "Stage 4: Capture & partition compaction (shrink/)",
+        body: "Uses dcfldd to snapshot the physical SD card (/dev/mmcblk0), then invokes pishrink.sh to shrink the ext4 root filesystem to its true data boundary via resize2fs, truncate unallocated sectors, and compress the image with gzip to ~1.5–3 GB.",
+      },
+      {
+        label: "Stage 5: First-boot auto-expansion hook",
+        body: "Injects an expansion trigger into /etc/rc.local inside the shrunken image so that upon first boot on any physical SD card (32 GB, 64 GB, or 128 GB), the partition silently resizes to occupy 100% of the storage medium.",
+      },
+    ],
+    highlights: [
+      "Consolidates four standalone imaging and benchmarking utilities into one unified repository",
+      "Survives two full machine reboots completely unattended via ~/.bashrc sentinel orchestration",
+      "Automates low-level networking: IPv6 sysctls, Thread border routing flags, and wpa_supplicant services",
+      "Cuts raw 32GB/64GB card backups down to ~1.5–3 GB compressed distribution archives",
+      "Auto-expanding first-boot hook guarantees zero manual partition resizing for end users",
+    ],
+    /* Internal hardware appliance repository; detail page presents contact CTA */
+    links: [],
+  },
+  {
     slug: "matter-test-harness-image-builder",
     title: "Matter Test Harness Image Builder",
     client: "Hardware & imaging",
@@ -727,6 +781,7 @@ export const PROJECTS: Project[] = [
       "A certification environment reduced to one flash",
       "Captures the fully built state, ready to flash",
       "PiShrink keeps the image a sane size",
+      "Integrated as the matter-image/ provisioning module in the unified pi-image-tools suite",
     ],
     /* No public link — https://github.com/Srinivasan-78/matter-th-pi-image is private. */
     links: [],
@@ -760,6 +815,7 @@ export const PROJECTS: Project[] = [
       "Carries straight through the reboots a Pi provisioning run needs",
       "Build artifacts stay off the card being imaged",
       "Clean handoff to the image builder",
+      "Integrated as the automation/ unattended bootstrap engine in the unified pi-image-tools suite",
     ],
     /* No public link — https://github.com/Srinivasan-78/pi-image-build-automation is private. */
     links: [],
@@ -787,7 +843,7 @@ export const PROJECTS: Project[] = [
       },
       {
         label: "Pulling logs that are not pushed",
-        body: "Azure does not stream logs out, so the job polls the timeline every 15 seconds and prints any log id it has not printed before, tracked as a seen-list rather than a high-water mark. One final pass runs after the pipeline finishes, so the last lines are never lost.",
+        body: "Azure DevOps does not stream logs out, so scripts/stream-ado-logs.sh polls the timeline API every 15 seconds and streams records by maintaining an ID seen-list, with a final drain pass ensuring trailing lines are never lost.",
       },
       {
         label: "Credentials never in the script",
@@ -847,6 +903,7 @@ export const PROJECTS: Project[] = [
       "Expands itself on first boot, so nothing is lost by shrinking",
       "Refuses a block device rather than damaging one",
       "Distinct exit codes per failure, so a build script can tell what went wrong",
+      "Integrated as the shrink/ compaction engine in the unified pi-image-tools suite",
     ],
     /* No public link — https://github.com/Srinivasan-78/pi-image-shrink is private. */
     links: [],
@@ -880,6 +937,7 @@ export const PROJECTS: Project[] = [
       "Cache-aware, so you can trust every number",
       "Answers one narrow question properly",
       "Run it once before a long imaging job",
+      "Integrated as the bench/ throughput benchmark module in the unified pi-image-tools suite",
     ],
     /* No public link — https://github.com/Srinivasan-78/dd-blocksize-benchmark is private. */
     links: [],
