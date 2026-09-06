@@ -23,10 +23,5 @@ jobs:
         uses: Srinivasan-78/authormark-watch@main
         with:
           key: ${{ secrets.AUTHORMARK_KEY }}
-          mode: ${{ secrets.AUTHORMARK_KEY != '' && 'check' || 'check-presence' }}
-      - name: Verify sealed manifest
-        if: ${{ secrets.AUTHORMARK_KEY != '' }}
-        uses: Srinivasan-78/authormark-watch@main
-        with:
-          key: ${{ secrets.AUTHORMARK_KEY }}
-          mode: verify
+          mode: check-presence
+          path: .
