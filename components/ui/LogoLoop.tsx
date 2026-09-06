@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​​‌‌​​‌‌​‌​​‌​‌‌​‌‌​​​‌​​‌​​​​​‌​‌‌​​‌​​​‌‌​‌​‌​​‌‌‌​‌​​​‌‌‌​​​​​‌‌​‌​‌‌​‌​‌‌​​‌​‌‌​​​‌​​​‌​‌‌​‌​​‌‌​​​​​‌‌‌​‌​​​‌‌​‌​‌​​‌‌‌​​‌‌​‌‌‌​‌​‌​‌‌​‌‌‌​​​‌‌​​​​​‌​‌​‌‌‌​‌‌​​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​‌​​‌‌​​​‌​‌‌​‌​​​‌‌​​​‌​‌​​​‌​​​‌‌‌​‌‌‌​​‌‌​​​​​‌‌​​‌‌​​‌​​​​​‌​‌‌​​​‌‌​‌​​‌‌‌‌​‌​​​​‌​​‌​‌​‌​​​‌‌‌‌​​‌​‌​‌​‌‌‌​‌​​‌​‌​​‌​​‌​​​​‌​‌​​‌​​‌‌​​‌​​​‌‌​​​‌‌​‌‌‌​‌​‌​‌​​‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.33KbAdjtpkYb-0tjsun0We
+ * Fingerprint: AMK1.4LZ1Dw0fAcOBTyWJHRdcuH
  */
 "use client";
 
@@ -114,7 +114,6 @@ const useResizeObserver = (
     return () => {
       observers.forEach((observer) => observer?.disconnect());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [callback, elements, dependencies]);
 };
 
@@ -148,7 +147,6 @@ const useImageLoader = (
         img.removeEventListener("error", handleImageLoad);
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onLoad, seqRef, dependencies]);
 };
 
@@ -224,7 +222,7 @@ const useAnimationLoop = (
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef, paused]);
 };
 
-export const LogoLoop = memo(function LogoLoop({
+const LogoLoop = memo(function LogoLoop({
   logos,
   speed = 120,
   direction = "left",
