@@ -55,8 +55,9 @@ Everything in this repository exists to move a visitor from box **B** to box **F
 Every design decision below — strict Apple typography, 60-30-10 palette, zero text descender cutoffs,
 calm interactive blueprints, no stock photography — is in service of that, and nothing else.
 
-**The numbers, as the site stands today:** 20 production builds, 24 verified certifications,
-four primary navigation routes, and 33 statically compiled pages produced by the Next.js build.
+**The numbers, as the site stands today:** 20 production builds, 2 upstream open-source
+contributions, 24 verified certifications, four primary navigation routes, and 32 statically
+compiled pages produced by the Next.js build.
 
 ---
 
@@ -150,7 +151,7 @@ flowchart TD
 | Page | What it is for |
 | --- | --- |
 | **Home** (`app/page.tsx`) | The complete engineering story: human headline, metrics counters, zero-downtime release diagram, interactive skills matrix, enterprise case studies, projects gateway, work authorization clearance terminal, and closing CTA. |
-| **Projects** (`app/projects/page.tsx`) | Real-time searchable directory of 20 builds, 7 category filter chips with live counts, flagship build spotlight, status beacons, live hosted demo links, and GitHub repositories. |
+| **Projects** (`app/projects/page.tsx`) | Real-time searchable directory of 20 builds, 7 category filter chips with live counts, flagship build spotlight, status beacons, live hosted demo links, GitHub repositories, and an Open-Source Contributions section listing upstream pull requests. |
 | **Project Detail** (`app/projects/[slug]/page.tsx`) | 20 static pages detailing system architecture, execution flow diagrams, highlights, tech stack badges, and sequential Previous/Next project pagination. |
 | **Certifications** (`app/certifications/page.tsx`) | 24 verified credentials across 4 tracks, yearly growth timeline counters, instant keyword search, and permanent LinkedIn Learning verification links. |
 | **Contact** (`app/contact/page.tsx`) | Accessible contact form with live character counter, haptic feedback, Formspree integration, and 1-click clipboard email copy card. |

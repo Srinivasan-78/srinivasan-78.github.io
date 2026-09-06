@@ -457,7 +457,7 @@ export const PROJECTS: Project[] = [
     title: "Zim Assistant",
     client: "Platform engineering",
     category: "Homelab",
-    status: "Active",
+    status: "Archived",
     teaser: "A homelab chatbot that searches offline Wikipedia snapshots through a local LLM.",
     tags: ["Python", "Kiwix", "Self-hosted"],
     stack: ["Python", "Kiwix", ".zim archives", "Batch", "Self-hosted"],
@@ -490,7 +490,7 @@ export const PROJECTS: Project[] = [
     title: "GitHub Actions Snippets",
     client: "CI/CD & packaging",
     category: "Pipelines",
-    status: "Reference",
+    status: "Archived",
     teaser:
       "Reusable GitHub Actions templates that build, sign and release Windows and Linux installers.",
     tags: ["Actions", "Signing", "Release"],
@@ -753,7 +753,7 @@ export const PROJECTS: Project[] = [
     title: "Matter Test Harness Image Builder",
     client: "Hardware & imaging",
     category: "Hardware",
-    status: "Active",
+    status: "Archived",
     teaser: "Turns a bare Pi into a certified Matter test harness, then images the finished SD card.",
     tags: ["Bash", "Matter", "Raspberry Pi"],
     stack: ["Bash", "Raspberry Pi", "Ubuntu 22.04", "Docker", "Matter / CHIP", "PiShrink"],
@@ -791,7 +791,7 @@ export const PROJECTS: Project[] = [
     title: "Pi Image Build Automation",
     client: "Hardware & imaging",
     category: "Hardware",
-    status: "Active",
+    status: "Archived",
     teaser: "The unattended bootstrap half of the imaging pipeline. It picks itself back up after every reboot.",
     tags: ["Bash", "Bootstrap", "Unattended"],
     stack: ["Bash", "Raspberry Pi", "Auto-start hooks", "Git automation"],
@@ -873,7 +873,7 @@ export const PROJECTS: Project[] = [
     title: "Pi Image Shrink",
     client: "Hardware & imaging",
     category: "Hardware",
-    status: "Complete",
+    status: "Archived",
     teaser:
       "Cuts a Raspberry Pi backup image down to the space actually used, and grows it back on first boot.",
     tags: ["Bash", "Raspberry Pi", "Imaging"],
@@ -913,7 +913,7 @@ export const PROJECTS: Project[] = [
     title: "dd Block-Size Benchmark",
     client: "Utilities",
     category: "Benchmark",
-    status: "Complete",
+    status: "Archived",
     teaser: "Sweeps dd block sizes from 512B to 64MB to find the fastest one for this disk.",
     tags: ["Bash", "dd", "I/O"],
     stack: ["Bash", "dd", "I/O benchmarking", "Cache-aware"],
@@ -942,57 +942,62 @@ export const PROJECTS: Project[] = [
     /* No public link — https://github.com/Srinivasan-78/dd-blocksize-benchmark is private. */
     links: [],
   },
-  {
-    slug: "automatch",
-    title: "automatch",
-    client: "AI & Candidate Intelligence",
-    category: "Talent Intelligence",
-    status: "Active",
-    teaser:
-      "Deterministic resume parsing and multi-factor job-matching engine with semantic relevance scoring, automated gap analysis, and ATS-optimized recommendations.",
-    tags: ["NLP", "Resume Parsing", "ATS Engine"],
-    stack: ["Python", "FastAPI", "TypeScript", "Next.js", "spaCy", "Sentence Transformers", "PostgreSQL", "Docker"],
-    overview:
-      "An automated resume-to-job matching and candidate screening engine built to eliminate keyword gaming and black-box ATS rejections. It extracts semantic skill graphs, work history timelines, and domain competencies from raw PDF and DOCX files without relying on flaky third-party APIs. Resumes are scored against structured job specs across five weighted dimensions: core technical stack, domain depth, leadership experience, certifications, and recency of practice. What comes out is not a blunt similarity percentage, but an explainable match scorecard highlighting exact qualification matches, missing prerequisite skills, and actionable resume optimization suggestions.",
-    architecture: [
-      {
-        label: "Format extraction",
-        body: "Dual-engine document parser extracts structured text, section boundaries, and layout geometry from complex multi-column PDFs and DOCX files without losing timeline or semantic context.",
-      },
-      {
-        label: "Entity & skill graph",
-        body: "spaCy and custom taxonomy tokenizers normalize varying job titles and synonym technologies into a canonical knowledge graph (e.g. mapping k8s, Kube, and Kubernetes to a single root node).",
-      },
-      {
-        label: "Vector & lexical scoring",
-        body: "Hybrid retrieval combines BM25 keyword precision with dense semantic sentence embeddings, preventing buzzword-stuffing from artificially inflating candidate match scores.",
-      },
-      {
-        label: "Multi-factor weighting",
-        body: "Calculates separate scores for required vs preferred qualifications, recency of tool usage, and seniority level before synthesizing the overall match index.",
-      },
-      {
-        label: "Explainable gap analysis",
-        body: "Generates line-by-line justification reports identifying candidate strengths, missing credentials, and specific resume bullet points that need quantitative metrics.",
-      },
-      {
-        label: "Batch runner & API",
-        body: "FastAPI backend handles high-concurrency resume batch processing with Redis task queues and background worker pools, caching parsed profiles in PostgreSQL.",
-      },
-    ],
-    highlights: [
-      "Deterministic five-dimension scoring prevents keyword stuffing and false positives",
-      "Canonical skill graph resolves synonyms, acronyms, and version variations automatically",
-      "Explainable scorecard details why a candidate matched or fell short, with no black-box scores",
-      "Zero external data leakage: all parser models run locally inside private Docker containers",
-      "High-throughput batch screening processes hundreds of candidate resumes in minutes",
-    ],
-    links: [],
-  },
 ];
 
 export function projectBySlug(slug: string) {
   return PROJECTS.find((p) => p.slug === slug);
 }
+
+/* Upstream repositories I do not own, where a fix or a feature I wrote was
+   sent back as a pull request. Kept separate from PROJECTS because these are
+   contributions to other people's codebases, not things I built. `url` is
+   omitted when the upstream repository is private, the same rule PROJECTS
+   follows — a link that 404s for a visitor is worse than no link. */
+export type Contribution = {
+  repo: string;
+  project: string;
+  description: string;
+  stack: string[];
+  pr: {
+    title: string;
+    number: number;
+    state: "open" | "merged";
+    summary: string;
+  };
+  url?: string;
+};
+
+export const CONTRIBUTIONS: Contribution[] = [
+  {
+    repo: "Pumpkin-MC/Pumpkin",
+    project: "Pumpkin",
+    description:
+      "A Minecraft server written from scratch in Rust — an open-source, drop-in alternative to the vanilla Java server, built for lower memory use and faster ticks.",
+    stack: ["Rust", "Tokio", "Minecraft protocol"],
+    pr: {
+      title: "fix(net): honor movement lock for vehicle movement",
+      number: 3145,
+      state: "open",
+      summary:
+        "The server enforced the per-player movement lock — used to hold a player still during dialogues and cutscenes — in the on-foot position handlers, but applied client-sent vehicle positions unconditionally, so a locked player could still drive a boat, minecart or horse anywhere. The patch rejects the packet and teleports the client back to the server-side position, mirroring what the on-foot handlers already do.",
+    },
+    url: "https://github.com/Pumpkin-MC/Pumpkin/pull/3145",
+  },
+  {
+    repo: "Jayanth-KM/AITrading",
+    project: "AITrading",
+    description:
+      "A private algorithmic-trading toolkit that scans market data and manages simulated positions. I contribute to it through a fork.",
+    stack: ["Python", "pandas", "yfinance"],
+    pr: {
+      title: "Free near-real-time price overlay for market data",
+      number: 15,
+      state: "open",
+      summary:
+        "Reworked the market-data cache to source from the live-price feed and cut the intraday TTL from 60s to 15s, so scanners act on fresher quotes. Live exit-price lookups now try the real-time price first and fall back to the one-minute bar only when it is unavailable.",
+    },
+    /* Upstream repository is private — no public link. */
+  },
+];
 
 

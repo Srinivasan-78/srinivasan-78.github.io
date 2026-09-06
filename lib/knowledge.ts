@@ -91,7 +91,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     followUps: [
       "Tell me about his work at Granite River Labs",
       "What tools does he use for CI/CD?",
-      "Explore all 21 platform builds",
+      "Explore all 20 platform builds",
     ],
     actionLink: {
       label: "Explore Selected Experience",
@@ -141,7 +141,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     answer:
       "The Master Bot & Repository Supervisor is an autonomous platform supervisor that continuously audits, secures, and maintains every repository in Srinivasan's GitHub account. It enforces @authormark cryptographic watermarks, automatically opens ready-to-merge fix PRs with keyed HMAC signatures, scans for leaked PATs/API keys, lints code hygiene, tags PR sizes (size/XS to size/XL), and consolidates findings into a single daily dashboard issue to eliminate alert fatigue.",
     followUps: [
-      "Tell me about the automatch project",
+      "Tell me about his open-source contributions",
       "Tell me about his Self-Healing Deployment pipeline",
       "Explore all projects",
     ],
@@ -151,29 +151,31 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     },
   },
 
-  // 6. Projects - automatch
+  // 6. Open-Source Contributions - upstream pull requests
   {
-    id: "automatch",
+    id: "open_source_contributions",
     category: "projects",
     keywords: [
-      "automatch", "resume", "matcher", "parsing", "screening", "nlp", "ats", "candidate", "job matching", "spacy"
+      "open source", "contribution", "contributions", "pull request", "pr", "upstream", "fork", "forked",
+      "pumpkin", "minecraft server", "rust", "aitrading", "patch"
     ],
     patterns: [
-      /automatch/i,
-      /resume\s+(parser|match)/i,
-      /ats\s+engine/i,
-      /screening/i,
+      /open[-\s]?source\s+contribut/i,
+      /pull\s+request/i,
+      /contribut(e|ing|ions?)\s+(to|upstream)/i,
+      /forked?\s+projects?/i,
+      /pumpkin/i,
     ],
     answer:
-      "automatch is an intelligent resume-to-job matching and candidate screening engine. It parses complex multi-column PDFs and DOCX files, normalizes skills using a canonical knowledge graph (via spaCy), and executes 5-dimension deterministic scoring (tech stack, domain depth, leadership, certifications, recency). It generates explainable match reports detailing strengths and gaps with zero data leakage.",
+      "Beyond his own repositories, Srinivasan sends fixes upstream to projects he doesn't own. For Pumpkin — a Minecraft server written from scratch in Rust — he opened PR #3145, which makes the server honor the per-player movement lock during vehicle movement, so a player held still for a dialogue or cutscene can no longer drive a boat, minecart or horse away. He also contributes to AITrading, a private algorithmic-trading toolkit, where his PR #15 reworked the market-data cache to use a live-price feed and a shorter TTL so scanners act on fresher quotes.",
     followUps: [
       "Tell me about the Master Bot project",
-      "What NLP and Python tools does he use?",
+      "What is his Rust experience?",
       "View all projects",
     ],
     actionLink: {
-      label: "View automatch Overview",
-      url: "/projects/automatch",
+      label: "View Open-Source Contributions",
+      url: "/projects",
     },
   },
 
@@ -195,7 +197,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     followUps: [
       "How does the rollback mechanism work?",
       "What tools are in his DevOps stack?",
-      "Explore all 21 projects",
+      "Explore all 20 projects",
     ],
     actionLink: {
       label: "View Architecture Deep Dive",

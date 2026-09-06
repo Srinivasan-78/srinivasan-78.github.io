@@ -10,11 +10,12 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import GlowCard from "./ui/GlowCard";
-import { PROJECTS } from "@/lib/projects";
+import { PROJECTS, CONTRIBUTIONS } from "@/lib/projects";
 import {
   FiArrowUpRight,
   FiExternalLink,
   FiGithub,
+  FiGitPullRequest,
   FiLayers,
   FiSearch,
   FiCheckCircle,
@@ -327,6 +328,91 @@ export default function ProjectIndex() {
           </div>
         )}
       </section>
+
+      {/* 3b. Open-Source Contributions — patches sent upstream to repos I don't own */}
+      {selectedCat === "All" && !searchQuery && CONTRIBUTIONS.length > 0 && (
+        <section className="px-6 max-w-6xl mx-auto mt-20">
+          <div className="mb-6 px-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-3">
+              <FiGitPullRequest className="w-3.5 h-3.5" />
+              <span>Open-Source Contributions</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+              Patches sent to other people&rsquo;s projects
+            </h2>
+            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-2 max-w-2xl leading-relaxed">
+              Forks where I fixed a bug or extended behaviour upstream and sent the change back as a pull request.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {CONTRIBUTIONS.map((c) => (
+              <article
+                key={c.repo}
+                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col h-full hover:border-black/25 dark:hover:border-white/25 transition-all"
+              >
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] tracking-wider break-all">
+                    {c.repo}
+                  </span>
+                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6] whitespace-nowrap">
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        c.pr.state === "merged" ? "bg-[#a371f7]" : "bg-[#34c759]"
+                      }`}
+                    />
+                    <span>
+                      {c.pr.state === "merged" ? "Merged" : "Open"} PR #{c.pr.number}
+                    </span>
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-4">
+                  {c.description}
+                </p>
+
+                <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white mb-1.5 leading-snug font-mono">
+                  {c.pr.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#424245] dark:text-[#a1a1a6] leading-relaxed mb-5">
+                  {c.pr.summary}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {c.stack.map((t) => (
+                    <span
+                      key={t}
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#424245] dark:text-[#a1a1a6]"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-auto pt-4 border-t border-black/10 dark:border-white/10 text-xs font-semibold">
+                  {c.url ? (
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[#0066cc] dark:text-[#2997ff] hover:underline"
+                    >
+                      <FiGithub className="w-3.5 h-3.5" />
+                      <span>View pull request</span>
+                      <FiExternalLink className="w-3 h-3" />
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-[#6e6e73] dark:text-[#86868b]">
+                      <FiGithub className="w-3.5 h-3.5" />
+                      <span>Upstream repository is private</span>
+                    </span>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 4. Footer Note */}
       <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#6e6e73] dark:text-[#86868b] space-y-2 border-t border-black/10 dark:border-white/10 pt-10">
