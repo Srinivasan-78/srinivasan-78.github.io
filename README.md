@@ -1,9 +1,9 @@
 <!--
-  @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​‌​‌​​​‌​‌​‌‌‌​​‌‌​‌​‌​​‌‌​‌‌​‌​‌​​​‌‌‌​​​​​‌‌​‌​‌​‌‌​‌‌‌‌​‌‌​‌‌‌‌​‌‌​‌​​‌​‌‌​‌​‌​​‌​‌​‌‌‌​‌​​‌​‌​​‌‌‌‌​​​​‌​​‌​‌‌​‌​​​‌‌​​‌‌​​​​‌​‌‌‌​‌‌​​‌​​​‌‌​​‌‌‌‌​​​​‌​​‌​‌​​‌​​‌‌​‌⁠
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌‌‌‌​​‌​‌‌‌​‌​​​‌‌​‌‌​‌​​‌‌​​‌​​‌‌‌​​‌‌​​‌‌‌​​‌​‌‌‌​​‌‌​‌‌​​‌​​​‌‌‌​‌‌​​‌​​‌​‌​​​‌‌​‌​‌​‌‌​‌​​​​‌​‌​‌‌‌​‌‌‌​‌​​​‌​‌​​​‌​‌​​​​‌‌​‌‌‌​‌​‌​‌​‌‌​​​​‌‌​‌‌‌​​‌​‌​‌‌‌​‌‌​‌‌‌​⁠
   Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
   Author: https://github.com/Srinivasan-78
   SPDX-License-Identifier: MIT
-  Fingerprint: AMK1.1EsSj85ooijWJxKFavFxJM
+  Fingerprint: AMK1.iytm2s9sdvJ5hWtQCuXnWn
 -->
 # srinidevops.com — the whole site, explained
 
@@ -55,8 +55,8 @@ Everything in this repository exists to move a visitor from box **B** to box **F
 Every design decision below — strict Apple typography, 60-30-10 palette, zero text descender cutoffs,
 calm interactive blueprints, no stock photography — is in service of that, and nothing else.
 
-**The numbers, as the site stands today:** 19 production builds, 24 verified certifications,
-four primary navigation routes, and 32 statically compiled pages produced by the Next.js build.
+**The numbers, as the site stands today:** 20 production builds, 24 verified certifications,
+four primary navigation routes, and 33 statically compiled pages produced by the Next.js build.
 
 ---
 
@@ -133,7 +133,7 @@ in `lib/nav.ts`, so a new page appears in both or in neither.
 flowchart TD
     H["/ — Home"]
     P["/projects"]
-    PD["/projects/&lt;slug&gt;<br/><i>19 of these</i>"]
+    PD["/projects/&lt;slug&gt;<br/><i>20 of these</i>"]
     C["/certifications"]
     K["/contact"]
     T["/thank-you"]
@@ -150,8 +150,8 @@ flowchart TD
 | Page | What it is for |
 | --- | --- |
 | **Home** (`app/page.tsx`) | The complete engineering story: human headline, metrics counters, zero-downtime release diagram, interactive skills matrix, enterprise case studies, projects gateway, work authorization clearance terminal, and closing CTA. |
-| **Projects** (`app/projects/page.tsx`) | Real-time searchable directory of 19 builds, 7 category filter chips with live counts, flagship build spotlight, status beacons, live hosted demo links, and GitHub repositories. |
-| **Project Detail** (`app/projects/[slug]/page.tsx`) | 19 static pages detailing system architecture, execution flow diagrams, highlights, tech stack badges, and sequential Previous/Next project pagination. |
+| **Projects** (`app/projects/page.tsx`) | Real-time searchable directory of 20 builds, 7 category filter chips with live counts, flagship build spotlight, status beacons, live hosted demo links, and GitHub repositories. |
+| **Project Detail** (`app/projects/[slug]/page.tsx`) | 20 static pages detailing system architecture, execution flow diagrams, highlights, tech stack badges, and sequential Previous/Next project pagination. |
 | **Certifications** (`app/certifications/page.tsx`) | 24 verified credentials across 4 tracks, yearly growth timeline counters, instant keyword search, and permanent LinkedIn Learning verification links. |
 | **Contact** (`app/contact/page.tsx`) | Accessible contact form with live character counter, haptic feedback, Formspree integration, and 1-click clipboard email copy card. |
 | **Thank You** (`app/thank-you/page.tsx`) | Delivery confirmation with next-step navigation. Marked `noindex` so it never appears in search engine results. |
@@ -287,7 +287,7 @@ app/                        Next.js App Router static pages
   layout.tsx                Root frame: nav, footer, theme boot script, AI assistant
   page.tsx                  Home: Hero, metrics, diagram, skills, experience, auth pass
   projects/page.tsx         Projects directory with real-time keyword search
-  projects/[slug]/page.tsx  19 static project detail pages with Previous/Next pagination
+  projects/[slug]/page.tsx  20 static project detail pages with Previous/Next pagination
   certifications/page.tsx   24 verified credentials with timeline counters & filter chips
   contact/page.tsx          Contact form, copy-to-clipboard email card, direct channels
   privacy · terms · thank-you · not-found · error · global-error
@@ -331,7 +331,7 @@ Publishing is controlled via GitHub Actions:
 ```mermaid
 flowchart TD
     A["Click 'Run workflow' in Actions"] --> B["1 · Compile Next.js Static Export"]
-    B --> B1["Generate 34 static pages into out/"]
+    B --> B1["Generate 33 static pages into out/"]
     B1 --> C["2 · Deploy to GitHub Pages"]
     C --> D["🌍 Live at srinidevops.com"]
 ```
@@ -351,7 +351,7 @@ npm run dev          # http://localhost:3000
 
 # 3. Typecheck and build production export
 npm run typecheck    # verify TypeScript strict types
-npm run build        # compile 34 static export pages into out/
+npm run build        # compile 33 static export pages into out/
 ```
 
 ---

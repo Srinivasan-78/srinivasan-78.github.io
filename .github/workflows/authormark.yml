@@ -19,5 +19,17 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
           node-version: '20'
-      - name: Verify authorship watermarks are intact
-        run: node .authormark/authormark.mjs check --presence .
+      - name: Restore signing key (if provided)
+        env:
+          AUTHORMARK_KEY: ${{ secrets.AUTHORMARK_KEY }}
+        run: '[ -n "$AUTHORMARK_KEY" ] && printf "%s" "$AUTHORMARK_KEY" > "$HOME/.authormark.key" || true'
+      - name: Verify authorship watermarks
+        run: |
+          if [ -s "$HOME/.authormark.key" ]; then
+            echo "Full check: presence + keyed fingerprint + sealed manifest."
+            node .authormark/authormark.mjs check .
+            node .authormark/authormark.mjs verify
+          else
+            echo "No AUTHORMARK_KEY secret set — running presence-only check."
+            node .authormark/authormark.mjs check --presence .
+          fi

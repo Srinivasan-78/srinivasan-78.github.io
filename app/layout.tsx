@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌‌​​​​‌​‌​​‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌​‌‌‌​​​‌​‌‌​​‌‌‌​‌‌​‌‌​​​‌‌​​​​‌​‌‌‌​​​‌​‌​‌​‌​​​‌‌​‌​‌‌​​‌‌​‌​‌​‌‌​​‌‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌‌​‌​​‌‌​​‌‌​​​‌‌​‌​​​‌​​​​​‌​​‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​‌​​‌​‌‌​​‌‌​‌‌​​‌​​​​​‌​‌‌‌‌​‌​​‌‌‌​‌​‌​‌‌‌‌​​​​‌​‌‌​​​​‌​‌​​‌​​‌​​​‌​​​‌‌​​‌‌‌​‌​‌‌​​‌​‌‌​​‌​​​‌​‌​‌​‌​‌​‌​​​​​​‌‌​​‌​​‌‌‌‌​‌​​‌​​‌​‌‌​‌​​​​‌‌​‌​​‌​‌​​‌​​​​​‌​‌​​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.aaI95qglaqTk5fNMOZf4A5
+ * Fingerprint: AMK1.FK6AzuxXRDgYdUP2zKCJAJ
  */
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
@@ -17,7 +17,6 @@ import StickyCta from "@/components/StickyCta";
 import CookieNotice from "@/components/CookieNotice";
 import ChatWidget from "@/components/ChatWidget";
 import Analytics from "@/components/Analytics";
-import ClickSpark from "@/components/ui/ClickSpark";
 
 /* Self-hosted at build time by next/font, so there is no request to
    fonts.googleapis.com at runtime and no swap flash. Inter is the
@@ -181,35 +180,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       {/* Ambient chrome that used to live here — a WebGL background field,
-          a cursor lens, a scroll-velocity skew driver, and a corner clock —
-          has been removed rather than tuned down. Each was decoration with
-          no subject, and running four of them at once is what made the page
-          read as busy. What is left is one hairline scroll indicator. */}
+          a cursor lens, a scroll-velocity skew driver, a corner clock and
+          a whole-app click-spark canvas — has been removed rather than
+          tuned down. Each was decoration with no subject. What is left is
+          one hairline scroll indicator. */}
       <body>
         <BootScript />
         <ProgressRail />
         <a href="#content" className="skip-link">
           Skip to content
         </a>
-        {/* One click reaction for the whole app. The canvas is fixed at
-            viewport size and pointer-events:none, and the wrapper is
-            display:contents, so nothing here is between a visitor and a
-            button. See components/ui/ClickSpark.tsx. */}
-        <ClickSpark
-          /* A token, not a literal: the canvas colour has to change with
-             the page. ClickSpark resolves this off <html> at mount. */
-          sparkColor="--spark"
-          sparkSize={8}
-          sparkRadius={12}
-          sparkCount={6}
-          duration={300}
-        >
-          <ScrollProvider>
-            <Nav />
-            {children}
-            <Footer />
-          </ScrollProvider>
-        </ClickSpark>
+        <ScrollProvider>
+          <Nav />
+          {children}
+          <Footer />
+        </ScrollProvider>
         <StickyCta />
         <ChatWidget />
         <CookieNotice />

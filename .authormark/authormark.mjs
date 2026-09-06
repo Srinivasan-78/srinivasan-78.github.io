@@ -210,10 +210,11 @@ function walk(target, exts, acc = []) {
 
 // Never enforce marks on generated output or vendored/third-party content.
 function ignored(rel, cfg) {
-  const segs = rel.split(path.sep).join('/').split('/');
+  const norm = rel.split(path.sep).join('/');
+  const segs = norm.split('/');
   if (segs.some(s => SKIP_DIRS.has(s))) return true;
   if (segs.slice(0, -1).some(s => s.startsWith('.') && s !== '.github')) return true;
-  return (cfg?.ignore || []).some(p => rel === p || rel.startsWith(p.replace(/\/+$/, '') + '/'));
+  return (cfg?.ignore || []).some(p => norm === p || norm.startsWith(p.replace(/\/+$/, '') + '/'));
 }
 
 function collect(paths, exts, cfg) {
