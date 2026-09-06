@@ -5,5 +5,7 @@
   "year": 2026,
   "license": "MIT",
   "keyFile": "~/.authormark.key",
-  "ignore": []
+  "ignore": [
+    "next-env.d.ts"
+  ]
 }
