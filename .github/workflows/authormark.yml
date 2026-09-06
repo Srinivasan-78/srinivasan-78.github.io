@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '20'
       - name: Verify authorship watermarks
-        uses: Srinivasan-78/authormark-watch@main
+        uses: Srinivasan-78/authormark-watch@12751c7712c969edbb8c50da8599cbc70c19b828  # main
         with:
           key: ${{ secrets.AUTHORMARK_KEY }}
           mode: check-presence

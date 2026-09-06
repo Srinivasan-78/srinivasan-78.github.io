@@ -7,6 +7,8 @@
  */
 import type { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 /* A web app manifest for a portfolio is not about installability — there is
    no app here to install. It is about what Android does when someone adds
    the site to their home screen: without one, Chrome guesses at an icon

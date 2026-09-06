@@ -7,6 +7,7 @@
  */
 "use client";
 
+import Link from "next/link";
 import "./globals.css";
 
 /* The last resort: this replaces the root layout, so it has to bring its
@@ -49,9 +50,9 @@ export default function GlobalError({
             <button type="button" className="btn primary" onClick={reset}>
               Reload the page
             </button>
-            <a href="/" className="btn">
+            <Link href="/" className="btn">
               Back home
-            </a>
+            </Link>
           </div>
         </main>
       </body>

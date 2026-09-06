@@ -7,7 +7,7 @@
     "build": "next build && node -e \"require('fs').writeFileSync('out/.nojekyll', '')\"",
     "typecheck": "tsc --noEmit",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "next": "^16.3.4",
@@ -20,7 +20,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.5.4",
-    "eslint": "^8.57.1",
+    "eslint": "^9.0.0",
     "eslint-config-next": "^16.3.4",
     "postcss": "^8.5.26",
     "tailwindcss": "^3.4.19",
