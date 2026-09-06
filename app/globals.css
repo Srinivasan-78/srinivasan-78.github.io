@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌‌‌‌​‌​​‌‌​​‌​​​​‌​‌‌​‌​‌​​‌​‌‌​‌​‌​​‌‌​‌‌​​‌‌‌​​‌‌​​‌​​‌‌‌‌​​‌​‌‌​‌‌‌​​‌‌​‌‌​‌​‌​‌​​​‌​​‌‌​​‌​​‌​​​‌​‌​‌‌​​​‌​​‌‌​‌‌‌​​‌​‌‌‌‌‌​‌​​‌​‌‌​​‌‌​​‌‌​​‌‌​‌​‌​‌‌‌​‌​‌​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌‌‌​​‌​​‌​​‌​​​​​‌​‌‌​‌​‌‌‌‌​​‌​‌​​​​‌‌​‌‌​​‌​‌​‌​​‌​​​​‌​​‌​​​​‌​​​​‌​​‌​​​‌​‌​​‌‌‌​​​​‌‌‌​​​​​‌​‌​​​‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌​‌‌​​​‌‌​​​‌​​‌‌‌​​​​​‌​‌​​‌​​‌‌​‌​​‌​‌​​‌‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.uzd-KSg2ynmQ2Ebn_K35uP
+ * Fingerprint: AMK1.TrH-yCeHHBE8pQkrlbpRiL
  */
 @tailwind base;
 @tailwind components;
@@ -67,11 +67,6 @@ html[data-theme="light"] {
      the two can be tuned apart. */
   --accent-solid: #0066cc;
   --danger: #b3261e;
-
-  /* The click spark. It is drawn on a canvas, which cannot read a
-     var() itself, so ClickSpark resolves this property off <html>. Ink,
-     because a white spark on white paper is no spark at all. */
-  --spark: rgba(29, 29, 31, 0.62);
 
   --font-display: var(--font-sans), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-body: var(--font-sans), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -149,10 +144,6 @@ html[data-theme="dark"] {
      brighter one they need against black. */
   --accent-solid: #0071e3;
   --danger: #ff6961;
-  /* White, because the ink-coloured spark the light page uses is
-     invisible on black. ClickSpark re-reads this when data-theme
-     changes. */
-  --spark: rgba(255, 255, 255, 0.6);
 }
 
 /* The palette switch. Everything it needs — the pill, the type, the
@@ -311,7 +302,6 @@ main:focus { outline: none; }
    (the header, footer, "back to" affordances) stay ink and rely on the
    .lnk underline instead. */
 .legal a,
-.pd-prose a,
 .chat-msg a { color: var(--accent); }
 
 /* ---------- MONO MICRO-LABELS ---------- */
@@ -327,13 +317,6 @@ main:focus { outline: none; }
   color: var(--ink-45);
 }
 .micro-bright { color: var(--ink); }
-.micro-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-top: 1.5rem;
-}
 
 /* Whitespace is the separator, not a rule.
    Sections used to be divided by a 1px line each, which meant the page
@@ -346,11 +329,6 @@ main:focus { outline: none; }
 /* A section whose content is wider than the column above it. The change
    of width is what marks the boundary. */
 .section-bleed { padding-top: clamp(2rem, 5vw, 3.5rem); }
-.sec-lede {
-  color: var(--ink-70);
-  max-width: var(--measure);
-  margin: -1.25rem 0 3rem;
-}
 
 /* Pill, filled or plain — never outlined. An outline button next to a
    filled one gives two competing calls to action; the secondary is a
@@ -408,13 +386,6 @@ main:focus { outline: none; }
   font-size: 0.94rem;
   line-height: 1.5;
 }
-.explore-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-}
-.explore-grid > * { height: 100%; }
-
 .tag {
   display: inline-block;
   font-family: var(--font-mono);
@@ -450,60 +421,6 @@ main:focus { outline: none; }
   }
 }
 
-/* ---------- SKILL STORY RINGS ---------- */
-/* ---------- SKILLS ----------
-   Seven drawn scenes on the site's card. Replaces the story-rings this
-   section used to be — see components/Highlights.tsx. */
-.skill-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-}
-.skill-grid > * { height: 100%; }
-
-.skill-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.55rem;
-  padding: 1.5rem 1.4rem;
-}
-
-/* The scenes were drawn for a circle and clip themselves to one, so the
-   slot is square and the drawing keeps its own composition. */
-.skill-ring {
-  width: 74px;
-  height: 74px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--ink-08);
-  margin-bottom: 0.35rem;
-}
-.skill-art {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: 50%;
-}
-
-.skill-title {
-  font-size: 1rem;
-  line-height: 1.3;
-  margin: 0;
-  text-wrap: pretty;
-}
-.skill-items {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 0.2rem;
-}
-
-@media (max-width: 520px) {
-  .skill-grid { grid-template-columns: 1fr; }
-  .skill-card { padding: 1.3rem 1.15rem; }
-}
-
-
 /* The "go" affordance on a card. The four-hue cycle this used to run —
    a different colour per card position — is now one accent, and the
    arrow is drawn rather than typed so it can move on hover. */
@@ -534,57 +451,17 @@ main:focus { outline: none; }
   a.card:hover:active { transform: translateY(-4px) scale(0.985); }
 }
 
-/* Section eyebrows cycle accents too, so each page section is colour-keyed. */
-
-/* Section chapter labels (How I work / Selected work / What I actually
-   build / Availability / Explore) read larger than their titles. */
-.sec-head .eyebrow {
-  font-size: 1.1rem;
-  letter-spacing: 0.04em;
-}
-.sec-head + .display-lg {
-  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
-  line-height: 1.2;
-}
-
 /* ---------- TYPE SCALE ---------- */
 .display-lg {
   font-size: clamp(1.75rem, 3.2vw, 2.5rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
-.display-xl {
-  font-size: clamp(2.6rem, 6vw, 4rem);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-}
 
 /* ---------- HERO ----------
-   One screenful, three things: who, the sentence, what to do about it.
-   The status pill with its forever-pulsing dot, the avatar disc, the
-   forever-cycling job-title word and the four counters have all either
-   gone or moved to sections of their own. */
-.hero {
-  padding: clamp(5rem, 12vw, 9rem) 0 clamp(3rem, 7vw, 5rem);
-}
-.hero-status {
-  margin-bottom: 1.75rem;
-  text-transform: none;
-  letter-spacing: 0.01em;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--ink-45);
-}
-/* Capped by measure, not by container: the headline wraps at a readable
-   length while still starting on the page's left edge. */
-.hero h1 { margin: 0; max-width: 18ch; }
-.hero-bio {
-  max-width: 48ch;
-  margin: 1.75rem 0 0;
-  color: var(--ink-70);
-  font-size: 1.15rem;
-  line-height: 1.5;
-}
+   The .hero-actions row is the last of the bespoke hero styling still in
+   use — on the global error boundary and the project-detail links row.
+   Everything else here now renders in Tailwind. */
 .hero-actions {
   display: flex;
   gap: 0.75rem;
@@ -600,234 +477,12 @@ main:focus { outline: none; }
   100% { box-shadow: 0 0 0 0 transparent; }
 }
 
-/* ---------- NUMBERED NOTES ---------- */
-.notes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem 3rem;
-}
-.note {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-start;
-}
-.note-num {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--ink-45);
-  font-variant-numeric: tabular-nums;
-}
-.note-head {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
-  margin: 0;
-  line-height: 1.25;
-}
-.note-body {
-  margin: 0;
-  font-size: 0.98rem;
-  color: var(--ink-70);
-  line-height: 1.55;
-}
-
-/* ---------- MASONRY CAPABILITY TILES ---------- */
-.masonry {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-.cap-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.75rem 1.5rem;
-  border: 0;
-  border-radius: 18px;
-  background: var(--paper-raised);
-  transition: transform 160ms var(--ease-out);
-}
-.cap-body-wrap { flex: 1 1 auto; min-width: 0; }
-/* These viewBoxes run 300x130 to 300x200 — all landscape, so a square
-   box wasted most of the width and shrank every schematic. */
-.cap-art {
-  order: -1;
-  width: 100%;
-  aspect-ratio: 300 / 130;
-  margin: 0 0 1rem;
-  color: var(--accent);
-}
-.cap-art svg { width: 100%; height: 100%; display: block; }
-.cap-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.4rem;
-  line-height: 1.25;
-}
-.cap-body {
-  margin: 0;
-  font-size: 0.94rem;
-  color: var(--ink-70);
-  line-height: 1.5;
-}
-
-/* ---------- STATEMENT ----------
-   One sentence, centred, still. Previously two oversized words drifting
-   in opposite directions as you scrolled past them, one of them hollowed
-   out with -webkit-text-stroke. */
 /* ---------- SECTION DIVIDER RULE ---------- */
 .rule {
   height: 1px;
   background: var(--ink-15);
   border: 0;
   margin: 0;
-}
-
-/* ---------- STATS ----------
-   Lifted out of the hero into a section of their own, so the headline
-   does not have to share the first screen with four counters. */
-/* Four fixed columns, not auto-fit. auto-fit with a 150px minimum could
-   only place three of them in the 692px prose column, which left the
-   fourth stranded on a row of its own directly under the first — the
-   most visibly broken thing on the page. Four across, or two by two;
-   never three and an orphan. */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3rem 1.5rem;
-}
-@media (max-width: 720px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2.4rem, 5vw, 3.2rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  margin-bottom: 0.5rem;
-}
-.stats .eyebrow { text-transform: none; letter-spacing: 0; font-family: var(--font-body); }
-
-/* ---------- WORK AUTHORIZATION ---------- */
-/* Was a "health check" card with status pills, a 2/2 counter and a
-   monospace key/value footer — a lot of chrome for two facts. */
-.regions {
-  display: grid;
-  gap: 0;
-  margin-bottom: 1.25rem;
-}
-.region {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-  flex-wrap: wrap;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--ink-15);
-}
-.region:first-child { border-top: 1px solid var(--ink-15); }
-.region-code {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  color: var(--ink);
-  /* Fixed width so the notes beside them line up as a second column
-     rather than starting at a different x per row. */
-  min-width: 10ch;
-}
-.region-note { color: var(--ink-70); font-size: 0.95rem; }
-.region-foot { text-transform: none; letter-spacing: 0; font-family: var(--font-body); }
-
-/* The filtered certification list this styled was replaced by the
-   shelf menu in CertMenu.tsx; nothing rendered these any more. */
-
-.work-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-/* WorkGrid renders its own tiles rather than taking them from a caller,
-   so the per-child delay <Reveal> would write in JS is a static rule
-   here instead. Six tiles, three per row at full width. */
-.work-grid > *:nth-child(2) { transition-delay: 0.06s; }
-.work-grid > *:nth-child(3) { transition-delay: 0.12s; }
-.work-grid > *:nth-child(4) { transition-delay: 0.18s; }
-.work-grid > *:nth-child(5) { transition-delay: 0.24s; }
-.work-grid > *:nth-child(6) { transition-delay: 0.3s; }
-
-/* Tiles were 260px wide with the art crammed into a 78x29 slot beside
-   two lines of type. At 300px minimum the schematic gets its own row
-   above the copy and is legible at the size it was drawn for. */
-.post {
-  text-align: left; cursor: pointer; font-family: inherit; color: inherit;
-  padding: 1.75rem 1.5rem; overflow: hidden; border-radius: 18px;
-  background: var(--paper-raised); border: 0;
-  transition: background 0.25s var(--ease), transform 160ms var(--ease-out);
-  display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem;
-}
-@media (hover: hover) and (pointer: fine) {
-  .post:hover { background: color-mix(in srgb, var(--paper-raised) 88%, var(--ink)); }
-}
-/* The art's own viewBox is 300x110, so the slot matches its ratio. */
-.post-cover { width: 100%; aspect-ratio: 300 / 110; color: var(--accent); order: -1; }
-.post-cover svg { width: 100%; height: 100%; display: block; }
-.post-body { width: 100%; min-width: 0; }
-.post-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
-  margin: 0.6rem 0 0.4rem;
-  line-height: 1.25;
-}
-.post-open { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-45); }
-/* The client name on a tile. Was an inline-styled pill in whichever of
-   the four hues that project had been assigned. */
-.tag-client { margin: 0; background: transparent; padding: 0; color: var(--ink-45); }
-
-.lb {
-  position: fixed; inset: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: center;
-  padding: 1.5rem; background: rgba(0, 0, 0, 0.7);
-}
-.lb-card {
-  background: var(--paper-raised); border: 0;
-  border-radius: 20px; max-width: 620px; width: 100%;
-  max-height: 88dvh; overflow-y: auto; padding: 2rem; position: relative;
-  /* Without this, scrolling to the end of the dialog hands the rest of
-     the gesture to the page behind it — which is scroll-locked, so on a
-     phone it goes to the browser instead and fires pull-to-refresh. */
-  overscroll-behavior: contain;
-}
-.lb-close {
-  position: absolute; top: 1rem; right: 1rem;
-  background: var(--ink-08); border: 0; border-radius: 999px;
-  color: var(--ink-70); cursor: pointer; padding: 0.35rem 0.85rem;
-  font-family: var(--font-mono); font-size: 0.72rem;
-  transition: color 0.2s var(--ease), transform 160ms var(--ease-out);
-}
-.lb-close:hover { color: var(--ink); }
-.lb-cover { width: 100%; aspect-ratio: 300 / 110; color: var(--accent); margin-bottom: 1.25rem; }
-.lb-cover svg { width: 100%; height: 100%; display: block; }
-.lb-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.5rem;
-  letter-spacing: -0.02em;
-  margin: 0.5rem 0 0.75rem;
-  line-height: 1.15;
-}
-.lb-body { color: var(--ink-70); font-size: 1rem; line-height: 1.5; }
-.lb-link { margin-top: 1.25rem; }
-
-/* ---------- UI BITS ---------- */
-.region-code {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  min-width: 9ch;
-  display: inline-block;
 }
 
 /* ---------- PROGRESS RAIL ---------- */
@@ -920,24 +575,6 @@ main:focus { outline: none; }
 /* Selection + focus polish */
 ::selection { background: var(--accent); color: var(--paper); }
 
-/* ---------- EDITORIAL SECTION CHROME ---------- */
-/* Section headers that stick while their content scrolls past — the
-   label stays anchored so you always know which chapter you're in. */
-/* No longer sticky, no rule, no chapter number. See SectionHead.tsx.
-
-   Left-aligned, on the one container's left edge — the same edge as the
-   eyebrow above it, the lede below it, and the first card in the grid
-   under that. Every heading on the page starts at the same x. */
-.sec-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
-}
-.sec-head .eyebrow { color: var(--ink-45); }
-.sec-head h2 { margin: 0; max-width: 24ch; }
-
 /* ---------- LINK SWEEP ---------- */
 /* Underline grows from the left on hover, collapses to the right on
    leave — reads more deliberate than a static underline toggle. */
@@ -982,9 +619,7 @@ main:focus { outline: none; }
   }
 }
 
-.card,
-.cap-tile,
-.post {
+.card {
   position: relative;
 }
 /* The faint top highlight that used to be drawn on every dark card is
@@ -1034,310 +669,6 @@ main:focus { outline: none; }
 .pd-hero { padding: 2.5rem 0 1rem; }
 
 
-/* ---------- CERTIFICATIONS ----------
-   A card grid in the site's own material. What was here before — the
-   shelf staircase and the WebGL certificate deck — is described in
-   components/CertIndex.tsx. */
-.cert-main { padding: clamp(2.5rem, 6vw, 3.5rem) var(--gutter) 4rem; overflow-x: clip; }
-
-.cert-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 1.75rem 0 0.5rem;
-}
-.cert-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.85rem;
-  border: 1px solid var(--ink-15);
-  border-radius: 999px;
-  background: none;
-  color: var(--ink-45);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease), transform 160ms var(--ease-out);
-}
-.cert-chip:hover { color: var(--ink); border-color: var(--ink-45); }
-.cert-chip.is-on {
-  color: var(--paper);
-  background: var(--ink);
-  border-color: var(--ink);
-}
-.cert-chip-count { font-variant-numeric: tabular-nums; opacity: 0.6; }
-
-.cert-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-.cert-grid > * { height: 100%; }
-
-.cert-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.6rem;
-  padding: 1.5rem 1.4rem;
-}
-.cert-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-}
-.cert-date { color: var(--ink-45); }
-
-/* The verification seal, kept from the page it replaces — the one piece
-   of that design that was about the credential rather than about the
-   furniture around it. */
-.cert-seal {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 4;
-  opacity: 0.85;
-}
-.cert-seal-inner { stroke-opacity: 0.4; }
-.cert-seal-check { stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
-
-.cert-name {
-  font-size: 1rem;
-  line-height: 1.3;
-  margin: 0.15rem 0 0;
-  /* Titles run from three words to fourteen; the card holds its height
-     from the grid, so a long one wraps rather than pushing the link
-     out of line with its neighbours. */
-  text-wrap: pretty;
-}
-.cert-skills { display: flex; flex-wrap: wrap; gap: 0; margin-top: 0.15rem; }
-.cert-count {
-  margin: 1.25rem 0 0;
-  color: var(--ink-45);
-}
-/* .lnk, not .go: the site's `.go` appends its own chevron, which read as
-   a second arrow beside the ↗ that marks this as leaving the site. The
-   arrow stays because the destination does. */
-.cert-link {
-  margin-top: auto;
-  padding-top: 0.9rem;
-  color: var(--accent);
-  font-size: 0.9rem;
-  /* Inline, so it needs a block formatting context of its own before a
-     scale means anything. */
-  display: inline-block;
-  transition: transform 160ms var(--ease-out);
-}
-
-.cert-foot { margin-top: 2rem; color: var(--ink-45); text-transform: none; }
-
-@media (max-width: 520px) {
-  .cert-card { padding: 1.3rem 1.15rem; }
-  .cert-grid { grid-template-columns: 1fr; }
-}
-
-/* ---------- PROJECT INDEX ---------- */
-/* Full-bleed on purpose. The rows are the page — a centred column
-   would make them read as cards again, which is the thing this
-   replaced. */
-.pi { width: 100%; padding-bottom: 2rem; background: var(--paper); position: relative; z-index: 1; }
-
-.pi-head {
-  padding: 2.25rem 32px 1.75rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
-}
-.pi-head h1 { margin: 0; }
-.pi-head p {
-  margin: 0.25rem 0 0; max-width: 54ch;
-  color: var(--ink-45); font-size: 0.86rem;
-}
-
-/* Rail + rows. The rail column is narrow because the label inside it
-   is rotated, so it costs width, not height. */
-.pi-group {
-  display: grid;
-  grid-template-columns: 62px 1fr;
-  border-top: 1px solid var(--ink-15);
-}
-.pi-rail { position: relative; border-right: 1px solid var(--ink-15); }
-.pi-rail-inner {
-  position: sticky; top: 84px;
-  display: flex; align-items: center; gap: 0.9rem;
-  padding: 1.4rem 0;
-  writing-mode: vertical-rl;
-  font-family: var(--font-mono);
-  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-45);
-  white-space: nowrap;
-}
-.pi-rail-count { color: var(--ink); opacity: 0.5; }
-/* An <h2>: each group panel is a section of the index and this is its
-   name. The rail sets the type, so the heading takes none of its own. */
-.pi-rail-label { margin: 0; font-size: inherit; font-weight: inherit; letter-spacing: inherit; }
-
-.pi-rows { min-width: 0; }
-
-.pi-row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 3.4rem minmax(190px, 23%) 1fr 300px;
-  align-items: center;
-  gap: 1.6rem;
-  padding: 1.1rem 32px 1.1rem 20px;
-  border-bottom: 1px solid var(--ink-15);
-  color: var(--ink);
-  transition: opacity 0.3s var(--ease), background 0.3s var(--ease), transform 160ms var(--ease-out);
-}
-.pi-rows > .pi-row:last-child { border-bottom: 0; }
-
-/* Everything else recedes while one row is under the cursor. Done with
-   :has() rather than JS so it costs nothing and can't desync from the
-   pointer. */
-@media (hover: hover) and (pointer: fine) {
-  .pi:has(.pi-row:hover) .pi-row:not(:hover) { opacity: 0.34; }
-  .pi-row:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); }
-}
-
-.pi-num {
-  font-family: var(--font-mono); font-size: 0.7rem;
-  color: var(--ink-45);
-  transition: color 0.3s var(--ease);
-}
-@media (hover: hover) and (pointer: fine) {
-  .pi-row:hover .pi-num { color: var(--accent); }
-}
-
-.pi-name {
-  font-family: var(--font-display);
-  font-size: 1.02rem; line-height: 1.25;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem;
-}
-.pi-status {
-  display: inline-flex; align-items: center; gap: 0.35rem;
-  font-family: var(--font-mono); font-size: 0.62rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--ink-45);
-}
-/* Static. This pulsed on a 2.4s loop, once per row, forever — eleven
-   of them animating at the same time down the projects page. */
-.pi-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: currentColor;
-}
-
-/* The write-up link, stretched over the whole row so the row still reads
-   as one target, and the demo pill lifted above it. Without the z-index
-   the overlay would swallow the pill's clicks. */
-.pi-open { position: absolute; inset: 0; z-index: 2; }
-.pi-row:has(.pi-open:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
-
-.pi-demo {
-  position: relative; z-index: 3;
-  align-self: flex-start;
-  font-family: var(--font-mono); font-size: 0.62rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--accent);
-  padding: 0.2rem 0.5rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 160ms var(--ease-out);
-}
-.pi-demo:hover, .pi-demo:focus-visible {
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-  border-color: var(--accent);
-}
-
-.pi-teaser {
-  color: var(--ink-70); font-size: 0.84rem; line-height: 1.5;
-  max-width: 56ch;
-  display: -webkit-box; -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
-}
-
-/* Both children occupy the same cell; only one is visible at a time. */
-.pi-right { position: relative; height: 74px; }
-.pi-stack, .pi-art {
-  position: absolute; inset: 0;
-  display: flex; align-items: center;
-  transition: opacity 0.3s var(--ease);
-}
-.pi-stack { flex-wrap: wrap; gap: 0.3rem; align-content: center; }
-.pi-stack em {
-  font-style: normal;
-  font-family: var(--font-mono); font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  padding: 0.18rem 0.45rem;
-  border: 1px solid var(--ink-15);
-  color: var(--ink-45);
-}
-.pi-more { border-style: dashed; }
-
-.pi-art { opacity: 0; color: var(--accent); justify-content: flex-end; }
-.pi-art svg { width: 100%; height: 100%; overflow: visible; }
-@media (hover: hover) and (pointer: fine) {
-  .pi-row:hover .pi-stack { opacity: 0; }
-  .pi-row:hover .pi-art { opacity: 1; }
-}
-
-/* Accent rule that sweeps the full width of the row on hover. */
-.pi-sweep {
-  position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
-  background: var(--accent);
-  transform: scaleX(0); transform-origin: 0 50%;
-  transition: transform 0.5s var(--ease);
-}
-@media (hover: hover) and (pointer: fine) {
-  .pi-row:hover .pi-sweep { transform: scaleX(1); }
-}
-
-/* Reduced motion: no unrolling, art just present when swapped in. */
-.pi-static .pi-art svg * { stroke-dashoffset: 0 !important; opacity: 1 !important; }
-
-.pi-foot {
-  display: flex; justify-content: space-between; flex-wrap: wrap;
-  gap: 1rem; padding: 1.5rem 32px 0;
-}
-.pi-foot .micro { color: var(--ink-45); text-transform: none; }
-
-@media (max-width: 1040px) {
-  .pi-row { grid-template-columns: 2.6rem minmax(140px, 24%) 1fr 200px; gap: 1.1rem; }
-}
-@media (max-width: 720px) {
-  .pi-group { grid-template-columns: 1fr; }
-  .pi-rail { border-right: 0; border-bottom: 1px solid var(--ink-15); }
-  .pi-rail-inner {
-    position: static; writing-mode: horizontal-tb;
-    padding: 0.7rem 20px; justify-content: space-between;
-  }
-  .pi-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1.1rem 20px;
-  }
-  .pi-name { font-size: 1rem; }
-  .pi-teaser { -webkit-line-clamp: 3; line-clamp: 3; font-size: 0.82rem; max-width: none; }
-  /* No hover on touch, so the stack tags stay put instead of living
-     behind a hover swap the visitor can't trigger. The hand-drawn
-     schematic is a hover flourish, not information — dropping it here
-     loses nothing a phone visitor needed. */
-  .pi-right { position: static; height: auto; width: 100%; }
-  .pi-stack { position: static; opacity: 1; flex-wrap: wrap; }
-  .pi-art { display: none; }
-  .pi-head, .pi-foot { padding-left: 20px; padding-right: 20px; }
-}
-
-.proj-list {
-  display: grid; gap: 1rem; margin-top: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
 /* The header's children sit in normal flow above its backdrop.
 
    This used to read `.nav-glass > *:not(.glass-layer)`, because the bar
@@ -1358,125 +689,6 @@ main:focus { outline: none; }
    The header keeps its glass, because it is fixed over moving content
    and the blur is telling you it is a layer above the page. Everything
    else is now an opaque surface. */
-
-/* ── Contact form ─────────────────────────────────────────────────────────
-   Replaces the inline styles the form used to carry, so the error and
-   loading states have somewhere to hook into. */
-.contact-form { max-width: 480px; margin-top: 2rem; }
-
-/* <fieldset> is only here to disable every control in one go while a
-   submission is in flight; it must not draw a box. */
-.cf-fields {
-  display: grid;
-  gap: 1rem;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
-}
-.cf-fields[disabled] { opacity: 0.6; }
-
-.cf-field { display: block; }
-.cf-label { display: block; margin-bottom: 4px; }
-
-.cf-input {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--ink-15);
-  border-radius: 6px;
-  background: var(--paper-raised);
-  color: var(--ink);
-  font: inherit;
-  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
-}
-textarea.cf-input { resize: vertical; }
-.cf-input:focus-visible { border-color: var(--accent); }
-
-/* Invalid fields carry both a colour and a text message below — colour is
-   never the only signal. */
-.cf-input-error,
-.cf-input-error:focus-visible {
-  border-color: var(--danger);
-  box-shadow: 0 0 0 1px var(--danger);
-}
-
-/* The submit label swaps between "Send message" and the spinner in a
-   single frame. Blur is what stops that reading as two labels overlapping
-   — it bridges the two states into one, rather than crossfading two
-   legible things through each other. Keyed on `sending` in
-   ContactForm.tsx, so the span remounts and this replays. */
-.cf-submit-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  animation: label-in 200ms var(--ease) both;
-}
-@keyframes label-in {
-  from { opacity: 0.3; filter: blur(2px); }
-  to   { opacity: 1; filter: blur(0); }
-}
-
-.cf-error {
-  margin: 0.35rem 0 0;
-  color: var(--danger);
-  font-family: var(--font-mono, monospace);
-  font-size: 0.74rem;
-  letter-spacing: 0.02em;
-}
-
-.cf-error-banner {
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--ink-15);
-  border-left: 3px solid var(--danger);
-  border-radius: 12px;
-  background: var(--paper-raised);
-}
-.cf-error-banner p {
-  margin: 0.4rem 0 0;
-  font-size: 0.86rem;
-  color: var(--ink-70);
-}
-
-.cf-status {
-  margin: 0.6rem 0 0;
-  min-height: 1.1em;
-  font-family: var(--font-mono, monospace);
-  font-size: 0.74rem;
-  color: var(--ink-45);
-}
-
-.cf-submit {
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-.cf-submit:disabled { cursor: progress; }
-
-.cf-spinner {
-  width: 0.8em;
-  height: 0.8em;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: cf-spin 0.7s linear infinite;
-}
-@keyframes cf-spin { to { transform: rotate(360deg); } }
-
-/* Off-screen rather than display:none — some bots skip hidden inputs. */
-.cf-honeypot {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cf-spinner { animation-duration: 2s; }
-}
 
 /* ── Sticky mobile CTA ────────────────────────────────────────────────────
    Desktop keeps the nav on screen at all times, so this is phone-only. */
@@ -1942,19 +1154,6 @@ textarea.cf-input { resize: vertical; }
    uncovered. Gating positively means a new hover rule is correct by
    default unless someone deliberately writes it outside a gate. */
 
-/* The dialog's close control was the one target the measured pass
-   missed — it is a caption-sized pill in the corner of a full-screen
-   surface, which is exactly where a thumb is least accurate. */
-@media (pointer: coarse) {
-  .lb-close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    min-width: 44px;
-  }
-}
-
 /* ---------- SYSTEM DIAGRAM ----------
    The site's one piece of real artwork, drawn in HTML so it reflows,
    selects, and reads in order to a screen reader. See SystemDiagram.tsx
@@ -2069,60 +1268,13 @@ textarea.cf-input { resize: vertical; }
 /* Sub-sections of one document, not top-level sections of the site, so
    they take a tighter rhythm than the home page's. */
 .pd-section { padding: clamp(2.25rem, 5vw, 3.25rem) 0; }
-.pd-teaser {
-  color: var(--ink-70);
-  font-size: 1.15rem;
-  line-height: 1.5;
-  max-width: 48ch;
-  margin: 1.25rem 0 0;
-}
-.pd-prose {
-  color: var(--ink-70);
-  max-width: 62ch;
-  margin: 0.75rem 0 0;
-  line-height: 1.6;
-}
-.pd-list {
-  color: var(--ink-70);
-  max-width: 60ch;
-  margin: 0.75rem 0 0;
-  padding-left: 1.15rem;
-  line-height: 1.6;
-}
-.pd-list li { margin-top: 0.5rem; }
-.pd-stack { margin-top: 0.9rem; }
-.proj-list {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.proj-list > * { height: 100%; }
 
 /* ============================================================
    REACT BITS INTEGRATION
-   Five components were brought in from React Bits: LogoLoop in the
-   header, ClickSpark over the whole app, BorderGlow behind every card,
-   and ProfileCard + Lanyard in the hero. Their own stylesheets ship
-   next to them in components/ui/ and are left as upstream published
-   them. Everything below is this site's side of the join: how those
-   components sit in this layout, and where their defaults were too
-   loud for a page that is meant to read as quiet.
+   Two components remain from React Bits: LogoLoop in the header and
+   BorderGlow behind every card. Their own stylesheets ship next to them
+   in components/ui/. Everything below is this site's side of the join.
    ============================================================ */
-
-/* ---------- CLICK SPARK ---------- */
-/* Fixed, viewport-sized, and inert. Sized in JS from innerWidth /
-   innerHeight — see components/ui/ClickSpark.tsx — so it is never
-   given 100vw and can never widen the document. */
-.click-spark-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: block;
-  pointer-events: none;
-  /* Above the header (50) and the work lightbox (100) so a click inside
-     a dialog still sparks; below nothing, because it cannot be hit. */
-  z-index: 400;
-}
 
 /* ---------- LOGO LOOP ---------- */
 .tech-loop {
@@ -2230,16 +1382,12 @@ textarea.cf-input { resize: vertical; }
    edge and a card still needs to acknowledge the pointer over its
    middle. */
 @media (hover: hover) and (pointer: fine) {
-  .glow-card .card:hover,
-  .glow-card .post:hover,
-  .glow-card .cap-tile:hover {
+  .glow-card .card:hover {
     background: rgba(0, 0, 0, 0.03);
   }
   /* A black wash on a near-black card is no wash at all — dark inverts
      it to white at the weight this surface was originally tuned for. */
-  html[data-theme="dark"] .glow-card .card:hover,
-  html[data-theme="dark"] .glow-card .post:hover,
-  html[data-theme="dark"] .glow-card .cap-tile:hover {
+  html[data-theme="dark"] .glow-card .card:hover {
     background: rgba(255, 255, 255, 0.035);
   }
 }
@@ -2253,220 +1401,7 @@ textarea.cf-input { resize: vertical; }
     outline-offset: 3px;
   }
 }
-/* The tiles inside a card have their own padding; the note in "How I
-   work" was never a panel, so it gets a little more room than the
-   flat version had. */
-.glow-card .note { padding: 1.6rem 1.5rem; }
-.glow-card .cap-tile,
-.glow-card .post,
 .glow-card .card { border-radius: inherit; }
-
-/* The work lightbox. The wrapper is the dialog surface, so it takes the
-   sizing the card used to carry and the card inside it goes fluid. */
-.lb-glow {
-  max-width: 620px;
-  width: 100%;
-  max-height: 88vh;
-  height: auto;
-}
-.lb-glow > .border-glow-inner { height: auto; overflow: hidden; }
-.lb-glow .lb-card {
-  height: auto;
-  max-height: calc(88vh - 2px);
-  max-width: none;
-  overflow-y: auto;
-}
-
-/* ---------- HERO SHOWCASE ---------- */
-/* Copy and card side by side, badge stage underneath, all inside the
-   site's one container width. */
-.hero-showcase {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "copy"
-    "card";
-  gap: clamp(2.5rem, 5vw, 3.5rem);
-  align-items: start;
-}
-.hero-copy { grid-area: copy; min-width: 0; }
-.hero-stage-card {
-  grid-area: card;
-  display: flex;
-  justify-content: center;
-  min-width: 0;
-}
-@media (min-width: 980px) {
-  .hero-showcase {
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
-    grid-template-areas: "copy card";
-    align-items: center;
-    column-gap: clamp(2rem, 4vw, 3.5rem);
-  }
-}
-/* The hero headline is capped at 18ch for the full-width layout. In two
-   columns the column is already the cap, and 18ch leaves it ragged. */
-@media (min-width: 980px) {
-  .hero-copy h1 { max-width: 15ch; }
-  .hero-bio { max-width: 42ch; }
-}
-
-/* ---------- LANYARD ---------- */
-.lanyard-slot {
-  position: relative;
-  width: 100%;
-  height: clamp(420px, 48vh, 540px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-/* The canvas is capped and centred rather than left to fill the
-   container. A lanyard is a narrow object; given 1040px of width it
-   sits marooned in the middle of an empty band, and the extra pixels
-   are a bigger drawing buffer for nothing. */
-.lanyard-slot .lanyard-wrapper,
-.lanyard-slot .badge-static {
-  max-width: 560px;
-  margin: 0 auto;
-  min-height: 0;
-}
-.lanyard-caption {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  color: var(--ink-45);
-  pointer-events: none;
-}
-/* The fallback badge: same artwork, hanging from a hairline cord,
-   drawn in two elements. Shown on phones and tablets, on any narrow
-   window, and whenever reduced motion or a metered connection is
-   signalled — which is to say everywhere the draggable one is not. */
-.badge-static {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-}
-.badge-cord {
-  width: 1px;
-  flex: 0 0 auto;
-  height: clamp(40px, 12%, 72px);
-  background: linear-gradient(to bottom, transparent, var(--ink-15));
-}
-.badge-static img {
-  width: clamp(180px, 22vw, 240px);
-  height: auto;
-  border-radius: 14px;
-  border: 1px solid var(--ink-15);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  transform: rotate(-1.5deg);
-}
-
-/* ---------- PROFILE CARD ---------- */
-/* `pc-quiet` is the restraint pass. The component ships a full
-   holographic foil — six-colour sunpillar sheen, a colour-dodge glare
-   and a rainbow sweep under the pointer. That belongs on a trading
-   card. Here the sheen is dimmed and desaturated until it reads as
-   light on a surface, and the type gradients are pulled back to the
-   site's own greys and blue. */
-.pc-quiet .pc-card {
-  border: 1px solid var(--ink-15);
-  /* The card is sized by height — `aspect-ratio: 0.718` turns that into
-     its width — so a height cap is really a width cap in disguise. A
-     flat 480px here outranked ProfileCard.css's own narrow-screen caps
-     (0,2,0 beats 0,1,0), which put a 333px-wide card in a 272px column
-     at 320px and pushed the page 7px wide in both directions.
-
-     Capping by the column instead of by a fixed number fixes every
-     narrow width at once and keeps the ratio intact: below ~393px the
-     card is exactly as tall as the gutters allow it to be wide, and
-     from there up the 480px ceiling is the smaller of the two and
-     nothing changes. */
-  max-height: min(480px, calc((100vw - (2 * var(--gutter))) / 0.718));
-}
-.pc-quiet .pc-shine {
-  filter: brightness(0.5) contrast(1.1) saturate(0.18) opacity(0.26);
-}
-.pc-quiet .pc-card:hover .pc-shine,
-.pc-quiet .pc-card.active .pc-shine {
-  filter: brightness(0.62) contrast(1.2) saturate(0.3) opacity(0.4);
-}
-.pc-quiet .pc-glare { opacity: 0.4; }
-.pc-quiet .pc-details {
-  top: 2.25em;
-  padding: 0 1.5rem;
-}
-/* Two long words. The component sizes this off viewport height and lets
-   it run on one line, which overflows a card 388px wide. */
-.pc-quiet .pc-details .pc-name {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.1vw, 1.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  background-image: linear-gradient(to bottom, #ffffff, #9fb6cc);
-}
-.pc-quiet .pc-details p {
-  white-space: normal;
-  width: auto;
-  top: -2px;
-  font-size: 0.95rem;
-  background-image: linear-gradient(to bottom, #f5f5f7, #86868b);
-}
-.pc-quiet .pc-user-info {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-.pc-quiet .pc-contact-btn {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  border-radius: 999px;
-}
-.pc-quiet .pc-contact-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-/* The info bar at the foot of the card is sized for "@javicodes /
-   Online". A real handle and a real availability line are longer than
-   that, and at the component's own sizes both wrap. Tightened, and the
-   button is stopped from breaking across two lines. */
-.pc-quiet .pc-handle { font-size: 12px; white-space: nowrap; }
-.pc-quiet .pc-status { font-size: 11px; white-space: nowrap; }
-.pc-quiet .pc-user-text { gap: 5px; min-width: 0; }
-.pc-quiet .pc-mini-avatar { width: 34px; height: 34px; }
-.pc-quiet .pc-user-details { gap: 10px; min-width: 0; }
-.pc-quiet .pc-user-info { padding: 10px 12px; gap: 10px; }
-.pc-quiet .pc-contact-btn {
-  white-space: nowrap;
-  flex: 0 0 auto;
-  padding: 9px 14px;
-  font-size: 11px;
-}
-/* And the text block has to be allowed to shrink, or a handle longer
-   than the space left over runs under the button instead of ellipsing. */
-.pc-quiet .pc-user-details { flex: 1 1 auto; overflow: hidden; }
-.pc-quiet .pc-handle,
-.pc-quiet .pc-status {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* The contact button relies on a translucent white fill that only reads
-   against the card's dark inside. Given an explicit fill and ink it
-   holds against the card instead of washing out. */
-.pc-quiet .pc-contact-btn {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #f5f5f7;
-}
-.pc-quiet .pc-contact-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.36);
-}
 
 /* ---------- THE HEADER'S MATERIAL ----------
    One surface, on the header itself.
@@ -2512,131 +1447,16 @@ textarea.cf-input { resize: vertical; }
   .nav-glass { background: var(--paper); }
 }
 
-/* ---------- INDEX PAGES ON THE CARD SYSTEM ----------
-   /projects and /certifications were the two routes still drawing
-   themselves edge-to-edge with their own paddings, which put their left
-   margin ~200px away from the header, the footer and every other page.
-   Both now sit in the site container and on the same panel as the
-   cards: same surface, same 20px radius, same proximity glow. What is
-   inside each panel is unchanged — the row index is still a row index
-   and the shelf menu is still a staircase. */
-
-/* Both pages used a page-level horizontal padding of their own. Inside
-   .wrap that would be applied twice. */
-.pi-head,
-.pi-foot {
-  padding-left: 0;
-  padding-right: 0;
-}
-.pi { padding-bottom: 3rem; }
-.pi-head { padding-top: 3.5rem; }
-
-/* Panels stack with the same gap the card grids use. Each panel is its
-   own reveal wrapper, so the gap is between the wrappers — one Reveal
-   around the whole list meant a full-page-height element crossed the
-   observer's 1% threshold on load, and every panel finished arriving
-   while it was still below the fold. */
-.pi-panel + .pi-panel { margin-top: 1rem; }
-.pi-glow { height: auto; }
-
-/* `clip`, not `hidden`. Both are needed to keep the panel's corners,
-   but `hidden` makes the panel a scroll container, and the rail label
-   inside a project group is position: sticky — against a box that can
-   never scroll, sticky does nothing and the label stops tracking the
-   group. `clip` cuts the same corners without taking the scrollport. */
-.pi-glow > .border-glow-inner {
-  height: auto;
-  overflow: clip;
-}
-.pi-glow > .border-glow-inner > * {
-  height: auto;
-}
-
-/* The group already draws its own hairlines between rows, so the panel
-   must not add one above the first. */
-.pi-glow .pi-group { border-top: 0; }
-.pi-glow .pi-rows > .pi-row:last-child { border-bottom: 0; }
-/* The row hover wash matches the one every card uses. */
-@media (hover: hover) and (pointer: fine) {
-  .pi-glow .pi-row:hover { background: rgba(0, 0, 0, 0.03); }
-  html[data-theme="dark"] .pi-glow .pi-row:hover { background: rgba(255, 255, 255, 0.035); }
-}
-/* The rail clears the sticky header plus the tooling strip. */
-.pi-glow .pi-rail-inner { top: 120px; }
-
-/* A panel is narrower than the viewport the wide row grid was measured
-   against, so the row takes its compact column set at every width above
-   the stacking breakpoint rather than only below 1040px. */
-@media (min-width: 721px) {
-  .pi-glow .pi-row {
-    grid-template-columns: 2.8rem minmax(150px, 24%) 1fr 240px;
-    gap: 1.2rem;
-    padding: 1.05rem 20px;
-  }
-}
-
-
 /* BorderGlow's outer glow layer is inset by -30px, so a panel that fills
    the container reaches 30px past it — off the side of a narrow screen,
    which is a horizontal scrollbar for a decoration nobody can see.
-   Sections already clip themselves; the routes whose <main> is the
-   container do not, so they clip here.
+   Sections already clip themselves; the route whose <main> is the
+   container does not, so it clips here.
 
-   `clip` rather than `hidden`, for the same reason as everywhere else in
-   this file: hidden would make these a scroll container and break the
-   sticky rail label inside a project group. */
-.pi,
+   `clip` rather than `hidden`: hidden would make this a scroll container. */
 main.wrap {
   overflow-x: clip;
 }
-
-/* ---------- CONTACT ----------
-   Heading and form in the reading column, the badge beside them, the
-   channel cards across the foot. Stacked below 900px with the form
-   ahead of the badge: the form is the point of the page. */
-.contact-main { padding: clamp(2.5rem, 6vw, 3.5rem) var(--gutter) 4rem; }
-
-.contact-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "head"
-    "form"
-    "badge"
-    "links";
-  gap: 2rem;
-  align-items: start;
-}
-.contact-head { grid-area: head; margin-bottom: 0; }
-.contact-form-area { grid-area: form; min-width: 0; }
-.contact-badge { grid-area: badge; min-width: 0; }
-.contact-links { grid-area: links; margin-top: 0.5rem; }
-
-@media (min-width: 900px) {
-  .contact-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 400px);
-    grid-template-areas:
-      "head  badge"
-      "form  badge"
-      "links links";
-    column-gap: clamp(2rem, 4vw, 3.5rem);
-    row-gap: 1.75rem;
-  }
-  /* The badge is the tallest thing in its column and has nothing under
-     it, so it centres against the pair beside it rather than sitting on
-     the heading's baseline. */
-  .contact-badge { align-self: center; }
-}
-
-/* On the contact page the badge is the page's one object rather than a
-   band across a long index, so it gets its own height and does not need
-   the 560px cap the home stage used. */
-.contact-badge .lanyard-slot { height: clamp(360px, 52vh, 520px); }
-.contact-badge .lanyard-wrapper,
-.contact-badge .badge-static { max-width: 420px; margin: 0 auto; min-height: 0; }
-/* The caption used to swap "drag" for "pull" on a coarse pointer. The
-   scene is now gated to `(hover: hover) and (pointer: fine)`, so the
-   touch half could never render and the swap has gone with it. */
 
 /* ---------- TOUCH TARGETS AND TOUCH TYPE ----------
    Measured, not guessed: an automated pass over /, /projects,
@@ -2671,45 +1491,16 @@ main.wrap {
      would drop the label into the middle of an empty width. */
   .pd-top > a.lnk { justify-content: flex-start; }
 
-  /* The profile card's contact button was 78x34. */
-  .pc-quiet .pc-contact-btn { min-height: 44px; padding: 0 16px; }
-
-  /* The chat widget, the privacy notice and the certificate filters
-     were outside the first pass. Measured: launcher 142x37, suggestion
-     chips 28 tall, chat send 60x32, "Got it" 64x32, filter chips 32
-     tall, "Show credential" 36 tall. Same treatment — a minimum box,
-     type untouched. */
+  /* The chat widget and the privacy notice were outside the first pass.
+     Measured: launcher 142x37, suggestion chips 28 tall, chat send
+     60x32, "Got it" 64x32. Same treatment — a minimum box, type
+     untouched. */
   .chat-launcher,
   .chat-chip,
   .chat-send,
-  .cookie-notice-btn,
-  .cert-chip {
+  .cookie-notice-btn {
     min-height: 44px;
   }
-  /* A link at the foot of a card, not a button: it gets the height as
-     padding so the row above it does not gain a gap. */
-  .cert-link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-  }
-
-  /* Project index: the status line and the stack chips were set at
-     0.62rem — a hair under 10px, which is a size for a caption on a
-     desktop, not for the only label a row carries on a phone. */
-  .pi-status,
-  .pi-stack em { font-size: 0.7rem; }
-  /* The demo pill is a real tap target, so it gets the 44px minimum the
-     cert links already take. */
-  .pi-demo {
-    font-size: 0.7rem;
-    display: inline-flex; align-items: center;
-    min-height: 44px; padding: 0 0.7rem;
-  }
-  .pi-rail-inner { font-size: 0.72rem; }
-  /* Chips are also the widest thing in a stacked row; give them a
-     little more room now that they are bigger. */
-  .pi-stack em { padding: 0.24rem 0.5rem; }
 }
 
 
@@ -2733,15 +1524,10 @@ main.wrap {
    larger absolute displacement and reads as the card lurching. */
 .btn:active,
 .nav-toggle:active,
-.lb-close:active,
-.chat-launcher:active,
-.cert-chip:active,
-.pi-demo:active {
+.chat-launcher:active {
   transform: scale(0.96);
 }
-a.card:active,
-.post:active,
-.cap-tile:active {
+a.card:active {
   transform: scale(0.985);
 }
 
@@ -2783,98 +1569,13 @@ a.card:active,
   .chat-panel,
   .chat-launcher,
   .cookie-notice,
-  .sticky-cta,
-  .lb-card {
+  .sticky-cta {
     border-color: var(--ink);
   }
-  .card,
-  .post,
-  .cap-tile {
+  .card {
     border: 1px solid var(--ink-45);
   }
 }
-
-/* ---------- LIGHTBOX MOTION ----------
-   The project lightbox appeared and disappeared instantly: one frame the
-   page, the next frame a modal over a black scrim, with nothing to say
-   where it came from. Two things fix that.
-
-   First, it animates. The scrim fades and the card arrives with a scale
-   and a blur resolving together, so it reads as a surface materialising
-   rather than an image being switched on.
-
-   Second, it arrives *from the tile that opened it*. WorkGrid measures
-   the pressed tile and writes its centre into --lb-x / --lb-y, and the
-   card's transform-origin is that point — so the panel grows out of the
-   thing you tapped and shrinks back into it on close. Enter and exit run
-   the same path in opposite directions, which is what makes the close
-   read as a return rather than as a second, unrelated animation. */
-.lb {
-  animation: lb-scrim-in 0.28s var(--ease-out) both;
-}
-.lb-card {
-  transform-origin: var(--lb-x, 50%) var(--lb-y, 50%);
-  animation: lb-card-in 0.4s var(--ease-out) both;
-}
-/* The exit gets its own keyframes rather than `direction: reverse` on
-   the entry ones. Swapping direction on an animation that has already
-   finished does not restart it — the browser keeps the same timeline,
-   lands past the end, and applies the reversed fill state in a single
-   frame, which is a snap, not an exit. Different names, different
-   animations, so both actually run.
-
-   The curve is the entry curve with its control points inverted, so the
-   card leaves along the path it arrived on. */
-.lb.is-closing { animation: lb-scrim-out 0.24s var(--ease-out) both; }
-.lb.is-closing .lb-card { animation: lb-card-out 0.24s var(--ease-out) both; }
-
-@keyframes lb-scrim-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-@keyframes lb-card-out {
-  from {
-    opacity: 1;
-    transform: none;
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-}
-
-@keyframes lb-scrim-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-/* No blur on this one. The chat panel and the privacy notice are small
-   surfaces where a few px of blur masks the crossfade cheaply; this is a
-   620px card full of text, and blurring it for 400ms is the heaviest
-   frame on the site. Scale and opacity carry it. */
-@keyframes lb-card-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Reduced motion keeps the modal legible without the travel: a plain
-   cross-fade, no scale, no blur, no origin. The global reduced-motion
-   rule near the top of this file only shortens transitions — these are
-   keyframe animations, so they have to be named here. */
-@media (prefers-reduced-motion: reduce) {
-  .lb,
-  .lb-card,
-  .lb.is-closing,
-  .lb.is-closing .lb-card {
-    animation: none;
-  }
-}
-
 
 /* ---------- SCROLL EDGE ----------
    The header used to draw a 1px rule along its bottom edge on every
@@ -2943,10 +1644,9 @@ a.card:active,
    of the page, and a page of promoted layers costs more memory than the
    paints it saves.
 
-   The lightbox card and the mobile layer both animate the moment they
-   mount, so the hint is on the class that only exists while they do.
-   The wheel's options are written to on every frame of a drag. */
-.lb-card,
+   The mobile layer animates the moment it mounts, so the hint is on the
+   class that only exists while it does. The wheel's options are written
+   to on every frame of a drag. */
 .mobile-nav__overlay,
 .mobile-nav__wheel {
   will-change: transform, opacity;
@@ -2962,8 +1662,7 @@ a.card:active,
    to the space between them. */
 body,
 .display,
-.display-lg,
-.display-xl {
+.display-lg {
   font-optical-sizing: auto;
 }
 
@@ -3016,10 +1715,9 @@ html:not(.dialog-open) footer {
 }
 
 /* ---------- HIT PADDING ----------
-   Three controls on the site are smaller than a finger: the lightbox's
-   close pill, the chat panel's reset link and its suggestion chips. All
-   three are set at caption sizes because that is the right size for
-   them to *look*, and none of them is the right size to *hit*.
+   The chat panel's reset link and its suggestion chips are set at
+   caption sizes because that is the right size for them to *look*, and
+   neither is the right size to *hit*.
 
    The target is grown without growing the control: a pseudo-element
    extends the hit area ~10px past every edge, so the drawn pill stays
@@ -3027,12 +1725,10 @@ html:not(.dialog-open) footer {
    finger is the region a finger can actually land on. It also gives a
    press that starts slightly off the control something to catch, which
    is what makes a tap forgiving rather than precise. */
-.lb-close,
 .chat-reset,
 .chat-chip {
   position: relative;
 }
-.lb-close::before,
 .chat-reset::before,
 .chat-chip::before {
   content: "";
@@ -3072,14 +1768,7 @@ html:not(.dialog-open) footer {
    where the gap matters most there was no acknowledgement between the
    finger landing and the page changing.
 
-   The project index row is the awkward one. It is a grid of cells with
-   a full-bleed anchor laid over it — the anchor is the target, the row
-   is what should react — so the press is read off the link and applied
-   to the row it covers. */
-.pi-row:has(.pi-open:active) {
-  transform: scale(0.995);
-}
-.cert-link:active,
+   These controls show something on hover, which a phone does not have. */
 .chat-chip:active,
 .mobile-nav__close:active {
   transform: scale(0.96);
@@ -3149,8 +1838,6 @@ html:not(.dialog-open) footer {
    It also has to land with the `haptic("reject")` fired at these same
    call sites in ContactForm — the visual and the haptic are one event,
    and one arriving after the other is what makes them read as two. */
-.cf-error,
-.cf-error-banner,
 .chat-error {
   animation: err-in 180ms var(--ease-out) both;
 }
@@ -3183,8 +1870,6 @@ html:not(.dialog-open) footer {
      browser keeps the same timeline, lands past the end, and applies the
      reversed fill in one frame, which is a snap rather than a fade. */
   .cookie-notice.is-closing { animation: cn-fade-out 160ms linear both !important; }
-  .cf-error,
-  .cf-error-banner,
   .chat-error,
   .chat-msg { animation: err-fade 140ms linear both !important; }
 }
@@ -3242,9 +1927,6 @@ html:not(.dialog-open) footer {
    border-box site-wide, so the 1px comes out of the padding box and no
    layout moves. */
 .card,
-.cap-tile,
-.post,
-.lb-card,
 .diagram {
   border: var(--edge);
   box-shadow: var(--shadow-window);
@@ -3262,18 +1944,14 @@ html:not(.dialog-open) footer {
 
    The resting shadow stays. It is static, painted once, and it is what
    makes the surface sit above the page. */
-.card,
-.post,
-.cap-tile {
+.card {
   transition:
     background 0.25s var(--ease),
     transform 160ms var(--ease-out),
     border-color 160ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  a.card:hover,
-  .post:hover,
-  .cap-tile:hover {
+  a.card:hover {
     border-color: rgb(0 0 0 / 0.18);
   }
 }
@@ -3291,8 +1969,7 @@ html:not(.dialog-open) footer {
    an edge over frosted glass matches an edge over paper. */
 .cookie-notice,
 .chat-launcher,
-.chat-panel,
-.cf-error-banner {
+.chat-panel {
   border-color: var(--edge-color);
 }
 
@@ -3322,7 +1999,6 @@ html:not(.dialog-open) footer {
    does not name, for the same reason — a 13%-alpha hairline is the
    first thing to vanish at that setting. */
 @media (prefers-contrast: more) {
-  .lb-card,
   .diagram,
   .diagram-node,
   .glow-card {
@@ -3415,23 +2091,11 @@ html:not(.dialog-open) footer {
 }
 
 /* ---------- THE ASK BUTTON ----------
-   The launcher carries a live WebGL strand behind its label. Two things
-   had to change for it to read as anything other than noise.
+   The launcher's fill is the site's near-black chrome colour, the same
+   as the window bars it sits under, so the darkest thing on the site is
+   consistently its chrome. White label on it clears 15:1 either way.
 
-   The fill goes dark. The strands are emissive — thin bright lines with
-   a bloom — and emissive light only reads as light against something
-   darker than itself. On the translucent white pill the launcher used to
-   be, the bright pass of a strand landed at roughly the value of the
-   surface it was drawn on, so the effect disappeared, and where it did
-   not disappear it crossed the label and ate the contrast of the one
-   piece of text on the control. Dark ground, white label: the strands
-   have somewhere to glow and the text is 15:1 against it either way.
-
-   It is also not a new idea on the page — the window bars this button
-   now sits under are the same near-black, so the darkest thing on the
-   site is consistently its chrome.
-
-   --launcher-bg is a token because the reduced-transparency rule above
+   --launcher-bg is a token because the reduced-transparency rule below
    has to restate the background to drop the blur, and it should not
    have to know the colour to do that. */
 :root {
@@ -3439,51 +2103,18 @@ html:not(.dialog-open) footer {
 }
 
 .chat-launcher {
-  /* No `position` here. The launcher is already `fixed`, which is its
-     own containing block, so the canvas layer has something to be
-     absolute against — and a `position: relative` written for that
-     reason instead drops the button out of the corner and into the
-     bottom of the document flow. */
-  /* The strand canvas is a rectangle behind a pill. */
   overflow: hidden;
   background: color-mix(in srgb, var(--launcher-bg) 96%, transparent);
   color: #ffffff;
   border-color: rgb(255 255 255 / 0.16);
 }
-/* The hover rule that stood here was a byte-identical copy of the one at
-   the launcher's own declaration — and neither was gated, so a tap on a
-   phone latched the accent border until the next tap landed elsewhere.
-   One rule, gated. */
 @media (hover: hover) and (pointer: fine) {
   .chat-launcher:hover { border-color: var(--accent); }
 }
 .chat-launcher-icon { color: #ffffff; }
 
-.chat-launcher-strands {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  /* The strands are drawn to the full width of the button and taper at
-     both ends, which is what keeps them from butting into the pill's
-     round caps. */
-  overflow: hidden;
-}
-/* The label and the icon sit above the canvas. Without this they are
-   siblings of an absolutely positioned element and lose the stacking
-   contest by source order. */
-.chat-launcher-icon,
-.chat-launcher-label {
-  position: relative;
-  z-index: 1;
-}
-
-/* Both accessibility settings the launcher already answered. The dark
-   fill survives them — it is the blur and the translucency that go, not
-   the colour — and the canvas stops itself on reduced motion from
-   inside the component, where it can stop the render loop rather than
-   just hiding a moving thing that is still costing frames. */
+/* The dark fill survives both accessibility settings — it is the blur
+   and the translucency that go, not the colour. */
 @media (prefers-reduced-transparency: reduce) {
   .chat-launcher { background: var(--launcher-bg); }
 }
@@ -3492,9 +2123,6 @@ html:not(.dialog-open) footer {
     background: var(--launcher-bg);
     border-color: #ffffff;
   }
-  /* At this setting the strands are a low-contrast pattern behind text,
-     which is the thing the setting exists to remove. */
-  .chat-launcher-strands { display: none; }
 }
 
 /* ---------- DARK: FLAT SURFACES ----------
@@ -3582,11 +2210,7 @@ html[data-theme="dark"] .nav-glass::after {
 /* Shadows that are not on the --shadow-window token, and so have to be
    named. The floating panels do not need one: they already carry the
    inverted hairline from --edge-color, which separates them from black
-   in a way a black shadow cannot.
-
-   `.badge-static img` is deliberately not in this list. It is the
-   no-WebGL fallback for the lanyard badge, and it has to keep matching
-   the 3D badge beside it and the same badge in light mode. */
+   in a way a black shadow cannot. */
 html[data-theme="dark"] .chat-launcher,
 html[data-theme="dark"] .chat-panel,
 html[data-theme="dark"] .cookie-notice {
@@ -3598,25 +2222,14 @@ html[data-theme="dark"] .cookie-notice {
    Same step in the other direction. */
 @media (hover: hover) and (pointer: fine) {
   html[data-theme="dark"] a.card:hover,
-  html[data-theme="dark"] .post:hover,
-  html[data-theme="dark"] .cap-tile:hover,
   html[data-theme="dark"] .glow-card:hover {
     border-color: rgb(255 255 255 / 0.24);
   }
 }
 
 /* Nothing decorative is switched off below this point, and that is the
-   rule rather than an omission.
-
-   "Remove the glass" means the backdrop-filters above, and "the shadows
-   are bad" means the two tokens above. It does not mean the motion. The
-   strand canvas, the border-glow sweep, the profile card's foil and the
-   bloom behind it are the site's effects, not its textures: they are
-   painted against their own surfaces, they animate, and dark mode is
-   not a reason for any of them to stop. Flattening them made the same
-   object look like two different objects depending on the theme, which
-   is worse than the problem it was solving.
-
-   The profile card in particular is dark in both themes on purpose — a
-   laminated badge is the one thing in the room that is not the colour
-   of the room — so it takes no dark-mode treatment at all. */
+   rule rather than an omission. "Remove the glass" means the
+   backdrop-filters above, and "the shadows are bad" means the two
+   tokens above. It does not mean the motion: the border-glow sweep is
+   the site's one effect, painted against its own surface, and dark mode
+   is not a reason for it to stop. */

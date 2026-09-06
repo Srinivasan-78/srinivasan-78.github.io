@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​‌‌‌​‌‌​​‌‌​​​‌​​‌‌​‌‌​​​​‌‌​​​​​‌​‌‌​‌​​‌​‌​‌‌‌​‌‌​​‌​​​‌​​‌‌‌​​‌‌​​‌‌‌​‌‌​‌​‌‌​‌‌‌‌​​‌​‌​​​​‌​​‌​‌​‌‌​​‌​​‌‌‌​​‌‌​‌​​​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌​‌‌​‌‌‌‌​‌​​‌​​‌​​​​‌​‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​‌‌​​‌​‌​‌​​‌​‌​​‌‌‌​​‌‌​‌​‌‌​​​​‌​​​​‌​​‌​​​‌‌​​‌‌​​‌​‌​​‌‌​​‌​​‌​‌​‌‌​​‌​​‌​‌​​‌​​‌‌‌‌​‌​​‌‌‌‌​‌‌​‌​​‌​‌​​​‌‌​​​‌‌​‌‌​​‌‌‌​‌​‌​‌‌​​‌​‌​‌‌‌‌​​‌​‌​​‌​‌​​‌​​‌​​​​​‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Fvbl0ZWdNgkyBVNhPMkzHY
+ * Fingerprint: AMK1.meJsXBFe2VJOOiF6ueyJH0
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -283,11 +283,7 @@ export const PROJECTS: Project[] = [
       "A provider that speaks the common OpenAI shape needs three config lines and no new code",
       "Honest about the limit: an origin check stops casual abuse, and provider spend caps are the real backstop",
     ],
-    /* No public link: the repository is private, so an anonymous visitor gets a
-       404 from it. The hosted page was served from a Pages site that no longer
-       exists either — the repo has Pages disabled — so the demo button is gone
-       rather than pointing at a dead URL. Restore both the moment it is public
-       and published. */
+    /* No public link — the repository is private. */
     links: [],
   },
   {
@@ -476,10 +472,7 @@ export const PROJECTS: Project[] = [
       "Runs on ordinary homelab hardware",
       "One command starts the whole stack",
     ],
-    /* No public link. https://github.com/Srinivasan-78/kiwix-homelab is private,
-       so the button that pointed at it was a dead CTA. Restore the entry the
-       moment the repository is public — the detail page reads an empty list as
-       "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/kiwix-homelab is private. */
     links: [],
   },
   {
@@ -517,10 +510,7 @@ export const PROJECTS: Project[] = [
       "Windows and Linux packaging in one set of templates",
       "Artifact cleanup is part of the pipeline itself",
     ],
-    /* No public link. https://github.com/Srinivasan-78/github-actions-snippets is
-       private, so the button that pointed at it was a dead CTA.
-       Restore the entry the moment the repository is public — the detail
-       page reads an empty list as "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/github-actions-snippets is private. */
     links: [],
   },
   {
@@ -604,10 +594,7 @@ export const PROJECTS: Project[] = [
       "Upgrade path is right from the first release",
       "Drops into any MSBuild desktop project",
     ],
-    /* No public link. https://github.com/Srinivasan-78/wix-installer-template is
-       private, so the button that pointed at it was a dead CTA.
-       Restore the entry the moment the repository is public — the detail
-       page reads an empty list as "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/wix-installer-template is private. */
     links: [],
   },
   {
@@ -741,10 +728,7 @@ export const PROJECTS: Project[] = [
       "Captures the fully built state, ready to flash",
       "PiShrink keeps the image a sane size",
     ],
-    /* No public link. https://github.com/Srinivasan-78/matter-th-pi-image is
-       private, so the button that pointed at it was a dead CTA.
-       Restore the entry the moment the repository is public — the detail
-       page reads an empty list as "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/matter-th-pi-image is private. */
     links: [],
   },
   {
@@ -777,10 +761,7 @@ export const PROJECTS: Project[] = [
       "Build artifacts stay off the card being imaged",
       "Clean handoff to the image builder",
     ],
-    /* No public link. https://github.com/Srinivasan-78/pi-image-build-automation is
-       private, so the button that pointed at it was a dead CTA.
-       Restore the entry the moment the repository is public — the detail
-       page reads an empty list as "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/pi-image-build-automation is private. */
     links: [],
   },
   {
@@ -828,9 +809,7 @@ export const PROJECTS: Project[] = [
       "Secrets travel through env, never through string interpolation into a shell",
       "Honest about the cost: polling keeps a runner alive for the whole deployment",
     ],
-    /* No public link. https://github.com/Srinivasan-78/azure-pipeline-trigger is
-       private, so a button pointing at it would be a dead CTA. The detail page
-       reads an empty list as "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/azure-pipeline-trigger is private. */
     links: [],
   },
   {
@@ -869,9 +848,7 @@ export const PROJECTS: Project[] = [
       "Refuses a block device rather than damaging one",
       "Distinct exit codes per failure, so a build script can tell what went wrong",
     ],
-    /* No public link. https://github.com/Srinivasan-78/pi-image-shrink is private,
-       so a button pointing at it would be a dead CTA. It is derived from
-       Drewsif/PiShrink, which is public and credited in the repository. */
+    /* No public link — https://github.com/Srinivasan-78/pi-image-shrink is private. */
     links: [],
   },
   {
@@ -904,10 +881,7 @@ export const PROJECTS: Project[] = [
       "Answers one narrow question properly",
       "Run it once before a long imaging job",
     ],
-    /* No public link. https://github.com/Srinivasan-78/dd-blocksize-benchmark is
-       private, so the button that pointed at it was a dead CTA.
-       Restore the entry the moment the repository is public — the detail
-       page reads an empty list as "offer the contact route instead". */
+    /* No public link — https://github.com/Srinivasan-78/dd-blocksize-benchmark is private. */
     links: [],
   },
   {

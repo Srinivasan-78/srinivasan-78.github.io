@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌‌‌​​‌‌​‌​​​​​‌​​‌‌​‌​​​‌‌​‌​​​​​‌‌​‌​‌​‌‌‌​‌‌​​‌‌‌‌​​‌​‌​‌​​‌​​​‌‌‌​​​​‌​‌​‌‌​​‌‌​​​‌‌​‌‌‌​‌​‌​‌‌‌‌​​​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​​​‌‌‌​‌‌​‌‌‌​​‌‌​​​‌​​‌​​‌‌‌‌​​‌‌​‌​​​‌​​‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​‌​‌​‌​​​​​‌‌​​‌​​​​‌‌​‌​​​‌‌​​​‌​​‌​‌‌‌‌‌​‌‌‌‌​‌​​​‌‌‌​​‌​‌‌​‌‌​‌​‌‌‌‌​​‌​‌‌‌​‌‌‌​‌‌‌​‌‌​​​‌‌​​‌​​‌‌‌‌​‌​​‌​‌​‌​​​‌​​‌​​​​‌‌​‌‌​​​‌‌‌​‌‌‌​‌​​‌​‌‌​‌‌‌​‌‌‌​​‌‌​‌​​​‌‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.SsA4h5vyR8VcuxMOGnbO4I
+ * Fingerprint: AMK1.UPd4b_z9mywv2zTHlwKw4w
  */
 /* Renders the site's social card and icon set from the site's own tokens.
  *
@@ -97,7 +97,7 @@ const og = shell(1200, 630, `
   <h1>Srinivasan<br>Vijayaraghavan</h1>
   <p class="lede">I automate the release nobody wants to do by hand.</p>
   <p class="stack">AWS · Azure · GitHub Actions · Ansible · Terraform</p>
-  <div class="micros"><span>5 yrs shipping</span><span>2 clouds</span><span>22 certs</span></div>
+  <div class="micros"><span>5 yrs shipping</span><span>2 clouds</span><span>24 certs</span></div>
   <p class="domain">srinidevops.com</p>
 </div>`, `
 .rail{position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(to bottom,${T.accent},${T.accentSolid})}

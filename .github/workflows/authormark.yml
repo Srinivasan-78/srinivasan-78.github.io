@@ -8,6 +8,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 permissions:
   contents: read
 
@@ -19,5 +20,9 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
           node-version: '20'
-      - name: Verify authorship watermarks are intact
-        run: node .authormark/authormark.mjs check --presence .
+      - name: Verify authorship watermarks
+        uses: Srinivasan-78/authormark-watch@main
+        with:
+          key: ${{ secrets.AUTHORMARK_KEY }}
+          mode: check-presence
+          path: .

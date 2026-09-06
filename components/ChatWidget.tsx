@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌‌​​​‌‌​‌​‌​​​‌​‌​​​‌‌​​​‌‌​​​‌​‌‌​​‌​​​‌​​‌‌‌‌​‌‌‌​‌‌​​‌‌​​‌​​​​‌‌​‌‌‌​‌‌​​​​‌​‌​​‌‌‌​​‌‌​‌‌​‌​‌​​​​‌​​‌​​​‌‌‌​‌‌‌‌​​​​‌​​‌‌‌‌​‌​​‌​​​​‌‌​​​​‌​‌‌​‌‌​‌​‌​​‌‌​‌​​‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌​‌‌​‌​​‌​‌​‌‌​​‌​‌​​‌‌​‌‌‌‌​​​​‌​‌​​​​​‌‌​​‌‌​​‌​​​​​‌​‌​‌​‌​​​‌‌​‌‌‌‌​‌‌‌​​‌‌​​‌‌​‌​‌​‌​‌​​‌​​​‌‌​‌‌​​‌‌​​‌​‌​‌​‌​​‌​​‌​​​‌‌​​‌​​‌​‌​​‌​​‌‌‌​​‌​​‌​​​​‌​‌‌‌‌‌​​‌​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.BcQF1dOvd7aNmBGxOHamM4
+ * Fingerprint: AMK1.cZVSxPfATos5R6eRFJNH_-
  */
 "use client";
 
@@ -11,7 +11,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CHAT_SUGGESTIONS } from "@/lib/chat";
 import { matchKnowledgeQuery, type KnowledgeMatchResult } from "@/lib/knowledge";
-import Strands from "./ui/Strands";
 import { FiArrowUpRight, FiCornerDownLeft, FiX } from "react-icons/fi";
 
 interface Turn {
@@ -203,26 +202,6 @@ export default function ChatWidget() {
               className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-600 via-amber-500 to-indigo-600 opacity-30 group-hover:opacity-75 blur-sm transition-opacity duration-300 -z-10"
             />
           )}
-
-          {/* WebGL Strands Lighting Effect */}
-          <span aria-hidden="true" className="chat-launcher-strands opacity-60 group-hover:opacity-100">
-            <Strands
-              colors={["#0066cc", "#4c8dff", "#06B6D4"]}
-              count={3}
-              speed={0.3}
-              amplitude={0.7}
-              waviness={0.9}
-              thickness={0.5}
-              glow={1.8}
-              taper={1.4}
-              spread={1.2}
-              intensity={0.45}
-              saturation={1.1}
-              opacity={0.7}
-              scale={4.5}
-              playOnHover
-            />
-          </span>
 
           {/* AI Sparkle / Close Icon */}
           <span className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">

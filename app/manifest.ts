@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌​​‌‌​​​‌‌‌​‌‌​​‌‌​‌‌‌‌​‌​​‌​‌‌​‌‌​‌‌​​​​‌‌​​‌​​‌‌​​​​‌​​‌‌​​​‌​‌​​‌​‌​​‌‌​‌‌​​​‌‌‌‌​​‌​‌​‌​​‌​​‌​‌​​‌‌​‌​​‌​​​​​‌​‌‌​‌​‌​​​‌​​​‌​‌​​‌‌​‌​​​‌‌​​‌‌​​​‌‌​‌‌​‌​​‌​‌​‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​‌​‌​‌‌​​‌​​‌‌‌​​‌​‌‌‌‌‌​‌‌‌​‌‌​​‌‌​​‌​‌​‌​​‌‌‌‌​‌‌​​​‌​​‌​​‌​‌​​​‌‌​​‌‌​‌​‌​​​​​‌​​‌‌​‌​​‌​‌‌​‌​‌​‌‌​​‌​‌​​‌‌​‌​‌‌​‌​‌‌​‌‌‌​‌​​​​‌‌​‌​​​‌​‌​‌‌‌​​‌‌​‌​​​​‌‌​​‌‌​‌‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.zLvoKl2a1JlyRSH-DSFciQ
+ * Fingerprint: AMK1.gVN_veObJ3PM-YMkt4W43u
  */
 import type { MetadataRoute } from "next";
 
