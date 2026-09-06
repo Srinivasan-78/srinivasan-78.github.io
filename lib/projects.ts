@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​‌​‌‌‌​​‌‌​​​‌​‌​​‌‌​‌​​‌‌​‌‌‌​‌​‌​​‌‌​‌‌​​​‌​​‌​‌‌​‌​​‌‌‌​​‌​​‌‌‌​​​‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌‌​​​​​‌​‌​​​‌​‌‌​​‌‌‌​‌‌‌​​‌​​​‌​‌‌​‌​‌‌​​‌​​​​‌‌​​​​​‌​​‌​​‌​‌​​​​‌‌​‌‌‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​‌‌‌​‌‌​​‌‌​​​‌​​‌‌​‌‌​​​​‌‌​​​​​‌​‌‌​‌​​‌​‌​‌‌‌​‌‌​​‌​​​‌​​‌‌‌​​‌‌​​‌‌‌​‌‌​‌​‌‌​‌‌‌‌​​‌​‌​​​​‌​​‌​‌​‌‌​​‌​​‌‌‌​​‌‌​‌​​​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌​‌‌​‌‌‌‌​‌​​‌​​‌​​​​‌​‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.SW1M7SbZrqe-pQgr-d0ICq
+ * Fingerprint: AMK1.Fvbl0ZWdNgkyBVNhPMkzHY
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -25,9 +25,6 @@ export type Project = {
   /* Short pills on the card face — kept to 3 so the texture never overflows. */
   tags: string[];
   stack: string[];
-  /* Key into the schematic map in ProjectGrid. Defaults to `title`;
-     set only where the two have drifted apart. */
-  schematic?: string;
   overview: string;
   architecture: { label: string; body: string }[];
   highlights: string[];
@@ -404,7 +401,6 @@ export const PROJECTS: Project[] = [
   {
     slug: "authormark-watch",
     title: "Master Bot & Repository Supervisor",
-    schematic: "authormark-watch",
     client: "Platform engineering",
     category: "Provenance & Automation",
     status: "Active",
@@ -617,7 +613,6 @@ export const PROJECTS: Project[] = [
   {
     slug: "brainrot-study",
     title: "Study Brainrot Generator",
-    schematic: "Brainrot Study — automated video pipeline",
     client: "CI/CD & packaging",
     category: "Automation",
     status: "In progress",

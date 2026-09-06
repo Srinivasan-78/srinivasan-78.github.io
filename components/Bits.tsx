@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌​‌‌​​​​‌​‌‌​‌​​​‌‌​​‌​​‌‌​​‌​​​‌​​‌‌‌‌​​‌‌​‌‌‌​‌​​‌‌​‌​​‌‌​‌‌‌​​‌‌​​‌‌​‌‌‌​​‌‌​‌​‌​‌‌‌​‌​‌‌​​‌​‌​​‌‌‌‌​‌‌​​‌‌‌​​‌‌​​​‌​‌‌‌‌​​​​‌​‌‌​​​​‌‌​‌​‌​​​‌‌‌​​‌​‌​​‌​​​​‌​​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​​​‌‌​‌​‌​​​‌​‌‌​‌​‌​‌​‌‌‌​‌‌​​‌​​​‌‌​‌‌​‌​​‌‌​‌‌​​‌‌​​‌‌​​‌‌​‌​‌​​‌​‌​​​​​‌​‌‌​​‌​‌​‌​‌‌‌​‌​‌​​​​​‌​​‌​‌​​‌‌‌​‌​‌​‌​​​‌‌​​​‌‌​‌‌​​‌​​​​‌‌​‌‌‌‌​‌​​‌‌​​‌‌​​‌​‌​‌​​​​‌‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.-XZ2dO7M73sWYOg1xXj9HB
+ * Fingerprint: AMK1.Hj-Wdm6fjPYWPJuF6CzfT9
  */
 "use client";
 
@@ -16,9 +16,9 @@ const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayout
 
    These are originals in the same spirit as React Bits. The real React
    Bits components the site uses — LogoLoop, ClickSpark, BorderGlow,
-   ProfileCard, Lanyard — live in components/ui/, ported to TypeScript
-   and kept diffable against upstream. This file is the local pair to
-   them, not a placeholder for them. */
+   Strands — live in components/ui/, ported to TypeScript and kept
+   diffable against upstream. This file is the local pair to them, not a
+   placeholder for them. */
 
 /** Counts up to `value` once it scrolls into view. */
 export function CountUp({
