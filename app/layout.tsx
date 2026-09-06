@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​‌​​‌​‌‌​​‌‌​‌‌​​‌​​​​​‌​‌‌‌‌​‌​​‌‌‌​‌​‌​‌‌‌‌​​​​‌​‌‌​​​​‌​‌​​‌​​‌​​​‌​​​‌‌​​‌‌‌​‌​‌‌​​‌​‌‌​​‌​​​‌​‌​‌​‌​‌​‌​​​​​​‌‌​​‌​​‌‌‌‌​‌​​‌​​‌​‌‌​‌​​​​‌‌​‌​​‌​‌​​‌​​​​​‌​‌​​‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌​​​​‌​‌‌​​​​‌​‌​​‌​‌‌​‌‌​​‌‌​​‌‌‌​​‌‌​‌‌​‌​‌​​​‌​‌‌​‌​‌‌‌‌​​​​‌‌‌‌​‌​​‌‌​‌‌​​​‌‌​​‌‌​​‌‌​‌‌​​​​‌‌​​​‌​‌‌​‌​‌‌​‌​​​​‌‌​‌‌​​‌​‌​‌​​​​‌​​‌​​‌‌​​​​‌‌‌​​‌​‌‌​​‌‌​​‌​​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.FK6AzuxXRDgYdUP2zKCJAJ
+ * Fingerprint: AMK1.LaaKfsj-xzlfl1kCeBL9fK
  */
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
@@ -175,7 +175,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>

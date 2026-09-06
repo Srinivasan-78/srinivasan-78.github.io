@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌​​‌‌‌​‌‌‌​‌‌​​‌‌‌​‌‌​‌‌​‌​‌​​​​‌​​‌‌​​‌‌‌​‌​‌​‌‌​​‌​‌‌​​​​​‌‌​‌‌​​‌​‌​‌​‌​​‌‌​​‌‌​​‌‌​‌​​​‌‌‌​​​​​‌​​‌‌​​​‌‌​‌​​‌​‌‌​‌‌‌‌​‌​​​​‌​​​‌‌​‌‌‌​‌​​‌‌​​​‌​‌​‌​​​​‌‌​​‌​​‌​‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​​‌‌‌​​‌​‌‌‌‌​​‌​‌​​​​‌‌​‌​​​​‌‌​‌​​​‌‌​​‌​‌​​​​​​‌‌​‌​‌​‌‌​​​‌​​‌‌​‌​‌‌​‌‌​‌‌​‌​‌‌​​‌​​​‌​​‌‌​​​‌​‌​‌‌​​‌​​​‌‌​​​‌‌​​‌‌​‌‌​​‌‌‌​‌‌‌​‌‌‌​‌‌​​​‌​​‌​‌​‌‌​​‌​​​‌‌‌​​‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.NwgmBgVX6U34pLioB7LT2Q
+ * Fingerprint: AMK1.49yCCFP5bkmdLVF3gwbVG4
  */
 const BOOT_SCRIPT = `
 (function(){
@@ -49,6 +49,5 @@ const BOOT_SCRIPT = `
    Note it renders inside <body>, not <head> — App Router does not
    reliably execute a raw inline <script> placed in <head>. */
 export default function BootScript() {
-  // eslint-disable-next-line react/no-danger
   return <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />;
 }
