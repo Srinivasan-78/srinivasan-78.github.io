@@ -399,6 +399,54 @@ export const PROJECTS: Project[] = [
     links: [{ url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" }],
   },
   {
+    slug: "agentic-app-loop",
+    title: "Agentic App Loop",
+    client: "Platform engineering",
+    category: "Developer tooling",
+    status: "Active",
+    teaser:
+      "Build an app through seven bounded phases \u2014 plan, test, implement, review, verify, remember, improve \u2014 each its own subagent.",
+    tags: ["Claude Code", "Subagents", "TDD"],
+    stack: ["Claude Code skills", "Node.js", "Markdown", "npx installer", "GitHub Actions"],
+    overview:
+      "A Claude Code skill that builds and extends real applications through a fixed seven-phase loop \u2014 PLAN, TEST, IMPLEMENT, REVIEW, VERIFY, REMEMBER, IMPROVE \u2014 where each phase runs as its own bounded subagent with a written contract. The orchestrator never writes feature code itself: it runs the phases, enforces a gate after each one, and handles loop-backs when review finds a blocking bug or verification fails. Phases never talk directly; they pass state through a single BUILD_STATE.md file in the target repo, which is also what keeps the orchestrator's own context small. It is the difference between 'just build it' and a run that cannot skip its own tests.",
+    architecture: [
+      {
+        label: "Orchestrator that writes no code",
+        body: "The main build-app skill runs the loop and nothing else \u2014 it starts each phase's subagent, checks the gate, and decides the next move. Delegating every verbose step keeps its context small enough to see the whole run.",
+      },
+      {
+        label: "One file between phases",
+        body: "Every phase reads and writes a single BUILD_STATE.md at the repo root: the plan, the numbered acceptance criteria, review findings, verify evidence. No phase calls another, so any one can be re-run in isolation.",
+      },
+      {
+        label: "A gate after every phase",
+        body: "PLAN needs tasks, criteria and a test strategy; TEST's tests must fail only because the code is absent, not because of a typo; REVIEW must reach zero unresolved blocking findings; VERIFY must show every criterion met with evidence before the loop moves on.",
+      },
+      {
+        label: "Loop-backs, capped",
+        body: "A blocking review finding sends the run back to IMPLEMENT; a failed VERIFY back to IMPLEMENT or PLAN; a wrong test back to TEST. After four iterations without a green VERIFY the loop stops and asks the operator rather than grinding.",
+      },
+      {
+        label: "Phases adapt to the job",
+        body: "Greenfield app, new feature, bug fix, refactor and spike keep the same shape: a bug fix makes TEST write a failing regression test first, a refactor makes it add characterization tests, a spike explicitly waives everything but PLAN, IMPLEMENT and REMEMBER.",
+      },
+      {
+        label: "Installed as skill plus agents",
+        body: "An npx installer copies the skill, the seven subagents and the /build-app command into a project's .claude or the global one. The plan and review phases default to a stronger model, the rest inherit; the iteration cap and loop-back rules live in one file.",
+      },
+    ],
+    highlights: [
+      "Each concern \u2014 tests, review, verification \u2014 is a hard checkpoint with its own agent, not an optional step",
+      "The orchestrator never edits feature code, so its context stays small enough to run the whole loop",
+      "Phases communicate only through BUILD_STATE.md, so any phase can be re-run alone",
+      "Tests that fail for the wrong reason bounce back to TEST instead of being counted as red",
+      "A test that would be edited to force a pass sends the run back rather than going green",
+      "Four iterations without a clean verify stops the loop and hands back to the operator",
+    ],
+    links: [{ url: "https://github.com/Srinivasan-78/agentic-app-loop", label: "View repo \u2197" }],
+  },
+  {
     slug: "authormark-watch",
     title: "Master Bot & Repository Supervisor",
     client: "Platform engineering",
@@ -451,6 +499,54 @@ export const PROJECTS: Project[] = [
     links: [
       { url: "https://github.com/Srinivasan-78/authormark-watch", label: "View repo ↗" },
     ],
+  },
+  {
+    slug: "cairn",
+    title: "Cairn",
+    client: "Platform engineering",
+    category: "Homelab",
+    status: "Active",
+    teaser:
+      "An offline-first knowledge and education server: Wikipedia, courses, maps, local AI and RAG, with the internet unplugged.",
+    tags: ["Offline-first", "Docker", "Self-hosted"],
+    stack: ["Docker", "Kiwix", "Ollama", "Qdrant", "Kolibri", "ProtoMaps", "Node.js"],
+    overview:
+      "A self-contained knowledge and education server, built as a derivative of Crosstalk Solutions' Project NOMAD under Apache-2.0 and rebranded so none of the upstream marks are reused. A management UI called the Command Center installs, configures and updates a set of containerised tools — offline Wikipedia and reference libraries through Kiwix, Khan Academy courses through Kolibri, regional maps through ProtoMaps, a data workbench through CyberChef, local notes, and a local AI chat with document upload and semantic search over Ollama and Qdrant. An internet connection is needed only during install and when you choose to pull new content; after that there is zero telemetry and nothing leaves the box.",
+    architecture: [
+      {
+        label: "Command Center over Docker",
+        body: "A management UI and API orchestrate every tool as its own container, handling install, configuration and updates so a deployment is one script rather than a dozen compose files. A Debian-based host is the only requirement; no desktop environment, everything is reached through the browser.",
+      },
+      {
+        label: "Offline by construction",
+        body: "Connectivity is tested against 1.1.1.1 first and falls back to endpoints the app already contacts, so a network that blocks Cloudflare is not misread as offline. The check endpoint is overridable by env var or from the UI, and the whole stack runs with the link down.",
+      },
+      {
+        label: "Local AI with retrieval",
+        body: "Chat runs against a local Ollama model or any OpenAI-compatible server such as LM Studio, with uploaded documents chunked into Qdrant for semantic search. The model can also be pointed at a separate GPU host without moving the rest of the stack.",
+      },
+      {
+        label: "Supply Depot",
+        body: "A one-click catalogue of extra apps — PDF tools, file browser, e-book library, password manager — plus a path to run your own custom containers alongside the managed ones.",
+      },
+      {
+        label: "Auto-updates with a dry run",
+        body: "Opt-in updates install only minor and patch versions of the Command Center, inside a configurable window, after a cool-off, and only when pre-flight disk and queue checks pass. An Ace command runs the entire decision pipeline — window wrap, cool-off, prerelease, disk — without ever triggering an update, and the deterministic scenario suite is safe to wire into CI.",
+      },
+      {
+        label: "Open by default",
+        body: "There is no authentication: Cairn is meant to be reached without hurdles on a trusted LAN, and access is controlled at the network layer. It is explicitly not built to face the internet.",
+      },
+    ],
+    highlights: [
+      "Runs with the internet unplugged — install and content downloads are the only online steps",
+      "Zero built-in telemetry; nothing is sent anywhere at runtime",
+      "Connectivity check falls back past a blocked 1.1.1.1 instead of declaring the box offline",
+      "Auto-update logic has a full dry-run mode and a deterministic scenario suite for CI",
+      "Honest about scope: no auth by design, and not intended to be exposed to the internet",
+      "Derivative of Project NOMAD (Apache-2.0), with upstream names, domains and services removed per §6",
+    ],
+    links: [{ url: "https://github.com/Srinivasan-78/cairn", label: "View repo ↗" }],
   },
   {
     slug: "zim-assistant",
@@ -906,6 +1002,55 @@ export const PROJECTS: Project[] = [
       "Integrated as the shrink/ compaction engine in the unified pi-image-tools suite",
     ],
     /* No public link — https://github.com/Srinivasan-78/pi-image-shrink is private. */
+    links: [],
+  },
+  {
+    slug: "local-photo-browser",
+    title: "Local Photo Browser",
+    client: "Utilities",
+    category: "Utility",
+    status: "Active",
+    teaser:
+      "Index a photo folder onto a USB drive, then browse it in an Apple-Photos-style grid that runs entirely in the browser.",
+    tags: ["Local-first", "SQLite", "Ollama"],
+    stack: ["Node.js", "node:sqlite", "sharp", "sql.js (WASM)", "Ollama", "WebP"],
+    overview:
+      "A two-part photo browser that never touches the internet at runtime. A Node.js CLI scans a source folder, reads EXIF, builds WebP thumbnails, optionally captions and tags each image with a local Ollama vision model, and writes everything to a portable .photoapp/ folder — SQLite plus thumbnails — on a USB drive. A dependency-free static viewer copied to the drive root reads that SQLite file in the browser through sql.js and gives an Apple-Photos-style grid with filters, sorting and a lightbox. Everything on the drive uses relative paths, so it works mounted at any drive letter.",
+    architecture: [
+      {
+        label: "Indexer and viewer, no server",
+        body: "The CLI produces the data; the viewer is HTML, CSS, JS and a sql.js WASM blob. The viewer makes zero network requests after load — queries run locally in WASM — and works from file:// or a bundled zero-dependency serve.js built on Node stdlib alone.",
+      },
+      {
+        label: "Built-in SQLite, no build step",
+        body: "Storage is the node:sqlite module, so there is no native compile: sharp ships prebuilt binaries and heic-convert is a pure-JS HEIF fallback. Requires Node 22.5 or newer.",
+      },
+      {
+        label: "Resumable and content-addressed",
+        body: "Every file is committed to SQLite before the next starts, so Ctrl+C and re-run is safe. Unchanged files are skipped on path plus mtime plus size without re-hashing; moved or duplicated content is matched on SHA-256 and reuses the existing thumbnails and row.",
+      },
+      {
+        label: "Tagging is optional and local",
+        body: "With a model configured, each image gets a caption and tags from Ollama over localhost; --skip-tagging does EXIF and thumbnails only, which is the recommended first pass. The only step that ever needs the internet is the one-time npm install.",
+      },
+      {
+        label: "Robust scan",
+        body: "Corrupt files are logged to a scan_errors table and skipped rather than crashing the batch. Formats cover JPEG, PNG, HEIC, WebP, TIFF and RAW, with RAW decoded from its embedded preview.",
+      },
+      {
+        label: "Viewer that scales",
+        body: "A windowed grid stays smooth past 50k items, with date-range, format and tag filters read from the database, sortable by date taken, date added or filename, and a lightbox showing the 1200px preview with caption, tags and EXIF.",
+      },
+    ],
+    highlights: [
+      "No backend anywhere — the viewer runs from file:// and queries SQLite in WASM",
+      "SQLite is the built-in node:sqlite module, so there is no native build step",
+      "Indexing is resumable and deduplicates moved or copied photos on SHA-256",
+      "AI captions and tags are optional and come from a local Ollama model over localhost",
+      "Everything on the USB uses relative paths, so it works at any mount point",
+      "The only online step is the one-time npm install; nothing else touches the network",
+    ],
+    /* No public link — the repository is private. */
     links: [],
   },
   {

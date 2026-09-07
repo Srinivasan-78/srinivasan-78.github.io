@@ -91,7 +91,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     followUps: [
       "Tell me about his work at Granite River Labs",
       "What tools does he use for CI/CD?",
-      "Explore all 20 platform builds",
+      "Explore all 23 platform builds",
     ],
     actionLink: {
       label: "Explore Selected Experience",
@@ -197,7 +197,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     followUps: [
       "How does the rollback mechanism work?",
       "What tools are in his DevOps stack?",
-      "Explore all 20 projects",
+      "Explore all 23 projects",
     ],
     actionLink: {
       label: "View Architecture Deep Dive",
@@ -314,7 +314,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
 // Conversational greetings & conversational fallbacks
 const GREETING_RESPONSE = {
   answer:
-    "Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), 20 open-source builds, and technical skills.",
+    "Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), 23 open-source builds, and technical skills.",
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
@@ -339,7 +339,7 @@ const THANKS_RESPONSE = {
 
 const OFF_TOPIC_RESPONSE = {
   answer:
-    "I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, 20 project builds, certifications, and work authorization. Here are some topics you might find helpful:",
+    "I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, 23 project builds, certifications, and work authorization. Here are some topics you might find helpful:",
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
