@@ -224,7 +224,7 @@ export default function MobileNavigation() {
         ref={triggerRef}
         type="button"
         className="nav-toggle mobile-nav__trigger"
-        aria-label={isOpen ? "Close navigation" : "Open navigation"}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
         aria-haspopup="dialog"
         onClick={() => (isOpen ? close() : open())}
