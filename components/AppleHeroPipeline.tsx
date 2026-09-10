@@ -86,16 +86,16 @@ export default function AppleHeroPipeline() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-[#34c759]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-[#6e6e73] dark:text-[#a1a1a6]">
+            <span className="text-xs font-mono uppercase tracking-widest text-[#5a5a5f] dark:text-[#a1a1a6]">
               Deployment Architecture Blueprint
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f] dark:text-white">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f] dark:text-white">
             How I Keep Releases Calm, Fast & Predictable
-          </h3>
+          </h2>
         </div>
 
-        <span className="text-xs text-[#6e6e73] dark:text-[#86868b] font-medium hidden sm:inline">
+        <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-medium hidden sm:inline">
           Click any step to explore how it works
         </span>
       </div>
@@ -113,20 +113,20 @@ export default function AppleHeroPipeline() {
               className={`p-4 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between ${
                 isSelected
                   ? "bg-white dark:bg-white/10 border-black/25 dark:border-white/30 shadow-md scale-[1.02]"
-                  : "bg-black/[0.02] dark:bg-white/[0.02] border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 opacity-75 hover:opacity-100"
+                  : "bg-black/[0.02] dark:bg-white/[0.02] border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b]">
+                <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
                   Step {step.stepNumber}
                 </span>
-                <Icon className={`w-4 h-4 ${isSelected ? "text-amber-600 dark:text-[#e5a93b]" : "text-[#86868b]"}`} />
+                <Icon className={`w-4 h-4 ${isSelected ? "text-amber-600 dark:text-[#e5a93b]" : "text-[#5a5a5f] dark:text-[#9b9ba1]"}`} />
               </div>
 
               <div className="font-bold text-sm text-[#1d1d1f] dark:text-white mb-1">
                 {step.title}
               </div>
-              <div className="text-[11px] text-[#6e6e73] dark:text-[#86868b] leading-snug">
+              <div className="text-[11px] text-[#5a5a5f] dark:text-[#9b9ba1] leading-snug">
                 {step.shortSummary}
               </div>
             </button>
@@ -146,7 +146,7 @@ export default function AppleHeroPipeline() {
               {activeStep.description}
             </p>
 
-            <div className="flex items-start gap-2 pt-2 text-xs text-[#6e6e73] dark:text-[#86868b]">
+            <div className="flex items-start gap-2 pt-2 text-xs text-[#5a5a5f] dark:text-[#9b9ba1]">
               <span className="font-semibold text-emerald-600 dark:text-[#34c759] whitespace-nowrap">
                 Safety Guarantee:
               </span>
@@ -155,7 +155,7 @@ export default function AppleHeroPipeline() {
           </div>
 
           <div className="flex flex-col gap-2 min-w-[200px] pt-2 md:pt-0 border-t md:border-t-0 md:border-l border-black/10 dark:border-white/10 md:pl-6">
-            <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider">
+            <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase tracking-wider">
               Tooling Stack
             </span>
             <div className="flex flex-wrap gap-1.5">

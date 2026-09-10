@@ -53,7 +53,7 @@ export default async function ProjectDetail({
   return (
     <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
       <div className="wrap pd-top py-12 px-6 max-w-5xl mx-auto">
-        <Link href="/projects" className="inline-flex items-center gap-2 text-xs font-mono text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors mb-8">
+        <Link href="/projects" className="inline-flex items-center gap-2 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white transition-colors mb-8">
           <FiArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Projects</span>
         </Link>
@@ -63,11 +63,11 @@ export default async function ProjectDetail({
             <span>{p.client} · {p.category}</span>
           </div>
           <SplitReveal as="h1" text={p.title} className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-4 text-[#1d1d1f] dark:text-white" />
-          <p className="text-base sm:text-xl text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-6 max-w-3xl">
+          <p className="text-base sm:text-xl text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-6 max-w-3xl">
             {p.teaser}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6]">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6]">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#34c759]" />
               Status: {p.status}
@@ -109,7 +109,7 @@ export default async function ProjectDetail({
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
               How it works
             </h2>
-            <p className="text-sm sm:text-base text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
               Core mechanics, failure recovery paths, and system design decisions.
             </p>
           </div>
@@ -199,7 +199,7 @@ export default async function ProjectDetail({
             <Link href="/contact" className="px-6 py-3 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg">
               Ask me about this project
             </Link>
-            <span className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono">Internal enterprise or private repository</span>
+            <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">Internal enterprise or private repository</span>
           </Reveal>
         )}
       </div>
@@ -219,14 +219,14 @@ export default async function ProjectDetail({
               >
                 <FiArrowLeft className="w-4 h-4 text-amber-600 dark:text-[#e5a93b] group-hover:-translate-x-1 transition-transform" />
                 <div>
-                  <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b] uppercase block">Previous Build</span>
+                  <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Previous Build</span>
                   <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{prevProject.title}</span>
                 </div>
               </Link>
 
               <Link
                 href="/projects"
-                className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-colors py-2 px-4 rounded-full bg-black/5 dark:bg-white/5"
+                className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white transition-colors py-2 px-4 rounded-full bg-black/5 dark:bg-white/5"
               >
                 Directory ({currentIndex + 1}/{PROJECTS.length})
               </Link>
@@ -236,7 +236,7 @@ export default async function ProjectDetail({
                 className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center justify-between sm:justify-end gap-3 text-right group"
               >
                 <div>
-                  <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b] uppercase block">Next Build</span>
+                  <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Next Build</span>
                   <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{nextProject.title}</span>
                 </div>
                 <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -266,7 +266,7 @@ export default async function ProjectDetail({
                     <div>
                       <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] uppercase tracking-wider block mb-2">{o.client}</span>
                       <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{o.title}</h3>
-                      <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-4 line-clamp-2">{o.teaser}</p>
+                      <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-4 line-clamp-2">{o.teaser}</p>
                     </div>
                     <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
                       <span>Overview</span>

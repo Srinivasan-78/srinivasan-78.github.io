@@ -44,7 +44,7 @@ export default function Page() {
       <header className="relative pt-16 pb-16 px-6 max-w-6xl mx-auto flex flex-col items-center text-center overflow-hidden">
 
         {/* Status Eyebrow */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-[#34c759]" />
           <span>Srinivasan Vijayaraghavan · DevOps & Cloud Architecture · Bangalore, IN</span>
         </div>
@@ -55,7 +55,7 @@ export default function Page() {
         </h1>
 
         {/* Calm, Grounded Description */}
-        <p className="text-lg sm:text-xl font-normal text-[#6e6e73] dark:text-[#86868b] max-w-3xl mx-auto leading-relaxed mb-8">
+        <p className="text-lg sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-3xl mx-auto leading-relaxed mb-8">
           Five years automating releases, cloud migrations, and disaster recovery across AWS and Azure. I design resilient systems so engineering teams can focus on building products, not fighting deployments.
         </p>
 
@@ -77,7 +77,7 @@ export default function Page() {
           </a>
           <Link
             href="/projects"
-            className="px-7 py-3.5 rounded-full bg-transparent text-[#6e6e73] hover:text-[#1d1d1f] dark:text-[#86868b] dark:hover:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
+            className="px-7 py-3.5 rounded-full bg-transparent text-[#5a5a5f] hover:text-[#1d1d1f] dark:text-[#9b9ba1] dark:hover:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
           >
             <span>Explore all {PROJECTS.length} builds</span>
             <FiArrowUpRight className="w-4 h-4" />
@@ -101,7 +101,7 @@ export default function Page() {
               <div className="text-3xl sm:text-4xl font-extrabold text-[#1d1d1f] dark:text-white tracking-tight font-mono mb-2">
                 <CountUp value={st.value} suffix={st.suffix} />
               </div>
-              <div className="text-xs font-medium text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+              <div className="text-xs font-medium text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
                 {st.label}
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function Page() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white mb-4">
             How I approach zero-downtime releases.
           </h2>
-          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+          <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             Every step is automated, measured, and verified before user traffic touches it. If something looks off, traffic reverts immediately.
           </p>
         </div>
@@ -149,11 +149,11 @@ export default function Page() {
               Things I&rsquo;ve built on the side.
             </h2>
 
-            <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg leading-relaxed">
+            <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed">
               Practical tools, deployment orchestrators, and browser utilities I use in my day-to-day workflow.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] justify-center md:justify-start">
+            <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] justify-center md:justify-start">
               <span>• {PROJECTS.length} Production Builds</span>
               <span>• Self-Healing Pipelines</span>
               <span>• Open Source Tools</span>
@@ -168,7 +168,7 @@ export default function Page() {
               <span>Explore All {PROJECTS.length} Projects</span>
               <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
             </Link>
-            <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b]">
+            <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
               Interactive filters, live demos & source code
             </span>
           </div>
@@ -189,7 +189,7 @@ export default function Page() {
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white mb-4">
             Let&rsquo;s build something dependable together.
           </h2>
-          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
             I&rsquo;m open to senior DevOps, Site Reliability Engineering, and Cloud Architecture roles. Let&rsquo;s talk about what your team is building.
           </p>
 
@@ -211,7 +211,7 @@ export default function Page() {
             </a>
           </div>
 
-          <div className="mt-8 text-xs text-[#6e6e73] dark:text-[#86868b] flex flex-wrap items-center justify-center gap-6">
+          <div className="mt-8 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] flex flex-wrap items-center justify-center gap-6">
             <span>✓ US Citizen (No visa sponsorship needed)</span>
             <span>✓ OCI Cardholder (India)</span>
             <span>✓ 5 Years Enterprise Cloud Track Record</span>

@@ -15,12 +15,12 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
 
         {/* Copyright & Location */}
-        <div className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono text-center md:text-left">
+        <div className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono text-center md:text-left">
           <span>© {currentYear} Srinivasan Vijayaraghavan · Bangalore, IN</span>
         </div>
 
         {/* Links Navigation */}
-        <div className="flex items-center gap-6 flex-wrap justify-center text-xs font-mono text-[#6e6e73] dark:text-[#86868b]">
+        <div className="flex items-center gap-6 flex-wrap justify-center text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
           <Link className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors" href="/projects">
             Projects
           </Link>

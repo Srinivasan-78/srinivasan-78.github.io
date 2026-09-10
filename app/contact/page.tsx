@@ -23,7 +23,7 @@ export default function Contact() {
 
       {/* 1. Human Hero Section */}
       <header className="pt-20 pb-16 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <span className="w-2 h-2 rounded-full bg-[#34c759]" />
           <span>Direct Contact · Bangalore, IN</span>
         </div>
@@ -32,7 +32,7 @@ export default function Contact() {
           Let&rsquo;s work together.
         </h1>
 
-        <p className="text-base sm:text-xl font-normal text-[#6e6e73] dark:text-[#86868b] max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed">
           Whether you&rsquo;re hiring for a senior DevOps or Cloud Architecture role, or want to talk through an infrastructure challenge, feel free to reach out.
         </p>
       </header>
@@ -46,7 +46,7 @@ export default function Contact() {
             <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2">
               Send a Message
             </h2>
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mb-8 leading-relaxed">
+            <p className="text-sm text-[#5a5a5f] dark:text-[#9b9ba1] mb-8 leading-relaxed">
               Fill in your details below. Messages go straight to my primary inbox.
             </p>
 
@@ -60,14 +60,14 @@ export default function Contact() {
             <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2.5 mb-2">
                 <FiClock className="w-4 h-4 text-emerald-600 dark:text-[#34c759]" />
-                <span className="text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#a1a1a6]">
+                <span className="text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#a1a1a6]">
                   Response Time
                 </span>
               </div>
               <div className="text-base font-bold text-[#1d1d1f] dark:text-white mb-1">
                 Typically responds within 24 hours
               </div>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
                 Available for interviews, technical consultations, and architecture discussions.
               </p>
             </div>
@@ -91,13 +91,13 @@ export default function Contact() {
                       <FiLinkedin className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] uppercase">LinkedIn</div>
+                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">LinkedIn</div>
                       <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#0066cc] dark:group-hover:text-[#2997ff] transition-colors">
                         srini-solution-architect
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono flex-shrink-0 ml-2">Connect ↗</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Connect ↗</span>
                 </a>
               </GlowCard>
 
@@ -114,13 +114,13 @@ export default function Contact() {
                       <FiGithub className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] uppercase">GitHub</div>
+                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">GitHub</div>
                       <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#0066cc] dark:group-hover:text-[#f5f5f7] transition-colors">
                         github.com/Srinivasan-78
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono flex-shrink-0 ml-2">Source ↗</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Source ↗</span>
                 </a>
               </GlowCard>
 
@@ -132,10 +132,10 @@ export default function Contact() {
                 <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-[#34c759]" />
                 <span>Work Authorization Status</span>
               </div>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-2">
+              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-2">
                 <strong>United States:</strong> US Citizen (Immediate hire, zero visa sponsorship required).
               </p>
-              <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
                 <strong>India:</strong> OCI Cardholder (Indefinite right to live and work in India).
               </p>
             </div>

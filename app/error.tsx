@@ -43,12 +43,12 @@ export default function AppError({
           Let&rsquo;s try that again.
         </h1>
 
-        <p className="text-base sm:text-lg text-[#6e6e73] dark:text-[#86868b] max-w-xl mx-auto leading-relaxed mb-4">
+        <p className="text-base sm:text-lg text-[#5a5a5f] dark:text-[#9b9ba1] max-w-xl mx-auto leading-relaxed mb-4">
           A client component encountered an unexpected error. Everything you had is safe.
         </p>
 
         {error.digest && (
-          <p className="text-xs font-mono text-[#86868b] mb-8">
+          <p className="text-xs font-mono text-[#9b9ba1] mb-8">
             Reference code: {error.digest}
           </p>
         )}
@@ -88,7 +88,7 @@ export default function AppError({
                     <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
                       {r.title}
                     </h2>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+                    <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
                       {r.body}
                     </p>
                   </div>

@@ -120,7 +120,7 @@ export default function ContactForm() {
 
         {/* Name Field */}
         <div>
-          <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b] mb-2">
+          <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#9b9ba1] mb-2">
             Your Name
           </label>
           <input
@@ -144,7 +144,7 @@ export default function ContactForm() {
 
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b] mb-2">
+          <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#9b9ba1] mb-2">
             Email Address
           </label>
           <input
@@ -169,10 +169,10 @@ export default function ContactForm() {
         {/* Message Field */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-[#6e6e73] dark:text-[#86868b]">
+            <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#9b9ba1]">
               Message
             </label>
-            <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b]">
+            <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
               {messageLength > 0 ? `${messageLength} chars (10 min)` : "10 min chars"}
             </span>
           </div>

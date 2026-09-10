@@ -67,7 +67,7 @@ export default function ProjectIndex() {
     >
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <FiLayers className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Platform Engineering & Open Source</span>
         </div>
@@ -76,12 +76,12 @@ export default function ProjectIndex() {
           Things I build for the craft of it.
         </h1>
 
-        <p className="text-base sm:text-xl font-normal text-[#6e6e73] dark:text-[#86868b] max-w-2xl mx-auto leading-relaxed mb-8">
+        <p className="text-base sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mb-8">
           {PROJECTS.length} platform orchestrators, deployment tools, and cloud utilities. Designed to solve real infrastructure problems and tested in production.
         </p>
 
         {/* Quick Stats Bar */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-[#6e6e73] dark:text-[#86868b] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#34c759]" />
             <span>{PROJECTS.length} Total Builds</span>
@@ -98,7 +98,7 @@ export default function ProjectIndex() {
         {/* Search Input & Category Filters */}
         <div className="max-w-3xl mx-auto space-y-4">
           <div className="relative">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#86868b]" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9b9ba1]" />
             <input
               type="text"
               value={searchQuery}
@@ -110,7 +110,7 @@ export default function ProjectIndex() {
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
               >
                 Clear
               </button>
@@ -134,13 +134,13 @@ export default function ProjectIndex() {
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
                     isSelected
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
-                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
                   }`}
                 >
                   <span>{cat}</span>
                   <span
                     className={`text-[10px] font-mono ${
-                      isSelected ? "opacity-75" : "text-[#86868b] dark:text-[#a1a1a6]"
+                      isSelected ? "" : "text-[#9b9ba1] dark:text-[#a1a1a6]"
                     }`}
                   >
                     {count}
@@ -210,18 +210,18 @@ export default function ProjectIndex() {
 
       {/* 3. Bento Project Matrix */}
       <section className="px-6 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6 text-xs text-[#6e6e73] dark:text-[#86868b] font-mono px-2">
+        <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
           <span>Showing {filteredProjects.length} builds</span>
           <span>Filter: {selectedCat}</span>
         </div>
 
         {filteredProjects.length === 0 ? (
           <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
-            <FiTerminal className="w-8 h-8 mx-auto text-[#86868b] mb-3" />
+            <FiTerminal className="w-8 h-8 mx-auto text-[#9b9ba1] mb-3" />
             <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
               No projects found matching &ldquo;{searchQuery}&rdquo;
             </h3>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+            <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] mb-4">
               Try searching for &ldquo;Docker&rdquo;, &ldquo;Ansible&rdquo;, &ldquo;Azure&rdquo;, or &ldquo;Python&rdquo;.
             </p>
             <button
@@ -252,7 +252,7 @@ export default function ProjectIndex() {
                         <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] uppercase tracking-wider">
                           {proj.category}
                         </span>
-                        <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6]">
+                        <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#a1a1a6]">
                           {proj.status === "Live" || proj.status === "Active" ? (
                             <span className="w-1.5 h-1.5 rounded-full bg-[#34c759]" />
                           ) : (
@@ -268,7 +268,7 @@ export default function ProjectIndex() {
                       </h2>
 
                       {/* Teaser */}
-                      <p className="text-xs sm:text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-6">
+                      <p className="text-xs sm:text-sm text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-6">
                         {proj.teaser}
                       </p>
 
@@ -313,7 +313,7 @@ export default function ProjectIndex() {
                             href={sourceLink.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[#6e6e73] hover:text-[#1d1d1f] dark:text-[#86868b] dark:hover:text-white transition-colors"
+                            className="inline-flex items-center gap-1 text-[#5a5a5f] hover:text-[#1d1d1f] dark:text-[#9b9ba1] dark:hover:text-white transition-colors"
                             title="View source code on GitHub"
                           >
                             <FiGithub className="w-3.5 h-3.5" />
@@ -340,7 +340,7 @@ export default function ProjectIndex() {
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
               Patches sent to other people&rsquo;s projects
             </h2>
-            <p className="text-sm text-[#6e6e73] dark:text-[#86868b] mt-2 max-w-2xl leading-relaxed">
+            <p className="text-sm text-[#5a5a5f] dark:text-[#9b9ba1] mt-2 max-w-2xl leading-relaxed">
               Forks where I fixed a bug or extended behaviour upstream and sent the change back as a pull request.
             </p>
           </div>
@@ -355,7 +355,7 @@ export default function ProjectIndex() {
                   <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] tracking-wider break-all">
                     {c.repo}
                   </span>
-                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6] whitespace-nowrap">
+                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#a1a1a6] whitespace-nowrap">
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
                         c.pr.state === "merged" ? "bg-[#a371f7]" : "bg-[#34c759]"
@@ -367,7 +367,7 @@ export default function ProjectIndex() {
                   </span>
                 </div>
 
-                <p className="text-xs sm:text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-4">
+                <p className="text-xs sm:text-sm text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-4">
                   {c.description}
                 </p>
 
@@ -402,7 +402,7 @@ export default function ProjectIndex() {
                       <FiExternalLink className="w-3 h-3" />
                     </a>
                   ) : (
-                    <span className="inline-flex items-center gap-1.5 text-[#6e6e73] dark:text-[#86868b]">
+                    <span className="inline-flex items-center gap-1.5 text-[#5a5a5f] dark:text-[#9b9ba1]">
                       <FiGithub className="w-3.5 h-3.5" />
                       <span>Upstream repository is private</span>
                     </span>
@@ -415,7 +415,7 @@ export default function ProjectIndex() {
       )}
 
       {/* 4. Footer Note */}
-      <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#6e6e73] dark:text-[#86868b] space-y-2 border-t border-black/10 dark:border-white/10 pt-10">
+      <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#5a5a5f] dark:text-[#9b9ba1] space-y-2 border-t border-black/10 dark:border-white/10 pt-10">
         <p>Built with care by Srinivasan Vijayaraghavan.</p>
         <p>
           Explore all repositories on{" "}

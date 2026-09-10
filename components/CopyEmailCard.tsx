@@ -35,7 +35,7 @@ export default function CopyEmailCard() {
             <FiMail className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <div className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] uppercase">
+            <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">
               Email Directly
             </div>
             <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors truncate">
@@ -48,7 +48,7 @@ export default function CopyEmailCard() {
           <button
             type="button"
             onClick={handleCopy}
-            className="p-2 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white transition-all flex items-center gap-1.5"
+            className="p-2 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white transition-all flex items-center gap-1.5"
             title="Copy email to clipboard"
           >
             {copied ? (

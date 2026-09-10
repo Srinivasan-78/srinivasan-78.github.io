@@ -173,6 +173,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        {/* GitHub Pages cannot set response headers, so the part of a CSP
+            that is honoured in a <meta> ships here. base-uri and object-src
+            are safe to lock fully; frame-ancestors, a strict script-src and
+            HSTS/COOP need a real header — see docs/deployment-headers.md. */}
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="base-uri 'none'; object-src 'none'"
+        />
+        {/* Plausible is the one cross-origin the page contacts, on every
+            route, immediately after hydration. */}
+        <link rel="preconnect" href="https://plausible.io" />
+        <link rel="dns-prefetch" href="https://plausible.io" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
