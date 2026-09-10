@@ -70,7 +70,9 @@ else changes — `deploy.yml` still runs `npm run build`, output still lands in
 `out/`; only the publish target moves. On Cloudflare Pages / Netlify, point the
 build output at `out` and drop the Pages-artifact steps.
 
-Create `public/_headers`:
+**`public/_headers` is already committed** — it copies to `out/_headers` on every
+build and is inert on GitHub Pages, so switching host is the only remaining step.
+Its contents:
 
 ```
 /*
