@@ -143,7 +143,7 @@ export default function AppleWorkAuthorization() {
             Authorized to work in the US and India.
           </h2>
 
-          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg mt-2 max-w-2xl leading-relaxed">
+          <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg mt-2 max-w-2xl leading-relaxed">
             Immediate hire eligibility across two primary tech hubs with zero employer visa sponsorship overhead.
           </p>
         </div>
@@ -158,22 +158,22 @@ export default function AppleWorkAuthorization() {
 
       {/* Global Timezone Sync Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 mb-8 text-xs font-mono">
-        <div className="flex items-center gap-2 text-[#6e6e73] dark:text-[#86868b]">
+        <div className="flex items-center gap-2 text-[#5a5a5f] dark:text-[#9b9ba1]">
           <FiClock className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Live Operations Clocks:</span>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-8">
           <div className="flex items-center gap-2">
-            <span className="text-[#6e6e73] dark:text-[#86868b]">🇺🇸 US Eastern (EST):</span>
+            <span className="text-[#5a5a5f] dark:text-[#9b9ba1]">🇺🇸 US Eastern (EST):</span>
             <span className="font-bold text-[#1d1d1f] dark:text-white">{times.est}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[#6e6e73] dark:text-[#86868b]">🇮🇳 India (IST):</span>
+            <span className="text-[#5a5a5f] dark:text-[#9b9ba1]">🇮🇳 India (IST):</span>
             <span className="font-bold text-[#1d1d1f] dark:text-white">{times.ist}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[#6e6e73] dark:text-[#86868b]">🌐 UTC:</span>
+            <span className="text-[#5a5a5f] dark:text-[#9b9ba1]">🌐 UTC:</span>
             <span className="font-bold text-[#1d1d1f] dark:text-white">{times.utc}</span>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function AppleWorkAuthorization() {
                       <div className="font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
                         {item.title}
                       </div>
-                      <div className="text-xs text-[#6e6e73] dark:text-[#86868b] font-mono">
+                      <div className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">
                         {item.badge}
                       </div>
                     </div>
@@ -268,7 +268,7 @@ export default function AppleWorkAuthorization() {
               {/* Grid: Supported Regions & Engagement Models */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-black/10 dark:border-white/10">
                 <div>
-                  <div className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                     <FiMapPin className="w-3.5 h-3.5" />
                     <span>Primary Target Regions</span>
                   </div>
@@ -285,7 +285,7 @@ export default function AppleWorkAuthorization() {
                 </div>
 
                 <div>
-                  <div className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                     <FiFileText className="w-3.5 h-3.5" />
                     <span>Eligible Contracting Models</span>
                   </div>

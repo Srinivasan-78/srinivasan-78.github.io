@@ -165,7 +165,7 @@ export default function AppleEnterpriseExperience() {
             Systems I&rsquo;ve built and scaled.
           </h2>
 
-          <p className="text-[#6e6e73] dark:text-[#86868b] text-base sm:text-lg mt-2 max-w-2xl leading-relaxed">
+          <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg mt-2 max-w-2xl leading-relaxed">
             Six key initiatives across Thomson Reuters and Granite River Labs, from high-throughput Azure storage migrations to automated smart home test harnesses.
           </p>
         </div>
@@ -195,11 +195,11 @@ export default function AppleEnterpriseExperience() {
               className={`px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${
                 isSelected
                   ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-[1.02]"
-                  : "bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] hover:bg-black/5 dark:bg-[#09090c]/80 dark:text-[#86868b] dark:hover:text-white dark:hover:bg-white/5 border border-black/10 dark:border-white/10"
+                  : "bg-[#f5f5f7] text-[#5a5a5f] hover:text-[#1d1d1f] hover:bg-black/5 dark:bg-[#09090c]/80 dark:text-[#9b9ba1] dark:hover:text-white dark:hover:bg-white/5 border border-black/10 dark:border-white/10"
               }`}
             >
               <span>{comp}</span>
-              <span className="text-[10px] font-mono opacity-75">({count})</span>
+              <span className="text-[10px] font-mono">({count})</span>
             </button>
           );
         })}
@@ -237,7 +237,7 @@ export default function AppleEnterpriseExperience() {
                   </div>
 
                   {/* Summary */}
-                  <p className="text-xs sm:text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed mb-6">
+                  <p className="text-xs sm:text-sm text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-6">
                     {item.summary}
                   </p>
 
@@ -256,7 +256,7 @@ export default function AppleEnterpriseExperience() {
 
                 {/* Footer Link / Action */}
                 <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold">
-                  <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b]">
+                  <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
                     {item.category}
                   </span>
 
@@ -271,7 +271,7 @@ export default function AppleEnterpriseExperience() {
                       <FiExternalLink className="w-3.5 h-3.5" />
                     </a>
                   ) : (
-                    <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b] flex items-center gap-1">
+                    <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] flex items-center gap-1">
                       <span>Enterprise Production</span>
                     </span>
                   )}

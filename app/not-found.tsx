@@ -31,7 +31,7 @@ export default function NotFound() {
       <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center">
 
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <span>Error 404 · Page Not Found</span>
         </div>
 
@@ -40,7 +40,7 @@ export default function NotFound() {
           Let&rsquo;s get you back on track.
         </h1>
 
-        <p className="text-base sm:text-lg text-[#6e6e73] dark:text-[#86868b] max-w-xl mx-auto leading-relaxed mb-12">
+        <p className="text-base sm:text-lg text-[#5a5a5f] dark:text-[#9b9ba1] max-w-xl mx-auto leading-relaxed mb-12">
           That link seems to point somewhere that no longer exists. Here are the main sections ready for you:
         </p>
 
@@ -61,7 +61,7 @@ export default function NotFound() {
                     <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
                       {r.title}
                     </h2>
-                    <p className="text-xs sm:text-sm text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
                       {r.body}
                     </p>
                   </div>

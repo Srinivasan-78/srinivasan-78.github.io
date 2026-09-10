@@ -27,7 +27,7 @@ export default function Terms() {
             <span>Legal & Terms</span>
           </div>
           <SplitReveal as="h1" text="Terms of Use" className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-2 text-[#1d1d1f] dark:text-white" />
-          <p className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b]">Last updated: {UPDATED}</p>
+          <p className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">Last updated: {UPDATED}</p>
         </div>
 
         <p className="text-base sm:text-lg leading-relaxed text-[#424245] dark:text-[#a1a1a6]">

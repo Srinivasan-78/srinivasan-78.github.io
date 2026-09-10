@@ -59,7 +59,7 @@ export default function CertIndex() {
     >
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#6e6e73] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
           <FiAward className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Continuous Learning & Verification</span>
         </div>
@@ -68,12 +68,12 @@ export default function CertIndex() {
           Certifications & verified skills.
         </h1>
 
-        <p className="text-base sm:text-xl font-normal text-[#6e6e73] dark:text-[#86868b] max-w-2xl mx-auto leading-relaxed mb-8">
+        <p className="text-base sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mb-8">
           24 verified industry credentials covering cloud platforms (AWS & Azure), automation (Ansible & IaC), Linux systems, and observability. Every credential links to its official permanent verification ID.
         </p>
 
         {/* Yearly Growth Timeline Counters */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-mono text-[#6e6e73] dark:text-[#86868b] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
           <div className="flex items-center gap-1.5">
             <FiCalendar className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
             <span>2026 ({yearBreakdown["2026"]})</span>
@@ -93,7 +93,7 @@ export default function CertIndex() {
         {/* Search & Category Filter Matrix */}
         <div className="max-w-3xl mx-auto space-y-4">
           <div className="relative">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#86868b]" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9b9ba1]" />
             <input
               type="text"
               value={searchQuery}
@@ -105,7 +105,7 @@ export default function CertIndex() {
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
               >
                 Clear
               </button>
@@ -123,13 +123,13 @@ export default function CertIndex() {
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
                     isSelected
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
-                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#6e6e73] dark:text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white"
+                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
                   }`}
                 >
                   <span>{r.label}</span>
                   <span
                     className={`text-[10px] font-mono ${
-                      isSelected ? "opacity-75" : "text-[#86868b] dark:text-[#a1a1a6]"
+                      isSelected ? "" : "text-[#9b9ba1] dark:text-[#a1a1a6]"
                     }`}
                   >
                     {counts[r.id]}
@@ -143,18 +143,18 @@ export default function CertIndex() {
 
       {/* 2. Credentials Bento Grid */}
       <section className="px-6 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6 text-xs text-[#6e6e73] dark:text-[#86868b] font-mono px-2">
+        <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
           <span>Showing {filteredCerts.length} verified credentials</span>
           <span>Issuer: LinkedIn Learning</span>
         </div>
 
         {filteredCerts.length === 0 ? (
           <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
-            <FiAward className="w-8 h-8 mx-auto text-[#86868b] mb-3" />
+            <FiAward className="w-8 h-8 mx-auto text-[#9b9ba1] mb-3" />
             <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
               No certifications found matching &ldquo;{searchQuery}&rdquo;
             </h3>
-            <p className="text-xs text-[#6e6e73] dark:text-[#86868b] mb-4">
+            <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] mb-4">
               Try searching for &ldquo;Azure&rdquo;, &ldquo;Ansible&rdquo;, &ldquo;Chef&rdquo;, or &ldquo;Puppet&rdquo;.
             </p>
             <button
@@ -179,7 +179,7 @@ export default function CertIndex() {
                       <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-sm dark:shadow-none">
                         <FiAward className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-mono text-[#6e6e73] dark:text-[#86868b]">
+                      <span className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
                         {cert.date}
                       </span>
                     </div>
@@ -206,7 +206,7 @@ export default function CertIndex() {
 
                   {/* Verification CTA */}
                   <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold">
-                    <span className="text-[11px] font-mono text-[#6e6e73] dark:text-[#86868b] flex items-center gap-1">
+                    <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] flex items-center gap-1">
                       <FiCheckCircle className="w-3.5 h-3.5 text-[#34c759]" />
                       Verified ID
                     </span>
@@ -230,7 +230,7 @@ export default function CertIndex() {
       </section>
 
       {/* 3. Footer */}
-      <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#6e6e73] dark:text-[#86868b] border-t border-black/10 dark:border-white/10 pt-10">
+      <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#5a5a5f] dark:text-[#9b9ba1] border-t border-black/10 dark:border-white/10 pt-10">
         <p>
           All 24 certifications are official credentials issued by LinkedIn Learning and verified with permanent certificate IDs.
         </p>

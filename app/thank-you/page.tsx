@@ -41,7 +41,7 @@ export default function ThankYou() {
           Thank you for reaching out.
         </h1>
 
-        <p className="text-base sm:text-lg text-[#6e6e73] dark:text-[#86868b] max-w-xl mx-auto leading-relaxed mb-12">
+        <p className="text-base sm:text-lg text-[#5a5a5f] dark:text-[#9b9ba1] max-w-xl mx-auto leading-relaxed mb-12">
           Your message has landed in my primary inbox. I read every email and typically reply within 24–48 hours.
         </p>
 
@@ -68,7 +68,7 @@ export default function ThankYou() {
                     <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
                       {n.title}
                     </h2>
-                    <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed">
+                    <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
                       {n.body}
                     </p>
                   </div>

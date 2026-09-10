@@ -166,7 +166,7 @@ export default function ChatWidget() {
                 e.stopPropagation();
                 setShowNudge(false);
               }}
-              className="text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white p-1 rounded-md transition-colors"
+              className="text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white p-1 rounded-md transition-colors"
               aria-label="Dismiss suggestion"
             >
               <FiX className="w-3.5 h-3.5" />
@@ -266,7 +266,7 @@ export default function ChatWidget() {
             {turns.length > 0 ? (
               <button
                 type="button"
-                className="chat-reset text-xs font-mono text-[#6e6e73] hover:text-[#1d1d1f] dark:hover:text-white px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 transition-colors"
+                className="chat-reset text-xs font-mono text-[#5a5a5f] hover:text-[#1d1d1f] dark:hover:text-white px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 transition-colors"
                 onClick={() => {
                   clearTimer();
                   setTurns([]);
@@ -278,7 +278,7 @@ export default function ChatWidget() {
               </button>
             ) : null}
           </div>
-          <p className="text-xs text-[#6e6e73] dark:text-[#86868b] leading-relaxed mt-1">
+          <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mt-1">
             Instant verified answers about experience, US work status, 20 builds & skills.
           </p>
         </header>
@@ -329,7 +329,7 @@ export default function ChatWidget() {
           {/* Initial starter suggestions */}
           {turns.length === 0 && (
             <div className="space-y-2 pt-2">
-              <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider block">
+              <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase tracking-wider block">
                 Popular questions:
               </span>
               <div className="chat-suggestions">
@@ -350,7 +350,7 @@ export default function ChatWidget() {
           {/* Follow-up suggestion pills from the most recent assistant turn */}
           {turns.length > 0 && !busy && lastAssistantTurn?.followUps && (
             <div className="pt-2">
-              <span className="text-[10px] font-mono text-[#6e6e73] dark:text-[#86868b] uppercase tracking-wider block mb-2">
+              <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase tracking-wider block mb-2">
                 Suggested follow-ups:
               </span>
               <div className="chat-suggestions">
