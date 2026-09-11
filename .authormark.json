@@ -5,5 +5,13 @@
   "year": 2026,
   "license": "MIT",
   "keyFile": "~/.authormark.key",
-  "ignore": ["next-env.d.ts", ".github", "docs", "*.svg", "out", ".next"]
+  "ignore": [
+    "next-env.d.ts",
+    ".github",
+    "docs",
+    "*.svg",
+    "out",
+    ".next",
+    "REUSE.toml"
+  ]
 }
