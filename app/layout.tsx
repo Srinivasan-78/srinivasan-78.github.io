@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌​​​​‌​‌‌​​​​‌​‌​​‌​‌‌​‌‌​​‌‌​​‌‌‌​​‌‌​‌‌​‌​‌​​​‌​‌‌​‌​‌‌‌‌​​​​‌‌‌‌​‌​​‌‌​‌‌​​​‌‌​​‌‌​​‌‌​‌‌​​​​‌‌​​​‌​‌‌​‌​‌‌​‌​​​​‌‌​‌‌​​‌​‌​‌​​​​‌​​‌​​‌‌​​​​‌‌‌​​‌​‌‌​​‌‌​​‌​​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌​‌​‌​​‌‌‌‌​​​​‌‌​‌‌‌​​‌‌‌​‌​‌​‌‌​​​‌‌​‌​​‌‌​​​‌‌‌​‌​​​‌‌​​‌​‌​​‌‌​‌‌‌​‌​‌‌​​‌​​‌‌‌​​‌​‌​​‌‌‌‌​‌‌​​‌‌​​‌​‌‌‌‌‌​‌​​‌‌​​​​‌‌​‌‌‌​‌​‌​​​​​‌‌​‌‌​‌​‌​​​​​‌​‌​‌​‌​‌​‌​​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.LaaKfsj-xzlfl1kCeBL9fK
+ * Fingerprint: AMK1.GjxnucLte7Y9Of_L7PmAUB
  */
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";

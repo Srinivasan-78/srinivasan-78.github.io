@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌​‌​​‌​​‌‌‌‌​‌​​​‌‌‌​‌​​​‌‌‌​​‌‌​‌‌‌​‌​​‌​​‌​‌​‌‌‌‌‌​​‌‌​‌​​​​‌​‌‌​‌​‌‌‌‌​​‌​‌‌​‌‌‌‌​‌‌​​‌​​​​‌‌​‌‌​​‌‌​‌‌‌​​​‌‌​​‌‌​‌​​​​​‌​‌​​‌​‌‌​​‌‌​​​‌​‌‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌​​​‌‌‌​​‌​‌‌‌‌​​‌​‌​​‌​​​​‌‌‌​​‌​​‌‌‌​‌‌​​‌‌​‌​‌‌​‌‌‌​‌‌​​​‌‌​​‌​​‌‌‌​​‌​​‌‌‌​​‌‌​​‌‌​‌‌​​‌‌​‌​​​​​‌​‌‌​‌​​‌‌​​‌‌​‌​​​‌​​​‌‌‌​‌​​​‌​​‌​‌​​‌​‌‌​‌​​‌​‌​‌​​​‌​​​‌‌‌​‌​​‌‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.snnJOGG7I_4-yod6n3AK1x
+ * Fingerprint: AMK1.29yHrvkv2rs6h-3DtJZTGN
  */
 "use client";
 
