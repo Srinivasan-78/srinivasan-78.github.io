@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​‌‌​​​‌‌​‌‌​‌​‌‌​​‌‌​​‌​​‌​​‌​​‌​‌‌​‌‌‌‌​‌‌​‌‌​​​‌​‌​‌​​​‌​‌​‌​‌​‌​​‌‌​​​‌‌​‌‌​‌​​‌‌​​​‌​‌‌‌‌​​‌​‌‌​‌‌‌‌​‌‌​​​‌‌​‌‌​​​‌​​​‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​​​​​‌‌‌​​​​​‌​​​​‌​​‌​​​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​‌‌​​​​‌​‌​‌​​​‌​‌​​​‌‌‌​​‌‌‌​​​​‌​‌​‌​‌​‌‌​‌​​​​‌‌​​‌​‌​‌​​​‌​‌​‌‌​​​‌​​‌​​​​​‌​‌​​‌‌‌‌​‌​​‌​​‌​​‌‌​​‌‌​‌​‌‌‌‌‌​‌​‌​‌‌‌​​‌‌​​‌‌​‌‌​‌​‌‌​‌​​‌​​‌​​‌‌​‌​​​‌‌‌​‌‌​​‌​​‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1._ck2IolTULm1yocb7sPpBE
+ * Fingerprint: AMK1.xaQG8UheEbAOI3_W3kI4vI
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
