@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌‌​‌​​‌‌‌​​‌‌‌​​‌‌​‌​‌‌​‌​​‌​‌‌‌‌‌​‌‌‌​​​‌​‌​​‌‌​‌​‌​​‌‌​‌​‌​‌​​​‌​‌​‌​‌​‌​‌​​‌‌​​​‌​​​‌​‌​​‌‌​‌‌​​‌‌‌​​​​​​‌‌‌​​‌​‌​​‌​​‌​‌‌‌​​​‌​‌​‌​‌‌‌​‌‌​​‌‌​​‌​‌​​‌‌​‌​‌​‌​‌​‌‌​​​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌​​‌‌‌​​‌‌​​‌‌​​​‌‌​​‌‌​‌​‌​​‌​​‌‌​‌​‌​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌​​​​‌‌​​‌​​‌‌‌​‌​‌​‌‌​‌‌​‌​​‌‌​‌‌‌​​‌‌​​‌‌​​‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌‌​​‌​​​​‌‌​​‌‌​​​​​‌​​‌‌​​​​‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.wNsZ_qMMQULE6p9IqWfSUc
+ * Fingerprint: AMK1.vNf3RjPMnL2um73-nNC0L1
  */
 "use client";
 
@@ -22,6 +22,16 @@ import {
   FiTerminal,
   FiZap,
 } from "react-icons/fi";
+
+/* The two builds that lead the index, in order. Kept as slugs rather than a
+   flag on the project so the running order is one edit in one place, and a
+   slug that no longer exists simply drops out instead of rendering an empty
+   card. */
+const FEATURED_SLUGS = ["self-healing-deployment", "repo2graph"];
+const FEATURED_LABELS = [
+  "Featured Flagship Build",
+  "Highlighted Build — AI & Code Intelligence",
+];
 
 export default function ProjectIndex() {
   const [selectedCat, setSelectedCat] = useState<string>("All");
@@ -55,8 +65,12 @@ export default function ProjectIndex() {
     });
   }, [selectedCat, searchQuery]);
 
-  const featuredProject = PROJECTS.find(
-    (p) => p.slug === "self-healing-deployment"
+  const featuredProjects = useMemo(
+    () =>
+      FEATURED_SLUGS.map((slug) => PROJECTS.find((p) => p.slug === slug)).filter(
+        (p): p is (typeof PROJECTS)[number] => Boolean(p)
+      ),
+    []
   );
 
   return (
@@ -152,59 +166,75 @@ export default function ProjectIndex() {
         </div>
       </header>
 
-      {/* 2. Flagship Featured Highlight (Shown when filter is "All" and no search) */}
-      {selectedCat === "All" && !searchQuery && featuredProject && (
-        <section className="px-6 max-w-6xl mx-auto mb-12">
-          <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/15 dark:border-white/15 backdrop-blur-xl shadow-xl relative overflow-hidden">
-            <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
-              <div className="space-y-4 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-[#e5a93b] text-xs font-mono font-medium">
-                  <FiZap className="w-3.5 h-3.5" />
-                  <span>Featured Flagship Build</span>
-                </div>
+      {/* 2. Featured Highlights (Shown when filter is "All" and no search) */}
+      {selectedCat === "All" && !searchQuery && featuredProjects.length > 0 && (
+        <section className="px-6 max-w-6xl mx-auto mb-12 space-y-6">
+          {featuredProjects.map((featuredProject, i) => {
+            /* The first card carries an external link when the project has a
+               live demo; the second falls back to its primary repo link, so a
+               build with no hosted demo still gets a one-click route out. */
+            const externalHref =
+              featuredProject.demo ?? featuredProject.links[0]?.url;
+            const externalLabel = featuredProject.demo
+              ? "Launch Live Demo"
+              : featuredProject.links[0]?.label.replace(/\s*↗$/, "");
 
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
-                  {featuredProject.title}
-                </h2>
+            return (
+              <div
+                key={featuredProject.slug}
+                className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/15 dark:border-white/15 backdrop-blur-xl shadow-xl relative overflow-hidden"
+              >
+                <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
+                  <div className="space-y-4 max-w-2xl">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-[#e5a93b] text-xs font-mono font-medium">
+                      <FiZap className="w-3.5 h-3.5" />
+                      <span>{FEATURED_LABELS[i] ?? "Highlighted Build"}</span>
+                    </div>
 
-                <p className="text-sm sm:text-base text-[#424245] dark:text-[#a1a1a6] leading-relaxed">
-                  {featuredProject.overview}
-                </p>
+                    <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
+                      {featuredProject.title}
+                    </h2>
 
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {featuredProject.stack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-[#a1a1a6]"
+                    <p className="text-sm sm:text-base text-[#424245] dark:text-[#a1a1a6] leading-relaxed">
+                      {featuredProject.overview}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {featuredProject.stack.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-[#a1a1a6]"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0 pt-2 lg:pt-0">
+                    {externalHref && (
+                      <a
+                        href={externalHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-7 py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
+                      >
+                        <span>{externalLabel}</span>
+                        <FiExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
+                    <Link
+                      href={`/projects/${featuredProject.slug}`}
+                      className="px-7 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 text-[#1d1d1f] dark:text-white border border-black/10 dark:border-white/10 font-semibold text-sm transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
                     >
-                      {tech}
-                    </span>
-                  ))}
+                      <span>System Architecture</span>
+                      <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+                    </Link>
+                  </div>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0 pt-2 lg:pt-0">
-                {featuredProject.demo && (
-                  <a
-                    href={featuredProject.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-7 py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
-                  >
-                    <span>Launch Live Demo</span>
-                    <FiExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-                <Link
-                  href={`/projects/${featuredProject.slug}`}
-                  className="px-7 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 text-[#1d1d1f] dark:text-white border border-black/10 dark:border-white/10 font-semibold text-sm transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
-                >
-                  <span>System Architecture</span>
-                  <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
-                </Link>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </section>
       )}
 

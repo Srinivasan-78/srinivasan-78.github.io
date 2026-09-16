@@ -1,10 +1,17 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌​​‌​‌​‌‌‌​‌‌​​​​‌​‌​‌‌‌‌‌​‌‌‌​​‌‌​‌‌​​‌​‌​‌‌​​​‌‌​‌‌​‌​​​​‌​​​‌​​​‌‌​​​‌​​‌​​​‌​‌​‌​‌‌​‌​​‌‌​‌‌​​​‌​‌​​​​​​‌‌​‌​​​​‌‌​‌‌​​‌‌​‌‌‌‌​‌‌​‌​​‌​‌‌‌‌​​​​‌‌​‌‌​​​‌​​‌‌​​​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌​​‌‌​​‌​‌​‌​​​‌‌​​‌​​​‌​‌​​‌‌​​​​​‌‌​​​‌‌​‌‌​‌​​‌​‌​‌​​​​​‌​​​‌​‌​​‌‌​‌​‌​‌‌​‌‌‌​​‌​​​‌​‌​‌‌‌​‌​​​​‌‌​‌​​​‌​​​‌‌​​‌​‌‌​​‌​​‌‌‌​​​​‌​​​‌​​​‌​‌​‌‌‌​‌‌​​‌‌‌​‌‌‌​‌‌​​‌‌​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.2Wa_sechDbEZlP46oixlLP
+ * Fingerprint: AMK1.neFE0ciPE5nEt4FY8DWgvf
  */
+import { PROJECTS } from "./projects";
+
+/* The assistant quotes a build count in several answers. Reading it off
+   PROJECTS means adding a project cannot leave the chat widget claiming a
+   number that stopped being true. */
+const PROJECT_COUNT = PROJECTS.length;
+
 export interface KnowledgeEntry {
   id: string;
   category: "identity" | "experience" | "projects" | "skills" | "authorization" | "certifications" | "contact" | "general";
@@ -91,7 +98,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     followUps: [
       "Tell me about his work at Granite River Labs",
       "What tools does he use for CI/CD?",
-      "Explore all 23 platform builds",
+      `Explore all ${PROJECT_COUNT} platform builds`,
     ],
     actionLink: {
       label: "Explore Selected Experience",
@@ -197,7 +204,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     followUps: [
       "How does the rollback mechanism work?",
       "What tools are in his DevOps stack?",
-      "Explore all 23 projects",
+      `Explore all ${PROJECT_COUNT} projects`,
     ],
     actionLink: {
       label: "View Architecture Deep Dive",
@@ -221,7 +228,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /devops\s+skills/i,
     ],
     answer:
-      "Srinivasan's primary technical domains include:\n• Cloud Platforms: Microsoft Azure, Amazon Web Services (AWS)\n• Infrastructure as Code & Config: Terraform, Ansible, Chef, Puppet\n• Containers & Orchestration: Docker, Kubernetes, Containerd, Helm\n• CI/CD Automation: GitHub Actions, GitLab CI, Azure Pipelines, Jenkins\n• Languages & Scripting: Python, Bash, Node.js/TypeScript, Rust\n• Observability: Datadog, Prometheus, Grafana, CloudWatch, ELK",
+      "Srinivasan's primary technical domains include:\n• AI, LLM & MCP: Model Context Protocol servers, GraphRAG retrieval, agentic workflows, multi-provider LLM routing, token/context engineering\n• Cloud Platforms: Microsoft Azure, Amazon Web Services (AWS)\n• Infrastructure as Code & Config: Terraform, Ansible, Chef, Puppet\n• Containers & Orchestration: Docker, Kubernetes, Containerd, Helm\n• CI/CD Automation: GitHub Actions, GitLab CI, Azure Pipelines, Jenkins\n• Languages & Scripting: Python, Bash, Node.js/TypeScript, Rust\n• Observability: Datadog, Prometheus, Grafana, CloudWatch, ELK",
     followUps: [
       "What certifications does he have in AWS/Azure?",
       "What is his experience with Kubernetes?",
@@ -230,6 +237,37 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     actionLink: {
       label: "Explore Skills Workbench",
       url: "/#skills",
+    },
+  },
+
+  // 9b. AI, LLM & MCP engineering
+  {
+    id: "ai_llm_mcp",
+    category: "skills",
+    keywords: [
+      "ai", "llm", "llms", "mcp", "model context protocol", "rag", "graphrag", "retrieval",
+      "agent", "agents", "agentic", "subagent", "claude", "anthropic", "openai", "gemini",
+      "embedding", "embeddings", "vector", "tokens", "token", "context window", "tree-sitter",
+      "repo2graph", "tokenmiser", "prompt", "genai"
+    ],
+    patterns: [
+      /\bmcp\b/i,
+      /model\s+context\s+protocol/i,
+      /\b(ai|llm|genai)\b\s+(skills?|experience|work)/i,
+      /graph\s*rag|retrieval\s+augmented/i,
+      /token\s+(reduction|cost|budget|usage)/i,
+      /agentic/i,
+    ],
+    answer:
+      "Srinivasan builds AI infrastructure, not AI demos. repo2graph is his flagship here: a GraphRAG engine that parses a codebase with tree-sitter into a graph of files, functions, calls and inheritance, then serves retrieval over it to AI agents as an MCP server — five read-only tools over stdio or authenticated HTTP (bearer token or OIDC), installable in Claude Code, Claude Desktop or Cursor with one command, and published to PyPI, the GitHub Marketplace and the MCP Registry. Token budgets are enforced rather than requested: a 12,000-token ceiling re-measured after rendering, capped neighbour rows, and every retrieved block stamped with its file and line range. Alongside it sit tokenmiser (context and token-cost reduction for Claude Code), Agentic App Loop (a seven-phase build loop of bounded subagents), and Multi-AI Toolkit (parallel subtask routing with failover across five LLM providers).",
+    followUps: [
+      "Tell me about repo2graph",
+      "How does he reduce LLM token costs?",
+      "What tools are in his DevOps stack?",
+    ],
+    actionLink: {
+      label: "View repo2graph Architecture",
+      url: "/projects/repo2graph",
     },
   },
 
@@ -314,7 +352,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
 // Conversational greetings & conversational fallbacks
 const GREETING_RESPONSE = {
   answer:
-    "Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), 23 open-source builds, and technical skills.",
+    `Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), ${PROJECT_COUNT} open-source builds, and technical skills.`,
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
@@ -339,7 +377,7 @@ const THANKS_RESPONSE = {
 
 const OFF_TOPIC_RESPONSE = {
   answer:
-    "I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, 23 project builds, certifications, and work authorization. Here are some topics you might find helpful:",
+    `I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, ${PROJECT_COUNT} project builds, certifications, and work authorization. Here are some topics you might find helpful:`,
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
