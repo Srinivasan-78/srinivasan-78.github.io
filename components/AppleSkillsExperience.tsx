@@ -1,13 +1,14 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌‌​​‌‌‌​‌​​​‌‌​​​‌‌‌​​‌​‌‌‌​‌‌​​‌​​​‌​‌​‌​‌​‌‌​​‌​​‌‌​​​​‌‌​‌​​​‌‌‌​​‌​​‌​‌​​​‌​‌​​‌‌​‌​‌‌‌‌​‌​​‌‌‌​‌‌​​​‌‌‌​​‌​‌‌​‌​​​​‌​‌‌​​‌​‌​​‌​​‌​​‌‌​‌‌‌​‌​​​‌​‌​‌​‌​​​​​‌​​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌​​​‌​​​‌‌​‌​‌​​‌​​​‌​‌​​‌‌​‌​‌​‌‌‌​‌‌​​‌‌​​‌​​​‌​‌‌​​​​​‌‌​‌‌‌​​‌‌​‌‌​​‌‌‌​​​​​‌‌‌‌​‌​​‌​​​​‌​​‌​‌​​​​​‌​​‌​​​​‌​​​​​‌​​‌‌​​​‌​​‌‌​‌​‌​‌​‌​​​​​​‌‌​‌​‌​‌‌​‌‌​‌​‌‌​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.rgF9vEVL4rQMzv9hYI7EPH
+ * Fingerprint: AMK1.cDjE5vdX76pzBPHA15P5mk
  */
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import GlowCard from "./ui/GlowCard";
 import {
   FiGitBranch,
@@ -18,6 +19,8 @@ import {
   FiCheckCircle,
   FiLayers,
   FiCpu,
+  FiBox,
+  FiArrowUpRight,
 } from "react-icons/fi";
 
 type SkillDetail = {
@@ -27,6 +30,10 @@ type SkillDetail = {
   productionContext: string;
   highlight: string;
   tenure: string;
+  /* The build that demonstrates this skill, when one of the open-source
+     projects does. The inspector card turns it into a link, so a claim in the
+     workbench can be checked against real code rather than taken on trust. */
+  project?: { slug: string; title: string };
 };
 
 type DomainCluster = {
@@ -38,6 +45,70 @@ type DomainCluster = {
 };
 
 const SKILL_DOMAINS: DomainCluster[] = [
+  {
+    id: "ai",
+    label: "AI, LLM & MCP",
+    icon: FiCpu,
+    description:
+      "Model Context Protocol servers, graph-backed retrieval, and the context engineering that keeps an agent's token bill bounded.",
+    primarySkills: [
+      {
+        name: "Model Context Protocol (MCP)",
+        category: "AI, LLM & MCP",
+        role: "Agent Tooling Protocol",
+        productionContext:
+          "Authored and published an MCP server exposing five read-only, annotated tools over both stdio and JSON-RPC HTTP, with bearer-token and OIDC authentication, stdlib-only JWT verification, and a refusal to bind past loopback unauthenticated.",
+        highlight:
+          "Listed on the MCP Registry and added to Claude Code, Claude Desktop or Cursor with a single command.",
+        tenure: "Active focus",
+        project: { slug: "repo2graph", title: "repo2graph" },
+      },
+      {
+        name: "Context & Token Engineering",
+        category: "AI, LLM & MCP",
+        role: "LLM Cost Control",
+        productionContext:
+          "Built enforced token ceilings into retrieval — budgets re-measured after rendering rather than trusted, capped neighbour rows, bounded fan-out — and a skill set plus PreToolUse hook that strips noisy tool output before it ever enters a model's context.",
+        highlight:
+          "Attacks the re-sent context pile rather than reply length, which is where the overwhelming majority of tokens actually live.",
+        tenure: "Active focus",
+        project: { slug: "tokenmiser", title: "tokenmiser" },
+      },
+      {
+        name: "GraphRAG & Retrieval",
+        category: "AI, LLM & MCP",
+        role: "Retrieval Architecture",
+        productionContext:
+          "Designed a retrieval layer combining BM25 lexical scoring, optional dense MiniLM fusion, and a one-hop walk across a tree-sitter code graph, chunked so every block arrives with its callers and callees in the header.",
+        highlight:
+          "Every retrieved block is stamped with its file and line range and the edge that pulled it in, so a model's claim can be checked rather than trusted.",
+        tenure: "Active focus",
+        project: { slug: "repo2graph", title: "repo2graph" },
+      },
+      {
+        name: "Agentic Workflows & Subagents",
+        category: "AI, LLM & MCP",
+        role: "Multi-Agent Orchestration",
+        productionContext:
+          "Built a seven-phase build loop — plan, test, implement, review, verify, remember, improve — where each phase is its own bounded subagent with a written contract, communicating only through a single shared state file.",
+        highlight:
+          "Hard gates between phases: a run cannot skip its own tests, and four iterations without a clean verify hands back to the operator.",
+        tenure: "Active focus",
+        project: { slug: "agentic-app-loop", title: "Agentic App Loop" },
+      },
+      {
+        name: "Multi-Provider LLM Routing",
+        category: "AI, LLM & MCP",
+        role: "Model Routing & Failover",
+        productionContext:
+          "Routed subtasks across Groq, Gemini, Mistral, Cerebras and OpenRouter by task type from a single config file, executing in parallel with automatic failover, while a frontier model handled only planning and synthesis.",
+        highlight:
+          "A rate-limited provider hands its subtask on rather than killing the run, and swapping the crew is a config edit, not a code change.",
+        tenure: "Active focus",
+        project: { slug: "multi-ai-toolkit", title: "Multi-AI Toolkit" },
+      },
+    ],
+  },
   {
     id: "cicd",
     label: "CI/CD & Automation",
@@ -241,7 +312,9 @@ const SKILL_DOMAINS: DomainCluster[] = [
 ];
 
 export default function AppleSkillsExperience() {
-  const [activeDomainId, setActiveDomainId] = useState<string>("cicd");
+  const [activeDomainId, setActiveDomainId] = useState<string>(
+    SKILL_DOMAINS[0].id
+  );
   const [selectedSkill, setSelectedSkill] = useState<SkillDetail>(
     SKILL_DOMAINS[0].primarySkills[0]
   );
@@ -264,7 +337,7 @@ export default function AppleSkillsExperience() {
         </h2>
 
         <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed">
-          Five years of hands-on enterprise infrastructure experience. Select any discipline to inspect real-world production use cases, architectures, and capabilities.
+          Five years of hands-on enterprise infrastructure, plus the AI and MCP tooling built on top of it. Select any discipline to inspect real-world production use cases, architectures, and capabilities.
         </p>
       </div>
 
@@ -382,6 +455,28 @@ export default function AppleSkillsExperience() {
                   {selectedSkill.highlight}
                 </p>
               </div>
+
+              {/* Matching build, when one of the projects demonstrates it */}
+              {selectedSkill.project && (
+                <Link
+                  href={`/projects/${selectedSkill.project.slug}`}
+                  className="flex items-center justify-between gap-4 p-5 rounded-2xl bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/30 transition-all group"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-amber-700 dark:text-[#e5a93b]">
+                      <FiBox className="w-4 h-4" />
+                      <span>Proof of work</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#424245] dark:text-[#a1a1a6]">
+                      See it running in{" "}
+                      <span className="font-bold text-[#1d1d1f] dark:text-white">
+                        {selectedSkill.project.title}
+                      </span>
+                    </p>
+                  </div>
+                  <FiArrowUpRight className="w-5 h-5 flex-shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors" />
+                </Link>
+              )}
 
               {/* Quick Status Strip */}
               <div className="pt-4 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">

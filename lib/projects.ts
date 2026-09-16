@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌‌​‌‌​​‌​‌​‌‌​​‌‌‌​‌‌​​​‌​​‌‌‌‌​​‌​‌​‌​‌​​​‌​​​​​‌​‌​​​‌​‌​‌‌‌‌​​​​​‌‌​‌‌‌​‌​‌​​‌​​‌​​​‌‌‌​‌‌‌‌​​​​​‌​‌‌​‌​​‌‌​‌​‌​‌​​​​‌‌​‌‌​​‌​‌​‌​‌​​​‌​‌​‌‌​‌​​‌​​‌​‌​​‌​​‌‌‌‌​‌‌​​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌​​‌​‌​​‌​‌‌‌‌‌​​‌‌​‌​‌​‌​​‌​‌‌​‌​‌​​‌​​‌‌​‌​​​​‌‌‌​​‌‌​‌​​​‌​‌​‌​​​​‌‌​‌‌​​​​‌​​‌‌​​‌‌​‌​​‌​‌​​‌​​‌​​​​‌​​‌‌‌‌​‌‌​​‌‌​​​‌‌​​​‌​‌‌​​‌‌‌​​‌‌​​‌​​‌​​‌‌‌‌​‌‌​‌​​‌​‌‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.wegbyTAEx7RGx-5CeQZJOg
+ * Fingerprint: AMK1.YJ_5KRhsECa3JHOf1g2Oip
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -291,60 +291,83 @@ export const PROJECTS: Project[] = [
   {
     slug: "repo2graph",
     title: "repo2graph",
-    client: "Platform engineering",
+    client: "AI & code intelligence",
     category: "Code intelligence",
     status: "Active",
     teaser:
-      "Point it at a codebase and it draws the map: a queryable graph of who calls what, plus chunks ready for a RAG pipeline.",
-    tags: ["tree-sitter", "RAG", "GitHub Action"],
-    stack: ["Python", "tree-sitter", "Neo4j / Cypher", "GraphML", "GitHub Actions", "GitHub Marketplace", "JSONL"],
+      "A GraphRAG engine and MCP server that hands an AI agent the right code — cited, budget-capped, and nothing else.",
+    tags: ["MCP server", "GraphRAG", "Token budget"],
+    stack: [
+      "Python 3.10+",
+      "MCP (stdio + HTTP)",
+      "LLM / GraphRAG",
+      "tree-sitter",
+      "sentence-transformers",
+      "OIDC / JWT auth",
+      "Neo4j / Cypher",
+      "GraphML",
+      "PyPI",
+      "GitHub Actions",
+    ],
     overview:
-      "Point it at a codebase and it draws the map. Every folder, file, function, class and import becomes a node, and every containment, call, import, inheritance and co-change becomes an edge. Plain text search finds the files that mention login; the graph finds the function that does the login and hands you its callers and callees with it. It also cuts the code into retrieval chunks that each carry that neighbourhood in their header, which is usually the thing a RAG pipeline was missing.",
+      "An AI agent asked about a codebase usually gets handed whichever files matched a keyword, and pays for all of them. repo2graph parses the repository with tree-sitter into a graph of every folder, file, function, class, import, call and inheritance, then serves retrieval over that graph to the agent directly as an MCP server — five read-only tools over stdio or authenticated HTTP, wired into Claude Code, Claude Desktop or Cursor with one command. Every answer comes back stamped with the file and line range it came from, and inside a hard token ceiling, so the model gets the function plus its callers and callees rather than a folder — and the context window stops being the thing that runs out first.",
     architecture: [
       {
-        label: "Parsing",
-        body: "tree-sitter reads real code structure rather than guessing from words, so a repo it has never seen needs no configuration. Sixteen languages get full symbol and call extraction, and every other file still lands on the map in its folder, so nothing goes missing.",
+        label: "MCP server, five read-only tools",
+        body: "repo_map sketches the repository, repo_search retrieves cited chunks, repo_neighbours walks one hop from a node, and repo_cache_stats and repo_build_status expose the server's own state. All five are annotated readOnlyHint and idempotentHint, and each description says when not to use the tool as well as when to — an agent picking the wrong tool is a wasted round trip, paid for in tokens.",
       },
       {
-        label: "Zero-dependency graph model",
-        body: "CONTAINS, DEFINES, IMPORTS, CALLS, CALLS_EXTERNAL, INHERITS and CO_CHANGE, across repo, directory, file, symbol, module and external nodes. Built with pure-Python structures that drop external graph packages like networkx, writing directly to JSONL, GraphML, Cypher, and interactive HTML.",
+        label: "Two transports, one dispatcher",
+        body: "stdio for a local editor and JSON-RPC over POST /mcp for a hosted one, both driven by the same dispatch(). HTTP carries bearer-token or OIDC auth with stdlib-only JWT verification — the algorithm comes from the key rather than from the token, and tokens compare in constant time. Binding past loopback with no auth configured is refused at startup rather than warned about.",
       },
       {
-        label: "Co-change edges",
-        body: "Reading the last N commits links the files that keep being edited together, which is surprisingly good at exposing coupling nothing in the code makes obvious.",
+        label: "The token budget is a ceiling, not a hint",
+        body: "repo_search clamps any requested budget to 12,000 tokens and then re-measures the rendered result before returning it, so an overshoot cannot pass silently. repo_neighbours stops at 50 rows and says that it truncated; k caps at 50 and hops at 4, because one expensive call on a single event loop would otherwise stall every connected client.",
       },
       {
-        label: "Chunking for retrieval",
-        body: "Roughly one chunk per function or class, each opening with its callers, its callees and its docstring, cut at about 4,000 characters with a few lines of overlap so nothing is lost at a seam.",
+        label: "Chunks that carry their neighbourhood",
+        body: "Roughly one chunk per function or class, cut at about 4,000 characters with eight lines of overlap so nothing is lost at a seam, and each one opens with its callers and its callees. That header is the difference between a model reading a function and a model placing it — and it removes the follow-up fetches that would have cost far more than the header did.",
       },
       {
-        label: "Built-in retriever",
-        body: "Lexical scoring plus a one-hop walk across the graph, so the surrounding code comes along with every hit. No embedding model, no vector database and no API key needed to start.",
+        label: "Retrieval with citations",
+        body: "BM25 lexical scoring with an identifier boost, optionally fused with dense MiniLM vectors, then a one-hop walk across the graph. Every block in the pack carries its file and line range and the reason it is there — seed, or the CALLS edge that pulled it in — so a claim about the code can be checked instead of trusted. Embeddings stay opt-in, so the default path never downloads a 90MB model, and a fusion that quietly degrades to lexical-only says so rather than pretending.",
       },
       {
-        label: "Outputs, split two ways",
-        body: "human/ holds a single self-contained graph.html, an overview written to be read first, and a pre-laid-out GraphML for yEd or Gephi. agent/ holds the JSONL nodes, edges and chunks, an idempotent Cypher script for Neo4j, and a manifest that describes every other file — so a program needs nothing else to make sense of the folder.",
+        label: "Parsing, and where it stops",
+        body: "tree-sitter reads real syntax trees for sixteen languages, and every other file still lands on the map in its folder. Calls are matched by name: an ambiguous one draws up to five candidate edges each carrying 1/n confidence, same-file definitions win ties, and only a 1.0 is certain. Files over 1.5 MB, binaries, vendor folders and .gitignore'd paths are skipped outright.",
       },
       {
-        label: "Published as a Marketplace Action",
-        body: "Srinivasan-78/repo2graph@v1 is one step in any workflow: point it at the checkout or at another repo, and it uploads the graph as an artifact, writes the first 40 lines of the overview into the job summary, and exposes node, edge and chunk counts as outputs. commit-branch force-pushes the result to an orphan branch, so a pipeline can curl a current chunks.jsonl instead of rebuilding one.",
+        label: "Incremental builds that stay identical",
+        body: "--incremental reuses a cached parse only when both the file hash and the language match, but always recomputes the resolution phase — the global name index, call confidences, inheritance, entrypoints and reach. The output is byte-identical to a full rebuild rather than merely close, which is the only version of that promise worth making.",
       },
       {
-        label: "Parallel parsing",
-        body: "Files are read one per processor core, capped at eight, so a large repository finishes in a minute or two. The number of workers changes only the wall clock: the graph that comes out is identical either way.",
+        label: "Audit log with redaction by shape",
+        body: "One JSON line per tool call to stderr, at none, errors or all. Sensitive values are redacted both by field name and by what they look like, keeping a length and a short fingerprint so two calls can be correlated without the secret ever being written down. Tool output excludes credential-store paths unconditionally, not behind an opt-in flag.",
+      },
+      {
+        label: "Zero graph dependencies",
+        body: "Degree counting, the force layout and GraphML generation are pure Python — no networkx. human/ gets a self-contained graph.html that settles its layout in batches across animation frames instead of one blocking loop; agent/ gets JSONL nodes, edges and chunks, an idempotent Cypher loader for Neo4j, and a manifest describing every other file.",
+      },
+      {
+        label: "Shipped three ways",
+        body: "pip install repo2graph from PyPI, uvx --from \"repo2graph[mcp]\" repo2graph-mcp with nothing installed at all, and Srinivasan-78/repo2graph@v1 on the GitHub Marketplace as a workflow step. Releases publish over PyPI Trusted Publishing with OIDC, so there is no long-lived token anywhere to leak.",
       },
     ],
     highlights: [
-      "Sixteen languages parsed with tree-sitter, zero configuration",
-      "Zero external graph dependencies: pure Python models eliminate networkx bloat",
-      "Chunks carry their graph neighbourhood, so retrieval lands on the right code",
-      "graph.html is one file: no server, no install, drag, zoom and search in a browser",
-      "Honest about approximation: name-matched calls carry a confidence score, and a missing edge never proves a missing call",
-      "Entrypoints are marked and ranked by reach, so the main paths through a project are findable",
-      "On the GitHub Marketplace at v1, so keeping a fresh graph beside your own code is three lines of YAML",
-      "It indexes itself: a workflow re-runs on every push to main and weekly, and publishes the graph to a branch",
+      "An MCP server AI agents talk to directly — five read-only tools over stdio or authenticated HTTP, one command to add in Claude Code, Claude Desktop or Cursor",
+      "Token budgets are enforced rather than requested: a 12,000-token ceiling re-measured after rendering, a 50-row neighbour cap, and bounded k and hops",
+      "Every retrieved block carries its file and line range and the edge that pulled it in, so an agent's claim about the code is checkable",
+      "Chunks ship with their callers and callees in the header, which is what stops a model fetching three more files to understand one function",
+      "Dense retrieval is opt-in, so the default install never downloads a 90MB embedding model — and a silent fall back to lexical-only warns instead",
+      "Incremental rebuilds are byte-identical to full ones, because only parsing is cached and resolution is always recomputed",
+      "HTTP refuses to bind past loopback without auth, JWT verification is stdlib-only, and audit logs redact by shape as well as by field name",
+      "Honest about approximation: calls are matched by name with a confidence score, and a missing edge never proves a missing call",
+      "Published to PyPI, the GitHub Marketplace and the MCP Registry, released over OIDC with no stored secrets",
+      "It indexes itself: a workflow rebuilds the graph on every push to main and publishes it to a branch",
     ],
     links: [
+      { url: "https://pypi.org/project/repo2graph/", label: "Install from PyPI \u2197" },
+      { url: "https://github.com/Srinivasan-78/repo2graph/blob/main/docs/mcp.md", label: "MCP setup \u2197" },
       { url: "https://github.com/marketplace/actions/repo2graph", label: "GitHub Marketplace \u2197" },
       { url: "https://github.com/Srinivasan-78/repo2graph", label: "View repo \u2197" },
     ],
