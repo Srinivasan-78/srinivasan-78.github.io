@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​‌​​‌​‌‌​‌​‌​​‌​​‌‌‌‌​​‌‌​‌‌​​​‌‌‌​​‌​‌​​​​‌​​‌​​‌‌‌‌​‌​​‌‌‌‌​‌​​‌​‌‌​‌​‌​​​​​‌​​​​‌​​‌‌​‌‌​‌​‌​‌‌​​‌​​‌‌​​‌​​​‌‌‌​​‌​‌​​‌‌‌​​‌​​‌‌‌​​‌​​‌‌‌‌​‌​​‌​​‌​‌​‌‌​​​​‌​‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌​​‌​​​​​‌‌‌​​​​‌​​‌‌‌​​‌‌‌‌​​​​​‌‌​‌​‌​‌​‌‌​​​​‌‌​​‌​​​‌‌‌​‌‌​​‌‌​​​‌​​‌‌‌​‌​​​​‌‌​​‌​​‌​‌​‌‌​​‌​​​​‌‌​​‌‌​​​‌​‌​‌​​​​​‌‌​‌​‌​​​‌​‌‌​‌​‌‌‌‌​​‌​‌‌​​‌‌‌​‌​​‌‌​‌​‌​​‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.kijO69BOOKPBmY29NNOIXR
+ * Fingerprint: AMK1.GH8Nx5Xdvbt2VC1Pj-ygMH
  */
 import { pageMetadata } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
@@ -63,7 +63,7 @@ export default function Contact() {
             {/* Quick Availability Card */}
             <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2.5 mb-2">
-                <FiClock className="w-4 h-4 text-emerald-600 dark:text-[#34c759]" />
+                <FiClock className="w-4 h-4 text-[#047857] dark:text-[#34c759]" />
                 <span className="text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#a1a1a6]">
                   Response Time
                 </span>
@@ -89,12 +89,12 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-emerald-600 dark:text-[#34c759] shadow-xs dark:shadow-none shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#047857] dark:text-[#34c759] shadow-xs dark:shadow-none shrink-0">
                       <FiPhone className="w-5 h-5" />
                     </div>
                     <div>
                       <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Phone</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#34c759] transition-colors">
+                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#047857] dark:group-hover:text-[#34c759] transition-colors">
                         +91 97910 25934
                       </div>
                     </div>
@@ -156,12 +156,12 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0">
                       <FiGlobe className="w-5 h-5" />
                     </div>
                     <div>
                       <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Website</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
+                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
                         srinidevops.com
                       </div>
                     </div>
@@ -183,7 +183,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Résumé</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
+                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
                         Download PDF
                       </div>
                     </div>
@@ -197,7 +197,7 @@ export default function Contact() {
             {/* Work Authorization Notice */}
             <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2 text-xs font-semibold text-[#1d1d1f] dark:text-white mb-2">
-                <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-[#34c759]" />
+                <FiCheckCircle className="w-4 h-4 text-[#047857] dark:text-[#34c759]" />
                 <span>Work Authorization Status</span>
               </div>
               <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-2">

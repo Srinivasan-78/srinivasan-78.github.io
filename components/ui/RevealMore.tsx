@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌​​‌‌​​​‌​​‌​​‌‌‌​​‌‌​‌‌​​​‌‌​​‌‌‌​‌‌‌​​‌‌​‌​​‌​​‌​‌‌​‌‌‌‌​‌‌​‌‌​​​​‌‌​​‌​​‌‌​‌‌​‌​‌‌‌​‌‌‌​‌‌​‌​‌​​‌​​​‌‌​​​‌‌​​​‌​‌​​​​​‌​‌​​​‌‌‌​‌‌‌​​​​​‌​​​​​‌​‌‌​​​​‌​‌​‌‌​‌​​‌​‌‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌‌‌‌​​‌​‌‌​‌​‌‌​‌​​​​​‌​‌​​​‌‌‌​‌​‌​‌​‌​‌‌‌​‌‌‌​‌​​​‌​‌​‌‌​​‌‌‌​‌‌​‌​​​​‌​​‌​‌‌​​‌‌​‌​​​‌‌​‌‌‌‌​‌‌​​‌​‌​‌‌​‌​​​​‌‌‌‌​​‌​‌​‌​‌‌​​‌​​‌​​​​‌‌​​​​‌​‌‌​‌‌‌​​‌‌​​​​‌​‌‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.JbNlgsIol2mwjF1AGpAaZ_
+ * Fingerprint: AMK1.cykAGUwEghK4oehyVHanaq
  */
 "use client";
 
@@ -81,7 +81,11 @@ export function ShowMoreButton({
         type="button"
         onClick={onClick}
         aria-expanded={expanded}
-        className="px-6 py-2.5 rounded-full text-xs font-semibold font-mono tracking-wide border border-black/15 dark:border-white/20 text-[#1d1d1f] dark:text-white hover:border-black/40 dark:hover:border-white/50 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+        /* A filled surface, not a hairline outline on the page colour.
+           Outlined, this sat on white as a 15%-alpha ring around grey
+           type and read as decoration rather than as the one control
+           standing between the reader and the rest of the list. */
+        className="px-6 py-2.5 rounded-full text-xs font-semibold font-mono tracking-wide border bg-[#f5f5f7] dark:bg-[#09090c] border-black/20 dark:border-white/20 text-[#1d1d1f] dark:text-white hover:border-black/45 dark:hover:border-white/50 hover:bg-black/[0.06] dark:hover:bg-white/10 transition-colors"
       >
         {expanded ? `Show fewer ${noun}` : `Show all ${hiddenCount} more ${noun}`}
       </button>

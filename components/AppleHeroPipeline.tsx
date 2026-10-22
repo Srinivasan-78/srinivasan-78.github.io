@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌​​‌‌‌​​​​​‌‌​‌‌​‌​‌‌‌​​​‌​​‌‌​​​​​​‌‌​‌​​​‌‌​​​​‌​‌​​‌​‌‌​​‌​‌‌​‌​‌‌​‌​‌‌​‌​‌‌‌‌‌​‌​‌​​​​​​‌‌​​‌‌​‌‌‌​‌​​​‌‌​‌​​​​​‌‌​​‌‌​‌​​‌​‌​​‌‌‌​​​​​​‌‌​‌‌‌​‌​​​‌​​​​‌‌​‌‌‌​‌​‌‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌​​‌‌​​​‌‌​‌‌‌​‌‌‌‌​​‌​‌​​​‌‌​​‌‌​‌​‌​​‌​​​‌​‌​‌‌​‌‌‌​​​‌‌‌​​​​​‌‌​‌​​​‌​​‌‌​​​‌‌​‌‌​​​‌‌‌‌​‌​​‌​‌​​‌​​​‌‌​​‌​​‌​‌​​​‌​‌​​‌​‌​​‌​​‌‌​​​​‌‌​​‌​​‌‌​​​‌​​‌‌‌​​​​​‌‌‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Npmq04aK-k_P3th3Jp7D7_
+ * Fingerprint: AMK1.Gf7yFjEn84LlzR2QJL2bpx
  */
 "use client";
 
@@ -130,7 +130,7 @@ export default function AppleHeroPipeline() {
                 <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
                   Step {step.stepNumber}
                 </span>
-                <Icon className={`w-4 h-4 ${isSelected ? "text-amber-600 dark:text-[#e5a93b]" : "text-[#5a5a5f] dark:text-[#9b9ba1]"}`} />
+                <Icon className={`w-4 h-4 ${isSelected ? "text-[#9a5200] dark:text-[#e5a93b]" : "text-[#5a5a5f] dark:text-[#9b9ba1]"}`} />
               </div>
 
               <div className="font-bold text-sm text-[#1d1d1f] dark:text-white mb-1">
@@ -148,7 +148,7 @@ export default function AppleHeroPipeline() {
       <div className="rounded-2xl bg-white dark:bg-black/60 border border-black/10 dark:border-white/10 p-6 shadow-xs dark:shadow-none">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-700 dark:text-[#e5a93b] text-xs font-mono font-medium">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 text-[#9a5200] dark:text-[#e5a93b] text-xs font-mono font-medium">
               <span>Stage {activeStep.stepNumber}: {activeStep.title}</span>
             </div>
 
@@ -157,7 +157,7 @@ export default function AppleHeroPipeline() {
             </p>
 
             <div className="flex items-start gap-2 pt-2 text-xs text-[#5a5a5f] dark:text-[#9b9ba1]">
-              <span className="font-semibold text-emerald-600 dark:text-[#34c759] whitespace-nowrap">
+              <span className="font-semibold text-[#047857] dark:text-[#34c759] whitespace-nowrap">
                 Safety Guarantee:
               </span>
               <span>{activeStep.safetyCheck}</span>

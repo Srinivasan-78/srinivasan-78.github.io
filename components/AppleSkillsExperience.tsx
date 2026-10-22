@@ -1,15 +1,14 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​‌​​‌​‌​​‌​​‌​​‌​‌‌‌​​​​​‌‌​‌​​‌​‌​​‌​​‌​‌‌‌​‌​‌​​‌‌​​‌‌​‌‌‌​​‌​​‌​‌‌​‌​​‌‌​​​​‌​​‌‌​​​​​‌​​‌​​‌​‌​​‌​‌‌​​‌‌​​​​​‌‌‌‌​​‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌‌‌​‌​​‌​‌‌‌‌‌​‌‌​​​​‌​‌‌​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌​​​‌‌‌​‌‌​‌‌​‌​‌‌‌​‌‌‌​​‌‌​‌‌​​‌‌​‌‌​‌​‌‌​​‌‌​​‌​​​​​‌​‌‌‌‌​‌​​‌‌​​​​‌​​‌‌​​‌‌​‌​​​‌‌‌​‌​​‌‌‌​​‌​‌‌‌‌‌​‌​​​‌‌‌​‌‌‌​​‌‌​‌​‌‌​​‌​‌‌‌‌​‌​​‌‌‌​‌​​​‌‌​‌‌​‌​‌‌‌​​​​​‌​​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.tJIpiIu3rZa0IK0y54z_ab
+ * Fingerprint: AMK1.EGmw6mfAza3GN_GsYztmpG
  */
 "use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
-import GlowCard from "./ui/GlowCard";
 import {
   FiGitBranch,
   FiCloud,
@@ -520,7 +519,7 @@ export default function AppleSkillsExperience() {
 
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-14">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
           <FiCpu className="w-3.5 h-3.5" />
           <span>Skills</span>
         </div>
@@ -534,8 +533,18 @@ export default function AppleSkillsExperience() {
         </p>
       </div>
 
-      {/* Interactive Domain Filter Pills */}
-      <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar">
+      {/* Interactive Domain Filter Pills.
+
+          These wrap rather than scroll. They used to sit in an
+          `overflow-x-auto` strip that was `justify-center` from the sm
+          breakpoint up, and centring a flex line that is wider than its
+          box overflows it in *both* directions — the first pill was cut
+          in half off the left edge and no amount of scrolling brought
+          it back, because a scroll container cannot reach content
+          placed before its start edge. Seven short pills wrapping onto
+          a second line costs one row of height and has no unreachable
+          state at any width. */}
+      <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
         {SKILL_DOMAINS.map((domain) => {
           const isSelected = domain.id === activeDomainId;
           const Icon = domain.icon;
@@ -546,10 +555,11 @@ export default function AppleSkillsExperience() {
                 setActiveDomainId(domain.id);
                 setSelectedSkill(domain.primarySkills[0]);
               }}
-              className={`px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${
+              aria-pressed={isSelected}
+              className={`px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap border transition-colors duration-200 flex items-center gap-2 ${
                 isSelected
-                  ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-[1.02]"
-                  : "bg-[#f5f5f7] text-[#5a5a5f] hover:text-[#1d1d1f] hover:bg-black/5 dark:bg-[#09090c] dark:text-[#9b9ba1] dark:hover:text-white dark:hover:bg-white/5 border border-black/10 dark:border-white/10"
+                  ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white shadow-md"
+                  : "bg-[#f5f5f7] text-[#5a5a5f] hover:text-[#1d1d1f] hover:bg-black/5 dark:bg-[#09090c] dark:text-[#9b9ba1] dark:hover:text-white dark:hover:bg-white/5 border-black/15 dark:border-white/15"
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -570,38 +580,48 @@ export default function AppleSkillsExperience() {
             </p>
           </div>
 
+          {/* Deliberately not wrapped in GlowCard. These are list rows,
+              not cards, and the card system hands its inner element a
+              transparent fill with no border and no shadow — which is
+              right for a tile that reads as a surface and fatal for a
+              control whose entire selected state is a fill, a border
+              and a shadow. Wrapped, all seven rendered identically and
+              the selected one was a dot; the `scale` on it spilled past
+              the card's clip and came back sheared. The row draws its
+              own surface, and the selected state is a solid border
+              against the page's ink rather than a transform. */}
           {currentDomain.primarySkills.map((skill) => {
             const isActive = selectedSkill.name === skill.name;
             return (
-              <GlowCard key={skill.name} chrome={false}>
-                <button
-                  type="button"
-                  onClick={() => setSelectedSkill(skill)}
-                  className={`w-full p-5 rounded-2xl text-left border transition-all flex items-center justify-between group ${
-                    isActive
-                      ? "bg-white dark:bg-white/10 border-black/25 dark:border-white/30 shadow-lg scale-[1.01]"
-                      : "bg-[#f5f5f7] dark:bg-[#09090c] border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
-                  }`}
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
-                        {skill.name}
-                      </span>
-                      {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#34c759]" />
-                      )}
-                    </div>
-                    <div className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">
-                      {skill.role}
-                    </div>
-                  </div>
-
-                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full bg-black/5 dark:bg-white/5 text-[#5a5a5f] dark:text-[#a1a1a6]">
-                    {skill.tenure}
+              <button
+                key={skill.name}
+                type="button"
+                onClick={() => setSelectedSkill(skill)}
+                aria-pressed={isActive}
+                className={`w-full p-5 rounded-2xl text-left border transition-colors flex items-center justify-between gap-4 group ${
+                  isActive
+                    ? "bg-white dark:bg-white/10 border-[#1d1d1f] dark:border-white shadow-md"
+                    : "bg-[#f5f5f7] dark:bg-[#09090c] border-black/15 dark:border-white/15 hover:border-black/35 dark:hover:border-white/35"
+                }`}
+              >
+                <span className="min-w-0 space-y-1">
+                  <span className="flex items-center gap-2">
+                    <span className="font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
+                      {skill.name}
+                    </span>
+                    {isActive && (
+                      <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-[#1a7f37] dark:bg-[#34c759]" />
+                    )}
                   </span>
-                </button>
-              </GlowCard>
+                  <span className="block text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">
+                    {skill.role}
+                  </span>
+                </span>
+
+                <span className="shrink-0 whitespace-nowrap text-[11px] font-mono px-2.5 py-1 rounded-full bg-black/[0.06] dark:bg-white/10 text-[#424245] dark:text-[#c7c7cc]">
+                  {skill.tenure}
+                </span>
+              </button>
             );
           })}
         </div>
@@ -613,7 +633,7 @@ export default function AppleSkillsExperience() {
             {/* Header Badge */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-6 border-b border-black/10 dark:border-white/10">
               <div>
-                <span className="text-xs font-mono uppercase tracking-widest text-amber-600 dark:text-[#e5a93b] block mb-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#9a5200] dark:text-[#e5a93b] block mb-1">
                   {selectedSkill.category}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-[#1d1d1f] dark:text-white tracking-tight">
@@ -622,7 +642,7 @@ export default function AppleSkillsExperience() {
               </div>
 
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#1d1d1f] dark:text-white">
-                <FiCheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34c759]" />
+                <FiCheckCircle className="w-3.5 h-3.5 text-[#047857] dark:text-[#34c759]" />
                 <span>{selectedSkill.role}</span>
               </div>
             </div>
@@ -640,7 +660,7 @@ export default function AppleSkillsExperience() {
 
               {/* Key Architecture Impact / Highlight */}
               <div className="p-5 rounded-2xl bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 space-y-1.5">
-                <div className="flex items-center gap-2 text-xs font-semibold text-amber-700 dark:text-[#e5a93b]">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#9a5200] dark:text-[#e5a93b]">
                   <FiLayers className="w-4 h-4" />
                   <span>Key Impact & Architecture Deliverable</span>
                 </div>
@@ -656,7 +676,7 @@ export default function AppleSkillsExperience() {
                   className="flex items-center justify-between gap-4 p-5 rounded-2xl bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/30 transition-all group"
                 >
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-xs font-semibold text-amber-700 dark:text-[#e5a93b]">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-[#9a5200] dark:text-[#e5a93b]">
                       <FiBox className="w-4 h-4" />
                       <span>Proof of work</span>
                     </div>
@@ -667,7 +687,7 @@ export default function AppleSkillsExperience() {
                       </span>
                     </p>
                   </div>
-                  <FiArrowUpRight className="w-5 h-5 shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors" />
+                  <FiArrowUpRight className="w-5 h-5 shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors" />
                 </Link>
               )}
 

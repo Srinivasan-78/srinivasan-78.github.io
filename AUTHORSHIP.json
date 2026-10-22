@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-22T14:01:27.914Z",
+  "sealedAt": "2026-10-22T15:29:36.922Z",
   "fileCount": 69,
-  "digest": "a0d2fdddf55d6739ffc57281fe4d95634411402f48c267f0a7af15e30635ab37",
-  "proof": "390bac40bc6edc5bd9a5b52592a0faa8c931414632f93dfcf18247b586d11f5c",
+  "digest": "f8574af97bfb23ba8046647f9a887c2f0592906f1d3d39461f820579e12acd74",
+  "proof": "9ca1e93e1e631e9627d81f966466157ce245b50878b4aef5dee564b1c72bb924",
   "files": [
     {
       "path": "AGENTS.md",
@@ -31,12 +31,12 @@
     },
     {
       "path": "app\\contact\\page.tsx",
-      "sha256": "3f5a6bed157e18aafe9d84885d9c8240bd963f11722179a804615414b46a7c98",
-      "bytes": 12918
+      "sha256": "0674330b6d353a513cda3be16e1befde371384e39c6e82e30ad3751a0df9d576",
+      "bytes": 12910
     },
     {
       "path": "app\\error.tsx",
-      "sha256": "edbc823e05ba980788834b86efc3bce30c1149ec800ca8b49b144366548b01e3",
+      "sha256": "c1d4540fbc6226e6721424afaf059dbdf36dacbc4c80d7bddd0a122a3df4589f",
       "bytes": 5470
     },
     {
@@ -46,8 +46,8 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "330150b353dcdcb9d321bbd26df2a85e19ae25b7b1cf3a788457d37854eb1f11",
-      "bytes": 93890
+      "sha256": "803424201c7ff55d0a8862043bf1565f76e4e73471c3c5d26b424fa3b6579e4a",
+      "bytes": 98322
     },
     {
       "path": "app\\layout.tsx",
@@ -66,23 +66,23 @@
     },
     {
       "path": "app\\not-found.tsx",
-      "sha256": "5808d0cf605d20a17ea915a57c3fb40e403fe7181f73c37479e60a547f062a98",
+      "sha256": "27937a7f779e5ad952287531884bb412e020510d9b8ffa866fafdf8dc817ca87",
       "bytes": 4771
     },
     {
       "path": "app\\page.tsx",
-      "sha256": "bacb29cce5d8ebc8ea0d7701a2b059b060f6d83fd3d7f2526b9e4265ed7b113a",
+      "sha256": "122393ac76a7231a23a81747c05e91ab90245d058427a8d8f65e7190324e2ee8",
       "bytes": 14399
     },
     {
       "path": "app\\privacy\\page.tsx",
-      "sha256": "78f2973127edc226844129953af0dc128abee8b649abef3e055501b4f31a89d9",
-      "bytes": 9544
+      "sha256": "f9fdfc886dffbc30fa070b62391783ee8fdaf379c45948f4e664e79e6caa4b78",
+      "bytes": 9386
     },
     {
       "path": "app\\projects\\[slug]\\page.tsx",
-      "sha256": "023fd13e56d594130e2c11bb130de06f10b81ae106bffe269ba3db5ccee0bd06",
-      "bytes": 15217
+      "sha256": "b7aed661ad4478b987a10bdfe95ea745c90328313eca19eb566f9e2fe3f4569e",
+      "bytes": 15215
     },
     {
       "path": "app\\projects\\page.tsx",
@@ -101,12 +101,12 @@
     },
     {
       "path": "app\\terms\\page.tsx",
-      "sha256": "86b0febb5e530dafeccaa8bb979026febc5b8eb8ed14506c013b16bc4cfc6eb4",
-      "bytes": 6996
+      "sha256": "4f50792fb9f7bfa07b22d1cf4f4810a2d8c2239419f39e40a9336cdcd4dab7c7",
+      "bytes": 6885
     },
     {
       "path": "app\\thank-you\\page.tsx",
-      "sha256": "dd4999b5d3aed13cd7844487f829439710b3f482c656024f50ee8a9188c8de03",
+      "sha256": "f7216798cc12429693491e2842585df73423c6c4c92a76584f191b22a35842d2",
       "bytes": 5503
     },
     {
@@ -116,23 +116,23 @@
     },
     {
       "path": "components\\AppleEnterpriseExperience.tsx",
-      "sha256": "0d9533ca23d36c040285b652421c82116dc23c7b8180a00160676def02c28364",
-      "bytes": 29488
+      "sha256": "c0c7519459f809c58092a7f1d9b2589ba800c4184bd6ccf4ee311f89bc85b49e",
+      "bytes": 29834
     },
     {
       "path": "components\\AppleHeroPipeline.tsx",
-      "sha256": "76b62cdbcd7d2117f8f74021d10be20975caa9fcbd4f0643fe7aacd2792992e7",
-      "bytes": 10165
+      "sha256": "cebe7549202597499b22766a2a4f52db8c2ea61865c7d22792448f6471a54117",
+      "bytes": 10163
     },
     {
       "path": "components\\AppleSkillsExperience.tsx",
-      "sha256": "aad750a98c94921b05a3cb30a9a6c57c847fad34ec95bcd65a9f45296dff3515",
-      "bytes": 35347
+      "sha256": "5e205e80a7c02ba44a656c44240ab532a24a6f900caa95dfa368c00afcd9bce6",
+      "bytes": 36644
     },
     {
       "path": "components\\AppleWorkAuthorization.tsx",
-      "sha256": "7b615d57b3dbbe29834ec55b9af0c35d9e3f7861f58c5b3cd49c507dc5e57064",
-      "bytes": 13927
+      "sha256": "c4896d9220f21bed5b6ee7e7dc1bb5dd97c3df9b2503bdf3bd93c7569c817143",
+      "bytes": 14210
     },
     {
       "path": "components\\Bits.tsx",
@@ -146,13 +146,13 @@
     },
     {
       "path": "components\\CertIndex.tsx",
-      "sha256": "6464f8906fcaae02b761c83db3981e88843a7ce4eea32a35a7deb98d9f88314a",
-      "bytes": 12452
+      "sha256": "90cc444e52d24cf74ce2e1d216d2520801f7fb806fd853f2a793735354111c91",
+      "bytes": 12450
     },
     {
       "path": "components\\ChatWidget.tsx",
-      "sha256": "41ae3b6d479cb74e6b0c36fe7e1a5db827fb03c3e0fbad93d1589573fea45d93",
-      "bytes": 16572
+      "sha256": "ad14f0417a2af930296eaa24bce82a4850157641ccac7db478e11f895c02fc2b",
+      "bytes": 16454
     },
     {
       "path": "components\\ContactForm.tsx",
@@ -166,8 +166,8 @@
     },
     {
       "path": "components\\CopyEmailCard.tsx",
-      "sha256": "e3446d8969006799b88d7e57e4c962ab53a534367543e611753ea8b2d5ec9b26",
-      "bytes": 3383
+      "sha256": "2a4cae8bdaa5f4dd16aeb73869a7d50daea0f931ae00c34724b78339e41dd7b3",
+      "bytes": 3379
     },
     {
       "path": "components\\Footer.tsx",
@@ -186,7 +186,7 @@
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "3212f87ce12b60dbeabaa3c3bd6deb12d721346e55a9ae2bf3c7b28c7fe23131",
+      "sha256": "8f4f7f73e5f574c4c54dd997ba6ff62e7fd64908f11da8f1251e5a40b88ed2e7",
       "bytes": 23604
     },
     {
@@ -271,8 +271,8 @@
     },
     {
       "path": "components\\ui\\RevealMore.tsx",
-      "sha256": "f80b6850d13dd9eec99e6c5bf88074e7248300e2780fe9a3d631096ee219e49b",
-      "bytes": 4092
+      "sha256": "cb776bd36c80597a730868292978d2479c800f08e685f3badb3628d7eed1bee1",
+      "bytes": 4410
     },
     {
       "path": "components\\ui\\WindowChrome.css",
@@ -331,8 +331,8 @@
     },
     {
       "path": "next.config.mjs",
-      "sha256": "349e96d05eba2c29188f23933ebdf596bccef2034d4c2dca04927bbbc0a86225",
-      "bytes": 1244
+      "sha256": "d7babb950eadda0ab4b292033f1fbb822824ca4a29cb82e10fb39ca1c4653f4d",
+      "bytes": 1232
     },
     {
       "path": "postcss.config.js",

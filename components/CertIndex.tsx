@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​​‌‌‌​​‌​‌​​‌‌​​‌‌​‌‌‌​‌‌‌‌​​‌​‌‌‌​​‌​​‌‌​‌‌​‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌‌‌‌​​​​‌​​​‌​‌​​‌‌​​‌‌​‌‌‌‌​‌​​‌‌‌​​‌‌​​‌‌​​​​​‌​​​‌​​​‌‌​‌‌‌​​‌‌​​‌​​​‌‌​‌‌‌​​​‌‌​‌‌‌​​‌‌‌​​‌​‌‌​‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌​​‌‌​‌‌​​​‌​‌​‌‌​​‌‌​‌​​​​‌​‌​‌​‌​‌‌‌​​‌​​​‌‌​‌‌‌​‌‌‌‌​​‌​​‌‌​​​​​​‌‌‌​​​​‌​‌‌​​​​‌​​‌‌‌​​‌‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌‌‌​‌​‌​‌​​​‌​‌​​​‌​‌‌​​‌‌‌​‌​​​​​‌​‌‌‌‌​​​​‌​‌​‌‌‌​​‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.sNS7yrmt7xE3zs0Dndn79j
+ * Fingerprint: AMK1.flVhUr7y08XNwcWTQgAxW5
  */
 "use client";
 
@@ -66,7 +66,7 @@ export default function CertIndex() {
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
-          <FiAward className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+          <FiAward className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
           <span>Continuous Learning & Verification</span>
         </div>
 
@@ -81,7 +81,7 @@ export default function CertIndex() {
         {/* Yearly Growth Timeline Counters */}
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
           <div className="flex items-center gap-1.5">
-            <FiCalendar className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+            <FiCalendar className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
             <span>2026 ({yearBreakdown["2026"]})</span>
           </div>
           <div>•</div>
@@ -91,7 +91,7 @@ export default function CertIndex() {
           <div>•</div>
           <div>2021 ({yearBreakdown["2021"]})</div>
           <div>•</div>
-          <span className="text-emerald-600 dark:text-[#34c759] font-semibold">
+          <span className="text-[#047857] dark:text-[#34c759] font-semibold">
             ✓ 100% Issuer Verified
           </span>
         </div>
@@ -135,7 +135,7 @@ export default function CertIndex() {
                   <span>{r.label}</span>
                   <span
                     className={`text-[10px] font-mono ${
-                      isSelected ? "" : "text-[#9b9ba1] dark:text-[#a1a1a6]"
+                      isSelected ? "" : "text-[#5a5a5f] dark:text-[#a1a1a6]"
                     }`}
                   >
                     {counts[r.id]}
@@ -188,7 +188,7 @@ export default function CertIndex() {
                   <div>
                     {/* Seal & Date */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-xs dark:shadow-none">
+                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-xs dark:shadow-none">
                         <FiAward className="w-5 h-5" />
                       </div>
                       <span className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">

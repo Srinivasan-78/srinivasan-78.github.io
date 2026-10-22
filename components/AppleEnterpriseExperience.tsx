@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​​‌‌​‌​‌​‌‌​‌​​​​‌‌​​‌‌​​‌‌​‌​​​​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌​​‌​‌​‌‌​​‌‌​​‌​​​​‌​​‌‌​​​​‌​​‌‌​‌‌‌​‌‌‌​​‌​​‌‌‌​​‌​​​‌‌​‌​​​‌​‌‌​​​​​‌‌​‌‌‌​‌‌​​​‌​​‌‌​​‌​‌​‌‌‌​‌​‌​‌‌‌​​‌‌​​‌‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌​​‌​‌​​​‌​​‌‌​​‌​​‌‌​​‌​‌​‌​‌​​​​​‌‌​‌​‌‌​‌‌‌‌​​‌​‌‌‌‌​‌​​​‌‌​‌​​​​‌‌​​​​​‌​‌​‌​​​‌‌​​‌​‌​‌‌‌​​​​​‌‌​‌​​​​‌​​‌‌‌‌​‌‌‌​​‌‌​‌​‌‌​​​​‌‌​‌‌​​​‌​​‌​​​​‌​‌​​​​​‌‌‌​​​​​‌​​‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.u5hfhsiefBa7rr4X7beus7
+ * Fingerprint: AMK1.NQ2ePkyz40TephOsXlHPpI
  */
 "use client";
 
@@ -409,7 +409,7 @@ export default function AppleEnterpriseExperience() {
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-3">
             <FiServer className="w-3.5 h-3.5" />
             <span>Selected Experience</span>
           </div>
@@ -425,10 +425,10 @@ export default function AppleEnterpriseExperience() {
 
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[#1d1d1f] dark:text-white hover:text-amber-600 dark:hover:text-[#e5a93b] transition-colors whitespace-nowrap self-start md:self-auto"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#1d1d1f] dark:text-white hover:text-[#9a5200] dark:hover:text-[#e5a93b] transition-colors whitespace-nowrap self-start md:self-auto"
         >
           <span>View all {PROJECTS.length} platform builds</span>
-          <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+          <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
         </Link>
       </div>
 
@@ -481,16 +481,16 @@ export default function AppleEnterpriseExperience() {
                 <div>
                   {/* Top Bar: Company Badge & Category */}
                   <div className="flex items-center justify-between gap-2 mb-5">
-                    <span className="px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-amber-700 dark:text-[#e5a93b]">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#9a5200] dark:text-[#e5a93b]">
                       {item.company}
                     </span>
                     <div className="w-8 h-8 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white group-hover:scale-110 transition-transform">
-                      <Icon className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+                      <Icon className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
                     </div>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-3 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors leading-snug">
+                  <h3 className="text-xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-3 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors leading-snug">
                     {item.title}
                   </h3>
 
@@ -519,7 +519,12 @@ export default function AppleEnterpriseExperience() {
                 </div>
 
                 {/* Footer Link / Action */}
-                <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold">
+                {/* `gap`, and allowed to wrap. Two labels under
+                    `justify-between` with nothing between them collide
+                    the moment both are long — "Container Orchestration"
+                    sat flush against "Enterprise Production" with no
+                    space at all. */}
+                <div className="pt-4 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs font-semibold">
                   <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
                     {item.category}
                   </span>

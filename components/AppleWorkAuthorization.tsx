@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​‌​‌‌​​‌‌‌​‌‌​​‌‌​​‌‌​‌‌​‌​​‌​‌‌​‌​​‌‌​​‌​​​‌‌​​‌‌​‌‌‌​‌​‌​‌‌​‌‌‌​​​‌‌​​‌​​‌​‌​​‌​​​‌‌​​​​​‌​‌‌​​‌​‌​‌​‌‌​​‌​‌‌​​​​​‌‌​​‌​​‌​​‌​‌‌​‌​‌​​‌​​​‌‌​‌​‌​‌​‌‌​​​​​‌‌​‌​​​‌‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​‌​‌​‌‌​‌​​​‌‌​​​​​‌‌‌‌​‌​​​‌‌​‌‌‌​‌​​‌​‌​​‌‌​​‌​‌​‌​‌​​​​​‌​​‌​‌‌​‌‌​​‌​​​‌‌‌​​‌​​‌​​‌‌‌​​​‌‌​​‌‌​‌​‌​​‌​​‌​​‌​‌​​‌‌​​‌​‌​‌​‌​​‌‌​‌‌‌‌​​​​‌​​​‌‌‌​‌​​​‌​‌​​‌‌​‌‌​​‌‌​‌‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.1gfm-23un2R0YVX2KR5X4v
+ * Fingerprint: AMK1.9Z0z7JePKdrN3RJeSxGE6n
  */
 "use client";
 
@@ -159,7 +159,7 @@ export default function AppleWorkAuthorization() {
       {/* Global Timezone Sync Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 mb-8 text-xs font-mono">
         <div className="flex items-center gap-2 text-[#5a5a5f] dark:text-[#9b9ba1]">
-          <FiClock className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+          <FiClock className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
           <span>Live Operations Clocks:</span>
         </div>
 
@@ -187,33 +187,37 @@ export default function AppleWorkAuthorization() {
           {CLEARANCE_DATA.map((item) => {
             const isSelected = activeTab === item.id;
             return (
-              <GlowCard key={item.id} chrome={false}>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full p-5 rounded-2xl text-left border transition-all flex items-center justify-between group ${
-                    isSelected
-                      ? "bg-white dark:bg-white/10 border-black/25 dark:border-white/30 shadow-lg scale-[1.01]"
-                      : "bg-[#f5f5f7] dark:bg-[#09090c] border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
-                  }`}
-                >
-                  <div className="flex items-center gap-3.5">
-                    <span className="text-2xl">{item.flag}</span>
-                    <div>
-                      <div className="font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
-                        {item.title}
-                      </div>
-                      <div className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">
-                        {item.badge}
-                      </div>
-                    </div>
-                  </div>
+              /* Not a GlowCard — see the note on the same control in
+                 AppleSkillsExperience. The card system blanks the fill,
+                 border and shadow of whatever it wraps, which is the
+                 whole of this row's selected state. */
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveTab(item.id)}
+                aria-pressed={isSelected}
+                className={`w-full p-5 rounded-2xl text-left border transition-colors flex items-center justify-between gap-4 group ${
+                  isSelected
+                    ? "bg-white dark:bg-white/10 border-[#1d1d1f] dark:border-white shadow-md"
+                    : "bg-[#f5f5f7] dark:bg-[#09090c] border-black/15 dark:border-white/15 hover:border-black/35 dark:hover:border-white/35"
+                }`}
+              >
+                <span className="flex min-w-0 items-center gap-3.5">
+                  <span className="text-2xl">{item.flag}</span>
+                  <span className="min-w-0">
+                    <span className="block font-bold text-sm text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
+                      {item.title}
+                    </span>
+                    <span className="block text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">
+                      {item.badge}
+                    </span>
+                  </span>
+                </span>
 
-                  {isSelected && (
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#34c759] animate-pulse" />
-                  )}
-                </button>
-              </GlowCard>
+                {isSelected && (
+                  <span className="w-2.5 h-2.5 shrink-0 rounded-full bg-[#1a7f37] dark:bg-[#34c759] animate-pulse" />
+                )}
+              </button>
             );
           })}
         </div>
@@ -230,7 +234,7 @@ export default function AppleWorkAuthorization() {
                     {activeClearance.flag}
                   </div>
                   <div>
-                    <span className="text-xs font-mono uppercase tracking-wider text-amber-600 dark:text-[#e5a93b] block">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[#9a5200] dark:text-[#e5a93b] block">
                       Clearance Protocol · {activeClearance.badge}
                     </span>
                     <h3 className="text-xl sm:text-2xl font-bold text-[#1d1d1f] dark:text-white tracking-tight">
@@ -258,7 +262,7 @@ export default function AppleWorkAuthorization() {
                       key={i}
                       className="p-3.5 rounded-xl bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-xs text-[#1d1d1f] dark:text-[#f5f5f7] flex items-start gap-2"
                     >
-                      <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-[#34c759] shrink-0 mt-0.5" />
+                      <FiCheckCircle className="w-4 h-4 text-[#047857] dark:text-[#34c759] shrink-0 mt-0.5" />
                       <span className="leading-snug">{h}</span>
                     </div>
                   ))}

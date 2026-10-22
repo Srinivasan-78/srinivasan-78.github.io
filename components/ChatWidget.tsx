@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌‌​‌‌‌​​‌‌‌​​​‌​​‌‌‌​​‌​​‌‌​​‌​​‌​​‌‌‌​​‌​​‌‌​‌​​‌‌​‌​​​‌​‌​​‌​​‌​​​​‌‌​‌​‌​‌​​​​‌‌​​​​​‌‌​​​‌‌​‌‌‌​‌​​​​‌‌​​​‌​‌​​‌‌​‌​‌‌​​​‌​​‌‌‌​‌​‌​‌‌‌​​‌​​‌​​‌​‌​​‌​​‌‌​‌​‌‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌‌‌​​​​​‌​​​‌​​​‌‌​‌​​​​​‌‌​​​‌​‌​‌​‌‌​​‌​​‌‌​‌​​‌‌​​​‌​‌‌‌​‌​​​​‌‌​‌​‌​‌​‌​‌‌​​‌‌​‌‌​​​‌‌​​‌‌‌​‌‌‌​​​​​‌‌​‌‌‌‌​‌​​‌‌‌​​‌​​‌‌​​​‌‌​‌‌‌‌​​‌‌​​‌‌​‌​​​‌‌‌​‌‌​​​​‌​‌​‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.snq92NM4RCT0ct1MburJMx
+ * Fingerprint: AMK1.BpDh1VM1t5VlgpoNLo3GaT
  */
 "use client";
 
@@ -156,7 +156,7 @@ export default function ChatWidget() {
           aria-live="polite"
         >
           <div className="flex items-center justify-between gap-2 mb-1.5">
-            <span className="text-[11px] font-mono font-semibold text-amber-600 dark:text-[#e5a93b] flex items-center gap-1.5">
+            <span className="text-[11px] font-mono font-semibold text-[#9a5200] dark:text-[#e5a93b] flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
@@ -262,14 +262,17 @@ export default function ChatWidget() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span className="eyebrow text-xs font-mono text-amber-600 dark:text-[#e5a93b] font-bold">
-                Portfolio Assistant
-              </span>
+              {/* Colour, weight and size come from `.chat-head .eyebrow`
+                  in globals.css, not from utilities: `.eyebrow` is a
+                  plain class rule, and Tailwind 4 ranks every utility
+                  below unlayered CSS, so utilities here would be dead
+                  text. */}
+              <span className="eyebrow">Portfolio Assistant</span>
             </div>
             {turns.length > 0 ? (
               <button
                 type="button"
-                className="chat-reset text-xs font-mono text-[#5a5a5f] hover:text-[#1d1d1f] dark:hover:text-white px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 transition-colors"
+                className="chat-reset"
                 onClick={() => {
                   clearTimer();
                   setTurns([]);
@@ -287,14 +290,14 @@ export default function ChatWidget() {
         </header>
 
         <div className="chat-log" ref={logRef}>
-          <p className="chat-greeting text-xs leading-relaxed">{GREETING}</p>
+          <p className="chat-greeting">{GREETING}</p>
 
           {turns.map((turn, i) => (
             <div
               key={i}
               className={"chat-msg chat-msg-" + turn.role}
             >
-              <span className="eyebrow text-[11px] font-mono mb-1 block">
+              <span className="eyebrow">
                 {turn.role === "user" ? "You" : "Assistant"}
               </span>
               <p className="whitespace-pre-line text-sm leading-relaxed" aria-live={turn.role === "assistant" ? "polite" : undefined}>
@@ -340,7 +343,7 @@ export default function ChatWidget() {
                   <button
                     key={s}
                     type="button"
-                    className="chat-chip text-xs hover:border-amber-500/40"
+                    className="chat-chip"
                     onClick={() => send(s)}
                   >
                     {s}
@@ -361,7 +364,7 @@ export default function ChatWidget() {
                   <button
                     key={f}
                     type="button"
-                    className="chat-chip text-xs hover:border-amber-500/40"
+                    className="chat-chip"
                     onClick={() => send(f)}
                   >
                     {f}
@@ -400,7 +403,7 @@ export default function ChatWidget() {
           />
           <button
             type="submit"
-            className="btn primary chat-send inline-flex items-center justify-center gap-1 font-semibold text-xs"
+            className="btn primary chat-send"
             disabled={busy || !draft.trim()}
           >
             {busy ? "…" : <><FiCornerDownLeft className="w-3.5 h-3.5" /><span>Send</span></>}

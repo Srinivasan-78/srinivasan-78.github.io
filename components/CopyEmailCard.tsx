@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌​‌​‌‌‌​‌‌​‌​​​​​‌‌​‌​​​‌​​‌‌‌‌​‌‌‌​​‌‌​​‌‌​​‌‌​​‌‌​​​​​‌‌‌​​​​​‌‌​​‌​‌​‌​​‌​‌​​‌​‌‌​‌​​​‌‌​​​‌​‌‌‌​​‌​​‌​​‌‌‌​​​‌‌​‌​‌​‌​​‌‌‌‌​‌​‌‌​​​​‌​‌‌​​​​‌​​‌​​‌​‌‌​‌‌​‌​‌​‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​​​​‌​‌‌‌​​‌​​‌‌​‌​‌​​‌​​‌​‌‌​‌​​​‌‌​​‌​‌​​‌‌​‌‌​​​​‌​‌‌​‌​​‌​‌‌‌‌​‌​​‌‌‌‌​​​​‌​​‌‌‌‌​‌​‌​​​​​‌‌​​‌​​​‌​‌‌​‌​​‌​‌‌​​​​​‌‌​​​​​‌​​​‌‌​​‌‌‌​​​‌​‌‌​‌‌‌‌​‌​​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.8Wh4Os30peJZ1rN5OXXImX
+ * Fingerprint: AMK1.koarjKFSaizxOPdZX0FqoB
  */
 "use client";
 
@@ -31,14 +31,14 @@ export default function CopyEmailCard() {
           className="flex items-center gap-3.5 group grow min-w-0"
           title="Open mail client"
         >
-          <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0 group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0 group-hover:scale-105 transition-transform">
             <FiMail className="w-5 h-5" />
           </div>
           <div className="min-w-0">
             <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">
               Email Directly
             </div>
-            <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors truncate">
+            <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors truncate">
               {email}
             </div>
           </div>
@@ -53,8 +53,8 @@ export default function CopyEmailCard() {
           >
             {copied ? (
               <>
-                <FiCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34c759]" />
-                <span className="text-emerald-600 dark:text-[#34c759] text-[11px] font-semibold">Copied</span>
+                <FiCheck className="w-3.5 h-3.5 text-[#047857] dark:text-[#34c759]" />
+                <span className="text-[#047857] dark:text-[#34c759] text-[11px] font-semibold">Copied</span>
               </>
             ) : (
               <>

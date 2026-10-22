@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​‌‌‌​​​‌​‌‌‌​​​‌​‌​​‌‌‌‌​‌​​​‌‌‌​​‌‌‌​​​​‌​‌​​‌​​‌​​​​‌‌​‌​​‌‌‌‌​‌‌​‌​‌‌​‌​‌​​​‌​‌‌​‌‌​​​‌‌​​‌‌‌​‌​‌​‌​​​​‌​‌‌​‌​‌‌‌​‌​‌​​‌‌​​‌‌​​‌‌​‌‌​​‌​‌​‌​‌​‌​‌​​‌‌​‌‌‌​​​​​‌‌​​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌‌​‌‌‌‌​​‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​​‌​​‌‌​‌‌‌​​‌​‌​‌‌‌​‌‌​‌​‌‌​​‌‌‌​​​​‌‌‌​​​‌​‌‌​​​​‌​‌​​​​‌‌​​‌‌​‌‌‌​‌‌​‌‌‌​​‌​‌​‌​‌​‌‌​‌​​​​‌‌‌‌​​​​‌​‌‌​​‌​‌​‌​​‌​​‌​​‌​‌‌​‌‌‌​​​‌​‌​​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.DqqOG8RCOkQlgT-u36USpe
+ * Fingerprint: AMK1.Yo7sRnWk8qaC7nUhxYRKqB
  */
 import Link from "next/link";
 import { PROJECTS } from "@/lib/projects";
@@ -84,7 +84,7 @@ export default function Page() {
             download
             className="px-7 py-3.5 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-semibold text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
           >
-            <FiDownload className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+            <FiDownload className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
             Download Résumé
           </a>
           <Link
@@ -124,7 +124,7 @@ export default function Page() {
       {/* 3. Release Reliability Architecture */}
       <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
             <span>Reliability by Design</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white mb-4">
@@ -153,7 +153,7 @@ export default function Page() {
         <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
 
           <div className="max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
               <span>Side Projects & Tools</span>
             </div>
 
@@ -179,7 +179,7 @@ export default function Page() {
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
             >
               <span>Explore All {PROJECTS.length} Projects</span>
-              <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+              <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
             </Link>
             <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
               Interactive filters, live demos & source code
@@ -196,7 +196,7 @@ export default function Page() {
       <section className="py-24 px-6 relative overflow-hidden bg-linear-to-b from-[#f5f5f7] to-white dark:from-[#09090c] dark:to-black border-t border-black/10 dark:border-white/10">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="w-14 h-14 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/15 mx-auto flex items-center justify-center mb-6 shadow-xs">
-            <FiZap className="w-6 h-6 text-amber-600 dark:text-[#e5a93b]" />
+            <FiZap className="w-6 h-6 text-[#9a5200] dark:text-[#e5a93b]" />
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white mb-4">

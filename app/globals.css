@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌‌​‌​​‌​‌‌​​​‌​​‌​‌​‌​‌​‌‌​‌‌‌‌​‌​​‌‌‌​​‌‌​​​‌‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌​‌​​‌​​​‌‌​​‌​​‌‌​‌​‌​​‌‌​​​‌‌​‌‌‌​​‌​​‌‌​​‌​‌​‌‌​​​​‌​‌‌​‌‌​‌​‌​‌​‌​‌​‌‌‌​​​​​‌​​​​‌‌​‌​​​​​‌​‌​‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌‌‌​‌‌‌​‌‌​‌‌‌‌​‌​‌​​‌​​​‌‌​‌‌​​‌‌​‌​‌​​​‌‌​​​​​‌​‌​‌‌‌​​‌​‌‌​‌​‌​​‌​‌​​‌‌​​​​‌​‌‌‌‌​​‌​‌​​‌‌‌​​​‌​‌‌​‌​‌​​​‌​‌​‌‌‌‌​‌​​​‌‌​‌​​​‌​​​‌​​​‌​​‌‌‌​​‌‌‌​‌​​​‌​​‌‌‌‌​‌​‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.8ibUoNcsiR2jcreamUpCAX
+ * Fingerprint: AMK1.XwoR6j0W-JayN-Ez4DNtOW
  */
 /* Tailwind 4: one import in place of the three layer directives.
 
@@ -68,6 +68,20 @@ html[data-theme="light"] {
   --accent: #0066cc;
   --accent-wash: #f0f7ff;
   --accent-line: #b6dbff;
+
+  /* The amber the markup writes as `text-[#9a5200] dark:text-[#e5a93b]`.
+     It is declared here for the record rather than read from here — the
+     eyebrows and category labels it colours are Tailwind classes — but
+     the number needs somewhere to be explained.
+
+     Dark mode never had a problem: #e5a93b on near-black is 8:1. Light
+     mode used Tailwind's amber-600, which is 2.9:1 on --paper-raised at
+     12px, and Tailwind 4's oklch palette made it very slightly worse
+     (rgb(225,113,0) against v3's rgb(217,119,6)). amber-700 clears 4.5
+     on white but only 4.15 on the grey chips those labels also sit on,
+     so this is one step further down: 4.83 on the worst of the four
+     light surfaces in use, and still unmistakably the same amber. */
+  --accent-amber: #9a5200;
   /* The accent as a *fill* behind white text, which is a different
      contrast problem from the accent as text. Kept as its own token so
      the two can be tuned apart. */
@@ -233,7 +247,24 @@ body {
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
 
-a { color: var(--ink); text-decoration: none; }
+/* In `@layer base`, and that is not cosmetic.
+
+   Tailwind 3 injected its utilities as unlayered rules, so this
+   one-element selector lost to any `text-*` class on the same anchor on
+   specificity. Tailwind 4 puts every utility in the `utilities` cascade
+   layer — and unlayered CSS outranks every layer, whatever its
+   specificity. Overnight this rule started winning against each of the
+   roughly ninety `<a className="... text-...">` on the site: the
+   "Discuss a Role" button went white-on-white in dark mode, every
+   "Merge Request" link lost its blue, and the footer and card links
+   all collapsed to --ink.
+
+   Declaring it in `base` restores the order the rest of the file was
+   written against: it is the default for a bare anchor, and any
+   utility on the element beats it. */
+@layer base {
+  a { color: var(--ink); text-decoration: none; }
+}
 
 /* Off-screen until focused. Without it, every route makes a keyboard
    user tab through the whole nav before reaching any content. Not
@@ -1065,18 +1096,40 @@ main > section:not(:first-of-type) {
   justify-content: space-between;
   gap: 0.75rem;
 }
-.chat-head .eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; }
+/* The panel's own title, and the one place on this surface that takes a
+   colour. It used to ask for that colour from the markup — `.eyebrow`
+   alongside `text-amber-600 font-bold` — which worked until Tailwind 4
+   moved utilities into a cascade layer that `.eyebrow`'s `color` and
+   `font-weight: inherit` now outrank. The label went grey and regular
+   and nothing said why, so the values live here instead, where the rest
+   of this panel's type already does.
+
+   Amber 700 rather than the 600 the markup asked for: 600 is 3.4:1 on
+   this panel, and this is 12px. */
+.chat-head .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #b45309;
+  font-weight: 700;
+}
+html[data-theme="dark"] .chat-head .eyebrow { color: #e5a93b; }
+/* Likewise the per-turn role label: it is a block with air under it,
+   which the markup's `mb-1 block` no longer delivers. */
+.chat-msg .eyebrow { display: block; margin-bottom: 0.25rem; }
 .chat-reset {
   cursor: pointer;
-  padding: 0;
+  padding: 0.15rem 0.5rem;
   font-family: var(--font-body);
   font-size: 0.74rem;
   color: var(--ink-45);
-  background: none;
+  background: var(--ink-08);
   border: 0;
   border-bottom: 1px solid var(--ink-15);
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
-.chat-reset:hover { color: var(--ink); border-color: var(--accent); }
+.chat-reset:hover { color: var(--ink); background: var(--ink-15); border-color: var(--accent); }
 .chat-head .pulse {
   position: relative;
   width: 7px;
@@ -1181,7 +1234,23 @@ main > section:not(:first-of-type) {
   border-radius: 8px;
 }
 .chat-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.chat-send { flex: 0 0 auto; padding: 0.5rem 0.9rem; font-size: 0.82rem; cursor: pointer; }
+/* `.btn` sets `display: inline-block`, which under Tailwind 4's layering
+   now beats the `inline-flex items-center gap-1` the markup puts on this
+   button — so the corner-return icon and the word "Send" stopped being a
+   row and stacked, and the button rendered as a two-line blob. The
+   layout belongs to the send button rather than to every `.btn`, so it
+   is stated here. */
+.chat-send {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
 .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
 @media (max-width: 720px) {
@@ -1484,6 +1553,16 @@ main > section:not(:first-of-type) {
 .glow-card > .border-glow-inner {
   height: 100%;
   border-radius: inherit;
+  /* The card is a grid and this is its only in-flow item, so it inherits
+     `min-width: auto` — which means it refuses to shrink below its
+     content's min-content width and pushes straight out through the
+     card's own box. On a 390px screen the contact page's email card came
+     out 404px wide inside a 342px card, hanging off the side of the
+     page. A grid item that is a card's content should never be wider
+     than the card; where the content genuinely cannot fit, the clip
+     below is the right answer, not an overflowing box. */
+  min-width: 0;
+  min-height: 0;
   /* `clip`, not upstream's `auto`: a card whose content is a pixel taller
      than its box should clip, not grow a scrollbar.
 
@@ -1495,9 +1574,22 @@ main > section:not(:first-of-type) {
      overflow. `clip` is the same clip with none of that. */
   overflow: clip;
 }
-.glow-card > .border-glow-inner > * {
+/* The titlebar keeps its own height. It used to be caught by the
+   `> *` rule below and stretched to `height: 100%` alongside the
+   content it sits above — two children each claiming the full column
+   inside a box that clips — so every chromed card lost exactly one
+   bar's worth of content off the bottom. On the experience tiles that
+   was the footer row, sheared off mid-line. */
+.glow-card > .border-glow-inner > .win-bar {
+  flex: 0 0 auto;
+}
+/* The content child takes what is left of the column rather than the
+   whole of it: `flex: 1` measures against the space the bar has
+   already taken, which `height: 100%` cannot do. */
+.glow-card > .border-glow-inner > *:not(.win-bar) {
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
-  height: 100%;
   background: transparent;
   border-radius: inherit;
 }
@@ -2130,7 +2222,7 @@ html:not(.dialog-open) footer {
    the same radius. Drawing the edge on both paints two hairlines a
    pixel apart, so inside a glow card the edge belongs to the wrapper
    and the inner element gives it up. */
-.glow-card > .border-glow-inner > * {
+.glow-card > .border-glow-inner > *:not(.win-bar) {
   border: 0;
   box-shadow: none;
 }
