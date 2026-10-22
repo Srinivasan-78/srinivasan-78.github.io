@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​​‌‌​‌‌‌​​‌‌​‌‌‌​‌‌‌‌​​‌​‌‌​​‌​‌​​‌‌​​‌‌​‌​‌​​​‌​‌​​​‌‌‌​​‌‌‌​​‌​‌‌‌​​‌‌​​‌‌​​​​​​‌‌​‌​‌​​‌‌​‌‌​​‌‌​‌‌​‌​‌‌​‌‌‌‌​‌​​​​​‌​‌​​‌​​‌​‌‌​‌‌​‌​‌​​‌‌​‌​‌​‌​‌‌​​​‌‌​‌​​​‌‌​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌​‌​​‌‌​​‌‌‌​​‌​​‌‌​​‌‌​‌​‌‌​‌​​‌​‌​‌​‌​‌‌​​‌‌‌​​‌‌​​‌​​‌​​​​‌​​‌‌​​‌‌‌​‌‌​‌​​​​‌‌​‌‌​​​​‌‌​‌​‌​‌‌​‌‌‌‌​‌​‌​‌​‌​​‌‌​​​​​‌​​‌‌‌‌​‌​​​​​‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌​‌‌​​​​‌​‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.M77ye3QG9s056moAImMV4k
+ * Fingerprint: AMK1.iS93ZUg2Bghl5oU0OAsrXP
  */
 import { PROJECTS } from "./projects";
 import { CERTS } from "./certs";
@@ -16,7 +16,7 @@ import { CERTS } from "./certs";
 const PROJECT_COUNT = PROJECTS.length;
 const CERT_COUNT = CERTS.length;
 
-export interface KnowledgeEntry {
+interface KnowledgeEntry {
   id: string;
   category: "identity" | "experience" | "projects" | "skills" | "authorization" | "certifications" | "contact" | "general";
   keywords: string[];
@@ -29,7 +29,7 @@ export interface KnowledgeEntry {
   };
 }
 
-export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
+const KNOWLEDGE_BASE: KnowledgeEntry[] = [
   // 1. Identity & Overview
   {
     id: "overview",

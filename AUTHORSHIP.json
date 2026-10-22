@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-22T13:50:20.576Z",
+  "sealedAt": "2026-10-22T14:01:27.914Z",
   "fileCount": 69,
-  "digest": "522e809a9a0acf51a36e59cfaf1a8f98cfa2b95be6b0f01311a6ccb57bc43d59",
-  "proof": "8f7d7d19a9d9479607ab3f9899e626a93776c870ec0d07dfde5208e165b90ed9",
+  "digest": "a0d2fdddf55d6739ffc57281fe4d95634411402f48c267f0a7af15e30635ab37",
+  "proof": "390bac40bc6edc5bd9a5b52592a0faa8c931414632f93dfcf18247b586d11f5c",
   "files": [
     {
       "path": "AGENTS.md",
@@ -306,8 +306,8 @@
     },
     {
       "path": "lib\\knowledge.ts",
-      "sha256": "702123b09c92881ad35c5fbced4cf7d596a63f5ab8e75f2872cf6133ab323c82",
-      "bytes": 32669
+      "sha256": "ec92ada54e482bfa59bb347d4a14c02187c56cfb783b43d4c4957aa3ecf9e289",
+      "bytes": 32655
     },
     {
       "path": "lib\\nav.ts",
