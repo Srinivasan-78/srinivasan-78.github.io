@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​​​‌​​‌‌​‌​​‌‌​‌‌​​‌​‌​‌​​​​‌‌​‌‌‌​​‌‌​‌‌​​‌‌​​​​‌​‌‌​​‌​​​‌‌​​‌‌‌​‌​​‌​‌​​‌​​​‌​​​​‌‌​‌​​​‌‌‌​‌‌‌​‌​‌​‌​‌​‌‌‌​​‌‌​‌‌‌​‌​‌​‌​​‌​‌‌​‌​​‌‌‌​​‌‌​​‌‌​​​‌‌​​​‌​‌​‌‌‌‌‌​‌‌‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌‌‌​‌​​​‌​‌‌​​​​‌‌‌​​‌​​‌​​‌‌​‌​​‌‌​​‌‌​‌‌​​​​‌​​‌‌​​‌‌​‌​​‌​‌‌​‌​​‌​‌​​‌‌​‌​‌​​‌‌​‌‌‌‌​‌​‌‌​​‌​‌‌​‌​​‌​​‌‌​​​‌​‌‌‌‌​​‌​‌​‌​‌​‌​‌​‌​​‌​​‌‌‌​​​‌​‌​‌​‌​​​‌​​‌​‌​​​‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.hM6T76adgJD4wUsuKNf1_y
+ * Fingerprint: AMK1.itXrM3a3KJjoYi1yURqTJ1
  */
 "use client";
 
@@ -47,7 +47,14 @@ export default function ScrollProvider({ children }: { children: React.ReactNode
   const pathname = usePathname();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    /* `behavior: "instant"`, explicitly, because globals.css now sets
+       `scroll-behavior: smooth` on <html> — which applies to programmatic
+       scrolls like this one as well as to fragment links. Left to the
+       default (`"auto"`, which defers to the stylesheet) a visitor leaving
+       the bottom of a long page would watch half a second of the route
+       they just left scroll past before the new one appeared. A route
+       change is a new document, not a journey across the old one. */
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
 
   const locks = useRef(0);

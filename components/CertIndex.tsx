@@ -1,15 +1,16 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​‌​​‌‌​‌​​​‌​​​​‌​​‌​‌‌​​​​‌​​‌​‌‌​‌‌​​​‌​​‌‌​‌‌‌‌​‌‌‌‌​​‌​‌‌‌​‌​​​‌‌​‌‌‌​​‌​​​‌​‌​​‌​‌‌​‌​‌​​‌​‌​​​‌‌​‌‌​​‌​​​​‌‌​‌​​‌‌​​​‌‌​​‌​‌​‌‌‌​‌​​​​‌‌​​‌‌​‌‌​​​​‌​‌‌​​‌‌‌​‌‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​​‌‌‌​​‌​‌​​‌‌​​‌‌​‌‌‌​‌‌‌‌​​‌​‌‌‌​​‌​​‌‌​‌‌​‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌‌‌‌​​​​‌​​​‌​‌​​‌‌​​‌‌​‌‌‌‌​‌​​‌‌‌​​‌‌​​‌‌​​​​​‌​​​‌​​​‌‌​‌‌‌​​‌‌​​‌​​​‌‌​‌‌‌​​​‌‌​‌‌‌​​‌‌‌​​‌​‌‌​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.U4BXKboytnE-J6CLet3agp
+ * Fingerprint: AMK1.sNS7yrmt7xE3zs0Dndn79j
  */
 "use client";
 
 import { useMemo, useState } from "react";
 import { CERTS, ROWS, forRow, type Cert } from "@/lib/certs";
 import GlowCard from "./ui/GlowCard";
+import { useCappedList, ShowMoreButton } from "./ui/RevealMore";
 import {
   FiAward,
   FiExternalLink,
@@ -51,6 +52,11 @@ export default function CertIndex() {
     );
   }, [rowId, searchQuery]);
 
+  /* Nine again, for the same reason as the projects grid: three complete
+     rows of the three-column layout, so the cap reads as a resting point
+     rather than a truncation. */
+  const certList = useCappedList(filteredCerts, 9, `${rowId}|${searchQuery}`);
+
   return (
     <main
       id="content"
@@ -59,7 +65,7 @@ export default function CertIndex() {
     >
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
           <FiAward className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Continuous Learning & Verification</span>
         </div>
@@ -99,7 +105,7 @@ export default function CertIndex() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by credential or skill (e.g. Ansible, Azure, Chef, Puppet, Datadog)..."
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
             />
             {searchQuery && (
               <button
@@ -123,7 +129,7 @@ export default function CertIndex() {
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
                     isSelected
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
-                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
+                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c] dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
                   }`}
                 >
                   <span>{r.label}</span>
@@ -144,12 +150,18 @@ export default function CertIndex() {
       {/* 2. Credentials Bento Grid */}
       <section className="px-6 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
-          <span>Showing {filteredCerts.length} verified credentials</span>
+          {/* Honest while capped: the figure here and the figure on the
+              control below the grid have to agree. */}
+          <span>
+            {certList.visible.length < filteredCerts.length
+              ? `Showing ${certList.visible.length} of ${filteredCerts.length} verified credentials`
+              : `Showing ${filteredCerts.length} verified credentials`}
+          </span>
           <span>Issuer: LinkedIn Learning</span>
         </div>
 
         {filteredCerts.length === 0 ? (
-          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
+          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
             <FiAward className="w-8 h-8 mx-auto text-[#9b9ba1] mb-3" />
             <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
               No certifications found matching &ldquo;{searchQuery}&rdquo;
@@ -170,13 +182,13 @@ export default function CertIndex() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCerts.map((cert) => (
+            {certList.visible.map((cert) => (
               <GlowCard key={cert.url}>
-                <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
+                <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
                   <div>
                     {/* Seal & Date */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-sm dark:shadow-none">
+                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-xs dark:shadow-none">
                         <FiAward className="w-5 h-5" />
                       </div>
                       <span className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
@@ -226,6 +238,15 @@ export default function CertIndex() {
               </GlowCard>
             ))}
           </div>
+        )}
+
+        {certList.showControl && (
+          <ShowMoreButton
+            expanded={certList.expanded}
+            hiddenCount={certList.hiddenCount}
+            noun="credentials"
+            onClick={certList.toggle}
+          />
         )}
       </section>
 

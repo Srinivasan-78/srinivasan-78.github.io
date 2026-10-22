@@ -1,9 +1,9 @@
 <!--
-  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌​‌​​‌​​​‌‌‌​​​​‌‌​‌​‌‌​‌​‌​​‌‌​‌‌‌‌​‌​​‌‌​‌​‌​​‌​​​​‌​​‌​​‌​‌‌​‌‌​​​‌​​‌​​​​‌‌​‌​​​‌​​​‌​‌​​​‌​‌​‌​‌‌​​​‌‌​‌​​​​‌‌​​​‌​‌‌​​‌‌​​‌‌‌​‌‌​​‌​​​‌​‌​‌​​​‌‌‌​‌‌​‌‌​​​‌‌‌‌​​​⁠
+  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌​​‌‌‌‌​‌​​‌‌‌‌​‌​‌​​‌​​‌​​​‌‌‌​‌‌​‌​​​​‌​‌‌​‌​​‌‌​‌‌‌‌​‌​​​‌‌​​​‌​‌‌​‌​‌​‌​‌​​​‌‌‌​​​​​‌‌‌‌​‌​​​‌‌‌​​‌​‌​​​​​‌​‌‌​​​‌​​‌‌‌​‌​‌​‌​‌​​‌​​​‌‌​​​​​‌‌​​‌‌‌​‌‌​​‌‌​​‌‌‌‌​​​⁠
   Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
   Author: https://github.com/Srinivasan-78
   SPDX-License-Identifier: MIT
-  Fingerprint: AMK1.iR8kSzjBKbCDQV41fvEGlx
+  Fingerprint: AMK1.yOORGhZoF-Tpz9AbuR0gfx
 -->
 # srinidevops.com — the whole site, explained
 
@@ -359,8 +359,12 @@ npm run build        # compile 33 static export pages into out/
 
 ## 14. Contact & Credentials
 
+- **Role**: DevOps / Site Reliability Engineer — Cloud Infrastructure, Reliability, Release Automation & AI Developer Tooling
 - **Direct Email**: [srinivasan.shyam2000@gmail.com](mailto:srinivasan.shyam2000@gmail.com)
+- **Phone**: [+91 97910 25934](tel:+919791025934)
+- **Website**: [srinidevops.com](https://www.srinidevops.com)
 - **LinkedIn**: [linkedin.com/in/srini-solution-architect](https://www.linkedin.com/in/srini-solution-architect/)
 - **GitHub**: [github.com/Srinivasan-78](https://github.com/Srinivasan-78)
-- **Location**: Bangalore, India (Authorized for US & India employment)
+- **Open source**: [repo2graph](https://github.com/Srinivasan-78/repo2graph) — creator and maintainer of an MIT-licensed code-graph engine and MCP server for AI coding agents
+- **Location**: Bangalore, India — U.S. Citizen · OCI Holder (authorized to work in the United States and India)
 

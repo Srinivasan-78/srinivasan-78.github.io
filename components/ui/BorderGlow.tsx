@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​‌​‌‌‌​​‌​​‌‌​​​‌​​​‌‌​‌​‌​‌​​‌‌​​​​‌‌​‌‌‌​‌​‌​‌​‌​‌​​‌‌​‌​‌​‌​‌‌‌​​‌‌​‌​‌​‌‌‌‌​​​​‌​​​​‌‌​‌​​‌​​​​‌​​‌​‌‌​‌‌‌​​‌‌​‌‌​​‌‌‌​‌​‌​​​​​‌‌​​​‌​​‌​‌​‌‌‌​‌‌​‌​​​​‌‌‌​​‌‌​‌‌​‌‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​‌​​​​​‌​‌‌‌​‌‌​​‌‌‌​​​​​‌​​​‌‌‌​​‌‌‌​​​​‌‌​‌​‌‌​‌‌​​​​‌​‌‌‌​​‌​​‌​​​‌​‌​‌​​​‌‌‌​‌​​​‌​‌​‌​​‌‌​​​‌‌‌​‌​​​‌​‌‌​​​​​‌‌​‌​​​‌​‌​‌‌‌​‌​​‌‌​‌​​‌‌​‌​‌​‌​‌​​​‌​‌​​‌​‌‌​‌​‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.1rb5L7UMW5xCHKsgPbWhsl
+ * Fingerprint: AMK1.tAvpG8karEGELtX4WM5QKQ
  */
 "use client";
 
@@ -15,9 +15,28 @@
    are written straight to CSS custom properties on the element — no
    state, so no React render per pointer event.
 
-   The only addition is teardown: upstream's intro sweep schedules
-   setTimeout/rAF chains that keep running after unmount. They are
-   tracked here and cancelled. */
+   Two additions.
+
+   Teardown: upstream's intro sweep schedules setTimeout/rAF chains that
+   keep running after unmount. They are tracked here and cancelled.
+
+   And the pointer handler is coalesced to one frame. Upstream's reads
+   `getBoundingClientRect()` three times per event — once in the handler
+   and once more inside each of the two helpers, both of which re-derive
+   the element's centre — and then writes two custom properties that a
+   conic-gradient mask and three opacity expressions depend on. A gaming
+   mouse reports at 1000Hz, so that is three forced layouts and a repaint
+   of the glow apparatus up to a thousand times a second, which the
+   display cannot show more than sixty of.
+
+   Below, the event only records where the pointer is; one frame callback
+   measures once and writes once. Same maths, same values, one layout and
+   one paint per frame instead of per event.
+
+   The rect is deliberately re-measured on each frame rather than cached
+   on enter: `rect.left/top` move when the page scrolls under a hovered
+   card, and a cached one would have the glow drift away from the cursor
+   mid-scroll. One rect per frame is not a cost worth optimising away. */
 
 import { useRef, useCallback, useEffect, type CSSProperties, type ReactNode } from "react";
 import "./BorderGlow.css";
@@ -145,56 +164,64 @@ const BorderGlow = ({
   style,
 }: BorderGlowProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  /* Where the pointer was when the last event fired, in client
+     coordinates. Read by the frame callback, never by the event. */
+  const pointerRef = useRef<{ x: number; y: number } | null>(null);
+  const rafRef = useRef(0);
 
-  const getCenterOfElement = useCallback((el: HTMLElement): [number, number] => {
-    const { width, height } = el.getBoundingClientRect();
-    return [width / 2, height / 2];
+  const paint = useCallback(() => {
+    rafRef.current = 0;
+    const card = cardRef.current;
+    const pointer = pointerRef.current;
+    if (!card || !pointer) return;
+
+    const rect = card.getBoundingClientRect();
+    /* The centre, in the element's own coordinates — which is also the
+       offset of the pointer from that centre once the rect origin is
+       taken off both. Upstream computes it from a second and third rect;
+       it is the same rect. */
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dx = pointer.x - rect.left - cx;
+    const dy = pointer.y - rect.top - cy;
+
+    // Edge proximity: upstream's maths, unchanged.
+    let kx = Infinity;
+    let ky = Infinity;
+    if (dx !== 0) kx = cx / Math.abs(dx);
+    if (dy !== 0) ky = cy / Math.abs(dy);
+    const edge = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+
+    // Cursor angle: likewise.
+    let angle = 0;
+    if (dx !== 0 || dy !== 0) {
+      angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+      if (angle < 0) angle += 360;
+    }
+
+    card.style.setProperty("--edge-proximity", `${(edge * 100).toFixed(3)}`);
+    card.style.setProperty("--cursor-angle", `${angle.toFixed(3)}deg`);
   }, []);
-
-  const getEdgeProximity = useCallback(
-    (el: HTMLElement, x: number, y: number) => {
-      const [cx, cy] = getCenterOfElement(el);
-      const dx = x - cx;
-      const dy = y - cy;
-      let kx = Infinity;
-      let ky = Infinity;
-      if (dx !== 0) kx = cx / Math.abs(dx);
-      if (dy !== 0) ky = cy / Math.abs(dy);
-      return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
-    },
-    [getCenterOfElement]
-  );
-
-  const getCursorAngle = useCallback(
-    (el: HTMLElement, x: number, y: number) => {
-      const [cx, cy] = getCenterOfElement(el);
-      const dx = x - cx;
-      const dy = y - cy;
-      if (dx === 0 && dy === 0) return 0;
-      const radians = Math.atan2(dy, dx);
-      let degrees = radians * (180 / Math.PI) + 90;
-      if (degrees < 0) degrees += 360;
-      return degrees;
-    },
-    [getCenterOfElement]
-  );
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      const card = cardRef.current;
-      if (!card) return;
-
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const edge = getEdgeProximity(card, x, y);
-      const angle = getCursorAngle(card, x, y);
-
-      card.style.setProperty("--edge-proximity", `${(edge * 100).toFixed(3)}`);
-      card.style.setProperty("--cursor-angle", `${angle.toFixed(3)}deg`);
+      /* A touch or pen contact is not a hovering cursor, and the
+         stylesheet keeps the glow off for those pointer types anyway —
+         so there is nothing for this to drive. */
+      if (e.pointerType !== "mouse") return;
+      pointerRef.current = { x: e.clientX, y: e.clientY };
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(paint);
     },
-    [getEdgeProximity, getCursorAngle]
+    [paint]
+  );
+
+  // An in-flight frame holds a reference to the node it is about to write to.
+  useEffect(
+    () => () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    },
+    []
   );
 
   useEffect(() => {

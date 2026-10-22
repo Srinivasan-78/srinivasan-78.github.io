@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌‌​​​‌‌​‌​​​‌​‌​‌​‌‌​‌​​‌​​​​‌​​​‌‌‌​​​​‌‌​‌​​​​‌‌​​‌​‌​​‌‌​‌‌‌​‌‌‌​​​‌​‌‌​‌​‌​​‌​‌​‌​​​‌​‌​​​‌​‌​‌​‌‌​​‌​​‌‌​‌​‌​​‌​‌​​‌​‌​‌​‌​‌​‌​​‌​​‌​​‌‌‌‌​​‌‌​‌‌​​‌‌‌​‌​‌​‌​​​​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​‌‌​​​‌​​‌​​‌​‌‌​‌‌​‌​‌​​​‌‌‌​​‌​‌​​​‌‌​​‌​‌‌​‌​​‌‌‌‌​‌​​​‌​‌‌​‌​‌​​​​‌‌​‌​​‌‌​‌​‌​​‌​‌​​​‌‌​‌​​​‌​​‌​​​​‌​​‌‌‌​​‌​‌‌​​​​‌​​​‌​​​‌​​‌‌‌​​​‌‌‌​​‌​​‌​‌‌​‌​‌​​‌​​‌​‌​‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.zcEZB8he7qjTQVMJURO6uC
+ * Fingerprint: AMK1.ubKj9FZz-CMJ4HNXDN9-IU
  */
 "use client";
 
@@ -22,6 +22,25 @@ import {
   SiDatadog,
   SiGrafana,
   SiPrometheus,
+  SiClaude,
+  SiCursor,
+  SiGithubcopilot,
+  SiOllama,
+  SiGooglegemini,
+  SiHuggingface,
+  SiOpenrouter,
+  SiFastapi,
+  SiStreamlit,
+  SiApache,
+  SiApachetomcat,
+  SiApachesolr,
+  SiJinja,
+  SiDotnet,
+  SiCplusplus,
+  SiRedhat,
+  SiUbuntu,
+  SiAkamai,
+  SiPypi,
 } from "react-icons/si";
 import LogoLoop, { type LogoItem } from "./ui/LogoLoop";
 
@@ -62,6 +81,35 @@ const TECH: LogoItem[] = [
   { node: <SiDatadog />, title: "Datadog", ariaLabel: "Datadog" },
   { node: <SiGrafana />, title: "Grafana", ariaLabel: "Grafana" },
   { node: <SiPrometheus />, title: "Prometheus", ariaLabel: "Prometheus" },
+
+  /* The AI and LLM half of the same toolchain — MCP servers, agentic
+     coding tools and local inference — and the platform layer the
+     enterprise work actually runs on. Microsoft marks are wordmarks for
+     the same reason AWS and Azure are, above. */
+  { node: <Word>MCP</Word>, title: "Model Context Protocol", ariaLabel: "Model Context Protocol" },
+  { node: <SiClaude />, title: "Claude / Claude Code", ariaLabel: "Claude and Claude Code" },
+  { node: <SiCursor />, title: "Cursor", ariaLabel: "Cursor" },
+  { node: <SiGithubcopilot />, title: "GitHub Copilot", ariaLabel: "GitHub Copilot" },
+  { node: <SiGooglegemini />, title: "Google Gemini", ariaLabel: "Google Gemini" },
+  { node: <SiOpenrouter />, title: "OpenRouter", ariaLabel: "OpenRouter" },
+  { node: <SiHuggingface />, title: "Hugging Face", ariaLabel: "Hugging Face" },
+  { node: <SiOllama />, title: "Ollama", ariaLabel: "Ollama" },
+  { node: <SiFastapi />, title: "FastAPI", ariaLabel: "FastAPI" },
+  { node: <SiStreamlit />, title: "Streamlit", ariaLabel: "Streamlit" },
+  { node: <SiPypi />, title: "PyPI", ariaLabel: "PyPI" },
+  { node: <Word>Bicep</Word>, title: "Azure Bicep", ariaLabel: "Azure Bicep" },
+  { node: <SiJinja />, title: "Jinja2", ariaLabel: "Jinja2" },
+  { node: <SiApache />, title: "Apache HTTP Server", ariaLabel: "Apache HTTP Server" },
+  { node: <SiApachetomcat />, title: "Apache Tomcat", ariaLabel: "Apache Tomcat" },
+  { node: <SiApachesolr />, title: "Apache Solr", ariaLabel: "Apache Solr" },
+  { node: <Word>SQL Server</Word>, title: "Microsoft SQL Server (T-SQL)", ariaLabel: "Microsoft SQL Server" },
+  { node: <Word>PowerShell</Word>, title: "PowerShell", ariaLabel: "PowerShell" },
+  { node: <SiDotnet />, title: "C# / .NET", ariaLabel: "C sharp and dot NET" },
+  { node: <SiCplusplus />, title: "C / C++", ariaLabel: "C and C plus plus" },
+  { node: <SiRedhat />, title: "RHEL", ariaLabel: "Red Hat Enterprise Linux" },
+  { node: <SiUbuntu />, title: "Ubuntu", ariaLabel: "Ubuntu" },
+  { node: <SiAkamai />, title: "Akamai", ariaLabel: "Akamai" },
+  { node: <Word>WiX</Word>, title: "WiX Toolset", ariaLabel: "WiX Toolset" },
 ];
 
 export default function TechLoop() {

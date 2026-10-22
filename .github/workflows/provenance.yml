@@ -17,17 +17,27 @@ jobs:
         run: pipx run reuse lint
 
   verify-authorship:
-    # Full fingerprint / signature verification. Runs only on push to a
-    # protected branch -- never on pull_request, where an edited file's
-    # fingerprint is legitimately stale until it is re-stamped. Without
-    # AUTHORMARK_KEY this degrades to a presence check (ed25519 repos still
-    # verify signatures from the public key in .authormark.json).
-    if: github.event_name == 'push'
+    # This job is a *required* status check on main, so it has to report a
+    # conclusion on a pull request. It used to carry
+    # `if: github.event_name == 'push'`, which meant it was skipped on
+    # every PR -- and a required check that never runs leaves each PR
+    # blocked on a result that can never arrive.
+    #
+    # The reason it avoided pull_request was sound, so the mode is what
+    # varies now rather than whether the job runs at all. On a push to a
+    # protected branch the full fingerprint and signature verification is
+    # correct. On a pull request an edited file's fingerprint is
+    # legitimately stale until the tree is re-stamped, so asserting
+    # presence is the strongest check that is not simply wrong there.
+    #
+    # Without AUTHORMARK_KEY this degrades to a presence check anyway
+    # (ed25519 repos still verify signatures from the public key in
+    # .authormark.json).
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.2.2
       - uses: Srinivasan-78/authormark-watch@56771678a6b8ec1303b8b25de69f6795c0823fa5  # main
         with:
-          mode: check
+          mode: ${{ github.event_name == 'push' && 'check' || 'check-presence' }}
           path: .
           key: ${{ secrets.AUTHORMARK_KEY }}

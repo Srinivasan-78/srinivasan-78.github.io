@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​‌​‌‌​​‌​‌​‌​‌‌​​‌‌‌​‌​‌​‌‌​‌‌​​​‌‌​​‌‌‌​‌‌‌​​​‌​​‌‌​​‌‌​‌‌​​‌​‌​‌‌​‌​‌​​‌‌​‌​​​​​‌‌​‌‌‌​‌​​​​‌‌​‌‌​‌‌​‌​‌​​‌‌​‌​‌‌​​‌‌​​‌​​‌​‌‌​‌‌‌​‌​​​‌​​‌​​​​‌‌‌​​​‌​​‌‌‌​​‌​‌​​‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌‌​‌‌​‌‌​‌​‌‌​​‌‌‌​‌​​​​‌‌​‌​​‌​​​​‌​​‌‌​​​‌‌‌​‌​‌​‌‌‌​‌​​​​‌​‌‌​‌​​‌‌​​‌‌​​‌‌​‌‌‌​‌​‌‌​‌​​​‌‌​‌‌​​‌​​‌‌‌​​‌​​‌​‌​​‌‌‌‌​​​​‌​‌​‌​​​‌​​‌‌‌​​​‌‌‌​​​​‌​​‌‌‌‌​‌‌​‌‌​​​‌​‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.xYVulgq3ejh7CmMfKtHq9I
+ * Fingerprint: AMK1.wmgCHLut-37Z6NJxTN8OlV
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -59,7 +59,7 @@ export default async function ProjectDetail({
         </Link>
 
         <div className="pd-hero mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
             <span>{p.client} · {p.category}</span>
           </div>
           <SplitReveal as="h1" text={p.title} className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-4 text-[#1d1d1f] dark:text-white" />
@@ -117,7 +117,7 @@ export default async function ProjectDetail({
             {p.architecture.map((a, index) => (
               <div
                 key={a.label}
-                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between"
+                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
@@ -215,7 +215,7 @@ export default async function ProjectDetail({
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <Link
                 href={`/projects/${prevProject.slug}`}
-                className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center gap-3 text-left group"
+                className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center gap-3 text-left group"
               >
                 <FiArrowLeft className="w-4 h-4 text-amber-600 dark:text-[#e5a93b] group-hover:-translate-x-1 transition-transform" />
                 <div>
@@ -233,7 +233,7 @@ export default async function ProjectDetail({
 
               <Link
                 href={`/projects/${nextProject.slug}`}
-                className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center justify-between sm:justify-end gap-3 text-right group"
+                className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center justify-between sm:justify-end gap-3 text-right group"
               >
                 <div>
                   <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Next Build</span>
@@ -262,7 +262,7 @@ export default async function ProjectDetail({
               .slice(0, 3)
               .map((o) => (
                 <GlowCard key={o.slug}>
-                  <Link href={`/projects/${o.slug}`} className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block">
+                  <Link href={`/projects/${o.slug}`} className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block">
                     <div>
                       <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] uppercase tracking-wider block mb-2">{o.client}</span>
                       <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{o.title}</h3>

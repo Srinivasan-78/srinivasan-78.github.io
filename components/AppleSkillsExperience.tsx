@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​‌‌​‌​​​‌​​​‌‌​‌​‌​​‌​​​‌​‌​​‌‌​‌​‌​‌‌‌​‌‌​​‌‌​​‌​​​‌​‌‌​​​​​‌‌​‌‌‌​​‌‌​‌‌​​‌‌‌​​​​​‌‌‌‌​‌​​‌​​​​‌​​‌​‌​​​​​‌​​‌​​​​‌​​​​​‌​​‌‌​​​‌​​‌‌​‌​‌​‌​‌​​​​​​‌‌​‌​‌​‌‌​‌‌​‌​‌‌​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​‌​​‌​‌​​‌​​‌​​‌​‌‌‌​​​​​‌‌​‌​​‌​‌​​‌​​‌​‌‌‌​‌​‌​​‌‌​​‌‌​‌‌‌​​‌​​‌​‌‌​‌​​‌‌​​​​‌​​‌‌​​​​​‌​​‌​​‌​‌​​‌​‌‌​​‌‌​​​​​‌‌‌‌​​‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌‌‌​‌​​‌​‌‌‌‌‌​‌‌​​​​‌​‌‌​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.cDjE5vdX76pzBPHA15P5mk
+ * Fingerprint: AMK1.tJIpiIu3rZa0IK0y54z_ab
  */
 "use client";
 
@@ -21,6 +21,7 @@ import {
   FiCpu,
   FiBox,
   FiArrowUpRight,
+  FiShield,
 } from "react-icons/fi";
 
 type SkillDetail = {
@@ -107,6 +108,28 @@ const SKILL_DOMAINS: DomainCluster[] = [
         tenure: "Active focus",
         project: { slug: "multi-ai-toolkit", title: "Multi-AI Toolkit" },
       },
+      {
+        name: "Local LLM Hosting & Offline RAG",
+        category: "AI, LLM & MCP",
+        role: "Self-Hosted Inference",
+        productionContext:
+          "Runs a homelab chatbot over offline Wikipedia and Arch Wiki snapshots using FastAPI, Ollama with Llama 3.2, and Streamlit — retrieval and generation both local, with the internet unplugged.",
+        highlight:
+          "No API key, no per-token bill and no data leaving the box: the whole retrieval and inference path is self-hosted.",
+        tenure: "Active focus",
+        project: { slug: "zim-assistant", title: "Zim Assistant" },
+      },
+      {
+        name: "AI Coding Tools & Model APIs",
+        category: "AI, LLM & MCP",
+        role: "Agentic Developer Tooling",
+        productionContext:
+          "Works daily across Claude Code, the Claude API, Cursor, GitHub Copilot, ChatGPT / OpenAI API, Google Gemini, Ollama, Llama, DeepSeek, Groq, OpenRouter and Hugging Face — and builds the tooling those agents consume rather than only consuming it.",
+        highlight:
+          "Prompt engineering and LLM API integration treated as an engineering surface with budgets and gates, not a chat window.",
+        tenure: "Active focus",
+        project: { slug: "repo2graph", title: "repo2graph" },
+      },
     ],
   },
   {
@@ -146,6 +169,22 @@ const SKILL_DOMAINS: DomainCluster[] = [
         productionContext: "Built dual-slot container rollbacks that restore the prior healthy state within seconds if synthetic checks fail.",
         highlight: "Guaranteed zero-outage deployments for critical client-facing services.",
         tenure: "5 Years",
+      },
+      {
+        name: "Azure DevOps REST API",
+        category: "CI/CD & Automation",
+        role: "Pipeline Integration",
+        productionContext: "Drove container image promotion from GitHub Actions with real-time Azure DevOps, ACR and AKS log polling, so a promotion is observable while it runs rather than only after it finishes.",
+        highlight: "Cross-platform orchestration: GitHub Actions as the control plane, Azure DevOps queried over its REST API.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "WiX Toolset & dpkg Packaging",
+        category: "CI/CD & Automation",
+        role: "Installer & Package Builds",
+        productionContext: "Automated WiX installer builds with code signing in GitHub Actions to produce release-ready signed Windows applications, and ran dpkg packaging in CI for Linux builds.",
+        highlight: "A custom Windows Wireshark installer for THREAD protocol analysis was adopted after his departure and merged upstream into Wireshark.",
+        tenure: "2+ Years",
       },
     ],
   },
@@ -187,6 +226,30 @@ const SKILL_DOMAINS: DomainCluster[] = [
         highlight: "Seamless live cutovers with zero dropped user sessions.",
         tenure: "5 Years",
       },
+      {
+        name: "Azure Service Bus & App Config",
+        category: "Cloud Architecture",
+        role: "Messaging & Configuration",
+        productionContext: "Orchestrated disaster-recovery failover and failback through Azure Service Bus with structured Datadog logging, and drove conditional BYOK configuration through Azure App Config and Jinja2 templating.",
+        highlight: "Zero data loss held across both same-region and cross-region Azure migrations.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "Azure Storage & AzCopy at Scale",
+        category: "Cloud Architecture",
+        role: "Bulk Data Movement",
+        productionContext: "Built the parallelized migration framework the platform's large-scale transfers run on: custom runners, chunked delta detection and parallel AzCopy orchestration, with SAS-authenticated Azure Table Storage driving inventory generation and migration-summary reporting.",
+        highlight: "Terabyte-scale transfers moved from a weekend maintenance window into a few hours, with completeness reported rather than assumed.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "Akamai & DNS/MX Automation",
+        category: "Cloud Architecture",
+        role: "Edge & Traffic Cutover",
+        productionContext: "Automated DNS and MX cutovers in Python against the Akamai API as part of the recovery path, with Pingdom check updates following the cutover automatically.",
+        highlight: "The riskiest manual step in a recovery — hand-editing DNS under time pressure — became code that had already been run.",
+        tenure: "2+ Years",
+      },
     ],
   },
   {
@@ -226,6 +289,30 @@ const SKILL_DOMAINS: DomainCluster[] = [
         productionContext: "Kernel tuning, systemd service management, network stack debugging, and automated patch baselines.",
         highlight: "Hardened OS instances to CIS security benchmarks.",
         tenure: "5+ Years",
+      },
+      {
+        name: "Jinja2 Templating",
+        category: "Config & Containers",
+        role: "Config Generation",
+        productionContext: "Templated monitoring checks, conditional BYOK configuration and on-premises deployment config through Jinja2, so one definition renders correctly for every environment instead of being copied per environment.",
+        highlight: "Environment-agnostic by construction: the difference between environments is data, not a forked template.",
+        tenure: "4+ Years",
+      },
+      {
+        name: "Bicep & ARM Templates",
+        category: "Config & Containers",
+        role: "Azure-Native IaC",
+        productionContext: "Converted the estate's ARM templates to Bicep and automated the conversion path end to end, standardising infrastructure definitions across environments.",
+        highlight: "The migration itself was automated rather than hand-ported, so the result is reproducible and reviewable.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "Windows Server & WinRM",
+        category: "Config & Containers",
+        role: "Windows Fleet Automation",
+        productionContext: "Automated Windows Server configuration and remote execution over WinRM alongside the Linux estate, including on-premises installs with idempotent SQL Server initialisation and version-gated JVM provisioning.",
+        highlight: "One automation model covering both halves of a mixed Windows and Linux estate.",
+        tenure: "5 Years",
       },
     ],
   },
@@ -267,6 +354,30 @@ const SKILL_DOMAINS: DomainCluster[] = [
         highlight: "Resolved tricky cross-region latency spikes in enterprise microservice meshes.",
         tenure: "4+ Years",
       },
+      {
+        name: "SQL Server HA & Backup Verification",
+        category: "Observability & SRE",
+        role: "Data Reliability",
+        productionContext: "Gated releases on T-SQL-verified backups with RESTORE-based rollback and Datadog failure hooks, ran SQL Server HA mirroring, and built a safe-skip flow that polls active SQL Server tasks before verification so a deployment never blocks on a live job.",
+        highlight: "A backup nobody has proven restorable is not a backup — so the release gate proves it, every time.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "Health-Gated Restarts",
+        category: "Observability & SRE",
+        role: "Fail-Fast Validation",
+        productionContext: "Designed a fail-fast Apache health gate validating four conditions before traffic is routed — service state, HTTP 200, load-balancer convergence and the health-check file — with drain timeouts and retry/backoff at 5 attempts on a 2-second delay.",
+        highlight: "Retry/backoff is what stopped false restarts: a slow start is no longer read as a failed one.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "ITSM Change Management",
+        category: "Observability & SRE",
+        role: "Governed Change",
+        productionContext: "Led a jumpbox VM SKU and family upgrade through formal ITSM change management, moving the fleet to better-value instance types without interrupting engineer access.",
+        highlight: "Comfortable taking infrastructure change through a formal review and approval path, not around it.",
+        tenure: "3+ Years",
+      },
     ],
   },
   {
@@ -307,6 +418,88 @@ const SKILL_DOMAINS: DomainCluster[] = [
         highlight: "Maintained data integrity during live schema upgrades and storage migrations.",
         tenure: "4+ Years",
       },
+      {
+        name: "SQL Server & T-SQL",
+        category: "Scripting & Core Stack",
+        role: "Primary Data Platform",
+        productionContext: "Wrote the T-SQL that verifies release backups and the RESTORE path that rolls them back, plus idempotent SQL Server initialisation for on-premises installs and active-task polling so verification never blocks on a live job.",
+        highlight: "The release gate's hardest guarantee — a provably restorable backup — is T-SQL he wrote and owns.",
+        tenure: "3+ Years",
+      },
+      {
+        name: "PowerShell & Batch",
+        category: "Scripting & Core Stack",
+        role: "Windows Automation",
+        productionContext: "Automated Windows Server tasks, installer and signing steps, and remote execution over WinRM with PowerShell and Batch alongside the Bash side of the estate.",
+        highlight: "Both halves of a mixed estate scripted to the same standard, rather than Windows being the manual one.",
+        tenure: "5 Years",
+      },
+      {
+        name: "C# / .NET & C/C++",
+        category: "Scripting & Core Stack",
+        role: "Product Code",
+        productionContext: "Contributed C#/.NET and C/C++ production code to Granite River Labs' own product line alongside owning the release tooling, including the THREAD protocol installer work that reached upstream Wireshark.",
+        highlight: "Release engineering informed by writing the product code it ships, not only the pipeline around it.",
+        tenure: "2+ Years",
+      },
+      {
+        name: "Solr & Shared-Resource Sync",
+        category: "Scripting & Core Stack",
+        role: "Search & Coordination",
+        productionContext: "Built shared-resource synchronisation frameworks for Solr and the application servers as part of standing up on-premises deployment from zero tooling.",
+        highlight: "Multiple nodes sharing search and application state without a bespoke manual step per install.",
+        tenure: "2+ Years",
+      },
+    ],
+  },
+  {
+    id: "security",
+    label: "Security & Compliance",
+    icon: FiShield,
+    description:
+      "RBAC inside CI/CD, secret and key custody, signed commits, and the vulnerability gates that run before anything is promoted.",
+    primarySkills: [
+      {
+        name: "RBAC in CI/CD",
+        category: "Security & Compliance",
+        role: "Pipeline Authorization",
+        productionContext: "Closed a security gap in container image promotion by splitting it behind two RBAC-gated workflows, so reaching production takes an authorization rather than just pipeline access.",
+        highlight: "Treats the pipeline itself as a privileged system, because it is the one with production credentials.",
+        tenure: "4+ Years",
+      },
+      {
+        name: "Secret Management & Vault",
+        category: "Security & Compliance",
+        role: "Credential Custody",
+        productionContext: "Centralised variable and secret management across environments on vars.yml / vault.yml with automated cross-environment syncing — duplicate-key cleanup, lifecycle updates and ID normalisation.",
+        highlight: "One source of truth per environment, so a rotated secret is rotated everywhere it is used.",
+        tenure: "4+ Years",
+      },
+      {
+        name: "BYOK & Key Vault Encryption",
+        category: "Security & Compliance",
+        role: "Customer-Managed Keys",
+        productionContext: "Drove conditional BYOK configuration through Jinja2 templating and Azure App Config, with BYOK encryption via Key Vault applied to container image promotion.",
+        highlight: "Customer-managed keys as a templated, per-environment condition rather than a manual one-off.",
+        tenure: "2+ Years",
+      },
+      {
+        name: "S/MIME Commit Signing",
+        category: "Security & Compliance",
+        role: "Provenance",
+        productionContext: "Signs commits with S/MIME so authorship is verifiable at the repository level, alongside keyed authorship watermarking enforced in CI across his own repositories.",
+        highlight: "Provenance that holds up to inspection rather than resting on a username.",
+        tenure: "Active practice",
+        project: { slug: "authormark-watch", title: "Master Bot & Repository Supervisor" },
+      },
+      {
+        name: "Vulnerability Scanning",
+        category: "Security & Compliance",
+        role: "Supply-Chain Gates",
+        productionContext: "Runs dependency review and image vulnerability scanning as pre-promotion gates, so a known-vulnerable artifact fails the pipeline instead of reaching a registry.",
+        highlight: "Scanning placed before promotion, where it can still stop something, rather than as a report afterwards.",
+        tenure: "4+ Years",
+      },
     ],
   },
 ];
@@ -327,7 +520,7 @@ export default function AppleSkillsExperience() {
 
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-14">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
           <FiCpu className="w-3.5 h-3.5" />
           <span>Skills</span>
         </div>
@@ -337,7 +530,7 @@ export default function AppleSkillsExperience() {
         </h2>
 
         <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed">
-          Five years of hands-on enterprise infrastructure, plus the AI and MCP tooling built on top of it. Select any discipline to inspect real-world production use cases, architectures, and capabilities.
+          Five years of hands-on enterprise infrastructure across Azure and AWS — release, upgrade and disaster-recovery automation, reliability engineering, and security inside the pipeline — plus the AI, LLM and MCP tooling built on top of it. Select any discipline to inspect real-world production use cases, architectures, and capabilities.
         </p>
       </div>
 
@@ -356,7 +549,7 @@ export default function AppleSkillsExperience() {
               className={`px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${
                 isSelected
                   ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-[1.02]"
-                  : "bg-[#f5f5f7] text-[#5a5a5f] hover:text-[#1d1d1f] hover:bg-black/5 dark:bg-[#09090c]/80 dark:text-[#9b9ba1] dark:hover:text-white dark:hover:bg-white/5 border border-black/10 dark:border-white/10"
+                  : "bg-[#f5f5f7] text-[#5a5a5f] hover:text-[#1d1d1f] hover:bg-black/5 dark:bg-[#09090c] dark:text-[#9b9ba1] dark:hover:text-white dark:hover:bg-white/5 border border-black/10 dark:border-white/10"
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -387,7 +580,7 @@ export default function AppleSkillsExperience() {
                   className={`w-full p-5 rounded-2xl text-left border transition-all flex items-center justify-between group ${
                     isActive
                       ? "bg-white dark:bg-white/10 border-black/25 dark:border-white/30 shadow-lg scale-[1.01]"
-                      : "bg-[#f5f5f7] dark:bg-[#09090c]/80 border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
+                      : "bg-[#f5f5f7] dark:bg-[#09090c] border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
                   }`}
                 >
                   <div className="space-y-1">
@@ -415,7 +608,7 @@ export default function AppleSkillsExperience() {
 
         {/* Right Column: Deep Production Inspector Card */}
         <div className="lg:col-span-7">
-          <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl relative overflow-hidden shadow-xl transition-all">
+          <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 relative overflow-hidden shadow-xl transition-all">
 
             {/* Header Badge */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-6 border-b border-black/10 dark:border-white/10">
@@ -474,7 +667,7 @@ export default function AppleSkillsExperience() {
                       </span>
                     </p>
                   </div>
-                  <FiArrowUpRight className="w-5 h-5 flex-shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors" />
+                  <FiArrowUpRight className="w-5 h-5 shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors" />
                 </Link>
               )}
 

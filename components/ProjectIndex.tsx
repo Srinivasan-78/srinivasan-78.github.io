@@ -1,15 +1,16 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌​​‌‌‌​​‌‌​​‌‌​​​‌‌​​‌‌​‌​‌​​‌​​‌‌​‌​‌​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌​​​​‌‌​​‌​​‌‌‌​‌​‌​‌‌​‌‌​‌​​‌‌​‌‌‌​​‌‌​​‌‌​​‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌‌​​‌​​​​‌‌​​‌‌​​​​​‌​​‌‌​​​​‌‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌‌​‌‌​​​‌‌​‌‌‌​‌‌‌​‌‌​‌​‌‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​‌​‌​​​‌‌​​‌​​​‌​‌​​​‌​‌​​​‌‌​​‌‌‌‌​​​​‌​‌​​​‌​‌​​‌​‌​​​‌‌​​​‌​‌‌​‌​‌​​‌​‌‌​‌​​​‌‌​‌​‌​​‌‌​​​​​​‌‌​‌​‌​‌​‌​​​​​‌​​‌‌‌​​‌‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.vNf3RjPMnL2um73-nNC0L1
+ * Fingerprint: AMK1.ocwkNfTdQFxQJ1jZ505PNp
  */
 "use client";
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import GlowCard from "./ui/GlowCard";
+import { useCappedList, ShowMoreButton } from "./ui/RevealMore";
 import { PROJECTS, CONTRIBUTIONS } from "@/lib/projects";
 import {
   FiArrowUpRight,
@@ -65,6 +66,11 @@ export default function ProjectIndex() {
     });
   }, [selectedCat, searchQuery]);
 
+  /* Nine, which is three full rows of the three-column grid below — the
+     cap should land on a row boundary or the last row reads as the list
+     having been cut off mid-thought rather than deliberately paused. */
+  const projectList = useCappedList(filteredProjects, 9, `${selectedCat}|${searchQuery}`);
+
   const featuredProjects = useMemo(
     () =>
       FEATURED_SLUGS.map((slug) => PROJECTS.find((p) => p.slug === slug)).filter(
@@ -81,7 +87,7 @@ export default function ProjectIndex() {
     >
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
           <FiLayers className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Platform Engineering & Open Source</span>
         </div>
@@ -118,7 +124,7 @@ export default function ProjectIndex() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by project name, technology (e.g. Docker, Ansible, Python, Azure)..."
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
             />
             {searchQuery && (
               <button
@@ -148,7 +154,7 @@ export default function ProjectIndex() {
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
                     isSelected
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
-                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
+                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c] dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
                   }`}
                 >
                   <span>{cat}</span>
@@ -182,7 +188,7 @@ export default function ProjectIndex() {
             return (
               <div
                 key={featuredProject.slug}
-                className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/15 dark:border-white/15 backdrop-blur-xl shadow-xl relative overflow-hidden"
+                className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/15 dark:border-white/15 shadow-xl relative overflow-hidden"
               >
                 <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
                   <div className="space-y-4 max-w-2xl">
@@ -211,7 +217,7 @@ export default function ProjectIndex() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0 pt-2 lg:pt-0">
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto shrink-0 pt-2 lg:pt-0">
                     {externalHref && (
                       <a
                         href={externalHref}
@@ -241,12 +247,18 @@ export default function ProjectIndex() {
       {/* 3. Bento Project Matrix */}
       <section className="px-6 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
-          <span>Showing {filteredProjects.length} builds</span>
+          {/* Says "9 of 23" while capped, so the number above the grid and
+              the number on the control below it tell the same story. */}
+          <span>
+            {projectList.visible.length < filteredProjects.length
+              ? `Showing ${projectList.visible.length} of ${filteredProjects.length} builds`
+              : `Showing ${filteredProjects.length} builds`}
+          </span>
           <span>Filter: {selectedCat}</span>
         </div>
 
         {filteredProjects.length === 0 ? (
-          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
+          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
             <FiTerminal className="w-8 h-8 mx-auto text-[#9b9ba1] mb-3" />
             <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
               No projects found matching &ldquo;{searchQuery}&rdquo;
@@ -267,7 +279,7 @@ export default function ProjectIndex() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((proj) => {
+            {projectList.visible.map((proj) => {
               const hasDemo = !!proj.demo;
               const sourceLink = proj.links.find(
                 (l) => l.label.includes("Source") || l.label.includes("repo")
@@ -275,7 +287,7 @@ export default function ProjectIndex() {
 
               return (
                 <GlowCard key={proj.slug}>
-                  <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
+                  <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
                     <div>
                       {/* Header: Category & Status */}
                       <div className="flex items-center justify-between gap-2 mb-4">
@@ -357,6 +369,15 @@ export default function ProjectIndex() {
             })}
           </div>
         )}
+
+        {projectList.showControl && (
+          <ShowMoreButton
+            expanded={projectList.expanded}
+            hiddenCount={projectList.hiddenCount}
+            noun="builds"
+            onClick={projectList.toggle}
+          />
+        )}
       </section>
 
       {/* 3b. Open-Source Contributions — patches sent upstream to repos I don't own */}
@@ -379,7 +400,7 @@ export default function ProjectIndex() {
             {CONTRIBUTIONS.map((c) => (
               <article
                 key={c.repo}
-                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col h-full hover:border-black/25 dark:hover:border-white/25 transition-all"
+                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col h-full hover:border-black/25 dark:hover:border-white/25 transition-all"
               >
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] tracking-wider break-all">
