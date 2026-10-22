@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌‌‌​​‌‌​‌​​​‌​‌​‌​‌‌​​‌​‌‌​‌​‌‌​​‌‌​​‌​​‌​​​​‌​​‌‌​‌​‌‌​‌​​‌​‌​​‌‌​​​‌‌​‌‌‌‌​​​​​‌‌‌​​‌​​‌‌​​​​​‌​‌​‌​‌​‌‌​‌‌​‌​‌‌​​‌​‌​‌​‌​​‌​​‌​​​​‌‌​‌​‌​​‌‌​‌‌‌‌​‌​​‌‌‌​‌​‌​‌‌​​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​​​‌‌‌‌​​​​‌‌​​​‌‌​‌‌‌​‌‌‌​‌​‌‌​​‌​‌​​​​​‌​‌​​‌‌​​​‌​‌​​‌​​‌​​​​​‌​‌‌​‌‌‌‌​‌‌​​​‌​​​‌‌​‌‌​​‌‌​​‌‌​​‌‌​​‌‌‌​‌​‌​‌‌‌​‌​‌​‌‌​​‌‌​‌‌‌​​‌‌​​​‌‌​‌​​​‌​‌​‌‌‌​​‌​​‌‌‌‌​​​​​‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.AsEYk2BkJcx90UmeRCSzua
+ * Fingerprint: AMK1.lxcwYALRAob6fgWVncErx4
  */
 /* Starter question suggestions presented in the client-side interactive
    portfolio assistant widget. */
@@ -13,5 +13,8 @@ export const CHAT_SUGGESTIONS = [
   "What's his experience with Azure & Thomson Reuters?",
   "Tell me about the Master Bot project.",
   "What is his core tech stack?",
+  "Tell me about repo2graph.",
+  "How does he handle disaster recovery?",
+  "What's his AI, LLM and MCP experience?",
 ];
 

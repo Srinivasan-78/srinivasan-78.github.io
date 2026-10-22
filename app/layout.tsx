@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌​‌​‌​​‌‌‌‌​​​​‌‌​‌‌‌​​‌‌‌​‌​‌​‌‌​​​‌‌​‌​​‌‌​​​‌‌‌​‌​​​‌‌​​‌​‌​​‌‌​‌‌‌​‌​‌‌​​‌​​‌‌‌​​‌​‌​​‌‌‌‌​‌‌​​‌‌​​‌​‌‌‌‌‌​‌​​‌‌​​​​‌‌​‌‌‌​‌​‌​​​​​‌‌​‌‌​‌​‌​​​​​‌​‌​‌​‌​‌​‌​​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌‌​​​​‌​‌​​​‌‌‌​‌​‌​​​​​‌‌​​​‌​​‌‌‌​‌‌​​‌​​​‌​‌​‌​‌‌‌‌‌​‌​‌​‌‌​​‌​‌​​​‌​‌​‌​​​​​‌​‌​‌‌​​‌‌‌​​‌​​‌‌​‌‌​​​‌‌​​‌​​​​‌‌​​​‌​‌‌‌‌​​‌​‌​​‌‌​‌​‌​​‌​‌​​‌​​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.GjxnucLte7Y9Of_L7PmAUB
+ * Fingerprint: AMK1.vcVaGPbvE_VQPVrld1yMJK
  */
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
@@ -62,9 +62,24 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.srinidevops.com"),
   alternates: { canonical: "/" },
-  title: "Srinivasan Vijayaraghavan — DevOps Engineer",
+  title: "Srinivasan Vijayaraghavan — DevOps / Site Reliability Engineer",
   description:
-    "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure. Five years spent making releases calm, predictable and easy to trust.",
+    "DevOps / Site Reliability Engineer working on cloud infrastructure, reliability, release automation and AI developer tooling across Azure and AWS. Five years spent making releases calm, predictable and easy to trust — and the maintainer of repo2graph, an open-source MCP server for AI coding agents.",
+  keywords: [
+    "DevOps Engineer",
+    "Site Reliability Engineer",
+    "Azure",
+    "AWS",
+    "GitHub Actions",
+    "Ansible",
+    "Datadog",
+    "Disaster Recovery",
+    "Release Automation",
+    "Model Context Protocol",
+    "MCP server",
+    "repo2graph",
+    "Bangalore",
+  ],
   authors: [{ name: "Srinivasan Vijayaraghavan" }],
   /* Without max-image-preview:large, Google caps any thumbnail it chooses
      to show at a small size. It is a permission, not a request — it does
@@ -92,16 +107,16 @@ export const metadata: Metadata = {
        other page gets this through pageMetadata in lib/seo.ts — the home
        page builds its metadata here, so it has to be stated. */
     url: "/",
-    title: "Srinivasan Vijayaraghavan — DevOps Engineer",
+    title: "Srinivasan Vijayaraghavan — DevOps / Site Reliability Engineer",
     description:
-      "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Srinivasan Vijayaraghavan, DevOps Engineer" }],
+      "Cloud infrastructure, reliability, release automation and AI developer tooling across Azure and AWS.",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Srinivasan Vijayaraghavan, DevOps / Site Reliability Engineer" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Srinivasan Vijayaraghavan — DevOps Engineer",
+    title: "Srinivasan Vijayaraghavan — DevOps / Site Reliability Engineer",
     description:
-      "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
+      "Cloud infrastructure, reliability, release automation and AI developer tooling across Azure and AWS.",
     images: ["/og.png"],
   },
 };
@@ -125,15 +140,18 @@ const jsonLd = {
       name: "Srinivasan Vijayaraghavan",
       url: "https://www.srinidevops.com/",
       image: "https://www.srinidevops.com/og.png",
-      jobTitle: "DevOps Engineer",
+      jobTitle: ["DevOps Engineer", "Site Reliability Engineer"],
       description:
-        "DevOps engineer working on CI/CD, cloud infrastructure and automation across AWS and Azure.",
+        "DevOps / Site Reliability Engineer working on cloud infrastructure, reliability, release automation and AI developer tooling across Azure and AWS.",
       email: "mailto:srinivasan.shyam2000@gmail.com",
+      telephone: "+91-97910-25934",
+      nationality: { "@type": "Country", name: "United States" },
       address: { "@type": "PostalAddress", addressLocality: "Bangalore", addressCountry: "IN" },
       worksFor: { "@type": "Organization", name: "Thomson Reuters" },
       alumniOf: { "@type": "CollegeOrUniversity", name: "Madras Institute of Technology, Anna University" },
       knowsAbout: [
         "DevOps",
+        "Site Reliability Engineering",
         "CI/CD",
         "Amazon Web Services",
         "Microsoft Azure",
@@ -141,17 +159,70 @@ const jsonLd = {
         "Chef",
         "Puppet",
         "Terraform",
+        "Bicep",
+        "ARM Templates",
+        "Jinja2",
         "Docker",
         "GitHub Actions",
+        "GitLab CI",
+        "Azure DevOps",
         "Kubernetes",
+        "Azure Kubernetes Service",
         "Datadog",
+        "Pingdom",
         "Infrastructure as Code",
         "Disaster Recovery",
+        "Release Automation",
+        "Azure Service Bus",
+        "Azure Key Vault",
+        "Azure Storage",
+        "AzCopy",
+        "Microsoft SQL Server",
+        "T-SQL",
+        "Apache HTTP Server",
+        "Apache Tomcat",
+        "Apache Solr",
+        "Akamai",
+        "Windows Server",
+        "Red Hat Enterprise Linux",
+        "Ubuntu",
+        "Python",
+        "Bash",
+        "PowerShell",
+        "C#",
+        "C++",
+        "Model Context Protocol",
+        "Large Language Models",
+        "Retrieval Augmented Generation",
+        "Agentic Coding Workflows",
+        "Prompt Engineering",
+        "Ollama",
+        "Role-Based Access Control",
+        "Secret Management",
+        "Bring Your Own Key Encryption",
+        "ITSM Change Management",
+        "WiX Toolset",
       ],
       sameAs: [
         "https://www.linkedin.com/in/srini-solution-architect/",
         "https://github.com/Srinivasan-78",
       ],
+    },
+    {
+      /* The open-source work named on the résumé, stated as its own entity
+         so a search engine can connect the person to the project rather
+         than inferring it from prose. */
+      "@type": "SoftwareSourceCode",
+      "@id": "https://www.srinidevops.com/projects/repo2graph#software",
+      name: "repo2graph",
+      description:
+        "Open-source code-graph engine and MCP server that gives AI coding agents cited, token-bounded answers about any codebase — tree-sitter parsing across 17 languages, BM25 and graph retrieval, and a GitHub Action for PR blast-radius analysis. No LLM or API key required.",
+      url: "https://www.srinidevops.com/projects/repo2graph",
+      codeRepository: "https://github.com/Srinivasan-78/repo2graph",
+      programmingLanguage: "Python",
+      license: "https://opensource.org/licenses/MIT",
+      author: { "@id": "https://www.srinidevops.com/#person" },
+      maintainer: { "@id": "https://www.srinidevops.com/#person" },
     },
   ],
 };

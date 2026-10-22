@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​​‌‌​​​​​‌‌​​​‌‌​‌‌‌‌​‌​​‌‌‌‌​​​​‌‌‌​​​‌​‌‌​‌‌​‌​‌​​‌‌‌‌​‌‌​‌‌​​​‌​‌‌​​​​‌​‌​‌‌‌​‌‌​‌‌‌‌​​‌‌‌​​​​‌‌​​‌‌​​‌​​‌​​‌​‌‌​‌​‌​​‌‌​‌‌‌​​‌​‌​​​‌​​‌‌​​‌‌​‌‌‌​‌​​​‌​​‌​‌‌​​‌‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​‌‌​​​‌​‌​‌​‌​‌‌​‌‌‌​​‌‌​​‌​‌​‌‌​​​‌‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌​‌‌​​​​‌‌‌​‌‌‌​‌‌​​‌​‌​​‌‌‌​​​​‌‌​‌‌‌​​‌​‌​‌​​​‌‌‌​​​‌​‌‌‌​​​‌​‌​‌​​‌‌​‌‌‌​​‌​​‌​​‌​​​​‌​‌​​‌​​‌​​​‌​‌​‌‌‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.r0czxqmOlXWo8fIjnQ3tK9
+ * Fingerprint: AMK1.klUnecgoXwe8nTqqSrHREs
  */
 "use client";
 
@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CHAT_SUGGESTIONS } from "@/lib/chat";
 import { matchKnowledgeQuery, type KnowledgeMatchResult } from "@/lib/knowledge";
+import { PROJECTS } from "@/lib/projects";
 import { FiArrowUpRight, FiCornerDownLeft, FiX } from "react-icons/fi";
 
 interface Turn {
@@ -23,8 +24,10 @@ interface Turn {
   };
 }
 
+/* The build count is read off PROJECTS rather than written down — it had
+   drifted to 20 against a list that had grown past it. */
 const GREETING =
-  "Happy to answer anything about Srinivasan's work: his 5+ years of DevOps experience, US & India work authorization, 20 open-source builds, enterprise migrations, or contact details.";
+  `Happy to answer anything about Srinivasan's work: his 5 years as a DevOps / Site Reliability Engineer, US & India work authorization, ${PROJECTS.length} open-source builds including the repo2graph MCP server, enterprise migrations, or contact details.`;
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);

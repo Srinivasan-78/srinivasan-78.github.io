@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌​‌‌​​​‌‌‌​​​​​‌​​‌‌​​​‌​​‌‌​​​‌‌​‌‌​​​‌‌​​‌​‌​​‌‌​‌​​​‌​​‌‌​‌​‌‌​‌‌‌​​‌​‌‌‌‌‌​‌‌‌​​‌​​‌​​​‌​​​‌​​​‌​‌​‌‌‌​‌‌​​‌​​​‌‌​​‌​​‌‌​‌​‌​​​‌​​​‌‌‌​​‌‌​‌​​‌​​​​​‌‌‌​​​​‌​​‌‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌‌​‌​​‌​‌​‌​​‌‌​‌‌​​​‌‌​‌​​​​‌​​‌‌​‌‌‌​​‌​‌‌​‌​​‌‌​‌​​‌​‌‌‌‌​​​​‌‌​‌​‌​​‌‌‌​​​‌​‌‌​​‌‌​​‌​​‌‌​‌​‌​​​‌​‌​‌​‌​‌​​​‌​​‌​‌​​‌‌‌​​​​​​‌‌‌​​​​‌​​‌‌​​​‌​‌‌​‌​​‌‌​‌‌‌​​​‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.GlpLLle4Mn_rDEvFMDsH8L
+ * Fingerprint: AMK1.AiScBnZixjqfMETJp8LZn5
  */
 "use client";
 
@@ -21,7 +21,7 @@ export default function Reveal({
   className,
   style,
   /** Seconds between each child arriving. */
-  stagger = 0.06,
+  stagger = 0.05,
   /** Scale the children up as they arrive, rather than only sliding
       them. For cards and tiles — objects with a surface. Plain text
       blocks should not use it: type scaling up reads as a zoom, not as
@@ -42,9 +42,17 @@ export default function Reveal({
     /* Delay is written per child rather than expressed in CSS, because
        the child count is whatever the caller passed and nth-child rules
        would have to guess at it. Capped so a long grid does not leave
-       its last tile waiting seconds after the first. */
+       its last tile waiting seconds after the first.
+
+       0.3s, down from 0.45. A stagger is meant to say "these arrived
+       together, in this order"; past about a third of a second it stops
+       reading as one group and starts reading as a queue, and the last
+       tile in a six-up grid is landing after the eye has already moved
+       past it. The cap is the one that matters more than the step: with
+       the step at 0.05 a row of four is fully in at 150ms and anything
+       larger lands inside the cap either way. */
     Array.from(el.children).forEach((kid, i) => {
-      (kid as HTMLElement).style.transitionDelay = `${Math.min(i * stagger, 0.45)}s`;
+      (kid as HTMLElement).style.transitionDelay = `${Math.min(i * stagger, 0.3)}s`;
     });
   }, [ref, stagger, children]);
 

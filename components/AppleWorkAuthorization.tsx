@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌​​​‌‌‌​​‌​‌‌‌‌​​‌​‌​​‌​​​​‌‌‌​​‌​​‌‌‌​‌‌​​‌‌​‌​‌‌​‌‌‌​‌‌​​​‌‌​​‌​​‌‌‌​​‌​​‌‌‌​​‌‌​​‌‌​‌‌​​‌‌​‌​​​​​‌​‌‌​‌​​‌‌​​‌‌​‌​​​‌​​​‌‌‌​‌​​​‌​​‌​‌​​‌​‌‌​‌​​‌​‌​‌​​​‌​​​‌‌‌​‌​​‌‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​‌​‌‌​‌​​‌‌​‌​‌‌​‌​​​​​‌​​‌​‌‌​‌​‌​‌​‌‌‌​‌​​​‌‌​​‌​‌​​‌‌​‌​‌​‌​​​‌‌​​‌‌​​​‌‌​‌​​​​‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​‌​​​‌​​​‌​‌​‌​​​‌​‌​‌‌‌​‌​‌​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​​‌‌​‌‌‌‌​‌​​‌‌‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.29yHrvkv2rs6h-3DtJZTGN
+ * Fingerprint: AMK1.tZkA-WFSTf47stEEuwsSzt
  */
 "use client";
 
@@ -43,7 +43,7 @@ const CLEARANCE_DATA: ClearanceRegion[] = [
     headline: "Full US Employment Authorization",
     statusText: "Ready for Immediate Hire (No Visa Sponsorship Needed)",
     summary:
-      "Born in the United States with full legal right to work permanently for any US entity. Zero visa dependencies, no H-1B transfer overhead, and immediate start capability.",
+      "A U.S. Citizen with full legal right to work permanently for any US entity. Zero visa dependencies, no H-1B transfer overhead, and immediate start capability.",
     deploymentRegions: ["us-east-1 (N. Virginia)", "us-west-2 (Oregon)", "us-east-2 (Ohio)"],
     engagementModels: ["Full-Time W-2", "C2C / 1099 Contractor", "Direct Hire"],
     highlights: [
@@ -134,7 +134,7 @@ export default function AppleWorkAuthorization() {
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#34c759]/10 border border-[#34c759]/30 text-emerald-700 dark:text-[#34c759] text-xs font-mono mb-3 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#34c759]/10 border border-[#34c759]/30 text-emerald-700 dark:text-[#34c759] text-xs font-mono mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-[#34c759] animate-pulse" />
             <span>Work Authorization & Global Mobility</span>
           </div>
@@ -157,7 +157,7 @@ export default function AppleWorkAuthorization() {
       </div>
 
       {/* Global Timezone Sync Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 mb-8 text-xs font-mono">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 mb-8 text-xs font-mono">
         <div className="flex items-center gap-2 text-[#5a5a5f] dark:text-[#9b9ba1]">
           <FiClock className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Live Operations Clocks:</span>
@@ -194,7 +194,7 @@ export default function AppleWorkAuthorization() {
                   className={`w-full p-5 rounded-2xl text-left border transition-all flex items-center justify-between group ${
                     isSelected
                       ? "bg-white dark:bg-white/10 border-black/25 dark:border-white/30 shadow-lg scale-[1.01]"
-                      : "bg-[#f5f5f7] dark:bg-[#09090c]/80 border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
+                      : "bg-[#f5f5f7] dark:bg-[#09090c] border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
                   }`}
                 >
                   <div className="flex items-center gap-3.5">
@@ -221,7 +221,7 @@ export default function AppleWorkAuthorization() {
         {/* Right Column: Holographic Digital Clearance Pass */}
         <div className="lg:col-span-8">
           <GlowCard>
-            <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 relative overflow-hidden">
+            <div className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 relative overflow-hidden">
 
               {/* Top Pass Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/10 dark:border-white/10">

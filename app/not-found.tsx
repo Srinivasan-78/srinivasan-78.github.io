@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌​​‌‌​​​‌​‌​​​‌​‌‌​​‌‌​​​‌‌​‌‌​​‌​​​​​‌​‌‌​‌‌‌​​‌‌​‌​​‌​‌‌​‌‌‌​​​‌‌​‌​​​‌​​​​‌​​​‌‌​‌‌‌​‌​‌​‌​‌​‌​​‌‌‌‌​​‌‌​‌‌‌​‌​‌‌​​‌​‌‌​​​​‌​‌‌​‌‌​‌​​‌‌‌​​‌​‌‌‌​​​​​‌​​​‌‌​​​‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​​​‌​​​​‌‌​​‌‌​​​‌​‌​​​‌​‌​‌‌‌​​​‌​‌‌‌​​​‌​‌​​​​‌​​‌‌​​‌‌‌​‌​‌‌​‌​​​‌‌‌​​​​‌‌​‌​​​​‌‌‌‌​‌​​‌​​​​​‌​‌‌‌​​​‌​‌​​‌​‌​​​‌‌​‌​​​‌‌​​​​‌​‌​‌​​‌​​‌‌​​​‌‌​‌​​‌‌‌​​‌‌​​​‌​​​‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.3LQf6Anin4B7UO7Yam9pF5
+ * Fingerprint: AMK1.lC1EqqBgZ8hzAqJ4aRcNb7
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -31,7 +31,7 @@ export default function NotFound() {
       <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center">
 
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
           <span>Error 404 · Page Not Found</span>
         </div>
 
@@ -52,7 +52,7 @@ export default function NotFound() {
               <GlowCard key={r.href}>
                 <Link
                   href={r.href}
-                  className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
+                  className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
                 >
                   <div className="mb-4">
                     <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] mb-3 shadow-sm dark:shadow-none">

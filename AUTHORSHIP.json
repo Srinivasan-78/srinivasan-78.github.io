@@ -4,15 +4,15 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-09-16T12:40:26.369Z",
+  "sealedAt": "2026-10-22T13:14:04.968Z",
   "fileCount": 68,
-  "digest": "0da7269744df98e64709028c7871376562fe17992c64ceea13ceb2207d5372e7",
-  "proof": "8d6eac1db941fb442e0cbe5120cbbf4aaf17fd138aedc7366b402a14961d599a",
+  "digest": "cb8397893ebdae21eefc82d83f1ca488f24ed180eb65476743caca834f0d0efd",
+  "proof": "e525ab67b26b592305ee9ff60dfc11199ec9bebc70640091df5b9b625bf0459d",
   "files": [
     {
       "path": "AGENTS.md",
-      "sha256": "fb552cf50d1ffea4ee1f9be9230486b02485490c167eb9b5f041aaa30007b6ea",
-      "bytes": 2019
+      "sha256": "b7e151b962c119c48b4998d86b614599cb4c3be743a8b8b1290f5f1753ab4244",
+      "bytes": 2681
     },
     {
       "path": "CLAUDE.md",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "89a357450f9e5872ca591a82d3133ba9a3b71fb4b21140355ce8cee3d856e49f",
-      "bytes": 19576
+      "sha256": "7502cec08d4c1150e2f9eb4fa4b8a2fcee36b4df6293854a742c2860e8e25a24",
+      "bytes": 19678
     },
     {
       "path": "app\\certifications\\page.tsx",
@@ -31,13 +31,13 @@
     },
     {
       "path": "app\\contact\\page.tsx",
-      "sha256": "d6fc6c38fcad86ef9bfc389fef244cbfd33ae562c3ace4b88553efe2054eded3",
-      "bytes": 8553
+      "sha256": "f637b567298d5a14648a76d6e396e3396d73e32ff67b51b8e6d8d903ed377744",
+      "bytes": 12968
     },
     {
       "path": "app\\error.tsx",
-      "sha256": "92d3775d2549e72a853882d009d194ec5b3a0c0f5b8a9aa6a940c811c0055866",
-      "bytes": 5592
+      "sha256": "88a06a29f8ccfea173b0a4a53c3432dbaefa307ea963da313eafc7d249dcfc3a",
+      "bytes": 5470
     },
     {
       "path": "app\\global-error.tsx",
@@ -46,33 +46,33 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "b591c24f3d8c5a994bc8ad50391a85dc5d065f6a599d792367f4a40bc0b3cb1b",
-      "bytes": 88141
+      "sha256": "8cb19c4f8c9d592ea913330ee573b2bedeba90ff7d268e7659216292391eb658",
+      "bytes": 93463
     },
     {
       "path": "app\\layout.tsx",
-      "sha256": "5280979e0a79a02315a4e53601e903fa39e3d5f4ce0901b3993f9a5657ed13f6",
-      "bytes": 9321
+      "sha256": "4f169ef057de3eaf6139964e85c57f3d05bbd4ce8a66292257d32b13bb098da4",
+      "bytes": 11811
     },
     {
       "path": "app\\loading.tsx",
-      "sha256": "bf53417e1fe336d3fdba4ca59ed5a57a0f7084714c7f4fd5387ccf79767c532d",
-      "bytes": 2723
+      "sha256": "8156dd03f97d9f71a36b8412141d04ac3775f3d9fee4e228416a135920f95f54",
+      "bytes": 2678
     },
     {
       "path": "app\\manifest.ts",
-      "sha256": "f2394584cb955a0c051aa214ca3cbfd62ad70b9acd1ce57500bccfa010a01671",
-      "bytes": 2318
+      "sha256": "dd4683a740e644cf6f68d3ce2901b3688aa3c39160e2dfba4b13fe675fdb40c5",
+      "bytes": 2360
     },
     {
       "path": "app\\not-found.tsx",
-      "sha256": "6d7d1d0a2717bca2b0bd7a9c8ab09c9b18ebd3e015cccc5005e7aa824f8eab43",
-      "bytes": 4866
+      "sha256": "448cae63b344a8fc78110c1c32879d46392a8bca620d79437ba4b3f265faca4a",
+      "bytes": 4771
     },
     {
       "path": "app\\page.tsx",
-      "sha256": "c6271889f74c00b4ee551f2fe6d758ff4d07a42f2374de74d73db21942a1f074",
-      "bytes": 13034
+      "sha256": "171fdbad5e37cde32e6d9bb2e4716574d1eef123a6587e69d3e396c29fad9cf8",
+      "bytes": 14406
     },
     {
       "path": "app\\privacy\\page.tsx",
@@ -81,13 +81,13 @@
     },
     {
       "path": "app\\projects\\[slug]\\page.tsx",
-      "sha256": "412166cae85731408eaee5ed0b7b60014e9d664f54cab8f1d3e00b41e668ef4e",
-      "bytes": 15522
+      "sha256": "023fd13e56d594130e2c11bb130de06f10b81ae106bffe269ba3db5ccee0bd06",
+      "bytes": 15217
     },
     {
       "path": "app\\projects\\page.tsx",
-      "sha256": "175a38ed36ef4e3c37e386aed845e326a24d1c2856de4ab5b0860de5eaa4e730",
-      "bytes": 1189
+      "sha256": "1d1c97f394dbbcdb7cb034db2b95336131b601214c1649c8801c14822e311480",
+      "bytes": 1294
     },
     {
       "path": "app\\robots.ts",
@@ -106,8 +106,8 @@
     },
     {
       "path": "app\\thank-you\\page.tsx",
-      "sha256": "f3c961095225912e971c5ce745b63f2e945fbf6090a93098d0f65cefb53f1a6a",
-      "bytes": 5612
+      "sha256": "57f00760aad6349be5643fcbbd89dd35fa2ee325c7eafef39f077d608dd40f18",
+      "bytes": 5503
     },
     {
       "path": "components\\Analytics.tsx",
@@ -116,23 +116,23 @@
     },
     {
       "path": "components\\AppleEnterpriseExperience.tsx",
-      "sha256": "c411ce8252e25ba2b2f6bfb6fd8a8bf253960ee00eb0028b4e7544e083f037ff",
-      "bytes": 14250
+      "sha256": "e0a7ff1d007cab6f13acdf03a50dccfce1c897d0a34d7758a3b3742f5071d143",
+      "bytes": 28633
     },
     {
       "path": "components\\AppleHeroPipeline.tsx",
-      "sha256": "60c1ab96e4ba5656c376629be4bf87f7a137a1f7515b73be771158fd505d1fa4",
-      "bytes": 8930
+      "sha256": "aad44ec758f2d4453d8f7054e65f33659fa7350b89e5772112e1988879dd6ec1",
+      "bytes": 10165
     },
     {
       "path": "components\\AppleSkillsExperience.tsx",
-      "sha256": "07fae438d22983d812449c56939537bc9666ab3eb30d406800178ccb583b15d5",
-      "bytes": 23907
+      "sha256": "f649ce88bc089b53e38c57e39f2cdf6b8e24e7b4f502c5b7b84de9e4141913aa",
+      "bytes": 35352
     },
     {
       "path": "components\\AppleWorkAuthorization.tsx",
-      "sha256": "d9b3ac1c7234a6c72040ec0d503c08ab6e3ff5637844129327365d942b3fccda",
-      "bytes": 14276
+      "sha256": "dabcd95d11c155bf0544bb69e61ecb0f3d0628c1ec73771e2f46caec72075c49",
+      "bytes": 13932
     },
     {
       "path": "components\\Bits.tsx",
@@ -146,13 +146,13 @@
     },
     {
       "path": "components\\CertIndex.tsx",
-      "sha256": "d752fbce7f7af7dc8c74a1526f6b622f23ef21a7ed80f280c49b03aa15a8933e",
-      "bytes": 11819
+      "sha256": "38378180f0c3c125ab3cb809bc667a22634e83e0a90da84daedf362904dc9c9b",
+      "bytes": 11557
     },
     {
       "path": "components\\ChatWidget.tsx",
-      "sha256": "69ae228cadd183d8829d936f8b08efb32a3e5d9f625ccc0a901c4d1424380478",
-      "bytes": 16733
+      "sha256": "63f9b895308c667404f7199dfc2163ee90b449b21d099d21c6a4b24888f414ef",
+      "bytes": 16579
     },
     {
       "path": "components\\ContactForm.tsx",
@@ -166,8 +166,8 @@
     },
     {
       "path": "components\\CopyEmailCard.tsx",
-      "sha256": "8715ea3f8912242912679810fd6a99ecff382c78ca886945d3998cd3d962754e",
-      "bytes": 3465
+      "sha256": "7cfab02d15e6b56a1f74498f41178e777b64b9d7e2a37292ae3b9615f9636d3e",
+      "bytes": 3398
     },
     {
       "path": "components\\Footer.tsx",
@@ -186,18 +186,18 @@
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "b726e1e952aede64c4ed94ee9b6289bab77192361fe4816c30da9fc94acf39ec",
-      "bytes": 23147
+      "sha256": "ddace4494a90828ecf3de7f38eeb223936b2b2d132e1fc26e4938c18dff58369",
+      "bytes": 22637
     },
     {
       "path": "components\\Reveal.tsx",
-      "sha256": "4ce28b8f830622a8ee8d34415f5b4299babcd0d31638b53f6731366f349cc6ce",
-      "bytes": 2594
+      "sha256": "8b5b0e8dcc65be178d6669e15505cf43b5cfa936e6f5698a11de67fcbcd6e6ae",
+      "bytes": 3018
     },
     {
       "path": "components\\ScrollProvider.tsx",
-      "sha256": "aee89759c110d19612f8137dbc739032cf930b88e4d5f549533cf90a67961d8c",
-      "bytes": 4417
+      "sha256": "ea493c264cef825ba8b3ddd2ad86ef85d01ea75a6b6c30d2cef6436e7f7a4f34",
+      "bytes": 4877
     },
     {
       "path": "components\\SplitReveal.tsx",
@@ -216,8 +216,8 @@
     },
     {
       "path": "components\\TechLoop.tsx",
-      "sha256": "c2c641d83991adf90d0e52cf3215e4ca2bc4d1cfd89fc2a116600a2db950dc3b",
-      "bytes": 3851
+      "sha256": "c02f54550e23a8d7bc5fe05af52a22da808fa286da2fb592aabeb877720fb907",
+      "bytes": 6179
     },
     {
       "path": "components\\ThemeToggle.tsx",
@@ -246,13 +246,13 @@
     },
     {
       "path": "components\\ui\\BorderGlow.css",
-      "sha256": "6958ea33090fe5dfdbeefb6cf1fb795c0d9220932040e3296f642454364d1310",
-      "bytes": 7120
+      "sha256": "92f9c432e71e521ef3288e62911801e7611727e54c0eb23d0e3fc55e38a1756f",
+      "bytes": 9910
     },
     {
       "path": "components\\ui\\BorderGlow.tsx",
-      "sha256": "c4d6e7369aeab60ac76d426cd10752fac7852bb3c753644ac368a3ee467da753",
-      "bytes": 8828
+      "sha256": "50eaec112ce595ff53d68d6edc0aeaacdca18578cdde85c42d4b32ab49479feb",
+      "bytes": 10101
     },
     {
       "path": "components\\ui\\GlowCard.tsx",
@@ -266,8 +266,8 @@
     },
     {
       "path": "components\\ui\\LogoLoop.tsx",
-      "sha256": "bd6020a5ef8d3330e115ddd6a4b483c120330664b3ad9e29d615b992c45dcce3",
-      "bytes": 14229
+      "sha256": "8bd2cfc88aa5947cd4240767b3d1ff4b22ffc1996b88fc7fd35325dfa5e086a9",
+      "bytes": 15905
     },
     {
       "path": "components\\ui\\WindowChrome.css",
@@ -291,8 +291,8 @@
     },
     {
       "path": "lib\\chat.ts",
-      "sha256": "60e77c51e274ac5c8ccd8635857cd6bc71cb874ed17fd4a5c6d0e9a490af1d95",
-      "bytes": 1161
+      "sha256": "a23e24fe08340f37df1b9d4b2d69a3eddd9ca7b659d30f0d1c5f9f4fb36dc7e7",
+      "bytes": 1269
     },
     {
       "path": "lib\\haptics.ts",
@@ -301,8 +301,8 @@
     },
     {
       "path": "lib\\knowledge.ts",
-      "sha256": "9a8269aa28cd41c4ebebe2d53535a3b49bc0ed30f47176dd712ed75e6192bcf6",
-      "bytes": 19529
+      "sha256": "702123b09c92881ad35c5fbced4cf7d596a63f5ab8e75f2872cf6133ab323c82",
+      "bytes": 32669
     },
     {
       "path": "lib\\nav.ts",
@@ -311,18 +311,18 @@
     },
     {
       "path": "lib\\projects.ts",
-      "sha256": "02762d5ebfb54ffdc3a2d8cd526ef5134b48f2f45c93015eb1dee3db3ae95559",
-      "bytes": 78639
+      "sha256": "9b07d33f94bad44386cf279b14ab61459a6069e91482c049a66274d0d582360c",
+      "bytes": 79079
     },
     {
       "path": "lib\\seo.ts",
-      "sha256": "9d66ff32eaf2b31c818cc39429edb8e2d48c6d56dc99e15183e1ac3500e4790f",
-      "bytes": 2661
+      "sha256": "f7edaa084c55f5b5a73c3994309a8459c4fd19b8f717d8ea857a4b5bf1a7b02c",
+      "bytes": 2625
     },
     {
       "path": "lib\\useInView.ts",
-      "sha256": "c9026416f3661c5bec377796caf7c624326af53fc5bae050d19348db60fc18a1",
-      "bytes": 2195
+      "sha256": "299d0a818fc5fa1627a839e22b5a454ca1e16386d4ae8c074d33e30b286eb15a",
+      "bytes": 5420
     },
     {
       "path": "next.config.mjs",

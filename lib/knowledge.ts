@@ -1,16 +1,20 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌​​‌‌​​‌​‌​‌​​​‌‌​​‌​​​‌​‌​​‌‌​​​​​‌‌​​​‌‌​‌‌​‌​​‌​‌​‌​​​​​‌​​​‌​‌​​‌‌​‌​‌​‌‌​‌‌‌​​‌​​​‌​‌​‌‌‌​‌​​​​‌‌​‌​​​‌​​​‌‌​​‌​‌‌​​‌​​‌‌‌​​​​‌​​​‌​​​‌​‌​‌‌‌​‌‌​​‌‌‌​‌‌‌​‌‌​​‌‌​​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​​‌‌​‌‌‌​​‌‌​‌‌‌​‌‌‌‌​​‌​‌‌​​‌​‌​​‌‌​​‌‌​‌​‌​​​‌​‌​​​‌‌‌​​‌‌‌​​‌​‌‌‌​​‌‌​​‌‌​​​​​​‌‌​‌​‌​​‌‌​‌‌​​‌‌​‌‌​‌​‌‌​‌‌‌‌​‌​​​​​‌​‌​​‌​​‌​‌‌​‌‌​‌​‌​​‌‌​‌​‌​‌​‌‌​​​‌‌​‌​​​‌‌​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.neFE0ciPE5nEt4FY8DWgvf
+ * Fingerprint: AMK1.M77ye3QG9s056moAImMV4k
  */
 import { PROJECTS } from "./projects";
+import { CERTS } from "./certs";
 
 /* The assistant quotes a build count in several answers. Reading it off
    PROJECTS means adding a project cannot leave the chat widget claiming a
-   number that stopped being true. */
+   number that stopped being true. The certification count is read off
+   CERTS for exactly the same reason — it was hard-coded as 24 and would
+   have gone stale the next time a credential was added. */
 const PROJECT_COUNT = PROJECTS.length;
+const CERT_COUNT = CERTS.length;
 
 export interface KnowledgeEntry {
   id: string;
@@ -38,10 +42,11 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /give\s+me\s+(an\s+)?overview/i,
     ],
     answer:
-      "Srinivasan Vijayaraghavan is a DevOps & Platform Systems Engineer with 5+ years of hands-on experience building resilient cloud infrastructure across AWS and Azure. He specializes in automated zero-downtime CI/CD releases, multi-terabyte cloud storage migrations, self-healing systems, and infrastructure as code (IaC) with Terraform and Ansible.",
+      "Srinivasan Vijayaraghavan is a DevOps / Site Reliability Engineer with 5 years of hands-on experience building resilient cloud infrastructure across Azure and AWS. At Thomson Reuters he owns release, upgrade and disaster-recovery automation for a multitenant Azure platform of 15+ microservices, built on GitHub Actions, Ansible and Datadog. Before that he set up build, packaging and release pipelines from scratch for embedded and enterprise products on Linux and Windows at Granite River Labs. He also maintains repo2graph, an open-source MCP server that helps AI coding agents understand codebases. Based in Bangalore, India; a U.S. Citizen and OCI holder, authorized to work in both the United States and India.",
     followUps: [
       "What is his enterprise experience?",
       "Is he authorized to work in the US?",
+      "Tell me about repo2graph",
       "What are his key projects?",
     ],
     actionLink: {
@@ -68,7 +73,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /us\s+work/i,
     ],
     answer:
-      "Srinivasan is fully authorized to work in both the United States and India with ZERO employer visa sponsorship required. He is available for immediate hire across US and India roles (remote or on-site) with no immigration overhead or visa waiting periods.",
+      "Srinivasan is a U.S. Citizen and an OCI (Overseas Citizen of India) holder, so he is fully authorized to work in both the United States and India with ZERO employer visa sponsorship required. He is available for immediate hire across US and India roles (remote or on-site) with no immigration overhead or visa waiting periods.",
     followUps: [
       "What is his current location?",
       "How do I get in touch with him?",
@@ -94,10 +99,11 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /cost\s+reduction/i,
     ],
     answer:
-      "At Thomson Reuters, Srinivasan spearheaded the migration of legacy unmanaged VHD disks across multi-terabyte production VM clusters to Azure Managed Disks and tiered Azure Blob Storage. This initiative achieved a 40% reduction in monthly cloud storage spend, eliminated disk throttling bottlenecks, and established automated snapshot-based disaster recovery replication with zero production downtime.",
+      "At Thomson Reuters (DevOps Engineer, 3 yrs 3 mos, Bangalore), Srinivasan owns release, upgrade and disaster-recovery automation for a multitenant Azure platform of 15+ microservices. Highlights:\n• Built the parallelized Azure Storage migration framework the platform's large-scale transfers run on — custom runners, chunked delta detection, parallel AzCopy orchestration, with SAS-authenticated Azure Table Storage driving inventory generation and migration-summary reporting.\n• Orchestrated DR failover and failback through Azure Service Bus with structured Datadog logging, holding zero data loss across same-region and cross-region Azure migrations.\n• Replaced manual multi-page runbooks with a self-service GitHub Actions suite, and eliminated manual upgrades across 15+ microservices with unattended Ansible orchestration (feature-flag loops, rescue blocks, automatic rollback).\n• Designed a fail-fast Apache health gate validating four conditions before traffic is routed, with retry/backoff at 5 attempts on a 2-second delay to stop false restarts.\n• Gated releases on T-SQL-verified backups with RESTORE-based rollback, automated DNS and MX cutovers in Python against the Akamai API, converted the estate's ARM templates to Bicep, and closed a container-promotion security gap with two RBAC-gated workflows plus BYOK encryption through Key Vault.\nHe also spearheaded earlier storage migration work to Azure Managed Disks and tiered Blob Storage, cutting monthly cloud storage spend by 40% with zero production downtime.",
     followUps: [
       "Tell me about his work at Granite River Labs",
       "What tools does he use for CI/CD?",
+      "How does he handle disaster recovery?",
       `Explore all ${PROJECT_COUNT} platform builds`,
     ],
     actionLink: {
@@ -120,10 +126,11 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /smart\s+home/i,
     ],
     answer:
-      "At Granite River Labs, Srinivasan engineered an automated test harness image pipeline for Matter Smart Home compliance certification. By containerizing test runners with Docker and orchestrating test suites using Python and Ansible, he reduced test setup and execution cycle times by 60%, delivering deterministic, reproducible test environments across physical lab hardware.",
+      "At Granite River Labs (DevOps Engineer, 1 yr 9 mos, Bangalore) Srinivasan was the sole engineer for build and release tooling across Linux, Windows and cloud, serving both embedded and enterprise product teams — and was promoted at six months. He engineered an automated test harness image pipeline for Matter Smart Home compliance certification, containerizing test runners with Docker and orchestrating suites with Python and Ansible to cut test setup and execution cycle times by 60%. He also standardised release delivery with Docker build/tag/push/deploy pipelines, automated WiX installer builds with code signing in GitHub Actions plus dpkg packaging in CI, authored a custom Windows Wireshark installer for THREAD protocol analysis that was later merged into the upstream Wireshark project, delivered hardware-in-the-loop test automation for Project MATTER (CSA) and Zigbee interoperability, contributed C#/.NET and C/C++ production code to the company's product line, automated ARM-based machine image builds, restructured repositories to enforce linting, unit tests, formatting and PR quality gates, and scoped AWS EC2 hosting for .NET applications to least privilege. Recognised twice — for Zigbee/Matter team support and on-call effort, and for product build and automation ownership.",
     followUps: [
       "What is his experience at Thomson Reuters?",
       "What is his Python experience?",
+      "Tell me about the Wireshark contribution",
       "What certifications does he hold?",
     ],
     actionLink: {
@@ -228,7 +235,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /devops\s+skills/i,
     ],
     answer:
-      "Srinivasan's primary technical domains include:\n• AI, LLM & MCP: Model Context Protocol servers, GraphRAG retrieval, agentic workflows, multi-provider LLM routing, token/context engineering\n• Cloud Platforms: Microsoft Azure, Amazon Web Services (AWS)\n• Infrastructure as Code & Config: Terraform, Ansible, Chef, Puppet\n• Containers & Orchestration: Docker, Kubernetes, Containerd, Helm\n• CI/CD Automation: GitHub Actions, GitLab CI, Azure Pipelines, Jenkins\n• Languages & Scripting: Python, Bash, Node.js/TypeScript, Rust\n• Observability: Datadog, Prometheus, Grafana, CloudWatch, ELK",
+      "Srinivasan's primary technical domains include:\n• AI & LLM Engineering: LLM API integration, Model Context Protocol (MCP) servers, RAG (BM25, embeddings), agentic coding workflows, prompt engineering, local LLM hosting\n• AI Tools & Models: Claude Code, Claude API, Cursor, GitHub Copilot, ChatGPT / OpenAI API, Google Gemini, Ollama, Llama, DeepSeek, Groq, OpenRouter, Hugging Face\n• CI/CD & IaC: GitHub Actions, GitLab CI, Azure DevOps (incl. REST API), Terraform, Ansible, Jinja2, Bicep, ARM, Docker, Kubernetes (AKS), WiX Toolset, dpkg\n• Cloud: Azure (Storage, AzCopy, Service Bus, App Config, Key Vault, ACR, AKS, Load Balancer, CLI), AWS (EC2, Security Groups)\n• Reliability & Operations: DR failover/failback, SQL Server HA mirroring, backup/restore verification, health-gated restarts, zero-downtime traffic shifts, ITSM change management\n• Monitoring: Datadog, Pingdom, HTTP/TCP/JMX checks, deployment telemetry, Teams alerting\n• Platforms: Windows Server, RHEL, Ubuntu, Apache, Tomcat, SQL Server (T-SQL), Solr, WinRM, Akamai\n• Languages: Python, Bash/Shell, PowerShell, Batch, SQL, YAML, C/C++, C#\n• Security: RBAC in CI/CD, secret management, BYOK, S/MIME commit signing, vulnerability scanning",
     followUps: [
       "What certifications does he have in AWS/Azure?",
       "What is his experience with Kubernetes?",
@@ -271,6 +278,176 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
     },
   },
 
+  // 9c. repo2graph specifically
+  {
+    id: "repo2graph",
+    category: "projects",
+    keywords: [
+      "repo2graph", "code graph", "codegraph", "blast radius", "tree sitter", "treesitter",
+      "bm25", "pypi", "npm", "docker", "github marketplace", "mcp registry", "17 languages",
+      "mit", "open source maintainer", "code intelligence",
+    ],
+    patterns: [
+      /repo2?graph/i,
+      /blast\s*radius/i,
+      /tree[-\s]?sitter/i,
+      /code\s+graph/i,
+    ],
+    answer:
+      "repo2graph is Srinivasan's open-source (MIT) code-graph engine and MCP server — he is its creator and maintainer. It gives AI coding agents like Claude Code and Cursor cited, token-bounded answers about any codebase, with no LLM and no API key needed. It parses source with tree-sitter across 17 languages, retrieves over the resulting graph with BM25 plus a one-hop graph walk, and ships a GitHub Action for PR blast-radius analysis. Distributed on PyPI, npm, Docker, the GitHub Marketplace and the MCP Registry. Token budgets are enforced rather than requested — a 12,000-token ceiling re-measured after rendering — and every retrieved block carries its file and line range plus the edge that pulled it in, so an agent's claim about the code can be checked instead of trusted.",
+    followUps: [
+      "How does he reduce LLM token costs?",
+      "What other AI projects has he built?",
+      "What is an MCP server?",
+    ],
+    actionLink: {
+      label: "View repo2graph Architecture",
+      url: "/projects/repo2graph",
+    },
+  },
+
+  // 9d. Offline RAG knowledge assistant — the homelab AI build
+  {
+    id: "offline_rag",
+    category: "projects",
+    keywords: [
+      "offline rag", "rag assistant", "knowledge assistant", "homelab", "ollama", "llama",
+      "llama 3.2", "streamlit", "fastapi", "arch wiki", "wikipedia", "offline wikipedia",
+      "local llm", "self hosted llm", "local chatbot", "zim",
+    ],
+    patterns: [
+      /offline\s+(rag|wiki|chatbot|assistant)/i,
+      /local\s+(llm|model|inference)/i,
+      /ollama|streamlit|fastapi/i,
+      /arch\s+wiki/i,
+    ],
+    answer:
+      "The Offline RAG Knowledge Assistant is Srinivasan's homelab AI build: a local chatbot answering over offline Wikipedia and Arch Wiki snapshots, running entirely on his own hardware with FastAPI, Ollama (Llama 3.2) and Streamlit. Retrieval and generation are both local, so it keeps working with the internet unplugged — no API key, no per-token bill, and nothing leaving the box. It sits alongside repo2graph as the self-hosted end of the same interest: making retrieval good enough that the model does not need to guess.",
+    followUps: [
+      "Tell me about repo2graph",
+      "What is his experience with local LLM hosting?",
+      `Explore all ${PROJECT_COUNT} projects`,
+    ],
+    actionLink: {
+      label: "View the Homelab Build",
+      url: "/projects/zim-assistant",
+    },
+  },
+
+  // 9e. Disaster recovery & reliability engineering
+  {
+    id: "reliability_dr",
+    category: "skills",
+    keywords: [
+      "disaster recovery", "dr", "failover", "failback", "rto", "rpo", "ha", "mirroring",
+      "backup", "restore", "t-sql", "tsql", "sql server", "health gate", "apache",
+      "zero downtime", "traffic shift", "itsm", "change management", "resilience", "sre",
+      "reliability", "service bus",
+    ],
+    patterns: [
+      /disaster\s+recovery|failover|failback/i,
+      /backup\s+(and\s+)?(restore|verification)/i,
+      /health\s+gate/i,
+      /zero[-\s]?downtime/i,
+      /\bsre\b|site\s+reliability/i,
+    ],
+    answer:
+      "Reliability is the centre of Srinivasan's work rather than a side concern:\n• DR failover and failback orchestrated through Azure Service Bus with structured Datadog logging — zero data loss across both same-region and cross-region Azure migrations.\n• A fail-fast Apache health gate validating four conditions before traffic is routed: service state, HTTP 200, load-balancer convergence and the health-check file — with drain timeouts and retry/backoff at 5 attempts on a 2-second delay to stop false restarts.\n• Releases gated on T-SQL-verified backups with RESTORE-based rollback and Datadog failure hooks, plus a safe-skip flow that polls active SQL Server tasks first so a deployment never blocks on a live job.\n• Rollback and recovery pipelines covering database restoration, service resets, checkpoint cleanup and external system synchronisation — including DNS and MX cutovers automated in Python against the Akamai API, with Pingdom check updates.\n• SQL Server HA mirroring, zero-downtime traffic shifts, and infrastructure change taken through formal ITSM change management.",
+    followUps: [
+      "How does his release pipeline work?",
+      "What monitoring does he use?",
+      "What is his experience at Thomson Reuters?",
+    ],
+    actionLink: {
+      label: "View Release Flow Diagram",
+      url: "/#reliability",
+    },
+  },
+
+  // 9f. Security inside the pipeline
+  {
+    id: "security_practices",
+    category: "skills",
+    keywords: [
+      "security", "rbac", "secrets", "secret management", "vault", "byok", "key vault",
+      "encryption", "signing", "s/mime", "smime", "commit signing", "vulnerability",
+      "scanning", "least privilege", "compliance",
+    ],
+    patterns: [
+      /\brbac\b/i,
+      /secret\s+manage/i,
+      /\bbyok\b|customer[-\s]managed\s+key/i,
+      /commit\s+signing|s\/?mime/i,
+      /vulnerability\s+scan/i,
+      /least\s+privilege/i,
+    ],
+    answer:
+      "Srinivasan treats the pipeline as a privileged system, because it is the one holding production credentials:\n• RBAC in CI/CD: container image promotion split behind two RBAC-gated workflows, closing a gap where pipeline access alone could reach production.\n• Secret management: variables and secrets centralised on vars.yml / vault.yml across environments, with automated cross-environment syncing — duplicate-key cleanup, lifecycle updates and ID normalisation.\n• BYOK: customer-managed key encryption through Azure Key Vault, driven as a templated per-environment condition via Jinja2 and Azure App Config.\n• Provenance: S/MIME commit signing, plus keyed authorship watermarking enforced in CI across his own repositories.\n• Supply chain: dependency review and image vulnerability scanning run as pre-promotion gates, where they can still stop something.\n• Least privilege: AWS EC2 hosting scoped down through security group rules and key-pair management.",
+    followUps: [
+      "What is his experience with Azure Key Vault?",
+      "Tell me about the Master Bot project",
+      "How does his release pipeline work?",
+    ],
+    actionLink: {
+      label: "Explore Skills Workbench",
+      url: "/#skills",
+    },
+  },
+
+  // 9g. Monitoring & observability coverage
+  {
+    id: "monitoring_coverage",
+    category: "skills",
+    keywords: [
+      "monitoring", "observability", "datadog", "pingdom", "jmx", "tcp check", "http check",
+      "dashboard", "alerting", "teams", "telemetry", "tagging",
+    ],
+    patterns: [
+      /monitor(ing)?\s+(stack|tools|setup)/i,
+      /\bjmx\b/i,
+      /datadog|pingdom/i,
+      /alert(ing|s)?\b/i,
+    ],
+    answer:
+      "Srinivasan extended HTTP, TCP and JMX monitoring to every microservice on the platform using dynamic templates and one standardised tagging scheme, with dependency-aware restarts, and wired Datadog dashboards and Teams alerting directly into the deployment pipelines rather than bolting them on afterwards. Pingdom checks are updated automatically as part of DNS and MX cutovers, and Datadog failure hooks sit on the backup-verification gate itself — so a gate that fails is visible rather than silent. Deployment telemetry is treated as part of the release, not a separate reporting exercise.",
+    followUps: [
+      "How does he handle disaster recovery?",
+      "How does his release pipeline work?",
+      "What certifications does he hold?",
+    ],
+    actionLink: {
+      label: "Explore Skills Workbench",
+      url: "/#skills",
+    },
+  },
+
+  // 9h. On-premises and mixed Windows/Linux estates
+  {
+    id: "on_premises",
+    category: "skills",
+    keywords: [
+      "on premises", "on-prem", "onprem", "windows server", "winrm", "solr", "tomcat",
+      "spring boot", "jvm", "jinja2", "idempotent", "bare metal", "hybrid",
+    ],
+    patterns: [
+      /on[-\s]?prem(ises|ise)?/i,
+      /windows\s+server|winrm/i,
+      /spring\s+boot|jvm/i,
+      /\bsolr\b/i,
+    ],
+    answer:
+      "Srinivasan stood up on-premises deployment from zero tooling: Jinja2-templated configuration, idempotent SQL Server initialisation and version-gated JVM provisioning for Spring Boot migrations, plus shared-resource synchronisation frameworks for Solr and the application servers. That sits alongside the Azure work, so the same automation discipline covers both halves of a mixed estate — Windows Server and WinRM on one side, RHEL and Ubuntu on the other — rather than Windows and on-prem being the manual exceptions.",
+    followUps: [
+      "What is his experience at Thomson Reuters?",
+      "What platforms does he work with?",
+      "What is his Ansible experience?",
+    ],
+    actionLink: {
+      label: "Explore Selected Experience",
+      url: "/#experience",
+    },
+  },
+
   // 10. Certifications
   {
     id: "certifications",
@@ -284,9 +461,9 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /credentials/i,
     ],
     answer:
-      "Srinivasan holds 24 verified industry certifications across cloud engineering, Linux systems, infrastructure automation, and observability—including credentials from AWS, Microsoft Azure, Red Hat / Ansible, Linux Foundation, and Datadog. Every credential is 100% issuer-verified with permanent verification IDs.",
+      `Srinivasan holds ${CERT_COUNT} verified industry certifications across cloud engineering, Linux systems, infrastructure automation, and observability—including credentials covering Microsoft Azure, Azure Bicep, Chef, Puppet, GitLab, GitHub Actions, Apache Tomcat, networking foundations, software architecture, and Datadog observability. Every credential is 100% issuer-verified with permanent verification IDs.`,
     followUps: [
-      "Explore all 24 certifications",
+      `Explore all ${CERT_COUNT} certifications`,
       "What is his work experience?",
       "Download his résumé",
     ],
@@ -311,7 +488,7 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /how\s+can\s+i\s+reach/i,
     ],
     answer:
-      "Srinivasan is based in Bangalore, India (IST / UTC+5:30) and is open to full-time remote or hybrid opportunities globally.\n• Email: srinivasan.shyam2000@gmail.com\n• GitHub: github.com/Srinivasan-78\n• Direct Contact Form: Available on the contact page",
+      "Srinivasan is based in Bangalore, India (IST / UTC+5:30) and is open to full-time remote or hybrid opportunities globally.\n• Email: srinivasan.shyam2000@gmail.com\n• Phone: +91 97910 25934\n• Website: srinidevops.com\n• LinkedIn: linkedin.com/in/srini-solution-architect\n• GitHub: github.com/Srinivasan-78\n• Direct Contact Form: Available on the contact page",
     followUps: [
       "Download Résumé (PDF)",
       "Is he authorized to work in the US?",
@@ -352,10 +529,11 @@ export const KNOWLEDGE_BASE: KnowledgeEntry[] = [
 // Conversational greetings & conversational fallbacks
 const GREETING_RESPONSE = {
   answer:
-    `Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5+ years of DevOps experience, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), ${PROJECT_COUNT} open-source builds, and technical skills.`,
+    `Hello! I am Srinivasan's interactive portfolio assistant. I can answer questions about his 5 years as a DevOps / Site Reliability Engineer, US/India work authorization, enterprise case studies (Thomson Reuters & GRL), his AI and MCP work including repo2graph, ${PROJECT_COUNT} open-source builds, and technical skills.`,
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
+    "Tell me about repo2graph",
     "What are his key projects?",
     "How can I contact him?",
   ],
@@ -377,11 +555,12 @@ const THANKS_RESPONSE = {
 
 const OFF_TOPIC_RESPONSE = {
   answer:
-    `I'm specifically focused on Srinivasan's background, cloud/DevOps engineering experience, ${PROJECT_COUNT} project builds, certifications, and work authorization. Here are some topics you might find helpful:`,
+    `I'm specifically focused on Srinivasan's background, cloud/DevOps and SRE experience, AI and MCP tooling, ${PROJECT_COUNT} project builds, certifications, and work authorization. Here are some topics you might find helpful:`,
   followUps: [
     "What does Srinivasan do?",
     "Is he authorized to work in the US?",
     "What's his experience with Azure & AWS?",
+    "Tell me about repo2graph",
     "Tell me about the Master Bot project",
   ],
 };

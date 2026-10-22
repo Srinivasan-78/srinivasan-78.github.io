@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​‌​​‌‌​​​‌​‌‌​‌​​​‌‌​​​‌​‌​​​‌​​​‌‌‌​‌‌‌​​‌‌​​​​​‌‌​​‌‌​​‌​​​​​‌​‌‌​​​‌‌​‌​​‌‌‌‌​‌​​​​‌​​‌​‌​‌​​​‌‌‌‌​​‌​‌​‌​‌‌‌​‌​​‌​‌​​‌​​‌​​​​‌​‌​​‌​​‌‌​​‌​​​‌‌​​​‌‌​‌‌‌​‌​‌​‌​​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌​​‌​​​​‌‌​‌‌​​‌‌​​‌‌‌​‌​​‌‌‌​​​‌‌​‌​​​‌‌‌​‌​​​‌‌‌​​​​​‌‌​‌​‌​​‌‌‌​​‌​​‌​​‌‌‌​​‌​​‌​​​​‌​​‌‌​​​‌‌‌‌​​‌​‌​​​​​‌​‌‌‌‌​​‌​‌‌​​‌‌‌​‌‌​‌‌‌​​‌​‌​​‌​​‌​‌​‌‌​​‌​​‌‌‌​​‌‌​‌‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.4LZ1Dw0fAcOBTyWJHRdcuH
+ * Fingerprint: AMK1.Ld6gN4tpjrNHLyAygnRVNn
  */
 "use client";
 
@@ -17,7 +17,13 @@
    2. `prefers-reduced-motion` short-circuits the rAF loop entirely.
       Upstream pins the transform with `!important` in CSS but leaves the
       loop running, which burns a frame callback forever to draw a
-      transform that is being overridden anyway. */
+      transform that is being overridden anyway.
+   3. The loop stops when the strip is not on screen, and when the tab is
+      not the foreground one. Upstream runs it forever, which is the
+      expensive half of a marquee: this one lives in the sticky header, so
+      it was writing a transform on the main thread every frame of every
+      scroll, for the whole session, on every route — including the ones
+      where the header has already scrolled away. See `useRunWhenVisible`. */
 
 import {
   useCallback,
@@ -92,9 +98,48 @@ const usePrefersReducedMotion = () => {
   return reduced;
 };
 
+/* Whether the loop is worth running at all: the strip has to be on screen
+   and the tab has to be in front.
+
+   Both halves matter for the same reason. A marquee is the one animation
+   on the site that never finishes, so anything it costs it costs forever
+   — and what it costs is a style write on the main thread every frame,
+   which is the same thread that has to keep up with the wheel. Off screen
+   it is paying that for something nobody can see; in a background tab the
+   browser throttles the callback but still services it.
+
+   `rootMargin: 200px` so the strip is already moving by the time it
+   scrolls in, rather than starting from a standstill in view. This is the
+   one observer on the site that does not fire once and retire, so it is
+   also the one that genuinely has to be torn down. */
+const useRunWhenVisible = (ref: RefObject<HTMLElement | null>) => {
+  const [onScreen, setOnScreen] = useState(true);
+  const [foreground, setForeground] = useState(true);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setOnScreen(entry.isIntersecting),
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  useEffect(() => {
+    const apply = () => setForeground(!document.hidden);
+    apply();
+    document.addEventListener("visibilitychange", apply);
+    return () => document.removeEventListener("visibilitychange", apply);
+  }, []);
+
+  return onScreen && foreground;
+};
+
 const useResizeObserver = (
   callback: () => void,
-  elements: RefObject<HTMLElement>[],
+  elements: RefObject<HTMLElement | null>[],
   dependencies: unknown[]
 ) => {
   useEffect(() => {
@@ -118,7 +163,7 @@ const useResizeObserver = (
 };
 
 const useImageLoader = (
-  seqRef: RefObject<HTMLElement>,
+  seqRef: RefObject<HTMLElement | null>,
   onLoad: () => void,
   dependencies: unknown[]
 ) => {
@@ -151,7 +196,7 @@ const useImageLoader = (
 };
 
 const useAnimationLoop = (
-  trackRef: RefObject<HTMLDivElement>,
+  trackRef: RefObject<HTMLDivElement | null>,
   targetVelocity: number,
   seqWidth: number,
   seqHeight: number,
@@ -248,6 +293,7 @@ const LogoLoop = memo(function LogoLoop({
   const [copyCount, setCopyCount] = useState<number>(ANIMATION_CONFIG.MIN_COPIES);
   const [isHovered, setIsHovered] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const running = useRunWhenVisible(containerRef);
 
   const effectiveHoverSpeed = useMemo(() => {
     if (hoverSpeed !== undefined) return hoverSpeed;
@@ -307,7 +353,7 @@ const LogoLoop = memo(function LogoLoop({
     isHovered,
     effectiveHoverSpeed,
     isVertical,
-    reducedMotion
+    reducedMotion || !running
   );
 
   const cssVariables = useMemo(

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌‌​​‌​‌​‌​​‌​‌​​‌​‌​‌‌‌​‌​‌​‌‌‌​‌‌‌​​​‌​‌‌​​‌‌‌​‌​​‌​​​​​‌‌‌​​​​‌‌‌​​‌​​‌​​​​‌‌​‌​‌‌​‌​​‌​​​‌‌​​‌‌​‌‌​‌​‌​‌​​​‌​‌​​​​‌‌​‌​‌‌​​‌​‌‌​‌‌​‌​‌​‌​​‌‌​​‌‌‌​​‌​​‌‌​​​​​‌​​‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌​​​​‌​​‌​​‌​‌​​‌‌​​‌‌‌​‌​‌​‌‌‌​‌‌​‌​​‌​‌‌​‌​​​​‌​​​​‌‌​‌​​​​‌​​‌‌​​​​‌​‌‌‌‌​‌​​‌‌‌​​​​​‌‌​​‌​‌​‌​​‌​‌​​‌‌‌​​​​​‌​​‌‌​​​‌​‌‌‌‌‌​‌‌‌​‌‌‌​‌‌​​‌​​​‌​‌​‌​‌​‌​​​‌​​​‌‌‌‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.6eJWWqgH8rCZFmQCYmS90I
+ * Fingerprint: AMK1.XBJgWihCBazpeJpL_wdUDz
  */
 
 export default function Loading() {
@@ -25,7 +25,7 @@ export default function Loading() {
         {[1, 2, 3].map((n) => (
           <div
             key={n}
-            className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col justify-between h-56"
+            className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-56"
           >
             <div className="space-y-3">
               <div className="flex justify-between items-center">

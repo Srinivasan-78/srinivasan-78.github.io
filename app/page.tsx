@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌‌​‌​​​​‌‌​‌​​‌‌‌‌​‌​​​‌​​​‌‌​​‌​‌​​‌‌​​‌​​‌​‌​‌‌​​‌​​‌​‌‌​‌​‌​​‌​​‌‌​​‌‌​​​‌‌​‌​‌​‌​​‌‌‌‌​​‌‌‌​​​​‌​​‌​​​​‌​‌​‌​‌​​‌‌​​‌‌​‌​‌​​​​​‌‌‌‌​‌​​‌‌‌​​​‌​‌‌‌​​​​​‌​​‌​‌​​‌‌‌‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌‌‌​​‌​​‌‌‌​​​​‌‌​‌​‌​​‌‌‌​​​​​​‌‌​‌‌‌​​‌‌​​‌‌​‌‌​‌​‌‌​​‌‌​‌​‌​​‌​‌‌​‌​‌​‌‌​​​​‌‌​‌‌​​​​‌‌​​‌​​‌​​​​‌​​​‌‌​‌​​​‌‌‌​​​‌​​‌‌‌​​‌​‌​‌​‌​​​‌‌​​‌‌‌​​‌‌​​​‌​‌‌​‌​​‌​‌​​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.gCODe2VKRf5O8HU3PzqpJz
+ * Fingerprint: AMK1.Gy8jp73k5-Xl2B4q9Tg1iM
  */
 import Link from "next/link";
 import { PROJECTS } from "@/lib/projects";
@@ -26,11 +26,14 @@ const STATS = [
   { value: 15, suffix: "+", label: "Microservices architected & maintained" },
   { value: CERTS.length, label: "Verified industry credentials earned" },
   { value: 2, suffix: " Clouds", label: "Deep production experience (AWS & Azure)" },
+  { value: 100, suffix: "%", label: "Data integrity held across same-region & cross-region Azure DR migrations" },
+  { value: 17, suffix: " Languages", label: "Parsed by repo2graph, his open-source MCP server for AI coding agents" },
 ];
 
 const RELEASE_FLOW = [
   { label: "Commit", note: "Automated PR linting & test suite" },
   { label: "Build", note: "Lean immutable container image tagged" },
+  { label: "Backup", note: "T-SQL-verified backup, safe-skip on live SQL jobs" },
   { label: "Gate", note: "Synthetic health & latency verified" },
   { label: "Promote", note: "Gradual zero-downtime traffic shift" },
   { label: "Verify", note: "Error rate nominal & Datadog OK" },
@@ -44,9 +47,9 @@ export default function Page() {
       <header className="relative pt-16 pb-16 px-6 max-w-6xl mx-auto flex flex-col items-center text-center overflow-hidden">
 
         {/* Status Eyebrow */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
           <span className="w-2 h-2 rounded-full bg-[#34c759]" />
-          <span>Srinivasan Vijayaraghavan · DevOps & Cloud Architecture · Bangalore, IN</span>
+          <span>Srinivasan Vijayaraghavan · DevOps / Site Reliability Engineer · Bangalore, IN</span>
         </div>
 
         {/* Clear, Human Headline */}
@@ -56,7 +59,16 @@ export default function Page() {
 
         {/* Calm, Grounded Description */}
         <p className="text-lg sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-3xl mx-auto leading-relaxed mb-8">
-          Five years automating releases, cloud migrations, and disaster recovery across AWS and Azure. I design resilient systems so engineering teams can focus on building products, not fighting deployments.
+          Five years automating releases, cloud migrations, and disaster recovery across AWS and Azure. At Thomson Reuters I own release, upgrade and disaster-recovery automation for a multitenant Azure platform of 15+ microservices, built on GitHub Actions, Ansible and Datadog. I design resilient systems so engineering teams can focus on building products, not fighting deployments.
+        </p>
+
+        {/* Secondary line: the open-source side of the same discipline */}
+        <p className="text-sm sm:text-base text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mb-8 -mt-4">
+          I also maintain{" "}
+          <Link href="/projects/repo2graph" className="font-semibold text-[#1d1d1f] dark:text-white underline decoration-amber-500/50 decoration-2 underline-offset-4 hover:decoration-amber-500 transition-colors">
+            repo2graph
+          </Link>
+          , an open-source MCP server that gives AI coding agents cited, token-bounded answers about any codebase.
         </p>
 
         {/* Dual Primary Action Buttons */}
@@ -92,11 +104,11 @@ export default function Page() {
 
       {/* 2. Key Metrics */}
       <section className="py-14 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {STATS.map((st) => (
             <div
               key={st.label}
-              className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl hover:border-black/20 dark:hover:border-white/20 transition-all flex flex-col justify-between"
+              className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex flex-col justify-between"
             >
               <div className="text-3xl sm:text-4xl font-extrabold text-[#1d1d1f] dark:text-white tracking-tight font-mono mb-2">
                 <CountUp value={st.value} suffix={st.suffix} />
@@ -112,7 +124,7 @@ export default function Page() {
       {/* 3. Release Reliability Architecture */}
       <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
             <span>Reliability by Design</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white mb-4">
@@ -125,8 +137,8 @@ export default function Page() {
 
         <SystemDiagram
           stages={RELEASE_FLOW}
-          returnPath="Rollback executes the exact same pipeline in reverse — verified & automated"
-          caption="Production release architecture across Azure & AWS. Automated health gates verify HTTP 200 responses, latency budgets, and service dependencies before routing traffic."
+          returnPath="Rollback executes the exact same pipeline in reverse — RESTORE-based database rollback, service resets, checkpoint cleanup & external system resync, all automated"
+          caption="Production release architecture across Azure & AWS. Automated health gates verify four conditions before traffic is routed — service state, HTTP 200, load-balancer convergence and the health-check file — with drain timeouts and retry/backoff at 5 attempts on a 2-second delay so a slow start is never mistaken for a failure."
         />
       </section>
 
@@ -138,7 +150,7 @@ export default function Page() {
 
       {/* 6. Personal Projects & Tooling (Card-free Showcase Gateway to Projects) */}
       <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-        <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
+        <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
 
           <div className="max-w-2xl space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
@@ -150,13 +162,14 @@ export default function Page() {
             </h2>
 
             <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed">
-              Practical tools, deployment orchestrators, and browser utilities I use in my day-to-day workflow.
+              Practical tools, deployment orchestrators, AI developer tooling, and browser utilities I use in my day-to-day workflow — including repo2graph, an MIT-licensed code-graph engine and MCP server shipped on PyPI, npm, Docker and the GitHub Marketplace.
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] justify-center md:justify-start">
               <span>• {PROJECTS.length} Production Builds</span>
               <span>• Self-Healing Pipelines</span>
               <span>• Open Source Tools</span>
+              <span>• MCP Servers & Agentic Workflows</span>
             </div>
           </div>
 
@@ -190,7 +203,7 @@ export default function Page() {
             Let&rsquo;s build something dependable together.
           </h2>
           <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-            I&rsquo;m open to senior DevOps, Site Reliability Engineering, and Cloud Architecture roles. Let&rsquo;s talk about what your team is building.
+            I&rsquo;m open to senior DevOps, Site Reliability Engineering, Cloud Architecture, and AI developer-tooling roles. Let&rsquo;s talk about what your team is building.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -215,6 +228,7 @@ export default function Page() {
             <span>✓ US Citizen (No visa sponsorship needed)</span>
             <span>✓ OCI Cardholder (India)</span>
             <span>✓ 5 Years Enterprise Cloud Track Record</span>
+            <span>✓ Open-Source MCP Server Maintainer</span>
           </div>
         </div>
       </section>

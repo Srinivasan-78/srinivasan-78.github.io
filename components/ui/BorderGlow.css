@@ -1,14 +1,34 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌​‌​‌‌​​‌‌​‌‌​‌​‌‌‌​​‌‌​‌​‌‌​‌​​‌​​‌‌‌‌​‌​‌​‌​‌​‌​‌‌​‌​​​‌‌​​‌‌​‌‌​​‌​​​​‌‌​‌‌‌​‌​​​​‌‌​‌​​​​​‌​​‌‌‌​​​​‌​​​​‌​​​‌‌​‌​‌​​‌‌​‌‌​​​‌‌​​​​​​‌‌​​‌‌​‌​​​‌​‌​‌​‌​​‌​​‌‌​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌​​‌‌​‌​‌​‌​‌​​​‌‌‌​‌​​​‌​‌​‌​​​‌‌‌‌​​‌​‌​​​​‌​​‌‌​‌‌​‌​‌​‌​‌‌‌​‌‌​​​​‌​‌‌‌‌​​​​‌‌​‌‌​​​‌​‌​‌‌‌​‌​‌‌​​​​‌‌​‌​​​​​‌‌​‌​‌​‌​​​​​‌​​‌‌​​​​​‌‌​​​‌​​‌‌​​‌​‌​‌‌​‌‌​​​‌‌​​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.vVmsZOUZ3d7CA8B5603ERo
+ * Fingerprint: AMK1.XMTtTyBmWaxlWXh5A0bela
  */
-/* React Bits BorderGlow stylesheet, upstream as-published.
-   Project-level tuning (shadow weight, inner surface, focus ring) lives
-   under `.glow-card` in app/globals.css rather than being edited here,
-   so this file stays diffable against upstream. */
+/* React Bits BorderGlow stylesheet, upstream as-published except for the
+   two departures marked DEPARTURE below, both of which are scroll
+   performance and neither of which could be made from globals.css.
+   Everything else — shadow weight, inner surface, focus ring — is still
+   tuned under `.glow-card` in app/globals.css, so this file stays
+   diffable against upstream.
+
+   Why it had to change here. Upstream is written for a page with one or
+   two of these cards. This site renders one per project, per certificate,
+   per capability, per role — several dozen on a route — and upstream
+   gives every one of them, at rest, with no pointer anywhere near it:
+
+     * its own compositor layer, forced by a `translate3d` whose only job
+       is to create a stacking context that `isolation: isolate` on the
+       same rule already creates;
+     * three overlay layers holding seventeen gradient images between
+       them, two conic-gradient masks, a seven-layer composited mask, and
+       two `mix-blend-mode` layers. A blended layer cannot be composited
+       independently — it has to be re-blended against whatever is behind
+       it whenever either moves, which during a scroll is every frame.
+
+   They were hidden with `opacity: 0`, and a transparent layer is still a
+   layer: still promoted, still rastered, still blended. Thirty of those
+   is the choppy desktop scroll. */
 
 .border-glow-card {
   --edge-proximity: 0;
@@ -21,8 +41,13 @@
 
   position: relative;
   border-radius: var(--border-radius);
+  /* DEPARTURE 1: upstream also sets `transform: translate3d(0, 0, 0.01px)`
+     here. It is there to establish a stacking context so the `z-index: -1`
+     overlays below land behind the content instead of behind the page —
+     and `isolation: isolate`, on this same rule, already does exactly
+     that. The transform's only remaining effect is to promote every card
+     on the page to its own GPU layer for the lifetime of the document. */
   isolation: isolate;
-  transform: translate3d(0, 0, 0.01px);
   display: grid;
   border: 1px solid rgb(255 255 255 / 15%);
   background: var(--card-bg, #120F17);
@@ -43,15 +68,43 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  transition: opacity 0.25s ease-out;
+  /* No delay in this direction: the layer has to be painted before it can
+     fade up. */
+  visibility: visible;
+  transition: opacity 0.25s ease-out, visibility 0s;
   z-index: -1;
 }
 
+/* DEPARTURE 2: `visibility: hidden` alongside the `opacity: 0`.
+   Visibility takes the subtree out of painting and compositing entirely,
+   which is what actually removes the blended conic-masked layers from the
+   frame; opacity alone only makes them invisible.
+
+   It is a discrete property, so it flips at the *end* of the transition
+   on the way out and at the *start* on the way in — the fade is untouched
+   in both directions, which is the same trick the chat panel in
+   globals.css uses to keep a closing animation while still leaving the
+   document. The 0.75s delay is the fade's own duration. */
 .border-glow-card:not(:hover):not(.sweep-active)::before,
 .border-glow-card:not(:hover):not(.sweep-active)::after,
 .border-glow-card:not(:hover):not(.sweep-active) > .edge-light {
   opacity: 0;
-  transition: opacity 0.75s ease-in-out;
+  visibility: hidden;
+  transition: opacity 0.75s ease-in-out, visibility 0s linear 0.75s;
+}
+
+/* A proximity glow answers a pointer, and a touch device has none. What
+   it has instead is a faked `:hover` that latches on tap and stays
+   latched until something else is tapped — so on a phone this effect was
+   never the thing it is for, it was a card that lit up and stayed lit.
+   Off, except for the deliberate one-shot intro sweep. */
+@media (hover: none), (pointer: coarse) {
+  .border-glow-card:not(.sweep-active)::before,
+  .border-glow-card:not(.sweep-active)::after,
+  .border-glow-card:not(.sweep-active) > .edge-light {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 /* colored mesh-gradient border */

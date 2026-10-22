@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌‌​‌‌‌​​​‌‌​‌‌​​​‌​‌‌​‌​‌​‌​‌​​​‌‌​‌​​‌​‌‌​‌​‌​​‌‌‌​‌‌‌​‌​​​​‌​​‌‌‌‌​​​​‌​‌‌​‌​​​‌‌​​​‌​‌​​‌‌​‌​‌​‌​​​​​‌‌‌​​​​​​‌‌​​‌‌​‌‌​​‌​‌​‌‌‌​​‌​​‌‌‌​‌‌‌​​‌‌​‌‌​​‌​​‌​‌‌​‌​​‌‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​‌​‌​​‌​‌‌​‌‌‌​​‌‌​‌​‌​‌​‌​‌‌​‌‌‌​​‌‌​​​‌‌​‌​​​‌‌‌​‌​​​​‌​​‌​​‌‌​​​‌‌‌​‌​​​‌‌​‌‌‌‌​‌​​​​‌​​‌‌​‌‌‌‌​‌‌​‌​‌​​‌​​​‌​​​‌​​​‌​‌​‌​‌​​​​​‌​​​​‌​​‌‌​​​‌‌​‌‌‌‌​‌​​‌‌​​​‌​​‌‌​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Tn6-TijwBxZ1MPp3erw6KL
+ * Fingerprint: AMK1.qKsUncGBLtoBojDEPBczbk
  */
 import type { MetadataRoute } from "next";
 
@@ -18,10 +18,10 @@ export const dynamic = "force-static";
    iOS reads apple-touch-icon.png instead, which is declared in the layout. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Srinivasan Vijayaraghavan — DevOps Engineer",
+    name: "Srinivasan Vijayaraghavan — DevOps / Site Reliability Engineer",
     short_name: "Srinivasan V",
     description:
-      "DevOps Engineer specializing in CI/CD, cloud infrastructure, and automation across AWS and Azure.",
+      "DevOps / Site Reliability Engineer specializing in cloud infrastructure, reliability, release automation, and AI developer tooling across Azure and AWS.",
     start_url: "/",
     display: "browser",
     // Matches the <meta name="theme-color"> in the layout and --paper.

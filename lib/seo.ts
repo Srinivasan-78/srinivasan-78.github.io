@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​​‌‌​​​‌​‌‌​​​‌​​‌‌​​​‌​​​‌‌​​‌​​​‌‌‌​​​​‌‌‌​​​‌​‌​‌​‌​​​‌‌‌​‌‌​​‌‌‌​‌‌​​‌​​‌‌‌‌​‌‌​‌​‌​​‌​​​​‌‌​‌‌​​​‌‌​​‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​​​​​‌‌‌​​‌​​‌‌​‌​‌​​​‌‌‌​​​​‌‌‌​‌​‌​‌​​‌‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​​‌‌‌‌​‌​‌​‌​‌​​‌‌​​​​​‌‌​‌‌​​​‌‌‌‌​‌​​‌‌​‌​​‌​‌​​‌​​​​‌​​​‌‌​​‌‌‌‌​​‌​‌​​‌​‌​​‌‌​‌‌‌‌​‌‌​‌​​​​‌​‌​‌‌​​‌‌​‌​‌​​‌​​​​‌​​‌‌​‌‌‌​​‌​‌​‌​‌​‌​‌‌​​‌​‌​​​‌​​​​‌‌​‌‌‌​‌​‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.L1bb28qTvvOjCc7sprj8uL
+ * Fingerprint: AMK1.sOU0lziHFyJohVjBnUYD7X
  */
 import type { Metadata } from "next";
 
@@ -11,7 +11,7 @@ const OG_IMAGE = {
   url: "/og.png",
   width: 1200,
   height: 630,
-  alt: "Srinivasan Vijayaraghavan, DevOps Engineer",
+  alt: "Srinivasan Vijayaraghavan, DevOps / Site Reliability Engineer",
 };
 
 /* Next replaces the parent `openGraph` object wholesale rather than merging

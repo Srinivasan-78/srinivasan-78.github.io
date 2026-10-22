@@ -1,15 +1,15 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌‌​​‌‌‌​‌‌​​‌‌​​​‌‌​‌‌‌​‌​​‌​‌‌​‌​‌​‌​‌​​‌‌‌​​‌​​‌‌​‌​‌​​‌‌​‌‌​​‌​​‌​​‌​‌‌​​​​‌​‌‌​‌‌​​​‌​‌‌​‌​​‌​‌​‌‌‌​‌‌‌‌​​​​​‌‌‌​​​​‌‌‌​​‌‌​​‌​‌‌​‌​‌‌‌​‌‌​​​‌‌​​​​​‌‌​​​​‌​‌‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​​‌​‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​‌​‌​​​​​‌‌‌‌​‌​​‌‌​​‌‌​​‌‌​‌​​​​‌​​‌‌​​​‌​‌‌​‌​​‌​​‌​‌‌​‌​​​‌​‌​​‌‌​‌‌‌​‌‌​‌‌​​​‌‌​​​‌​​‌‌​​‌‌​​‌​​‌​‌​​‌​​​‌​​​‌‌‌‌​‌​​‌​​​‌​​​‌‌​‌​‌​​‌‌​​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.-gf7KU956IalZWx8s-v0ax
+ * Fingerprint: AMK1.SKw5PzfhLZKE7lbfJDzDja
  */
 import { pageMetadata } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
 import CopyEmailCard from "@/components/CopyEmailCard";
 import GlowCard from "@/components/ui/GlowCard";
-import { FiMail, FiLinkedin, FiGithub, FiCheckCircle, FiClock, FiMapPin } from "react-icons/fi";
+import { FiMail, FiLinkedin, FiGithub, FiCheckCircle, FiClock, FiMapPin, FiPhone, FiGlobe, FiDownload } from "react-icons/fi";
 
 export const metadata = pageMetadata({
   title: "Contact",
@@ -23,7 +23,7 @@ export default function Contact() {
 
       {/* 1. Human Hero Section */}
       <header className="pt-20 pb-16 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
           <span className="w-2 h-2 rounded-full bg-[#34c759]" />
           <span>Direct Contact · Bangalore, IN</span>
         </div>
@@ -33,7 +33,11 @@ export default function Contact() {
         </h1>
 
         <p className="text-base sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed">
-          Whether you&rsquo;re hiring for a senior DevOps or Cloud Architecture role, or want to talk through an infrastructure challenge, feel free to reach out.
+          Whether you&rsquo;re hiring for a senior DevOps, Site Reliability, Cloud Architecture or AI developer-tooling role, or want to talk through an infrastructure challenge, feel free to reach out.
+        </p>
+
+        <p className="text-sm text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mt-4 font-mono">
+          Bangalore, India · +91 97910 25934 · srinivasan.shyam2000@gmail.com
         </p>
       </header>
 
@@ -42,7 +46,7 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           {/* Left Column: Form */}
-          <div className="lg:col-span-7 p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 backdrop-blur-xl">
+          <div className="lg:col-span-7 p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
             <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2">
               Send a Message
             </h2>
@@ -57,7 +61,7 @@ export default function Contact() {
           <div className="lg:col-span-5 space-y-4">
 
             {/* Quick Availability Card */}
-            <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
+            <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2.5 mb-2">
                 <FiClock className="w-4 h-4 text-emerald-600 dark:text-[#34c759]" />
                 <span className="text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#a1a1a6]">
@@ -78,13 +82,34 @@ export default function Contact() {
               {/* Email with copy-to-clipboard feedback */}
               <CopyEmailCard />
 
+              {/* Phone — as published on the résumé */}
+              <GlowCard>
+                <a
+                  href="tel:+919791025934"
+                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-emerald-600 dark:text-[#34c759] shadow-sm dark:shadow-none flex-shrink-0">
+                      <FiPhone className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Phone</div>
+                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-emerald-600 dark:group-hover:text-[#34c759] transition-colors">
+                        +91 97910 25934
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Call ↗</span>
+                </a>
+              </GlowCard>
+
               {/* LinkedIn */}
               <GlowCard>
                 <a
                   href="https://www.linkedin.com/in/srini-solution-architect/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
+                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#0066cc] dark:text-[#2997ff] shadow-sm dark:shadow-none flex-shrink-0">
@@ -107,7 +132,7 @@ export default function Contact() {
                   href="https://github.com/Srinivasan-78"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
+                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-sm dark:shadow-none flex-shrink-0">
@@ -124,10 +149,53 @@ export default function Contact() {
                 </a>
               </GlowCard>
 
+              {/* Website */}
+              <GlowCard>
+                <a
+                  href="https://www.srinidevops.com"
+                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-sm dark:shadow-none flex-shrink-0">
+                      <FiGlobe className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Website</div>
+                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
+                        srinidevops.com
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Home ↗</span>
+                </a>
+              </GlowCard>
+
+              {/* Résumé */}
+              <GlowCard>
+                <a
+                  href="/resume.pdf"
+                  download
+                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-sm dark:shadow-none flex-shrink-0">
+                      <FiDownload className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Résumé</div>
+                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
+                        Download PDF
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Save ↓</span>
+                </a>
+              </GlowCard>
+
             </div>
 
             {/* Work Authorization Notice */}
-            <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
+            <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2 text-xs font-semibold text-[#1d1d1f] dark:text-white mb-2">
                 <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-[#34c759]" />
                 <span>Work Authorization Status</span>
@@ -135,8 +203,11 @@ export default function Contact() {
               <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-2">
                 <strong>United States:</strong> US Citizen (Immediate hire, zero visa sponsorship required).
               </p>
-              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
+              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-2">
                 <strong>India:</strong> OCI Cardholder (Indefinite right to live and work in India).
+              </p>
+              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
+                U.S. Citizen · OCI Holder — authorized to work in the United States and India.
               </p>
             </div>
 

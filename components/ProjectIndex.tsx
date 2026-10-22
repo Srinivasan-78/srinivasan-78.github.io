@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌​​‌‌‌​​‌‌​​‌‌​​​‌‌​​‌‌​‌​‌​​‌​​‌‌​‌​‌​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌​​​​‌‌​​‌​​‌‌‌​‌​‌​‌‌​‌‌​‌​​‌‌​‌‌‌​​‌‌​​‌‌​​‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌‌​​‌​​​​‌‌​​‌‌​​​​​‌​​‌‌​​​​‌‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​‌​‌​‌​​‌‌​​​​​‌​‌‌​​‌​‌​​​‌​‌​‌​​​‌​​​​‌‌​​​‌​​‌​‌‌​‌​‌​‌​​​‌​‌​‌​‌​​​‌​‌​​‌‌​‌‌​​​​‌​​‌‌‌​​‌​‌‌​‌‌‌​​​‌‌‌​​‌​‌​​‌‌​​​​‌‌​‌‌‌​‌‌​‌‌‌‌​‌‌​​‌‌‌​‌‌​​‌‌​​​‌‌​​​‌​‌​​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.vNf3RjPMnL2um73-nNC0L1
+ * Fingerprint: AMK1.SU0YED1-QTSa9n9L7ogf1K
  */
 "use client";
 
@@ -81,7 +81,7 @@ export default function ProjectIndex() {
     >
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
           <FiLayers className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
           <span>Platform Engineering & Open Source</span>
         </div>
@@ -118,7 +118,7 @@ export default function ProjectIndex() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by project name, technology (e.g. Docker, Ansible, Python, Azure)..."
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
+              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
             />
             {searchQuery && (
               <button
@@ -148,7 +148,7 @@ export default function ProjectIndex() {
                   className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
                     isSelected
                       ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
-                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c]/80 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
+                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c] dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
                   }`}
                 >
                   <span>{cat}</span>
@@ -182,7 +182,7 @@ export default function ProjectIndex() {
             return (
               <div
                 key={featuredProject.slug}
-                className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/15 dark:border-white/15 backdrop-blur-xl shadow-xl relative overflow-hidden"
+                className="p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/15 dark:border-white/15 shadow-xl relative overflow-hidden"
               >
                 <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
                   <div className="space-y-4 max-w-2xl">
@@ -246,7 +246,7 @@ export default function ProjectIndex() {
         </div>
 
         {filteredProjects.length === 0 ? (
-          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10">
+          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
             <FiTerminal className="w-8 h-8 mx-auto text-[#9b9ba1] mb-3" />
             <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
               No projects found matching &ldquo;{searchQuery}&rdquo;
@@ -275,7 +275,7 @@ export default function ProjectIndex() {
 
               return (
                 <GlowCard key={proj.slug}>
-                  <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
+                  <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
                     <div>
                       {/* Header: Category & Status */}
                       <div className="flex items-center justify-between gap-2 mb-4">
@@ -379,7 +379,7 @@ export default function ProjectIndex() {
             {CONTRIBUTIONS.map((c) => (
               <article
                 key={c.repo}
-                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex flex-col h-full hover:border-black/25 dark:hover:border-white/25 transition-all"
+                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col h-full hover:border-black/25 dark:hover:border-white/25 transition-all"
               >
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] tracking-wider break-all">

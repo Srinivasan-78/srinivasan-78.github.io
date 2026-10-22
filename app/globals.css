@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌​‌‌​​​​‌​​​‌‌​​‌​‌‌​​‌​‌​​‌​​​​​‌‌​​​​​‌‌​‌​‌​​‌‌​‌​​​​‌​‌​‌​​​‌‌​​‌‌​​‌‌‌​‌​‌​​‌‌‌​​​​‌​​‌​​​​‌​​‌​‌‌​‌​​‌‌​​​‌‌‌​‌‌‌​‌‌​‌​​‌​‌‌​​‌​​​‌​​‌​​​​‌‌‌​​​​​‌​​‌‌​‌​‌​‌​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌‌‌​‌​​​‌​​‌‌​‌​​‌‌​‌‌​​‌​​‌‌​​​‌‌​‌‌‌​​‌‌‌‌​​‌​‌‌‌​​‌‌​​‌‌​​‌‌​‌​​‌‌‌​​‌‌‌​​‌​​‌‌‌‌​‌​​‌​​‌​​‌​‌​​​​​‌​‌​‌‌​‌​​‌​​‌‌‌​​‌‌​‌‌​​​‌‌​‌​​‌​‌‌‌‌​​‌​‌​​‌​​‌​‌‌‌​​​‌​‌​‌​‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.EXFYH0jhTfu8HKLwidHpMQ
+ * Fingerprint: AMK1.ytM6Lnys3NrzIAZNliyIqT
  */
 @tailwind base;
 @tailwind components;
@@ -264,6 +264,31 @@ html { scroll-padding-top: 7.5rem; }
 @media (max-width: 520px) {
   html { scroll-padding-top: 5.5rem; }
 }
+
+/* Anchor jumps travel; the wheel does not.
+
+   This is the one place smooth scrolling belongs, and it is worth being
+   exact about why. A fragment link teleports the reader to somewhere
+   else in the document with no indication of which way they went or how
+   far — the two facts that tell them where they now are. Scrolling it
+   instead of jumping it hands both over for free.
+
+   What this is not is a smooth-scrolling *page*. `scroll-behavior` only
+   applies to scrolls the document initiates — a fragment navigation, a
+   `scrollIntoView`, a programmatic `scrollTo`. A wheel notch, a trackpad
+   swipe and a drag of the scrollbar are user scrolls and are untouched
+   by it, which is the correct arrangement and the opposite of what a
+   scroll-hijacking library does: the input the visitor is holding stays
+   instant and native, and only the jumps the page makes on their behalf
+   are animated.
+
+   ScrollProvider's scroll-to-top on route change opts back out with
+   `behavior: "instant"` — a route change is a new page, not a journey
+   across the old one, and animating it would make every navigation
+   start with a half-second tour of the previous route. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 /* The skip target carries tabindex="-1" so focus actually moves there
    rather than staying on <body>; that makes it programmatically focusable,
    which must not draw a ring around the whole page. */
@@ -329,6 +354,46 @@ main:focus { outline: none; }
 /* A section whose content is wider than the column above it. The change
    of width is what marks the boundary. */
 .section-bleed { padding-top: clamp(2rem, 5vw, 3.5rem); }
+
+/* ---------- DON'T LAY OUT WHAT NOBODY IS LOOKING AT ----------
+   The home route is one long document: six or seven full sections, each
+   holding a grid of surfaces, every one of them styled, laid out and
+   painted on first load and then re-considered on every scroll even
+   though five of them are thousands of pixels off screen.
+
+   `content-visibility: auto` lets the browser skip all of that for a
+   section until it is near the viewport, and resume it when it is. The
+   whole of what it costs is that the skipped section has no measured
+   height, so `contain-intrinsic-size` has to supply a guess — and the
+   `auto` keyword means the guess is only ever used once per section, for
+   the first approach; after that the browser remembers the height it
+   actually turned out to be, which is what keeps the scrollbar from
+   growing under the reader's hand.
+
+   Scoped to `main > section` rather than to `.section` on purpose: the
+   long route renders its sections in Tailwind and does not carry that
+   class, so a `.section` rule would have missed precisely the page this
+   is for.
+
+   The first section is excluded. It is above the fold on every screen,
+   so it would be rendered immediately anyway, and leaving it out means
+   the figure below is never consulted for anything the visitor is
+   already looking at.
+
+   Safe here for two reasons worth recording, because both would make it
+   unsafe elsewhere. `content-visibility` implies `contain: layout paint`,
+   which clips to the padding box and makes the element a containing
+   block: nothing on this site is `position: fixed` inside a section (the
+   rail, the CTA bar, the notice and the chat surfaces are all chrome
+   outside <main>, and the header is the one `sticky` element on the
+   site), and no decoration reaches past a section's padding — the widest
+   is BorderGlow's 30px outer glow, against 56px of section padding at
+   the tightest breakpoint. And there are no in-page fragment links: the
+   only one on the site is the skip link, which targets <main> itself. */
+main > section:not(:first-of-type) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
 
 /* Pill, filled or plain — never outlined. An outline button next to a
    filled one gives two competing calls to action; the secondary is a
@@ -506,6 +571,13 @@ main:focus { outline: none; }
   transform-origin: left;
   transform: scaleX(0);
   background: var(--accent);
+  /* The one element on the site that is genuinely written to on every
+     frame of a scroll, so the one place a permanent compositor hint is
+     the honest answer rather than a guess. Without it the bar is a
+     full-width strip that re-paints on the main thread sixty times a
+     second for the whole length of the page; with it the scale is handed
+     to the compositor and the paint happens once. */
+  will-change: transform;
 }
 /* ---------- THE MOTION PRIMITIVE ----------
    One transition, used by everything that animates on scroll.
@@ -527,13 +599,36 @@ main:focus { outline: none; }
    starting state is scoped to it so that a visitor with scripting off
    gets the content plainly rather than a page of invisible headings —
    the observer that would reveal them never runs. */
+/* The curve is --ease-out, not --ease.
+
+   This file argues the distinction two hundred lines up and then the
+   largest entrance on the site was the one place not following it:
+   --ease has an initial slope of 0.39, so a reveal on it spends its
+   first eighth of a second barely moving. On a hover state nobody
+   notices. On something triggered by a scroll it is read as the page
+   failing to keep up with the wheel — the content is already on screen,
+   visibly waiting, before it starts arriving. --ease-out commits on the
+   first frame and decelerates into place, which is what makes a reveal
+   read as prompt rather than as lag.
+
+   With the lazy start gone the travel can come down with it: 20px rather
+   than 24, over 560ms rather than 600. A shorter distance on a curve
+   that leaves immediately reads as the element settling; a longer one on
+   a curve that hesitates reads as it being dragged. */
 .js .reveal,
 .js .reveal-group > * {
   opacity: 0;
-  transform: translate3d(0, 24px, 0);
+  transform: translate3d(0, 20px, 0);
   transition:
-    opacity 0.6s var(--ease),
-    transform 0.6s var(--ease);
+    opacity 0.56s var(--ease-out),
+    transform 0.56s var(--ease-out);
+  /* No `will-change` here, deliberately. The honest place for it would be
+     this pending state, and the class flip that would retire it is the
+     same flip that starts the transition — so the hint would be withdrawn
+     on the exact frame it was needed. Opacity and transform are the two
+     properties a browser already promotes on its own when a transition on
+     them begins; there is nothing for the hint to buy, and left on it
+     would pin a layer per revealed element for the life of the page. */
 }
 .js .reveal.is-in,
 .js .reveal-group.is-in > * {
@@ -551,10 +646,15 @@ main:focus { outline: none; }
    tracks, and at 600ms it snaps; the extra 200ms is what makes it read
    as settling into place. */
 .js .reveal-group.reveal-pop > * {
-  transform: translate3d(0, 28px, 0) scale(0.94);
+  /* Same correction as the plain reveal: the entrance curve, and a
+     shorter run on it. 0.96 rather than 0.94 as well — the scale is what
+     the eye tracks, and over a tile the width of a column the extra two
+     per cent is a dozen pixels of edge travel that reads as the card
+     being inflated rather than as it arriving. */
+  transform: translate3d(0, 24px, 0) scale(0.96);
   transition:
-    opacity 0.8s var(--ease),
-    transform 0.8s var(--ease);
+    opacity 0.66s var(--ease-out),
+    transform 0.66s var(--ease-out);
 }
 .js .reveal-group.reveal-pop.is-in > * {
   transform: none;
@@ -1378,9 +1478,16 @@ main:focus { outline: none; }
 .glow-card > .border-glow-inner {
   height: 100%;
   border-radius: inherit;
-  /* `hidden`, not upstream's `auto`: a card whose content is a pixel
-     taller than its box should clip, not grow a scrollbar. */
-  overflow: hidden;
+  /* `clip`, not upstream's `auto`: a card whose content is a pixel taller
+     than its box should clip, not grow a scrollbar.
+
+     And `clip` rather than the `hidden` this said before. Both clip, but
+     `hidden` makes the element a scroll container — one that cannot be
+     scrolled, but that the browser still registers, hit-tests and
+     considers on every scroll. On a route with forty cards that is forty
+     scroll containers tracked to hold content that was never going to
+     overflow. `clip` is the same clip with none of that. */
+  overflow: clip;
 }
 .glow-card > .border-glow-inner > * {
   width: 100%;
@@ -1446,11 +1553,38 @@ main:focus { outline: none; }
    to saturate is whatever colour is scrolling past, so it arrives
    amplified and tints the bar.) */
 .nav-bar { position: relative; background: transparent; }
-.tech-loop { background: transparent; }
+/* The marquee inside the header is the only thing on the site that moves
+   continuously, and it was moving inside the one element that carries a
+   backdrop-filter. A blurred surface has to be re-composited whenever
+   anything inside it repaints, so the full-width frosted strip was being
+   redrawn every frame — not only while scrolling, but for the entire
+   session — and the thread doing that work is the thread that has to
+   answer the wheel. That is most of what "the scroll is choppy" was.
+
+   `contain: paint` bounds the damage to the strip's own box instead of
+   the header's, and the zero translate gives the strip a compositor layer
+   of its own so the glass above it is not re-rasterised when the logos
+   shift by two pixels. The loop also stops entirely when the header is
+   off screen or the tab is in the background — see LogoLoop.tsx. */
+.tech-loop {
+  background: transparent;
+  contain: paint;
+  transform: translateZ(0);
+}
+/* 12px, down from 20px.
+
+   Blur is the expensive half of this surface and its cost goes up with
+   the radius, which is paid on every frame of every scroll because the
+   bar is sticky and the page moves underneath it. 12px still reads as a
+   material — text passing under it is a haze rather than a word — and at
+   the fill below the difference is almost invisible while costing a
+   fraction of the work. The saturation stays: it is a single cheap pass
+   over an already-sampled region, and it is what keeps the bar from
+   turning grey (argued above). */
 .nav-glass {
-  background: color-mix(in srgb, var(--paper) 78%, transparent);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
 }
 /* Without a blur behind it, a translucent fill is not a material — it
    is just the page showing through as noise. Go solid there. */

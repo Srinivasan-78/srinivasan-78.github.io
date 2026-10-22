@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​‌​‌​​​‌​‌​‌‌​​‌​​​‌​​‌‌‌‌​‌‌​​‌​‌​‌​​‌‌​​​‌‌‌‌​‌​​‌‌​​​​‌​​‌‌‌​​​​​‌‌​​​‌​‌‌​​‌‌​​‌​‌​​​‌​​‌​‌‌​‌​​‌​‌‌​‌​​‌‌​​‌‌​​‌‌​​‌‌​‌​‌​‌​‌​‌‌‌​​‌​​‌‌​​​​‌​‌‌​​​​‌​‌‌​​‌​‌​​‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌​‌​‌‌​​​‌‌​​‌​​‌​​‌​​​​‌​​​‌​‌​‌‌​‌‌​‌​‌‌‌‌​​‌​‌​​​‌‌​​​‌​‌‌​‌​‌‌‌‌​​​​​‌‌​​‌​​‌​‌​​​‌​‌‌​​​‌‌​‌‌​‌​‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌‌​‌​‌​​​‌‌​‌‌​​‌​‌‌​​‌​‌​‌​​‌​​‌‌‌​‌​‌​‌‌​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.QEdOeLza81fQ--33Uraae5
+ * Fingerprint: AMK1.BV2HEmyF-x2Qckv5j6YRub
  */
 "use client";
 
@@ -25,7 +25,7 @@ export default function CopyEmailCard() {
 
   return (
     <GlowCard>
-      <div className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c]/80 border border-black/10 dark:border-white/10 flex items-center justify-between transition-all">
+      <div className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex items-center justify-between transition-all">
         <a
           href={`mailto:${email}`}
           className="flex items-center gap-3.5 group flex-grow min-w-0"

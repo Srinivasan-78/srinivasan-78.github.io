@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌​​‌​‌​​‌​‌‌‌‌‌​​‌‌​‌​‌​‌​​‌​‌‌​‌​‌​​‌​​‌‌​‌​​​​‌‌‌​​‌‌​‌​​​‌​‌​‌​​​​‌‌​‌‌​​​​‌​​‌‌​​‌‌​‌​​‌​‌​​‌​​‌​​​​‌​​‌‌‌‌​‌‌​​‌‌​​​‌‌​​​‌​‌‌​​‌‌‌​​‌‌​​‌​​‌​​‌‌‌‌​‌‌​‌​​‌​‌‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​​​‌‌​​‌‌‌​‌​​‌​‌​​‌​​‌‌​‌​‌​‌​​‌‌​‌​​‌‌‌​​‌​​‌‌​​​‌‌​‌​​‌​​‌‌‌​​‌​‌‌​‌​​‌​​‌‌​​​​​‌​​‌‌‌​​‌​​​‌​‌​‌​​‌‌‌​​‌‌‌‌​​​​​‌‌‌​​‌​​‌‌​‌​‌​‌‌‌‌​​​​‌​​​​​‌​‌​​‌‌‌‌​‌​​​​​‌​​‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.YJ_5KRhsECa3JHOf1g2Oip
+ * Fingerprint: AMK1.dgJMSNLi9i0NENx95xAOA7
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -334,7 +334,7 @@ export const PROJECTS: Project[] = [
       },
       {
         label: "Parsing, and where it stops",
-        body: "tree-sitter reads real syntax trees for sixteen languages, and every other file still lands on the map in its folder. Calls are matched by name: an ambiguous one draws up to five candidate edges each carrying 1/n confidence, same-file definitions win ties, and only a 1.0 is certain. Files over 1.5 MB, binaries, vendor folders and .gitignore'd paths are skipped outright.",
+        body: "tree-sitter reads real syntax trees for 17 languages, and every other file still lands on the map in its folder. Calls are matched by name: an ambiguous one draws up to five candidate edges each carrying 1/n confidence, same-file definitions win ties, and only a 1.0 is certain. Files over 1.5 MB, binaries, vendor folders and .gitignore'd paths are skipped outright.",
       },
       {
         label: "Incremental builds that stay identical",
@@ -349,8 +349,12 @@ export const PROJECTS: Project[] = [
         body: "Degree counting, the force layout and GraphML generation are pure Python — no networkx. human/ gets a self-contained graph.html that settles its layout in batches across animation frames instead of one blocking loop; agent/ gets JSONL nodes, edges and chunks, an idempotent Cypher loader for Neo4j, and a manifest describing every other file.",
       },
       {
-        label: "Shipped three ways",
-        body: "pip install repo2graph from PyPI, uvx --from \"repo2graph[mcp]\" repo2graph-mcp with nothing installed at all, and Srinivasan-78/repo2graph@v1 on the GitHub Marketplace as a workflow step. Releases publish over PyPI Trusted Publishing with OIDC, so there is no long-lived token anywhere to leak.",
+        label: "Shipped every way an agent might reach it",
+        body: "pip install repo2graph from PyPI, npx from npm, a published Docker image, uvx --from \"repo2graph[mcp]\" repo2graph-mcp with nothing installed at all, and Srinivasan-78/repo2graph@v1 on the GitHub Marketplace as a workflow step. Releases publish over PyPI Trusted Publishing with OIDC, so there is no long-lived token anywhere to leak.",
+      },
+      {
+        label: "Blast-radius analysis on a pull request",
+        body: "The GitHub Action walks the graph outward from the files a PR touches and reports what else depends on them, so a reviewer sees the reach of a change before approving it rather than discovering it in production. It needs no LLM and no API key — the analysis is graph traversal, not inference.",
       },
     ],
     highlights: [
@@ -362,7 +366,8 @@ export const PROJECTS: Project[] = [
       "Incremental rebuilds are byte-identical to full ones, because only parsing is cached and resolution is always recomputed",
       "HTTP refuses to bind past loopback without auth, JWT verification is stdlib-only, and audit logs redact by shape as well as by field name",
       "Honest about approximation: calls are matched by name with a confidence score, and a missing edge never proves a missing call",
-      "Published to PyPI, the GitHub Marketplace and the MCP Registry, released over OIDC with no stored secrets",
+      "Published to PyPI, npm, Docker, the GitHub Marketplace and the MCP Registry, released over OIDC with no stored secrets",
+      "MIT licensed, created and maintained by Srinivasan — tree-sitter parsing across 17 languages with no LLM or API key required",
       "It indexes itself: a workflow rebuilds the graph on every push to main and publishes it to a branch",
     ],
     links: [
@@ -573,31 +578,38 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "zim-assistant",
-    title: "Zim Assistant",
-    client: "Platform engineering",
-    category: "Homelab",
+    title: "Offline RAG Knowledge Assistant",
+    client: "AI & homelab",
+    category: "Homelab AI / RAG",
     status: "Archived",
-    teaser: "A homelab chatbot that searches offline Wikipedia snapshots through a local LLM.",
-    tags: ["Python", "Kiwix", "Self-hosted"],
-    stack: ["Python", "Kiwix", ".zim archives", "Batch", "Self-hosted"],
+    teaser: "A local chatbot over offline Wikipedia and Arch Wiki, answered by a self-hosted Llama 3.2.",
+    tags: ["Local LLM", "RAG", "Self-hosted"],
+    stack: ["Python", "FastAPI", "Ollama", "Llama 3.2", "Streamlit", "Kiwix", ".zim archives", "Batch", "Self-hosted"],
     overview:
-      "Tooling for running a homelab around .zim archives, which are offline snapshots of Wikipedia and similar knowledge bases, served locally through Kiwix. What you end up with is a knowledge assistant that keeps working happily with the internet unplugged.",
+      "A local chatbot over offline Wikipedia and Arch Wiki snapshots, built with FastAPI, Ollama running Llama 3.2, and Streamlit. The .zim archives are served locally through Kiwix, retrieval runs over them, and generation runs on the same box — so both halves of RAG are self-hosted. What you end up with is a knowledge assistant that keeps working happily with the internet unplugged, with no API key, no per-token bill, and nothing leaving the machine.",
     architecture: [
       {
         label: "Archive layer",
-        body: "Kiwix serves the .zim files locally, which turns an offline encyclopedia snapshot into something you can search in full.",
+        body: "Kiwix serves the .zim files locally, which turns an offline Wikipedia and Arch Wiki snapshot into something you can search in full.",
       },
       {
-        label: "Application layer",
-        body: "A Python app sits over the archives with a UI for querying them conversationally.",
+        label: "Retrieval & API layer",
+        body: "A FastAPI service sits over the archives, turning a question into a retrieval against the local corpus and handing the model only the passages that matter — the same bounded-context discipline that drives repo2graph, applied to prose instead of code.",
       },
       {
-        label: "Launcher",
-        body: "A Windows batch launcher brings the whole stack up in one go.",
+        label: "Local inference",
+        body: "Ollama runs Llama 3.2 on the same hardware, so generation is local too. No request leaves the box and there is no per-token cost to think about while iterating.",
+      },
+      {
+        label: "Interface",
+        body: "A Streamlit front end for conversational querying, with a Windows batch launcher that brings the whole stack up in one go.",
       },
     ],
     highlights: [
-      "Fully offline: every answer comes from your own archives",
+      "Fully offline RAG: retrieval and generation both run locally, with the internet unplugged",
+      "Self-hosted Llama 3.2 through Ollama — no API key and no per-token bill",
+      "FastAPI retrieval layer over offline Wikipedia and Arch Wiki .zim archives",
+      "Streamlit interface for conversational querying",
       "Runs on ordinary homelab hardware",
       "One command starts the whole stack",
     ],
