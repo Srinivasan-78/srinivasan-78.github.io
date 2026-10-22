@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-22T13:20:24.628Z",
-  "fileCount": 68,
-  "digest": "99cff5c06170fe1c600f897754c3af5d0fd0e4dd9f21dbe7c929c18dbf31d911",
-  "proof": "0472bd17be0a833bb18d0624a09cec44622e7aa3fdf1bdc40556a6b96f2a827c",
+  "sealedAt": "2026-10-22T13:34:44.691Z",
+  "fileCount": 69,
+  "digest": "522e809a9a0acf51a36e59cfaf1a8f98cfa2b95be6b0f01311a6ccb57bc43d59",
+  "proof": "8f7d7d19a9d9479607ab3f9899e626a93776c870ec0d07dfde5208e165b90ed9",
   "files": [
     {
       "path": "AGENTS.md",
@@ -116,8 +116,8 @@
     },
     {
       "path": "components\\AppleEnterpriseExperience.tsx",
-      "sha256": "433fc7a4acc15f2c2c9eb2bd486b678c6d401d979ca2ea2def78c084c5417b8d",
-      "bytes": 28628
+      "sha256": "0d9533ca23d36c040285b652421c82116dc23c7b8180a00160676def02c28364",
+      "bytes": 29488
     },
     {
       "path": "components\\AppleHeroPipeline.tsx",
@@ -146,8 +146,8 @@
     },
     {
       "path": "components\\CertIndex.tsx",
-      "sha256": "4e8ed84a66aee50b2115a672b201c471cb8f3197ab7b2a5d85fdec80839ac6ca",
-      "bytes": 11557
+      "sha256": "6464f8906fcaae02b761c83db3981e88843a7ce4eea32a35a7deb98d9f88314a",
+      "bytes": 12452
     },
     {
       "path": "components\\ChatWidget.tsx",
@@ -186,8 +186,8 @@
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "365f46b7f2ebe3696da24cce6e34b3e413d963bb51db0e22100e022c2a88b6c3",
-      "bytes": 22632
+      "sha256": "3212f87ce12b60dbeabaa3c3bd6deb12d721346e55a9ae2bf3c7b28c7fe23131",
+      "bytes": 23604
     },
     {
       "path": "components\\Reveal.tsx",
@@ -268,6 +268,11 @@
       "path": "components\\ui\\LogoLoop.tsx",
       "sha256": "8bd2cfc88aa5947cd4240767b3d1ff4b22ffc1996b88fc7fd35325dfa5e086a9",
       "bytes": 15905
+    },
+    {
+      "path": "components\\ui\\RevealMore.tsx",
+      "sha256": "f80b6850d13dd9eec99e6c5bf88074e7248300e2780fe9a3d631096ee219e49b",
+      "bytes": 4092
     },
     {
       "path": "components\\ui\\WindowChrome.css",

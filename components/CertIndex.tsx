@@ -1,15 +1,16 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​‌​‌​‌‌​​​​‌​‌‌​‌​​‌​​​​‌‌​‌​​‌‌​‌​‌​​​​​‌​‌‌​​‌‌​​‌​​​​‌​​‌​‌​‌​​​‌‌​‌​‌‌​‌‌‌‌​​‌​‌‌‌​​​​​​‌‌‌​​‌​‌​​​​‌‌​‌​​‌‌​‌​‌‌​‌‌‌​​‌​​‌​​​​‌​​‌‌​​​‌‌​​‌‌‌​​‌‌​‌​​​‌​‌​‌​‌​‌​‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​​‌‌‌​​‌​‌​​‌‌​​‌‌​‌‌‌​‌‌‌‌​​‌​‌‌‌​​‌​​‌‌​‌‌​‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌‌‌‌​​​​‌​​​‌​‌​​‌‌​​‌‌​‌‌‌‌​‌​​‌‌‌​​‌‌​​‌‌​​​​​‌​​​‌​​​‌‌​‌‌‌​​‌‌​​‌​​​‌‌​‌‌‌​​​‌‌​‌‌‌​​‌‌‌​​‌​‌‌​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.IXZCMAfBTkyp9CMnHLg4UR
+ * Fingerprint: AMK1.sNS7yrmt7xE3zs0Dndn79j
  */
 "use client";
 
 import { useMemo, useState } from "react";
 import { CERTS, ROWS, forRow, type Cert } from "@/lib/certs";
 import GlowCard from "./ui/GlowCard";
+import { useCappedList, ShowMoreButton } from "./ui/RevealMore";
 import {
   FiAward,
   FiExternalLink,
@@ -50,6 +51,11 @@ export default function CertIndex() {
         c.date.toLowerCase().includes(q)
     );
   }, [rowId, searchQuery]);
+
+  /* Nine again, for the same reason as the projects grid: three complete
+     rows of the three-column layout, so the cap reads as a resting point
+     rather than a truncation. */
+  const certList = useCappedList(filteredCerts, 9, `${rowId}|${searchQuery}`);
 
   return (
     <main
@@ -144,7 +150,13 @@ export default function CertIndex() {
       {/* 2. Credentials Bento Grid */}
       <section className="px-6 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
-          <span>Showing {filteredCerts.length} verified credentials</span>
+          {/* Honest while capped: the figure here and the figure on the
+              control below the grid have to agree. */}
+          <span>
+            {certList.visible.length < filteredCerts.length
+              ? `Showing ${certList.visible.length} of ${filteredCerts.length} verified credentials`
+              : `Showing ${filteredCerts.length} verified credentials`}
+          </span>
           <span>Issuer: LinkedIn Learning</span>
         </div>
 
@@ -170,7 +182,7 @@ export default function CertIndex() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCerts.map((cert) => (
+            {certList.visible.map((cert) => (
               <GlowCard key={cert.url}>
                 <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
                   <div>
@@ -226,6 +238,15 @@ export default function CertIndex() {
               </GlowCard>
             ))}
           </div>
+        )}
+
+        {certList.showControl && (
+          <ShowMoreButton
+            expanded={certList.expanded}
+            hiddenCount={certList.hiddenCount}
+            noun="credentials"
+            onClick={certList.toggle}
+          />
         )}
       </section>
 

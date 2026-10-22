@@ -1,15 +1,16 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​‌‌​​‌​‌​‌​‌​‌‌​​​‌‌​‌​​​‌​‌‌​​‌​​‌‌​‌‌‌​‌​​‌​​‌​‌​‌​​​​​​‌‌​‌‌‌​‌​​​‌‌​​​‌‌​‌‌‌​​‌‌​​​​​‌​‌​​​​​‌​​​‌​​​‌‌​‌​‌​​​‌‌​‌‌‌​​‌‌​‌​​​‌​​​‌​‌​‌​‌‌​​‌​​‌‌​​‌‌​​‌‌​‌​‌​‌​​‌‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​‌​​‌‌​‌​‌​‌‌​‌​​​​‌‌​​‌‌​​‌‌​‌​​​​‌‌‌​​‌‌​‌‌​‌​​‌​‌‌​​‌​‌​‌‌​​‌‌​​‌​​​​‌​​‌‌​​​​‌​​‌‌​‌‌‌​‌‌‌​​‌​​‌‌‌​​‌​​​‌‌​‌​​​‌​‌‌​​​​​‌‌​‌‌‌​‌‌​​​‌​​‌‌​​‌​‌​‌‌‌​‌​‌​‌‌‌​​‌‌​​‌‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.4eV4Y7IP7F70PDj74EY35L
+ * Fingerprint: AMK1.u5hfhsiefBa7rr4X7beus7
  */
 "use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
 import GlowCard from "./ui/GlowCard";
+import { useCappedList, ShowMoreButton } from "./ui/RevealMore";
 import { PROJECTS } from "@/lib/projects";
 import {
   FiArrowUpRight,
@@ -393,6 +394,15 @@ export default function AppleEnterpriseExperience() {
     (item) => selectedCompany === "All Initiatives" || item.company === selectedCompany
   );
 
+  /* Six, not nine, because this one sits in the middle of the home page
+     rather than on a page a visitor chose to open. Twenty initiatives is
+     the single densest block on the site -- it was more than four screens
+     of cards between the section above it and the section below, which is
+     where a first-time reader gives up. Six is two rows: enough to show
+     the range of the work and that there is a lot of it, without making
+     the rest of the page unreachable by scroll. */
+  const caseList = useCappedList(filtered, 6, selectedCompany);
+
   return (
     <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
 
@@ -461,7 +471,7 @@ export default function AppleEnterpriseExperience() {
 
       {/* Modern 2-Column Bento Experience Matrix */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((item) => {
+        {caseList.visible.map((item) => {
           const Icon = item.icon;
 
           return (
@@ -536,6 +546,15 @@ export default function AppleEnterpriseExperience() {
           );
         })}
       </div>
+
+      {caseList.showControl && (
+        <ShowMoreButton
+          expanded={caseList.expanded}
+          hiddenCount={caseList.hiddenCount}
+          noun="initiatives"
+          onClick={caseList.toggle}
+        />
+      )}
 
     </section>
   );

@@ -1,15 +1,16 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​​‌‌‌​​​​‌‌‌​‌​‌​‌​​‌‌​‌​‌​​‌​​‌​‌‌‌​‌​​​‌‌​‌‌‌‌​‌​​​​‌​​‌‌​​‌​​​‌‌​‌‌‌‌​‌‌​​​‌​​‌​‌​‌​‌​‌‌​‌​​​​‌‌​​‌​​​‌​​​‌​​​‌‌‌​​‌‌​‌​​​‌‌‌​‌‌​‌​​‌​‌‌​‌​‌‌​​‌‌​‌​​​‌​‌‌​​​​​‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌‌​‌‌​​​‌‌​‌‌‌​‌‌‌​‌‌​‌​‌‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​‌​‌​​​‌‌​​‌​​​‌​‌​​​‌​‌​​​‌‌​​‌‌‌‌​​​​‌​‌​​​‌​‌​​‌​‌​​​‌‌​​​‌​‌‌​‌​‌​​‌​‌‌​‌​​​‌‌​‌​‌​​‌‌​​​​​​‌‌​‌​‌​‌​‌​​​​​‌​​‌‌‌​​‌‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.E8uMItoBdobUhdDsGik4X5
+ * Fingerprint: AMK1.ocwkNfTdQFxQJ1jZ505PNp
  */
 "use client";
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import GlowCard from "./ui/GlowCard";
+import { useCappedList, ShowMoreButton } from "./ui/RevealMore";
 import { PROJECTS, CONTRIBUTIONS } from "@/lib/projects";
 import {
   FiArrowUpRight,
@@ -64,6 +65,11 @@ export default function ProjectIndex() {
       return matchesCat && matchesSearch;
     });
   }, [selectedCat, searchQuery]);
+
+  /* Nine, which is three full rows of the three-column grid below — the
+     cap should land on a row boundary or the last row reads as the list
+     having been cut off mid-thought rather than deliberately paused. */
+  const projectList = useCappedList(filteredProjects, 9, `${selectedCat}|${searchQuery}`);
 
   const featuredProjects = useMemo(
     () =>
@@ -241,7 +247,13 @@ export default function ProjectIndex() {
       {/* 3. Bento Project Matrix */}
       <section className="px-6 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
-          <span>Showing {filteredProjects.length} builds</span>
+          {/* Says "9 of 23" while capped, so the number above the grid and
+              the number on the control below it tell the same story. */}
+          <span>
+            {projectList.visible.length < filteredProjects.length
+              ? `Showing ${projectList.visible.length} of ${filteredProjects.length} builds`
+              : `Showing ${filteredProjects.length} builds`}
+          </span>
           <span>Filter: {selectedCat}</span>
         </div>
 
@@ -267,7 +279,7 @@ export default function ProjectIndex() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((proj) => {
+            {projectList.visible.map((proj) => {
               const hasDemo = !!proj.demo;
               const sourceLink = proj.links.find(
                 (l) => l.label.includes("Source") || l.label.includes("repo")
@@ -356,6 +368,15 @@ export default function ProjectIndex() {
               );
             })}
           </div>
+        )}
+
+        {projectList.showControl && (
+          <ShowMoreButton
+            expanded={projectList.expanded}
+            hiddenCount={projectList.hiddenCount}
+            noun="builds"
+            onClick={projectList.toggle}
+          />
         )}
       </section>
 
