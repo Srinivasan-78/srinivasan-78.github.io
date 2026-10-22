@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌‌​‌‌​‌‌​‌​‌‌​​‌‌‌​‌​​​​‌‌​‌​​‌​​​​‌​​‌‌​​​‌‌‌​‌​‌​‌‌‌​‌​​​​‌​‌‌​‌​​‌‌​​‌‌​​‌‌​‌‌‌​‌​‌‌​‌​​​‌‌​‌‌​​‌​​‌‌‌​​‌​​‌​‌​​‌‌‌‌​​​​‌​‌​‌​​​‌​​‌‌‌​​​‌‌‌​​​​‌​​‌‌‌‌​‌‌​‌‌​​​‌​‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​‌‌​‌​​‌​‌​‌​‌​‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌‌​​​​‌​‌‌​​​​‌​‌​​‌‌‌​​‌​‌‌​​‌​​‌‌​​‌‌​‌‌‌​​‌‌​‌‌‌‌​​‌​‌​​​‌‌​​‌‌​‌​​‌​‌​‌​​‌‌​‌‌​‌​‌​​‌‌‌​‌​‌​‌‌​‌‌​​​‌‌​​‌‌‌​‌‌‌​​​‌​‌​​‌​​‌​‌‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.wmgCHLut-37Z6NJxTN8OlV
+ * Fingerprint: AMK1.ViUsraaNY3syFiSjulgqIu
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -59,7 +59,7 @@ export default async function ProjectDetail({
         </Link>
 
         <div className="pd-hero mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
             <span>{p.client} · {p.category}</span>
           </div>
           <SplitReveal as="h1" text={p.title} className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-4 text-[#1d1d1f] dark:text-white" />
@@ -90,7 +90,7 @@ export default async function ProjectDetail({
 
       <div className="wrap max-w-5xl mx-auto px-6 py-12 space-y-12">
         <section className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
             <span>Overview</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
@@ -103,7 +103,7 @@ export default async function ProjectDetail({
 
         <section className="space-y-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
               <span>Architecture Breakdown</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
@@ -121,7 +121,7 @@ export default async function ProjectDetail({
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-amber-600 dark:text-[#e5a93b]">
+                    <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#9a5200] dark:text-[#e5a93b]">
                       Step {String(index + 1).padStart(2, "0")}
                     </span>
                     <span className="w-2 h-2 rounded-full bg-[#34c759]" />
@@ -140,7 +140,7 @@ export default async function ProjectDetail({
 
         <section className="space-y-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
               <span>Key Takeaways</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
@@ -150,7 +150,7 @@ export default async function ProjectDetail({
           <ul className="space-y-2.5 text-sm sm:text-base text-[#424245] dark:text-[#a1a1a6]">
             {p.highlights.map((h) => (
               <li key={h} className="flex items-start gap-2.5 leading-relaxed">
-                <span className="text-emerald-600 dark:text-[#34c759] font-bold mt-0.5">•</span>
+                <span className="text-[#047857] dark:text-[#34c759] font-bold mt-0.5">•</span>
                 <span>{h}</span>
               </li>
             ))}
@@ -159,7 +159,7 @@ export default async function ProjectDetail({
 
         <section className="space-y-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
               <span>Stack & Tools</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
@@ -217,10 +217,10 @@ export default async function ProjectDetail({
                 href={`/projects/${prevProject.slug}`}
                 className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center gap-3 text-left group"
               >
-                <FiArrowLeft className="w-4 h-4 text-amber-600 dark:text-[#e5a93b] group-hover:-translate-x-1 transition-transform" />
+                <FiArrowLeft className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:-translate-x-1 transition-transform" />
                 <div>
                   <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Previous Build</span>
-                  <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{prevProject.title}</span>
+                  <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">{prevProject.title}</span>
                 </div>
               </Link>
 
@@ -237,9 +237,9 @@ export default async function ProjectDetail({
               >
                 <div>
                   <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Next Build</span>
-                  <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{nextProject.title}</span>
+                  <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">{nextProject.title}</span>
                 </div>
-                <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
           </div>
@@ -251,7 +251,7 @@ export default async function ProjectDetail({
         <section className="pd-section space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">Explore More Projects</h2>
-            <Link href="/projects" className="text-xs font-semibold text-amber-600 dark:text-[#e5a93b] hover:underline flex items-center gap-1">
+            <Link href="/projects" className="text-xs font-semibold text-[#9a5200] dark:text-[#e5a93b] hover:underline flex items-center gap-1">
               <span>All {PROJECTS.length} builds</span>
               <FiArrowUpRight className="w-3.5 h-3.5" />
             </Link>
@@ -264,13 +264,13 @@ export default async function ProjectDetail({
                 <GlowCard key={o.slug}>
                   <Link href={`/projects/${o.slug}`} className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block">
                     <div>
-                      <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] uppercase tracking-wider block mb-2">{o.client}</span>
-                      <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">{o.title}</h3>
+                      <span className="text-[11px] font-mono text-[#9a5200] dark:text-[#e5a93b] uppercase tracking-wider block mb-2">{o.client}</span>
+                      <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-2 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">{o.title}</h3>
                       <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-4 line-clamp-2">{o.teaser}</p>
                     </div>
                     <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
                       <span>Overview</span>
-                      <FiArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+                      <FiArrowUpRight className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
                     </div>
                   </Link>
                 </GlowCard>

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​​​‌‌​​​​‌​‌​‌​​​‌​‌​​​‌‌‌​​‌‌‌​​​​‌​‌​‌​‌​‌‌​‌​​​​‌‌​​‌​‌​‌​​​‌​‌​‌‌​​​‌​​‌​​​​​‌​‌​​‌‌‌‌​‌​​‌​​‌​​‌‌​​‌‌​‌​‌‌‌‌‌​‌​‌​‌‌‌​​‌‌​​‌‌​‌‌​‌​‌‌​‌​​‌​​‌​​‌‌​‌​​​‌‌‌​‌‌​​‌​​‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌‌​​‌‌​​‌‌‌​‌‌‌​‌‌‌​​​‌​‌‌​​‌‌‌​‌​​​​‌​​‌‌‌‌​​​​​‌‌​‌‌​​‌​​‌‌‌​​‌‌‌‌​​​​​‌‌​‌​​​​‌‌‌​​​​‌‌‌​‌‌​​‌​‌​‌​​​‌‌‌​‌​​​‌​​‌​‌​​​‌‌‌​​​​‌​‌​‌​‌​‌‌​​‌‌‌​‌‌‌‌​‌​​‌‌​‌‌‌‌​‌​​​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.xaQG8UheEbAOI3_W3kI4vI
+ * Fingerprint: AMK1.rfwqgBx6Nx48vTtJ8UgzoE
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export default function Terms() {
     <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
       <div className="wrap legal py-16 px-6 max-w-4xl mx-auto space-y-8">
         <div className="page-head mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
             <span>Legal & Terms</span>
           </div>
           <SplitReveal as="h1" text="Terms of Use" className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-2 text-[#1d1d1f] dark:text-white" />

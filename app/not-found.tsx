@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​​​‌‌‌​‌​​​‌​​‌‌​​​‌​‌‌​​‌​‌​‌‌​‌​​‌​​‌​​​​​‌‌​‌​​​‌​​‌​‌‌​‌‌‌​‌​‌​‌​‌‌​‌​​​‌‌​‌‌‌​‌‌‌​​‌​​‌‌‌​‌​​​‌​​‌​​‌​‌‌‌​‌‌​​​‌‌​‌‌​​‌‌​​‌​‌​​‌‌​​‌​​‌‌​​‌​‌​​‌‌​​‌‌​‌‌​‌​​‌​‌​​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​‌​​‌‌​​​‌‌​‌​‌‌​‌‌‌​‌​​​‌‌​​​​‌​‌​‌‌​‌​​‌​‌​‌​‌​​‌‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌‌​‌‌‌​​‌‌​​‌‌​‌​​​​‌‌​‌​‌​‌​‌​‌​‌​‌​​​​‌​​‌‌​​‌​​​​‌‌​​​​​‌‌‌‌​​​​‌‌‌​​​‌​‌‌‌​​​‌​‌‌​​‌​​​‌‌​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.dtLYZH4KuZ7rtIv6e2e3iM
+ * Fingerprint: AMK1.pLktaZU2rks45UBd0xqqdf
  */
 import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
@@ -55,10 +55,10 @@ export default function NotFound() {
                   className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
                 >
                   <div className="mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] mb-3 shadow-xs dark:shadow-none">
+                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] mb-3 shadow-xs dark:shadow-none">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">
+                    <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
                       {r.title}
                     </h2>
                     <p className="text-xs sm:text-sm text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
@@ -68,7 +68,7 @@ export default function NotFound() {
 
                   <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
                     <span>{r.go}</span>
-                    <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
                 </Link>
               </GlowCard>

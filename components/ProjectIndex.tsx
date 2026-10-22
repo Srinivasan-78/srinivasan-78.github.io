@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌‌‌​‌‌​​​‌‌​‌‌‌​‌‌‌​‌‌​‌​‌‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​‌​‌​​​‌‌​​‌​​​‌​‌​​​‌​‌​​​‌‌​​‌‌‌‌​​​​‌​‌​​​‌​‌​​‌​‌​​​‌‌​​​‌​‌‌​‌​‌​​‌​‌‌​‌​​​‌‌​‌​‌​​‌‌​​​​​​‌‌​‌​‌​‌​‌​​​​​‌​​‌‌‌​​‌‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​​​‌​​​‌‌​​‌‌​‌‌‌‌​‌​‌‌‌‌‌​‌​​​‌‌‌​‌​​​​‌‌​‌​‌​‌​‌​‌​‌​‌‌‌​​‌‌‌​​‌​​‌‌​‌‌​​‌​​‌‌​​​‌​​​‌‌​​‌​‌​‌​‌​‌​‌​​​‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌‌​​​‌‌​‌​​‌​‌‌​‌​​​‌​‌​​‌‌​​‌‌​‌‌‌​‌‌‌​​‌‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ocwkNfTdQFxQJ1jZ505PNp
+ * Fingerprint: AMK1.lFo_GCUW96LFUQt7cKE3w0
  */
 "use client";
 
@@ -88,7 +88,7 @@ export default function ProjectIndex() {
       {/* 1. Hero Section */}
       <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
-          <FiLayers className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+          <FiLayers className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
           <span>Platform Engineering & Open Source</span>
         </div>
 
@@ -160,7 +160,7 @@ export default function ProjectIndex() {
                   <span>{cat}</span>
                   <span
                     className={`text-[10px] font-mono ${
-                      isSelected ? "" : "text-[#9b9ba1] dark:text-[#a1a1a6]"
+                      isSelected ? "" : "text-[#5a5a5f] dark:text-[#a1a1a6]"
                     }`}
                   >
                     {count}
@@ -192,7 +192,7 @@ export default function ProjectIndex() {
               >
                 <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
                   <div className="space-y-4 max-w-2xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-[#e5a93b] text-xs font-mono font-medium">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-[#9a5200] dark:text-[#e5a93b] text-xs font-mono font-medium">
                       <FiZap className="w-3.5 h-3.5" />
                       <span>{FEATURED_LABELS[i] ?? "Highlighted Build"}</span>
                     </div>
@@ -234,7 +234,7 @@ export default function ProjectIndex() {
                       className="px-7 py-3.5 rounded-full bg-white dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 text-[#1d1d1f] dark:text-white border border-black/10 dark:border-white/10 font-semibold text-sm transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap"
                     >
                       <span>System Architecture</span>
-                      <FiArrowUpRight className="w-4 h-4 text-amber-600 dark:text-[#e5a93b]" />
+                      <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
                     </Link>
                   </div>
                 </div>
@@ -291,7 +291,7 @@ export default function ProjectIndex() {
                     <div>
                       {/* Header: Category & Status */}
                       <div className="flex items-center justify-between gap-2 mb-4">
-                        <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] uppercase tracking-wider">
+                        <span className="text-[11px] font-mono text-[#9a5200] dark:text-[#e5a93b] uppercase tracking-wider">
                           {proj.category}
                         </span>
                         <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#a1a1a6]">
@@ -331,10 +331,10 @@ export default function ProjectIndex() {
                     <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold">
                       <Link
                         href={`/projects/${proj.slug}`}
-                        className="inline-flex items-center gap-1 text-[#1d1d1f] dark:text-white hover:text-amber-600 dark:hover:text-[#e5a93b] transition-colors"
+                        className="inline-flex items-center gap-1 text-[#1d1d1f] dark:text-white hover:text-[#9a5200] dark:hover:text-[#e5a93b] transition-colors"
                       >
                         <span>Read Overview</span>
-                        <FiArrowUpRight className="w-3.5 h-3.5 text-amber-600 dark:text-[#e5a93b]" />
+                        <FiArrowUpRight className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
                       </Link>
 
                       <div className="flex items-center gap-3">
@@ -384,7 +384,7 @@ export default function ProjectIndex() {
       {selectedCat === "All" && !searchQuery && CONTRIBUTIONS.length > 0 && (
         <section className="px-6 max-w-6xl mx-auto mt-20">
           <div className="mb-6 px-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-amber-600 dark:text-[#e5a93b] mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-3">
               <FiGitPullRequest className="w-3.5 h-3.5" />
               <span>Open-Source Contributions</span>
             </div>
@@ -403,7 +403,7 @@ export default function ProjectIndex() {
                 className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col h-full hover:border-black/25 dark:hover:border-white/25 transition-all"
               >
                 <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="text-[11px] font-mono text-amber-600 dark:text-[#e5a93b] tracking-wider break-all">
+                  <span className="text-[11px] font-mono text-[#9a5200] dark:text-[#e5a93b] tracking-wider break-all">
                     {c.repo}
                   </span>
                   <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#a1a1a6] whitespace-nowrap">
