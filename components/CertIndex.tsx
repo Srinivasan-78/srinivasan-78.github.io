@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​‌‌‌‌​​​​‌‌‌​‌‌‌​​‌‌​‌​‌​‌‌​‌‌​​​‌​​​​​‌​‌‌​‌‌​‌​‌‌​​‌​‌​‌‌​‌‌​‌​​‌‌​‌‌‌​‌​‌​‌‌​​​‌‌​‌‌​​‌​​‌​​‌​​‌‌​‌‌‌​​‌‌​​‌​​‌​‌​​‌‌​​‌‌‌​​​​‌‌​​‌‌‌​‌​​​‌​‌​‌‌​​‌‌‌​‌​‌‌​‌​​‌‌​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​​‌​‌​‌‌​​​​‌​‌‌​‌​​‌​​​​‌‌​‌​​‌‌​‌​‌​​​​​‌​‌‌​​‌‌​​‌​​​​‌​​‌​‌​‌​​​‌‌​‌​‌‌​‌‌‌‌​​‌​‌‌‌​​​​​​‌‌‌​​‌​‌​​​​‌‌​‌​​‌‌​‌​‌‌​‌‌‌​​‌​​‌​​​​‌​​‌‌​​​‌‌​​‌‌‌​​‌‌​‌​​​‌​‌​‌​‌​‌​‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.pxw5lAmem7V6I72S8gEgZb
+ * Fingerprint: AMK1.IXZCMAfBTkyp9CMnHLg4UR
  */
 "use client";
 
@@ -176,7 +176,7 @@ export default function CertIndex() {
                   <div>
                     {/* Seal & Date */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-sm dark:shadow-none">
+                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-xs dark:shadow-none">
                         <FiAward className="w-5 h-5" />
                       </div>
                       <span className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">

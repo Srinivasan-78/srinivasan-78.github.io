@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌​​​​‌​​‌​​‌​‌​​‌‌​​‌‌‌​‌​‌​‌‌‌​‌‌​‌​​‌​‌‌​‌​​​​‌​​​​‌‌​‌​​​​‌​​‌‌​​​​‌​‌‌‌‌​‌​​‌‌‌​​​​​‌‌​​‌​‌​‌​​‌​‌​​‌‌‌​​​​​‌​​‌‌​​​‌​‌‌‌‌‌​‌‌‌​‌‌‌​‌‌​​‌​​​‌​‌​‌​‌​‌​​​‌​​​‌‌‌‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌​‌‌​​​​‌‌‌​‌‌‌​​‌‌​​‌‌​‌​​‌​​​​‌‌‌​​‌‌​‌​‌‌‌‌‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌​​‌​‌​​‌​‌​​‌​​‌‌​‌​‌‌​‌​​‌​‌‌​‌​‌​‌‌​​‌‌‌‌​‌​​​‌‌​​‌​​‌​​‌‌​​​‌​​‌‌​​​‌‌​‌‌​‌​‌​​‌​​‌​‌‌​‌‌‌​​​‌‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.XBJgWihCBazpeJpL_wdUDz
+ * Fingerprint: AMK1.-Xw3Hs_t7JRkKVz2LLmIn8
  */
 
 export default function Loading() {
@@ -29,15 +29,15 @@ export default function Loading() {
           >
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <div className="h-4 w-20 rounded bg-black/5 dark:bg-white/10" />
+                <div className="h-4 w-20 rounded-sm bg-black/5 dark:bg-white/10" />
                 <div className="h-4 w-12 rounded-full bg-black/5 dark:bg-white/10" />
               </div>
-              <div className="h-6 w-4/5 rounded bg-black/5 dark:bg-white/10" />
-              <div className="h-4 w-full rounded bg-black/5 dark:bg-white/10" />
+              <div className="h-6 w-4/5 rounded-sm bg-black/5 dark:bg-white/10" />
+              <div className="h-4 w-full rounded-sm bg-black/5 dark:bg-white/10" />
             </div>
             <div className="pt-4 border-t border-black/10 dark:border-white/10 flex justify-between items-center">
-              <div className="h-4 w-24 rounded bg-black/5 dark:bg-white/10" />
-              <div className="h-4 w-16 rounded bg-black/5 dark:bg-white/10" />
+              <div className="h-4 w-24 rounded-sm bg-black/5 dark:bg-white/10" />
+              <div className="h-4 w-16 rounded-sm bg-black/5 dark:bg-white/10" />
             </div>
           </div>
         ))}

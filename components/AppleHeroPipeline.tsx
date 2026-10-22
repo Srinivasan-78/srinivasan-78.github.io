@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌​​​​‌‌​​‌‌​‌​‌​‌​​‌​​‌​​‌‌‌​​‌​‌​​​​​‌​​‌‌​​‌​​‌​​​​‌​​‌‌​‌​​‌​‌​‌‌​​​​‌​‌​​​‌​​‌‌​​‌‌​‌​‌​​​​​‌‌‌​​​‌​‌‌‌​​‌‌​‌​‌‌​‌​​‌​​‌​‌​​‌​​​‌‌‌​‌‌‌​‌​​​‌​‌​‌‌​​‌‌‌​​‌‌​‌​​​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌​​‌‌‌​​​​​‌‌​‌‌​‌​‌‌‌​​​‌​​‌‌​​​​​​‌‌​‌​​​‌‌​​​​‌​‌​​‌​‌‌​​‌​‌‌​‌​‌‌​‌​‌‌​‌​‌‌‌‌‌​‌​‌​​​​​​‌‌​​‌‌​‌‌‌​‌​​​‌‌​‌​​​​​‌‌​​‌‌​‌​​‌​‌​​‌‌‌​​​​​​‌‌​‌‌‌​‌​​​‌​​​​‌‌​‌‌‌​‌​‌‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.zC5I9A2BiXQ3PqsZJGtVsG
+ * Fingerprint: AMK1.Npmq04aK-k_P3th3Jp7D7_
  */
 "use client";
 
@@ -145,7 +145,7 @@ export default function AppleHeroPipeline() {
       </div>
 
       {/* Detailed Blueprint Focus Card */}
-      <div className="rounded-2xl bg-white dark:bg-black/60 border border-black/10 dark:border-white/10 p-6 shadow-sm dark:shadow-none">
+      <div className="rounded-2xl bg-white dark:bg-black/60 border border-black/10 dark:border-white/10 p-6 shadow-xs dark:shadow-none">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-700 dark:text-[#e5a93b] text-xs font-mono font-medium">

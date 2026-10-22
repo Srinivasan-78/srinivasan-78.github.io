@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌​‌​‌‌​​​‌‌​​‌​​‌​​‌​​​​‌​​​‌​‌​‌‌​‌‌​‌​‌‌‌‌​​‌​‌​​​‌‌​​​‌​‌‌​‌​‌‌‌‌​​​​​‌‌​​‌​​‌​‌​​​‌​‌‌​​​‌‌​‌‌​‌​‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌‌​‌​‌​​​‌‌​‌‌​​‌​‌‌​​‌​‌​‌​​‌​​‌‌‌​‌​‌​‌‌​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌​‌​‌‌‌​‌‌​‌​​​​​‌‌​‌​​​‌​​‌‌‌‌​‌‌‌​​‌‌​​‌‌​​‌‌​​‌‌​​​​​‌‌‌​​​​​‌‌​​‌​‌​‌​​‌​‌​​‌​‌‌​‌​​​‌‌​​​‌​‌‌‌​​‌​​‌​​‌‌‌​​​‌‌​‌​‌​‌​​‌‌‌‌​‌​‌‌​​​​‌​‌‌​​​​‌​​‌​​‌​‌‌​‌‌​‌​‌​‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.BV2HEmyF-x2Qckv5j6YRub
+ * Fingerprint: AMK1.8Wh4Os30peJZ1rN5OXXImX
  */
 "use client";
 
@@ -28,10 +28,10 @@ export default function CopyEmailCard() {
       <div className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex items-center justify-between transition-all">
         <a
           href={`mailto:${email}`}
-          className="flex items-center gap-3.5 group flex-grow min-w-0"
+          className="flex items-center gap-3.5 group grow min-w-0"
           title="Open mail client"
         >
-          <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-sm dark:shadow-none flex-shrink-0 group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0 group-hover:scale-105 transition-transform">
             <FiMail className="w-5 h-5" />
           </div>
           <div className="min-w-0">
@@ -44,7 +44,7 @@ export default function CopyEmailCard() {
           </div>
         </a>
 
-        <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+        <div className="flex items-center gap-2 shrink-0 ml-3">
           <button
             type="button"
             onClick={handleCopy}

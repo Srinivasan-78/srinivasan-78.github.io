@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌‌‌‌​​​​‌‌​‌‌‌‌​​‌‌​​​‌​‌​‌​‌​​​‌​​‌​​​​‌​‌‌‌‌‌​‌‌​‌​​‌​‌​​‌‌​‌​‌‌‌‌​​‌​‌‌​​‌​​​‌‌‌‌​‌​​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌‌​‌​​​‌‌‌​‌‌‌​‌​‌​​‌‌​‌​​‌​‌​​‌​​​‌‌‌​‌‌​‌‌‌​​‌​​‌‌​‌​​‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌​‌​​‌‌​‌‌​​‌‌‌​‌‌​​‌​‌​‌‌‌‌​​​​‌‌​‌‌‌​​‌​‌​​​​​‌‌‌​‌​​​‌​​‌​‌‌​‌​‌​​​​​‌​​‌​‌‌​‌​‌​‌​‌​‌​​​‌‌‌​‌​‌​​​​​‌​​‌​‌‌​‌‌‌​‌‌​​‌​​‌‌‌​​‌‌​‌​​​​​‌‌‌​​‌​‌‌​​​‌‌​‌‌‌‌​​​​‌​‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Pxo1TH_iMydzkrtwSJGnM4
+ * Fingerprint: AMK1.ASgexnPtKPKUGPKvNh9cxV
  */
 "use client";
 
@@ -213,7 +213,7 @@ export default function ContactForm() {
 
       {formError && (
         <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-2">
-          <FiAlertCircle className="w-4 h-4 flex-shrink-0" />
+          <FiAlertCircle className="w-4 h-4 shrink-0" />
           <span>{formError}</span>
         </div>
       )}

@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-22T13:14:04.968Z",
+  "sealedAt": "2026-10-22T13:20:24.628Z",
   "fileCount": 68,
-  "digest": "cb8397893ebdae21eefc82d83f1ca488f24ed180eb65476743caca834f0d0efd",
-  "proof": "e525ab67b26b592305ee9ff60dfc11199ec9bebc70640091df5b9b625bf0459d",
+  "digest": "99cff5c06170fe1c600f897754c3af5d0fd0e4dd9f21dbe7c929c18dbf31d911",
+  "proof": "0472bd17be0a833bb18d0624a09cec44622e7aa3fdf1bdc40556a6b96f2a827c",
   "files": [
     {
       "path": "AGENTS.md",
@@ -31,12 +31,12 @@
     },
     {
       "path": "app\\contact\\page.tsx",
-      "sha256": "f637b567298d5a14648a76d6e396e3396d73e32ff67b51b8e6d8d903ed377744",
-      "bytes": 12968
+      "sha256": "3f5a6bed157e18aafe9d84885d9c8240bd963f11722179a804615414b46a7c98",
+      "bytes": 12918
     },
     {
       "path": "app\\error.tsx",
-      "sha256": "88a06a29f8ccfea173b0a4a53c3432dbaefa307ea963da313eafc7d249dcfc3a",
+      "sha256": "edbc823e05ba980788834b86efc3bce30c1149ec800ca8b49b144366548b01e3",
       "bytes": 5470
     },
     {
@@ -46,8 +46,8 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "8cb19c4f8c9d592ea913330ee573b2bedeba90ff7d268e7659216292391eb658",
-      "bytes": 93463
+      "sha256": "330150b353dcdcb9d321bbd26df2a85e19ae25b7b1cf3a788457d37854eb1f11",
+      "bytes": 93890
     },
     {
       "path": "app\\layout.tsx",
@@ -56,8 +56,8 @@
     },
     {
       "path": "app\\loading.tsx",
-      "sha256": "8156dd03f97d9f71a36b8412141d04ac3775f3d9fee4e228416a135920f95f54",
-      "bytes": 2678
+      "sha256": "c548ef3d511a0d53ed33216ab0756b6ab6a5a48dcf3989794afe1df627a2d62c",
+      "bytes": 2693
     },
     {
       "path": "app\\manifest.ts",
@@ -66,13 +66,13 @@
     },
     {
       "path": "app\\not-found.tsx",
-      "sha256": "448cae63b344a8fc78110c1c32879d46392a8bca620d79437ba4b3f265faca4a",
+      "sha256": "5808d0cf605d20a17ea915a57c3fb40e403fe7181f73c37479e60a547f062a98",
       "bytes": 4771
     },
     {
       "path": "app\\page.tsx",
-      "sha256": "171fdbad5e37cde32e6d9bb2e4716574d1eef123a6587e69d3e396c29fad9cf8",
-      "bytes": 14406
+      "sha256": "bacb29cce5d8ebc8ea0d7701a2b059b060f6d83fd3d7f2526b9e4265ed7b113a",
+      "bytes": 14399
     },
     {
       "path": "app\\privacy\\page.tsx",
@@ -106,7 +106,7 @@
     },
     {
       "path": "app\\thank-you\\page.tsx",
-      "sha256": "57f00760aad6349be5643fcbbd89dd35fa2ee325c7eafef39f077d608dd40f18",
+      "sha256": "dd4999b5d3aed13cd7844487f829439710b3f482c656024f50ee8a9188c8de03",
       "bytes": 5503
     },
     {
@@ -116,23 +116,23 @@
     },
     {
       "path": "components\\AppleEnterpriseExperience.tsx",
-      "sha256": "e0a7ff1d007cab6f13acdf03a50dccfce1c897d0a34d7758a3b3742f5071d143",
-      "bytes": 28633
+      "sha256": "433fc7a4acc15f2c2c9eb2bd486b678c6d401d979ca2ea2def78c084c5417b8d",
+      "bytes": 28628
     },
     {
       "path": "components\\AppleHeroPipeline.tsx",
-      "sha256": "aad44ec758f2d4453d8f7054e65f33659fa7350b89e5772112e1988879dd6ec1",
+      "sha256": "76b62cdbcd7d2117f8f74021d10be20975caa9fcbd4f0643fe7aacd2792992e7",
       "bytes": 10165
     },
     {
       "path": "components\\AppleSkillsExperience.tsx",
-      "sha256": "f649ce88bc089b53e38c57e39f2cdf6b8e24e7b4f502c5b7b84de9e4141913aa",
-      "bytes": 35352
+      "sha256": "aad750a98c94921b05a3cb30a9a6c57c847fad34ec95bcd65a9f45296dff3515",
+      "bytes": 35347
     },
     {
       "path": "components\\AppleWorkAuthorization.tsx",
-      "sha256": "dabcd95d11c155bf0544bb69e61ecb0f3d0628c1ec73771e2f46caec72075c49",
-      "bytes": 13932
+      "sha256": "7b615d57b3dbbe29834ec55b9af0c35d9e3f7861f58c5b3cd49c507dc5e57064",
+      "bytes": 13927
     },
     {
       "path": "components\\Bits.tsx",
@@ -146,18 +146,18 @@
     },
     {
       "path": "components\\CertIndex.tsx",
-      "sha256": "38378180f0c3c125ab3cb809bc667a22634e83e0a90da84daedf362904dc9c9b",
+      "sha256": "4e8ed84a66aee50b2115a672b201c471cb8f3197ab7b2a5d85fdec80839ac6ca",
       "bytes": 11557
     },
     {
       "path": "components\\ChatWidget.tsx",
-      "sha256": "63f9b895308c667404f7199dfc2163ee90b449b21d099d21c6a4b24888f414ef",
-      "bytes": 16579
+      "sha256": "41ae3b6d479cb74e6b0c36fe7e1a5db827fb03c3e0fbad93d1589573fea45d93",
+      "bytes": 16572
     },
     {
       "path": "components\\ContactForm.tsx",
-      "sha256": "65b7742293b88cbfa858ddef9293616f393a7fcbafb91c72146d152af436d9a1",
-      "bytes": 9289
+      "sha256": "de481f3dc14d56aff19aea3ef8c633f1b0b97528e18ce5c2fbea120e073665fe",
+      "bytes": 9069
     },
     {
       "path": "components\\CookieNotice.tsx",
@@ -166,8 +166,8 @@
     },
     {
       "path": "components\\CopyEmailCard.tsx",
-      "sha256": "7cfab02d15e6b56a1f74498f41178e777b64b9d7e2a37292ae3b9615f9636d3e",
-      "bytes": 3398
+      "sha256": "e3446d8969006799b88d7e57e4c962ab53a534367543e611753ea8b2d5ec9b26",
+      "bytes": 3383
     },
     {
       "path": "components\\Footer.tsx",
@@ -186,8 +186,8 @@
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "ddace4494a90828ecf3de7f38eeb223936b2b2d132e1fc26e4938c18dff58369",
-      "bytes": 22637
+      "sha256": "365f46b7f2ebe3696da24cce6e34b3e413d963bb51db0e22100e022c2a88b6c3",
+      "bytes": 22632
     },
     {
       "path": "components\\Reveal.tsx",
@@ -331,8 +331,8 @@
     },
     {
       "path": "postcss.config.js",
-      "sha256": "b136660193056eed13b2cd64af506bf625819b9f121a27fd335298b07f728c02",
-      "bytes": 892
+      "sha256": "c66f05691296e00446c49bb5d73222de7630640b0ce31e199c644ea1f7e73bbc",
+      "bytes": 1152
     },
     {
       "path": "public\\googled95713cd5a2b1318.html",

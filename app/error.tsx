@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​‌‌​​​‌​​‌​​‌​‌‌​‌‌​​​‌​‌​​‌​​‌​‌‌​‌​​‌​​​‌‌‌​‌‌​​‌‌​​‌​​‌​​​​‌‌‌​‌‌‌​‌​​​‌‌‌​‌‌​​‌​​​‌‌​‌​‌‌​‌​‌​​‌‌​‌‌​‌​‌‌​‌​‌‌​​‌​‌​‌​‌‌‌​‌‌‌‌​​‌​‌​‌‌​​​​‌​​‌‌‌‌​‌‌​‌‌​‌​‌​‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌​‌​​​​​​‌‌​‌​‌​‌​​‌‌​​​‌‌​​‌‌‌​​‌‌​​‌​​‌‌​‌​​‌​‌​‌‌​‌​​‌​​‌​​​​​‌‌​‌‌​​‌​‌​‌‌‌​‌‌​​‌​​​‌‌​‌​​​​​‌​‌‌​‌​‌​​​‌‌​​‌‌​‌‌‌‌​‌‌‌​‌‌​​‌‌​​‌‌​​‌​‌​‌​​​‌​​‌‌​​​‌‌​​​‌​​‌​‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.klIlRZGfHwGdkSkYWyXOmT
+ * Fingerprint: AMK1.8P5Lg2iZH6Wdh-FovfTLbX
  */
 "use client";
 
@@ -82,7 +82,7 @@ export default function AppError({
                   className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
                 >
                   <div className="mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] mb-3 shadow-sm dark:shadow-none">
+                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] mb-3 shadow-xs dark:shadow-none">
                       <Icon className="w-5 h-5" />
                     </div>
                     <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors">

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​‌​‌‌​‌​​‌‌​‌​‌‌​‌​​​​​‌​​‌​‌‌​‌​‌​‌​‌‌‌​‌​​​‌‌​​‌​‌​​‌‌​‌​‌​‌​​​‌‌​​‌‌​​​‌‌​‌​​​​‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​‌​​​‌​​​‌​‌​‌​​​‌​‌​‌‌‌​‌​‌​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​​‌‌​‌‌‌‌​‌​​‌‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​‌​‌‌​​‌‌‌​‌‌​​‌‌​​‌‌​‌‌​‌​​‌​‌‌​‌​​‌‌​​‌​​​‌‌​​‌‌​‌‌‌​‌​‌​‌‌​‌‌‌​​​‌‌​​‌​​‌​‌​​‌​​​‌‌​​​​​‌​‌‌​​‌​‌​‌​‌‌​​‌​‌‌​​​​​‌‌​​‌​​‌​​‌​‌‌​‌​‌​​‌​​​‌‌​‌​‌​‌​‌‌​​​​​‌‌​‌​​​‌‌‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.tZkA-WFSTf47stEEuwsSzt
+ * Fingerprint: AMK1.1gfm-23un2R0YVX2KR5X4v
  */
 "use client";
 
@@ -226,7 +226,7 @@ export default function AppleWorkAuthorization() {
               {/* Top Pass Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/10 dark:border-white/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-2xl shadow-sm">
+                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-2xl shadow-xs">
                     {activeClearance.flag}
                   </div>
                   <div>
@@ -258,7 +258,7 @@ export default function AppleWorkAuthorization() {
                       key={i}
                       className="p-3.5 rounded-xl bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-xs text-[#1d1d1f] dark:text-[#f5f5f7] flex items-start gap-2"
                     >
-                      <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-[#34c759] flex-shrink-0 mt-0.5" />
+                      <FiCheckCircle className="w-4 h-4 text-emerald-600 dark:text-[#34c759] shrink-0 mt-0.5" />
                       <span className="leading-snug">{h}</span>
                     </div>
                   ))}

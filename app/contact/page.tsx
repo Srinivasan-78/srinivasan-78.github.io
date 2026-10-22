@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​​‌​‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​‌​‌​​​​​‌‌‌‌​‌​​‌‌​​‌‌​​‌‌​‌​​​​‌​​‌‌​​​‌​‌‌​‌​​‌​​‌​‌‌​‌​​​‌​‌​​‌‌​‌‌‌​‌‌​‌‌​​​‌‌​​​‌​​‌‌​​‌‌​​‌​​‌​‌​​‌​​​‌​​​‌‌‌‌​‌​​‌​​​‌​​​‌‌​‌​‌​​‌‌​​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​‌​​‌​‌‌​‌​‌​​‌​​‌‌‌‌​​‌‌​‌‌​​​‌‌‌​​‌​‌​​​​‌​​‌​​‌‌‌‌​‌​​‌‌‌‌​‌​​‌​‌‌​‌​‌​​​​​‌​​​​‌​​‌‌​‌‌​‌​‌​‌‌​​‌​​‌‌​​‌​​​‌‌‌​​‌​‌​​‌‌‌​​‌​​‌‌‌​​‌​​‌‌‌‌​‌​​‌​​‌​‌​‌‌​​​​‌​‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.SKw5PzfhLZKE7lbfJDzDja
+ * Fingerprint: AMK1.kijO69BOOKPBmY29NNOIXR
  */
 import { pageMetadata } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
@@ -89,7 +89,7 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-emerald-600 dark:text-[#34c759] shadow-sm dark:shadow-none flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-emerald-600 dark:text-[#34c759] shadow-xs dark:shadow-none shrink-0">
                       <FiPhone className="w-5 h-5" />
                     </div>
                     <div>
@@ -99,7 +99,7 @@ export default function Contact() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Call ↗</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Call ↗</span>
                 </a>
               </GlowCard>
 
@@ -112,7 +112,7 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#0066cc] dark:text-[#2997ff] shadow-sm dark:shadow-none flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#0066cc] dark:text-[#2997ff] shadow-xs dark:shadow-none shrink-0">
                       <FiLinkedin className="w-5 h-5" />
                     </div>
                     <div>
@@ -122,7 +122,7 @@ export default function Contact() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Connect ↗</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Connect ↗</span>
                 </a>
               </GlowCard>
 
@@ -135,7 +135,7 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-sm dark:shadow-none flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-xs dark:shadow-none shrink-0">
                       <FiGithub className="w-5 h-5" />
                     </div>
                     <div>
@@ -145,7 +145,7 @@ export default function Contact() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Source ↗</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Source ↗</span>
                 </a>
               </GlowCard>
 
@@ -156,7 +156,7 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-sm dark:shadow-none flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-amber-600 dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0">
                       <FiGlobe className="w-5 h-5" />
                     </div>
                     <div>
@@ -166,7 +166,7 @@ export default function Contact() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Home ↗</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Home ↗</span>
                 </a>
               </GlowCard>
 
@@ -178,7 +178,7 @@ export default function Contact() {
                   className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-sm dark:shadow-none flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-xs dark:shadow-none shrink-0">
                       <FiDownload className="w-5 h-5" />
                     </div>
                     <div>
@@ -188,7 +188,7 @@ export default function Contact() {
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono flex-shrink-0 ml-2">Save ↓</span>
+                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Save ↓</span>
                 </a>
               </GlowCard>
 

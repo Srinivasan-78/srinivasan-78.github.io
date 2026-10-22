@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌‌‌​​‌​​‌‌‌​​​​‌‌​‌​‌​​‌‌‌​​​​​​‌‌​‌‌‌​​‌‌​​‌‌​‌‌​‌​‌‌​​‌‌​‌​‌​​‌​‌‌​‌​‌​‌‌​​​​‌‌​‌‌​​​​‌‌​​‌​​‌​​​​‌​​​‌‌​‌​​​‌‌‌​​​‌​​‌‌‌​​‌​‌​‌​‌​​​‌‌​​‌‌‌​​‌‌​​​‌​‌‌​‌​​‌​‌​​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​‌‌‌​​​‌​‌‌‌​​​‌​‌​​‌‌‌‌​‌​​​‌‌‌​​‌‌‌​​​​‌​‌​​‌​​‌​​​​‌‌​‌​​‌‌‌‌​‌‌​‌​‌‌​‌​‌​​​‌​‌‌​‌‌​​​‌‌​​‌‌‌​‌​‌​‌​​​​‌​‌‌​‌​‌‌‌​‌​‌​​‌‌​​‌‌​​‌‌​‌‌​​‌​‌​‌​‌​‌​‌​​‌‌​‌‌‌​​​​​‌‌​​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Gy8jp73k5-Xl2B4q9Tg1iM
+ * Fingerprint: AMK1.DqqOG8RCOkQlgT-u36USpe
  */
 import Link from "next/link";
 import { PROJECTS } from "@/lib/projects";
@@ -173,7 +173,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row md:flex-col items-center gap-3 w-full md:w-auto flex-shrink-0">
+          <div className="flex flex-col sm:flex-row md:flex-col items-center gap-3 w-full md:w-auto shrink-0">
             <Link
               href="/projects"
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
@@ -193,9 +193,9 @@ export default function Page() {
       <AppleWorkAuthorization />
 
       {/* 8. Human Closing Banner */}
-      <section className="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#f5f5f7] to-white dark:from-[#09090c] dark:to-black border-t border-black/10 dark:border-white/10">
+      <section className="py-24 px-6 relative overflow-hidden bg-linear-to-b from-[#f5f5f7] to-white dark:from-[#09090c] dark:to-black border-t border-black/10 dark:border-white/10">
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="w-14 h-14 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/15 mx-auto flex items-center justify-center mb-6 shadow-sm">
+          <div className="w-14 h-14 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/15 mx-auto flex items-center justify-center mb-6 shadow-xs">
             <FiZap className="w-6 h-6 text-amber-600 dark:text-[#e5a93b]" />
           </div>
 

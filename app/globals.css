@@ -1,13 +1,19 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌‌‌​‌​​​‌​​‌‌​‌​​‌‌​‌‌​​‌​​‌‌​​​‌‌​‌‌‌​​‌‌‌‌​​‌​‌‌‌​​‌‌​​‌‌​​‌‌​‌​​‌‌‌​​‌‌‌​​‌​​‌‌‌‌​‌​​‌​​‌​​‌​‌​​​​​‌​‌​‌‌​‌​​‌​​‌‌‌​​‌‌​‌‌​​​‌‌​‌​​‌​‌‌‌‌​​‌​‌​​‌​​‌​‌‌‌​​​‌​‌​‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌‌​‌​​‌​‌‌​​​‌​​‌​‌​‌​‌​‌‌​‌‌‌‌​‌​​‌‌‌​​‌‌​​​‌‌​‌‌‌​​‌‌​‌‌​‌​​‌​‌​‌​​‌​​​‌‌​​‌​​‌‌​‌​‌​​‌‌​​​‌‌​‌‌‌​​‌​​‌‌​​‌​‌​‌‌​​​​‌​‌‌​‌‌​‌​‌​‌​‌​‌​‌‌‌​​​​​‌​​​​‌‌​‌​​​​​‌​‌​‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ytM6Lnys3NrzIAZNliyIqT
+ * Fingerprint: AMK1.8ibUoNcsiR2jcreamUpCAX
  */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind 4: one import in place of the three layer directives.
+
+   `@config` keeps the JavaScript config file rather than moving the theme
+   into CSS. v4 prefers a CSS-first `@theme` block, but the config here is
+   the `darkMode` selector plus three `extend` entries that the rest of
+   this stylesheet does not read — porting it would be churn for no
+   behaviour change, and the supported bridge is the honest option. */
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
 /* ---------- TYPE ----------
    Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,

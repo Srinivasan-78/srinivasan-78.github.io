@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌​​‌​‌‌​​​​‌‌​‌‌​‌​‌​​​​‌‌​‌‌​‌​‌‌​‌​​‌‌​‌​‌​​‌​‌‌​‌‌‌​‌​‌​‌​​‌​‌‌​​‌‌​​‌​​‌​​​‌​‌​‌​​​‌​‌​‌​‌​‌‌​​‌‌​‌​‌‌​‌​​‌​​‌​‌‌​‌​​‌​‌​​​​‌​​‌​‌​‌‌‌​‌‌​‌​​‌​‌​‌​‌​​​‌​​​‌‌‌​‌​​​​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​‌​​‌​‌​​‌​​‌​​‌​‌‌‌​​​​​‌‌​‌​​‌​‌​​‌​​‌​‌‌‌​‌​‌​​‌‌​​‌‌​‌‌‌​​‌​​‌​‌‌​‌​​‌‌​​​​‌​​‌‌​​​​​‌​​‌​​‌​‌​​‌​‌‌​​‌‌​​​​​‌‌‌‌​​‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌‌‌​‌​​‌​‌‌‌‌‌​‌‌​​​​‌​‌‌​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.RXmCkMKuK2EEVkIiBWiTGA
+ * Fingerprint: AMK1.tJIpiIu3rZa0IK0y54z_ab
  */
 "use client";
 
@@ -667,7 +667,7 @@ export default function AppleSkillsExperience() {
                       </span>
                     </p>
                   </div>
-                  <FiArrowUpRight className="w-5 h-5 flex-shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors" />
+                  <FiArrowUpRight className="w-5 h-5 shrink-0 text-[#5a5a5f] dark:text-[#9b9ba1] group-hover:text-amber-600 dark:group-hover:text-[#e5a93b] transition-colors" />
                 </Link>
               )}
 

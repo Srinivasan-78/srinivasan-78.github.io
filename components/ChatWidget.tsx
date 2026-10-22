@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌‌​‌‌​​​‌​‌​‌​‌​‌‌​‌‌‌​​‌‌​​‌​‌​‌‌​​​‌‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌​‌‌​​​​‌‌‌​‌‌‌​‌‌​​‌​‌​​‌‌‌​​​​‌‌​‌‌‌​​‌​‌​‌​​​‌‌‌​​​‌​‌‌‌​​​‌​‌​‌​​‌‌​‌‌‌​​‌​​‌​​‌​​​​‌​‌​​‌​​‌​​​‌​‌​‌‌‌​​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌‌​‌‌‌​​‌‌‌​​​‌​​‌‌‌​​‌​​‌‌​​‌​​‌​​‌‌‌​​‌​​‌‌​‌​​‌‌​‌​​​‌​‌​​‌​​‌​​​​‌‌​‌​‌​‌​​​​‌‌​​​​​‌‌​​​‌‌​‌‌‌​‌​​​​‌‌​​​‌​‌​​‌‌​‌​‌‌​​​‌​​‌‌‌​‌​‌​‌‌‌​​‌​​‌​​‌​‌​​‌​​‌‌​‌​‌‌‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.klUnecgoXwe8nTqqSrHREs
+ * Fingerprint: AMK1.snq92NM4RCT0ct1MburJMx
  */
 "use client";
 
@@ -202,12 +202,12 @@ export default function ChatWidget() {
           {!open && (
             <span
               aria-hidden="true"
-              className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-600 via-amber-500 to-indigo-600 opacity-30 group-hover:opacity-75 blur-sm transition-opacity duration-300 -z-10"
+              className="absolute -inset-0.5 rounded-full bg-linear-to-r from-blue-600 via-amber-500 to-indigo-600 opacity-30 group-hover:opacity-75 blur-xs transition-opacity duration-300 -z-10"
             />
           )}
 
           {/* AI Sparkle / Close Icon */}
-          <span className="relative flex items-center justify-center w-5 h-5 flex-shrink-0">
+          <span className="relative flex items-center justify-center w-5 h-5 shrink-0">
             {open ? (
               <FiX className="w-4 h-4" />
             ) : (
@@ -307,7 +307,7 @@ export default function ChatWidget() {
                   {turn.actionLink.url.startsWith("/") ? (
                     <Link
                       href={turn.actionLink.url}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all hover:scale-105 shadow-sm"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all hover:scale-105 shadow-xs"
                       onClick={() => setOpen(false)}
                     >
                       <span>{turn.actionLink.label}</span>
@@ -318,7 +318,7 @@ export default function ChatWidget() {
                       href={turn.actionLink.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all hover:scale-105 shadow-sm"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all hover:scale-105 shadow-xs"
                     >
                       <span>{turn.actionLink.label}</span>
                       <FiArrowUpRight className="w-3.5 h-3.5 text-amber-400 dark:text-amber-600" />

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌​‌​‌​‌​​‌‌​​​​​‌​‌‌​​‌​‌​​​‌​‌​‌​​​‌​​​​‌‌​​​‌​​‌​‌‌​‌​‌​‌​​​‌​‌​‌​‌​​​‌​‌​​‌‌​‌‌​​​​‌​​‌‌‌​​‌​‌‌​‌‌‌​​​‌‌‌​​‌​‌​​‌‌​​​​‌‌​‌‌‌​‌‌​‌‌‌‌​‌‌​​‌‌‌​‌‌​​‌‌​​​‌‌​​​‌​‌​​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​​‌‌‌​​​​‌‌‌​‌​‌​‌​​‌‌​‌​‌​​‌​​‌​‌‌‌​‌​​​‌‌​‌‌‌‌​‌​​​​‌​​‌‌​​‌​​​‌‌​‌‌‌‌​‌‌​​​‌​​‌​‌​‌​‌​‌‌​‌​​​​‌‌​​‌​​​‌​​​‌​​​‌‌‌​​‌‌​‌​​​‌‌‌​‌‌​‌​​‌​‌‌​‌​‌‌​​‌‌​‌​​​‌​‌‌​​​​​‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.SU0YED1-QTSa9n9L7ogf1K
+ * Fingerprint: AMK1.E8uMItoBdobUhdDsGik4X5
  */
 "use client";
 
@@ -211,7 +211,7 @@ export default function ProjectIndex() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto flex-shrink-0 pt-2 lg:pt-0">
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto shrink-0 pt-2 lg:pt-0">
                     {externalHref && (
                       <a
                         href={externalHref}

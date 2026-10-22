@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌​​‌‌​‌​‌​‌​​​‌​‌‌‌​​‌​​‌‌‌​​​‌​​‌‌‌​​​​‌​‌​‌​‌​​‌‌‌​​​​‌​‌‌‌‌‌​‌‌‌‌​‌​​​‌‌​​​‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌​‌‌​‌​​‌​​‌‌​‌​‌​​​​‌​​‌‌​​​​‌​‌‌‌‌​​‌​‌​‌‌​​‌​​‌‌​​‌​​‌​​‌​​​​‌​‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​‌‌​​‌​‌​‌​‌​‌‌​​​‌‌​‌​​​‌​‌‌​​‌​​‌‌​‌‌‌​‌​​‌​​‌​‌​‌​​​​​​‌‌​‌‌‌​‌​​​‌‌​​​‌‌​‌‌‌​​‌‌​​​​​‌​‌​​​​​‌​​​‌​​​‌‌​‌​‌​​​‌‌​‌‌‌​​‌‌​‌​​​‌​​​‌​‌​‌​‌‌​​‌​​‌‌​​‌‌​​‌‌​‌​‌​‌​​‌‌​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.3MQrq8U8_z1goZMBayY2HV
+ * Fingerprint: AMK1.4eV4Y7IP7F70PDj74EY35L
  */
 "use client";
 
@@ -486,7 +486,7 @@ export default function AppleEnterpriseExperience() {
 
                   {/* Impact Metric Callout */}
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#34c759]/10 text-emerald-700 dark:text-[#34c759] text-xs font-mono font-medium mb-4">
-                    <FiCheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                    <FiCheckCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{item.metrics}</span>
                   </div>
 
