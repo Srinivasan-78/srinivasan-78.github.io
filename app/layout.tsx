@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​​‌‌​​‌​​‌​‌‌‌‌‌​‌‌‌​​‌‌​‌‌​‌​‌​​‌​‌​​​‌​‌‌‌​‌​‌​‌​​​​​‌​​‌‌​‌​‌​‌​​​​‌‌​​‌‌​​‌‌​‌‌‌​​‌​​‌​‌​‌​​​‌​‌​​​‌​‌​‌​‌‌​​‌‌‌‌​‌​​‌​‌‌​‌​​‌‌‌​​​‌​​‌‌​‌‌​​‌​​‌​​‌​‌‌​‌​‌‌​‌‌​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​‌​​‌​​‌​‌‌​​‌​​‌‌​‌‌‌​‌‌‌​​‌​​‌​​‌​‌‌​‌​‌​​‌​​‌​‌​​‌​​‌​​​​​‌​‌‌‌​‌‌‌​​‌‌​​​‌​‌‌​‌​​‌​‌‌‌​​‌​​​‌‌​​​​​‌‌‌‌​​​​‌​‌‌​‌​​‌​‌‌​​‌​‌‌​​​‌​​‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌​​‌​‌​​‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.E2_sjQuA5C3rTQVzZq6Ikb
+ * Fingerprint: AMK1.sRY7rKRRAw1ir0xZYbYKYH
  */
 import type { Metadata, Viewport } from "next";
 import {
@@ -14,6 +14,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import BootScript from "@/components/BootScript";
+import PerfGuard from "@/components/primitives/PerfGuard";
 import Nav from "@/components/Nav";
 import SkillTicker from "@/components/SkillTicker";
 import Footer from "@/components/Footer";
@@ -352,6 +353,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           redesign. All of it was decoration with no subject. */}
       <body>
         <BootScript />
+        {/* The measured half of the effects budget. BootScript guessed a
+            tier from platform hints before paint; this samples the
+            framerate the page actually gets once it has settled and
+            lowers the tier if the guess was wrong. Renders nothing,
+            runs for six seconds and then disconnects — see the header
+            for why it is a bounded probe and not a monitor. */}
+        <PerfGuard />
         {/* The glyph definitions, once per page. Every brand mark in
             the ticker and every bat divider is a ~40-byte <use>
             pointing in here rather than a kilobyte of inline path

@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-24T12:37:19.084Z",
-  "fileCount": 91,
-  "digest": "21620fbcc44eff82cbee4e0d9e6782fe8e546fd94c22e9dfc9d35aad71ad6626",
-  "proof": "27c928c795997339ab52ad2a76f25daabef815777e16f7e71ab3a386d8f74325",
+  "sealedAt": "2026-10-24T14:39:09.739Z",
+  "fileCount": 93,
+  "digest": "dd88f98e8a305c7ff5c2502af12b1ed147023e50fe0ea376ff14725066c2892e",
+  "proof": "8d931912b13ab1c552e6b1c5096366c8be30daa1157f8eed969f403fded3e9f1",
   "files": [
     {
       "path": "AGENTS.md",
@@ -46,8 +46,8 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "4ca996bd286955a7a275a8afe9ef3230503e798e2571e630e8b0d01c98652bfc",
-      "bytes": 62853
+      "sha256": "e9b39b1632a6f38a9c2328f93e13d1c0a0a524e09587a4367bd90173794c911a",
+      "bytes": 83253
     },
     {
       "path": "app\\hobby\\page.tsx",
@@ -56,8 +56,8 @@
     },
     {
       "path": "app\\layout.tsx",
-      "sha256": "6d19ef70e6c3d5bf83cee163dcf895f0bcd61298adede787dafd59c0112f01ac",
-      "bytes": 17639
+      "sha256": "f6faf7e8110a2e0b82ab0d324d0984fd2f9d9638b98b969152e249c09443772b",
+      "bytes": 18138
     },
     {
       "path": "app\\loading.tsx",
@@ -126,8 +126,8 @@
     },
     {
       "path": "components\\BootScript.tsx",
-      "sha256": "5fc69cf9f2ff830ca56849f73b1a5af2cefb1b9e28a583a6f0c4f0c8b3a6aee7",
-      "bytes": 2981
+      "sha256": "1cb1d049e63cb5ff3b37f9bd8989bd08aac5c76d600441de109e071a3916d535",
+      "bytes": 5882
     },
     {
       "path": "components\\CertIndex.tsx",
@@ -201,8 +201,8 @@
     },
     {
       "path": "components\\home\\Hero.tsx",
-      "sha256": "388c5c5ce85c5928e1d1950a28935a35f5a75a2d265edbdb56448fbe37eb9613",
-      "bytes": 12838
+      "sha256": "16b42417d26c3c416bf9b406619319e64a3f593b06c8a88fbc4695c21e36160b",
+      "bytes": 14340
     },
     {
       "path": "components\\home\\InitiativeDeck.tsx",
@@ -286,8 +286,8 @@
     },
     {
       "path": "components\\primitives\\FxBackdrop.tsx",
-      "sha256": "939589ff0830fa1d149e6e7803ba0921e965a3faa1d77c370d63381bb9fbaf8f",
-      "bytes": 13066
+      "sha256": "079349c470403c4fabdf0ed4b2a8c5034e15768bb0e4e12bb768f419001edecc",
+      "bytes": 27130
     },
     {
       "path": "components\\primitives\\GlitchHeading.tsx",
@@ -301,13 +301,18 @@
     },
     {
       "path": "components\\primitives\\InteractionFx.tsx",
-      "sha256": "d163503ed46f460d7c110747b3be9868f057db3d8dda6ac8898fcb24f9e25e6d",
-      "bytes": 8788
+      "sha256": "0d9476bfb635132e81a23e4fa676e6171cb5d5448f43fdb02894bfa5addeb669",
+      "bytes": 10050
     },
     {
       "path": "components\\primitives\\Panel.tsx",
       "sha256": "857871425b371e560e03965dab3ca3da6339410e680489863f510719c3491761",
       "bytes": 5700
+    },
+    {
+      "path": "components\\primitives\\PerfGuard.tsx",
+      "sha256": "e1791dc175c0bd7c30a5ef51d7e99eb6e83773c1645abdd41aef04442270a3a8",
+      "bytes": 6361
     },
     {
       "path": "components\\primitives\\Reveal.tsx",
@@ -331,8 +336,8 @@
     },
     {
       "path": "components\\primitives\\Spotlight.tsx",
-      "sha256": "ce87644b09e3f52c05e86e597698dbb304ac4549ffeff4e42aae19abe025cc97",
-      "bytes": 4511
+      "sha256": "0dcc5f29da672130d2abda81b4c0ff9681853fb813300f9ca21f291723268b25",
+      "bytes": 5954
     },
     {
       "path": "components\\primitives\\TagRow.tsx",
@@ -423,6 +428,11 @@
       "path": "lib\\seo.ts",
       "sha256": "f7edaa084c55f5b5a73c3994309a8459c4fd19b8f717d8ea857a4b5bf1a7b02c",
       "bytes": 2625
+    },
+    {
+      "path": "lib\\usePerfTier.ts",
+      "sha256": "ec43a6e9aa0feeb2a082a92c6793c1d32e2604622d6b1e3f7bfd169099b22343",
+      "bytes": 4979
     },
     {
       "path": "lib\\useTheme.ts",
