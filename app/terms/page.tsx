@@ -1,118 +1,58 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​‌‌​​‌‌​​‌‌‌​‌‌‌​‌‌‌​​​‌​‌‌​​‌‌‌​‌​​​​‌​​‌‌‌‌​​​​​‌‌​‌‌​​‌​​‌‌‌​​‌‌‌‌​​​​​‌‌​‌​​​​‌‌‌​​​​‌‌‌​‌‌​​‌​‌​‌​​​‌‌‌​‌​​​‌​​‌​‌​​​‌‌‌​​​​‌​‌​‌​‌​‌‌​​‌‌‌​‌‌‌‌​‌​​‌‌​‌‌‌‌​‌​​​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌‌​‌‌​‌​‌‌​​‌‌​‌​​​‌​‌​​‌​​‌​​​‌‌​​​‌‌​​​​​‌‌​‌​‌​​​‌‌​‌​​​​‌‌​​‌​​‌‌‌​​​​​‌​​​‌​‌​‌‌​​‌​​​​‌‌‌​​​​​‌‌​‌​‌​‌‌​​‌​‌​​‌‌​​​‌​‌‌​​​‌‌​​‌‌​‌‌‌​‌‌​​​​‌​​‌‌‌​​‌​‌​​​​‌‌​‌​​‌‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.rfwqgBx6Nx48vTtJ8UgzoE
+ * Fingerprint: AMK1.Wk4RF0j42pEd85e1c7a9CN
  */
-import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import SplitReveal from "@/components/SplitReveal";
+import LegalSections from "@/components/legal/LegalSections";
+import SectionHead from "@/components/primitives/SectionHead";
+import { TERMS_COPY } from "@/lib/data/profile";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Terms of Use",
-  description:
-    "The terms covering use of this portfolio site, its content, the résumé and the linked project demos.",
+  title: TERMS_COPY.metaTitle,
+  description: TERMS_COPY.metaDescription,
   path: "/terms",
 });
 
-const UPDATED = "18 August 2026";
+/* The terms of use.
 
+   Deliberately the same construction as the privacy policy, down to the
+   numbered margin headings and the dated aside — the two are one
+   document in two parts and a reader who has just read the other should
+   not have to relearn where anything is. Both render their sections
+   through LegalSections, so the shared shape is shared code rather than
+   a resemblance that drifts. */
 export default function Terms() {
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
-      <div className="wrap legal py-16 px-6 max-w-4xl mx-auto space-y-8">
-        <div className="page-head mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
-            <span>Legal & Terms</span>
-          </div>
-          <SplitReveal as="h1" text="Terms of Use" className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-2 text-[#1d1d1f] dark:text-white" />
-          <p className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">Last updated: {UPDATED}</p>
-        </div>
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        <SectionHead
+          index="01"
+          kicker={TERMS_COPY.eyebrow}
+          title={TERMS_COPY.heading}
+          titleAs="h1"
+          lede={TERMS_COPY.lead}
+          aside={
+            <div className="text-left md:text-right">
+              <div className="t-anno-sm text-mute">
+                {TERMS_COPY.updatedPrefix}
+              </div>
+              <div className="t-metric mt-1.5 text-[0.8125rem] text-body">
+                {TERMS_COPY.updated}
+              </div>
+            </div>
+          }
+        />
 
-        <p className="text-base sm:text-lg leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-          This is the personal portfolio of Srinivasan Vijayaraghavan. By using the site you
-          accept the terms below. They&rsquo;re short because the site is simple: it publishes
-          information about my work and gives you a way to contact me. Nothing is sold here.
-        </p>
+        <LegalSections sections={TERMS_COPY.sections} />
 
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">What the site is</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            An informational portfolio. It isn&rsquo;t a product or a service, and there&rsquo;s no
-            uptime commitment. Pages, projects and the résumé may change or disappear at any time
-            without notice.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Content and copyright</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The written content, page designs and the résumé on this site are my own work and stay
-            my copyright. You&rsquo;re welcome to read it, quote it with attribution, share the links,
-            and pass the résumé to colleagues while you&rsquo;re considering me for a role.
-          </p>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">A few things need my written permission first:</p>
-          <ul className="list-disc pl-5 text-sm space-y-1 text-[#424245] dark:text-[#a1a1a6]">
-            <li>Republish the content as your own, in whole or in part.</li>
-            <li>
-              Use the résumé, my name, or my likeness in job listings, candidate databases, or
-              marketing material.
-            </li>
-            <li>
-              Submit me as a candidate to any employer or client without my explicit prior agreement.
-            </li>
-            <li>Scrape the site to train commercial models or to build mailing lists.</li>
-          </ul>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Third-party names and logos</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Names such as AWS, Azure, Terraform, Kubernetes, Datadog, Wireshark, and the employers
-            listed in my history belong to their respective owners. They appear here to describe
-            the technologies I have worked with and the work I have done. Their appearance is not a
-            claim of endorsement, affiliation, or sponsorship.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Projects and demos</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The projects section links to demos, repositories, and merge requests. Those are shown
-            as work samples. They are provided as is, may go offline, and come with no warranty and
-            no support. Where work was done for an employer, only what is public or
-            non-confidential is described here.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Contacting me</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The contact form and the email address are open for genuine professional enquiries.
-            Please keep them clear of unsolicited sales pitches, bulk mail, and unlawful content.
-            See the{" "}
-            <Link className="lnk text-[#0066cc] dark:text-[#2997ff] hover:underline" href="/privacy">
-              Privacy Policy
-            </Link>{" "}
-            for how messages are handled.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Liability</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The site is provided as is. To the extent the law allows, I accept no liability for any
-            loss arising from use of the site or from reliance on its content.
-          </p>
-        </section>
-
-        <div className="pt-6 border-t border-black/10 dark:border-white/10">
-          <Link className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0066cc] dark:text-[#2997ff] hover:underline" href="/privacy">
-            <span>Read Privacy Policy →</span>
-          </Link>
-        </div>
-      </div>
+        <Link href={TERMS_COPY.crossLink.href} className="btn mt-10">
+          {TERMS_COPY.crossLink.label}
+        </Link>
+      </section>
     </main>
   );
 }

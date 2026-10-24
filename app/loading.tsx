@@ -1,49 +1,66 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌​‌‌​‌​‌​‌‌​​​​‌‌‌​‌‌‌​​‌‌​​‌‌​‌​​‌​​​​‌‌‌​​‌‌​‌​‌‌‌‌‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌​​‌​‌​​‌​‌​​‌​​‌‌​‌​‌‌​‌​​‌​‌‌​‌​‌​‌‌​​‌‌‌‌​‌​​​‌‌​​‌​​‌​​‌‌​​​‌​​‌‌​​​‌‌​‌‌​‌​‌​​‌​​‌​‌‌​‌‌‌​​​‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​‌‌​​‌‌‌​‌​​​‌​​​‌​‌​​‌​​‌​‌​​​‌​‌​​​‌‌​​‌​‌​‌‌‌​‌‌​​​​‌​‌‌​​‌‌​​​‌‌​​‌​​‌​​‌​​​​‌‌​‌​‌​​​‌‌​‌​​​‌‌​‌‌‌‌​‌​‌​​‌​​​‌‌​‌​‌​‌​​‌‌​‌​‌‌​​‌​‌​‌​​‌​‌‌​‌‌​‌‌​‌​​‌‌​​​‌​‌​​‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.-Xw3Hs_t7JRkKVz2LLmIn8
+ * Fingerprint: AMK1.pgDRQFWaf2Hj4oR5MeKm1O
  */
 
+/* The route placeholder.
+
+   No spinner and no pulse. A spinner claims progress that nothing here
+   measures, and the site's motion rule is that nothing moves without
+   input — a skeleton that throbs is the page demanding attention while
+   it has nothing to show. So this is the shape of a section head and
+   three ruled cells, drawn in the panel value step and holding still.
+
+   It is announced once, politely, through `role="status"` and the
+   sr-only line rather than through anything visual: a screen-reader
+   visitor does not benefit from grey rectangles. */
 export default function Loading() {
   return (
     <div
       role="status"
+      aria-busy="true"
       aria-label="Loading content"
-      className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-20 max-w-5xl mx-auto w-full"
+      className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14"
     >
-      {/* Header Skeleton */}
-      <div className="w-full flex flex-col items-center text-center space-y-4 mb-12 animate-pulse">
-        <div className="h-6 w-48 rounded-full bg-black/5 dark:bg-white/10" />
-        <div className="h-12 sm:h-16 w-3/4 max-w-2xl rounded-2xl bg-black/5 dark:bg-white/10" />
-        <div className="h-4 w-1/2 max-w-md rounded-lg bg-black/5 dark:bg-white/10" />
+      {/* The section-head shape: index, rule, kicker — the same
+          furniture every real page opens with, so the swap when the
+          content lands does not move the layout. */}
+      <div aria-hidden="true">
+        <div className="mb-5 flex items-center gap-4">
+          <span className="h-2.5 w-7 shrink-0 bg-panel-2" />
+          <span className="h-px flex-1 bg-rule" />
+          <span className="h-2.5 w-24 shrink-0 bg-panel-2" />
+        </div>
+
+        <div className="h-9 w-full max-w-2xl bg-panel-2 sm:h-12" />
+        <div className="mt-4 h-3.5 w-full max-w-xl bg-panel-2" />
+        <div className="mt-2.5 h-3.5 w-2/3 max-w-md bg-panel-2" />
+
+        <div className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-3">
+          {[0, 1, 2].map((cell) => (
+            <div
+              key={cell}
+              className="flex h-44 flex-col justify-between bg-ground p-5 sm:p-6"
+            >
+              <div>
+                <div className="h-2.5 w-16 bg-panel-2" />
+                <div className="mt-4 h-5 w-4/5 bg-panel-2" />
+                <div className="mt-3 h-3 w-full bg-panel-2" />
+              </div>
+
+              <div className="flex items-center justify-between gap-3 border-t border-rule pt-4">
+                <div className="h-2.5 w-20 bg-panel-2" />
+                <div className="h-2.5 w-6 bg-panel-2" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Cards Grid Skeleton */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full animate-pulse">
-        {[1, 2, 3].map((n) => (
-          <div
-            key={n}
-            className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-56"
-          >
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <div className="h-4 w-20 rounded-sm bg-black/5 dark:bg-white/10" />
-                <div className="h-4 w-12 rounded-full bg-black/5 dark:bg-white/10" />
-              </div>
-              <div className="h-6 w-4/5 rounded-sm bg-black/5 dark:bg-white/10" />
-              <div className="h-4 w-full rounded-sm bg-black/5 dark:bg-white/10" />
-            </div>
-            <div className="pt-4 border-t border-black/10 dark:border-white/10 flex justify-between items-center">
-              <div className="h-4 w-24 rounded-sm bg-black/5 dark:bg-white/10" />
-              <div className="h-4 w-16 rounded-sm bg-black/5 dark:bg-white/10" />
-            </div>
-          </div>
-        ))}
-      </div>
       <span className="sr-only">Loading...</span>
     </div>
   );
 }
-

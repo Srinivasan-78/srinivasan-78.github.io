@@ -1,107 +1,86 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌‌​​‌‌​‌​‌​‌‌​‌​​​​‌​​​‌‌‌​‌​‌​​​​​​‌‌‌​​​​‌‌​​‌​​​‌‌​‌‌​​​‌‌​‌‌‌​​‌‌‌​‌​​​‌​‌​​​‌​​‌‌​‌​​​‌‌‌​​‌​​‌‌‌‌​‌​​​‌‌​​‌​​​‌‌​​​​​‌‌​​​‌​​‌​‌​‌‌​​‌‌​​‌​‌​‌​‌‌​​‌​‌‌​‌​​‌​‌‌​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌​​‌​​‌‌‌​​‌​‌​​​​​​‌‌​​​​​​‌‌‌​​‌​‌​​​‌‌‌​‌‌​​‌‌​​​‌‌‌​​‌​‌‌​​‌‌​​​‌‌‌​​​​‌‌​​​​‌​​‌‌​‌​‌​‌‌‌‌​​​​‌​‌‌​​‌​​‌‌​‌​‌​‌‌​​‌​‌​‌​‌​​​‌​​‌‌‌​​‌​‌‌​​‌‌​​‌​​​​‌​​​‌‌​‌​​​​‌​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.K5hGP8dlntQ4rz20bVeYih
+ * Fingerprint: AMK1.fNP09Gf9f8a5xY5eQ9fB4-
  */
 "use client";
 
 import { useEffect, useState } from "react";
 
-/* The palette switch. It renders more than once — the desktop nav and
-   the phone's menu each mount one — and each copy having its own idea
-   of the current theme was the bug that sank the first version: click
-   one, and the other's state went stale, so its next click computed the
-   wrong value and flipped the theme back.
+type Theme = "light" | "dark";
 
-   Fix: the DOM attribute is the single source of truth. Every click
-   reads it fresh, and a MutationObserver keeps every instance's label in
-   sync no matter which one was clicked.
+/* The theme switch, and it matters more here than on most sites.
 
-   Initial state is `false` deliberately. The server renders <html> with
-   no data-theme, which the stylesheet reads as light, so a first client
-   render that assumed anything else would disagree with the server and
-   React would report a hydration mismatch. BootScript has already set
-   the real attribute by this point; the effect below reads it and
-   corrects the label on the first commit. */
+   The two palettes in this design are authored independently rather
+   than one derived from the other — the dark ground is warm-cold
+   near-black with amber as genuine emission, the light ground is bone
+   drafting paper with the accent restated as a stamped ink brown. That
+   is the figure-ground reversal the brief is built on, so the toggle is
+   not a convenience, it is the second half of the design.
 
-function isDark() {
-  return document.documentElement.getAttribute("data-theme") === "dark";
-}
+   Three details worth keeping:
 
+   One, the component renders nothing until it has mounted. The server
+   cannot know the stored choice, so a button rendered during SSR would
+   either claim the wrong state or have to be patched after hydration.
+   The real resolution happens in BootScript before first paint; this
+   only ever reads what BootScript already decided.
+
+   Two, the reserved box. Returning null on the server and a button on
+   the client would shift the header on hydration, so the placeholder
+   occupies the same footprint.
+
+   Three, the label says the destination, not the state — "Light" means
+   "switch to light". A toggle labelled with its current state is a
+   coin flip for the reader. */
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(false);
+  const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    setDark(isDark());
-
-    const obs = new MutationObserver(() => setDark(isDark()));
-    obs.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-
-    /* Follow the OS while the visitor has no explicit choice on record.
-       Someone whose machine flips to dark at sunset should see the page
-       follow it; someone who has pressed this button has said what they
-       want and is not overridden. */
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onScheme = (e: MediaQueryListEvent) => {
-      try {
-        if (localStorage.getItem("theme")) return;
-      } catch {
-        return;
-      }
-      document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
-    };
-    mq.addEventListener("change", onScheme);
-
-    return () => {
-      obs.disconnect();
-      mq.removeEventListener("change", onScheme);
-    };
+    const current = document.documentElement.getAttribute("data-theme");
+    setTheme(current === "dark" ? "dark" : "light");
   }, []);
 
-  const toggle = () => {
-    // Read from the DOM, never from local state.
-    const next = isDark() ? "light" : "dark";
+  function apply(next: Theme) {
     document.documentElement.setAttribute("data-theme", next);
+    setTheme(next);
     try {
+      /* An explicit choice outranks the OS setting from here on, which
+         is what BootScript reads on the next visit. */
       localStorage.setItem("theme", next);
-    } catch {}
-    // The observer above updates every instance, including this one.
-  };
+    } catch {
+      /* Private mode throws on write. The attribute is already set, so
+         the choice holds for this page view and simply does not
+         survive a reload. That is the correct failure: a visitor who
+         has blocked storage has asked not to be remembered. */
+    }
+  }
+
+  if (theme === null) {
+    return <span aria-hidden="true" className="block h-[30px] w-[86px]" />;
+  }
+
+  const next: Theme = theme === "dark" ? "light" : "dark";
 
   return (
     <button
       type="button"
-      data-theme-toggle=""
-      onClick={toggle}
-      /* aria-pressed, not a switch role: this is a two-state control and
-         "pressed" is the state screen readers already announce for one.
-         The label says what the press will do, which is the thing a
-         visitor who cannot see the icon needs to know. */
-      aria-pressed={dark}
-      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        background: "none",
-        border: "1px solid var(--ink-15)",
-        borderRadius: 999,
-        padding: "0.3rem 0.7rem",
-        color: "var(--ink-70)",
-        fontFamily: "var(--font-mono)",
-        fontSize: "0.75rem",
-        cursor: "pointer",
-      }}
+      onClick={() => apply(next)}
+      className="t-anno-sm flex items-center gap-2 border border-rule px-2.5 py-1.5 text-mute transition-colors duration-150 hover:border-rule-strong hover:text-body"
     >
-      {/* Decorative: the accessible name is on the button. Left in the
-          tree unhidden and it gets read out as "sun with rays". */}
-      <span aria-hidden="true">{dark ? "☀" : "☾"}</span>
-      <span>{dark ? "Light" : "Dark"}</span>
+      {/* A filled/hollow pair rather than a sun and a moon. The design
+          is about figure and ground, so the glyph is figure and ground:
+          the square is solid when you are heading for dark. */}
+      <span
+        aria-hidden="true"
+        className={`h-2.5 w-2.5 border border-current ${
+          next === "dark" ? "bg-current" : "bg-transparent"
+        }`}
+      />
+      {next === "dark" ? "Dark" : "Light"}
+      <span className="sr-only"> — switch to the {next} palette</span>
     </button>
   );
 }

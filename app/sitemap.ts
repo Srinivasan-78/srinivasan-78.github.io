@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌‌​‌‌‌​‌‌​​‌‌‌​‌‌‌​‌​‌​‌​‌​​‌‌​‌​​​‌‌​​‌‌​​‌​​‌​​​​‌​​‌‌‌‌​‌‌‌​​​‌​‌​‌​‌​​​‌​​​‌‌​​‌‌‌‌​‌​​‌‌​​​‌​​‌‌​​​‌‌​​‌‌​​​​​‌‌‌​‌‌‌​‌​​​​‌‌​‌​‌​‌‌‌​‌‌​​‌‌‌​​‌‌​​​‌​‌​‌​‌‌‌​‌‌‌‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌​‌​​‌​​‌‌‌​​​‌​‌​​‌‌​​​‌​‌‌​‌​​‌​​​‌‌‌​‌‌‌​​‌​​​‌‌​‌‌​​‌​​‌‌​​​‌‌​‌‌‌‌​‌‌​‌​​‌​‌‌​​‌‌‌​‌‌​‌​‌​​‌‌​‌‌‌‌​‌‌​‌​​‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌‌​​​‌‌​​‌‌​​‌​​‌‌‌‌​‌​​‌​​‌‌‌‌​‌​​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.WvwU4fHOqTFzbc0wCWg1Wz
+ * Fingerprint: AMK1.LRqLZGr6Loigjoigoc2zOF
  */
 import type { MetadataRoute } from "next";
 import { PROJECTS } from "@/lib/projects";
@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["", 1.0],
     ["/projects", 0.9],
     ["/certifications", 0.7],
+    ["/hobby", 0.5],
     ["/contact", 0.6],
     ...PROJECTS.map((p) => [`/projects/${p.slug}`, 0.6] as [string, number]),
     // /thank-you is deliberately absent — it is noindex and only reachable

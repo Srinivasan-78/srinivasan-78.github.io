@@ -1,37 +1,79 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌‌​​​​‌​‌​​​‌‌‌​‌​‌​​​​​‌‌​​​‌​​‌‌‌​‌‌​​‌​​​‌​‌​‌​‌‌‌‌‌​‌​‌​‌‌​​‌​‌​​​‌​‌​‌​​​​​‌​‌​‌‌​​‌‌‌​​‌​​‌‌​‌‌​​​‌‌​​‌​​​​‌‌​​​‌​‌‌‌‌​​‌​‌​​‌‌​‌​‌​​‌​‌​​‌​​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌‌​‌​‌‌​‌‌‌​‌​‌​​‌‌​‌​​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌​​​​​‌‌‌​​‌​‌​‌​​‌‌​‌‌‌‌​‌​​‌​​‌​‌‌​‌​‌​‌‌​​‌‌‌​​‌‌​‌‌​​​​‌​​‌‌​​‌‌​​‌‌‌​​‌​‌‌​‌​​‌​‌​​​​‌‌​‌​‌‌‌‌‌​‌​‌​‌​​​‌​‌​‌​​​‌‌​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.vcVaGPbvE_VQPVrld1yMJK
+ * Fingerprint: AMK1.aku4PMh9SzKVsa39iC_TTk
  */
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import {
+  Archivo_Black,
+  Inter_Tight,
+  JetBrains_Mono,
+  Oswald,
+} from "next/font/google";
 import "./globals.css";
-import ScrollProvider from "@/components/ScrollProvider";
-import ProgressRail from "@/components/ProgressRail";
+import BootScript from "@/components/BootScript";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import BootScript from "@/components/BootScript";
-import StickyCta from "@/components/StickyCta";
+import InteractionFx from "@/components/primitives/InteractionFx";
+import BatGround from "@/components/primitives/BatGround";
+import BrandSprite from "@/components/primitives/BrandSprite";
+import { BatSprite } from "@/components/primitives/BatGlyph";
 import CookieNotice from "@/components/CookieNotice";
-import ChatWidget from "@/components/ChatWidget";
 import Analytics from "@/components/Analytics";
 
-/* Self-hosted at build time by next/font, so there is no request to
-   fonts.googleapis.com at runtime and no swap flash. Inter is the
-   closest freely-licensed match to the SF Pro metrics the layout is
-   tuned for: same x-height ratio, same tight default tracking, and a
-   variable weight axis so the display sizes do not need a second file.
+/* All four self-hosted at build time by next/font, so there is no
+   request to fonts.googleapis.com at runtime and no swap flash.
 
-   This replaces the commented-out KH Teka block that used to sit at the
-   top of globals.css — that typeface is licensed per-domain and its
-   files were never in the repo, so every page was silently rendering in
-   the fallback stack anyway. */
-const sans = Inter({
+   This replaces Instrument Serif, which was the first pass's display
+   face and was wrong. It is a high-contrast editorial serif: beautiful
+   at a glance, and structurally thin — the thick-to-thin modulation
+   means its stems carry almost no weight at any size. On a near-black
+   ground that reads as frail, which is the opposite of the subject. A
+   dossier about keeping production systems standing cannot be set in a
+   typeface that looks like it might blow over.
+
+   Archivo Black replaces it. Single weight, and that weight is heavy:
+   a geometric grotesque with closed apertures and almost no
+   modulation, so a headline lands as a block of ink rather than as a
+   line of lettering. It is also the correct historical reference — the
+   Gotham of Batman '89 is Art Deco, and Deco display lettering is
+   geometric, heavy and wide. Furst's city and this typeface are
+   drawing on the same source.
+
+   Oswald is the second display register, for numerals and the poster
+   moments. Condensed and tall, it gives figures the vertical drama a
+   wide grotesque cannot — a stat block set in it reads like a
+   scoreboard, which is exactly what a stat block is. The pairing is
+   also a real one rather than a convenience: wide-heavy against
+   narrow-heavy is how poster and comic-cover lettering has always
+   handled a headline next to a number.
+
+   Inter Tight carries the prose, because the prose here is genuinely
+   long — twenty project write-ups of six to eleven paragraphs each.
+
+   JetBrains Mono is annotation only: labels, case numbers, the
+   contingency line. The moment it carries a paragraph the design
+   becomes the terminal pastiche it was built to avoid. */
+const display = Archivo_Black({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-sans",
+  weight: "400",
+  variable: "--font-display-face",
+});
+
+const poster = Oswald({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600", "700"],
+  variable: "--font-poster-face",
+});
+
+const sans = Inter_Tight({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans-face",
 });
 
 const mono = JetBrains_Mono({
@@ -42,7 +84,14 @@ const mono = JetBrains_Mono({
 });
 
 export const viewport: Viewport = {
-  /* Matches --paper. The browser chrome on mobile tints from this
+  /* Matches --c-ground, and revision 11 is the proof that it has to
+     be checked by hand: the palette went white-and-black / black-and-
+     yellow and these two still held the old bone and blue-black, which
+     is precisely the mismatch the rest of this note warns about.
+
+     Original note follows.
+
+     Matches --c-ground. The browser chrome on mobile tints from this
      before any CSS has been read, so a mismatch shows as a band of the
      wrong colour above the page on every load.
 
@@ -55,7 +104,7 @@ export const viewport: Viewport = {
      a few. */
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0b" },
   ],
 };
 
@@ -240,7 +289,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // React would flag the attribute it did not render.
     <html
       lang="en"
-      className={`${sans.variable} ${mono.variable}`}
+      className={`${display.variable} ${poster.variable} ${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -261,24 +310,67 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      {/* Ambient chrome that used to live here — a WebGL background field,
-          a cursor lens, a scroll-velocity skew driver, a corner clock and
-          a whole-app click-spark canvas — has been removed rather than
-          tuned down. Each was decoration with no subject. What is left is
-          one hairline scroll indicator. */}
+      {/* What is deliberately NOT here any more.
+
+          The sticky call-to-action bar and the chat widget's floating
+          launcher are both gone. The brief's governing constraint is
+          that nothing on the page demands attention — it is read off a
+          person whose own tools are built around consent before
+          counting, no telemetry, and a local-first default. A bubble
+          that follows the visitor down the page asking them to talk is
+          the opposite of that, and a site that contradicts its author's
+          stated values in its chrome is not a portfolio, it is a
+          template with his name on it.
+
+          The cookie notice stays, because consent before counting is a
+          value rather than a nuisance, and analytics must not load
+          until it is answered. It is restyled as a quiet ruled panel
+          rather than a floating card.
+
+          Earlier ambient chrome — a WebGL background field, a cursor
+          lens, a scroll-velocity skew driver, a corner clock, an
+          app-wide click-spark canvas — was removed before this
+          redesign. All of it was decoration with no subject. */}
       <body>
         <BootScript />
-        <ProgressRail />
+        {/* The glyph definitions, once per page. Every brand mark in
+            the ticker and every bat divider is a ~40-byte <use>
+            pointing in here rather than a kilobyte of inline path
+            data — see the header of BrandSprite.tsx.
+
+            MOUNTED HERE, NOT IN Nav, and that placement is the whole
+            point. Nav carries "use client", so anything it imports
+            joins the client graph: putting BrandSprite there shipped
+            `react-dom/server` to the browser and added 108 KB to the
+            bundle for a function that only ever runs at build time.
+            This file is a server component, so the sprite is rendered
+            during `next build` and the browser receives markup. */}
+        <BrandSprite />
+        <BatSprite />
+        {/* The bat ground: four faint marks, one per quadrant, fixed
+            behind every page. First child so it sits furthest back —
+            §5h gives every other direct child of <body> `z-index: 1`,
+            which is what keeps the whole document above it without
+            each section having to opt in. */}
+        <BatGround />
         <a href="#content" className="skip-link">
           Skip to content
         </a>
-        <ScrollProvider>
+        {/* Revision 4's site-wide interaction layer: a click spark and
+            a targeting reticle for a cursor. It wraps the chrome as
+            well as the content so a click on the nav sparks too.
+
+            It renders its children straight through until it has
+            checked the pointer type and the motion preference, so the
+            page is never waiting on it and a reduced-motion or
+            touch visitor gets exactly the markup they got before.
+            Everything it adds is decoration over an already-complete
+            page — see the header of the component. */}
+        <InteractionFx>
           <Nav />
           {children}
           <Footer />
-        </ScrollProvider>
-        <StickyCta />
-        <ChatWidget />
+        </InteractionFx>
         <CookieNotice />
         <Analytics />
       </body>

@@ -1,96 +1,93 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌​​​​‌​​‌‌​​​‌​‌‌‌​​‌‌​‌​‌‌​‌​​‌‌‌​​​‌​‌​​‌‌‌​​‌‌‌​‌‌​​‌‌‌​‌‌​​‌​​​‌​​​‌​​‌​​‌​‌​‌​‌​​​‌​​​‌​​​‌​‌‌​‌​​‌​​‌​‌‌​‌​‌​‌​​​‌​‌​‌‌​​‌‌‌​​​‌​‌​​‌​‌​​‌​​‌​​‌​‌​‌​​‌​​‌‌‌‌​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​​‌‌​‌​​​‌‌‌​​‌​​‌‌‌‌​‌​​​‌‌​‌‌​​‌​‌​‌‌​​‌​​‌​‌​​‌​‌​​‌‌​‌​‌​​‌​​‌‌‌​​‌​​‌​​​‌‌​​‌‌​‌‌‌‌​​‌‌​‌‌‌​‌‌​‌‌‌‌​‌​​‌​‌​​‌​​​‌​​​‌​‌​​​‌​‌​​​​‌‌​‌‌​​‌‌‌​‌​‌‌​‌​​​‌​‌‌​‌​‌​​‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.La1sZqNvvDITDZKTVqJIRz
+ * Fingerprint: AMK1.r4rz6VJSRrFo7oJDQCgZ-O
  */
-import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import GlowCard from "@/components/ui/GlowCard";
-import { PROJECTS } from "@/lib/projects";
-import { CERTS } from "@/lib/certs";
-import { FiCheckCircle, FiArrowUpRight, FiLayers, FiAward, FiDownload, FiHome } from "react-icons/fi";
+import Icon from "@/components/primitives/Icon";
+import SectionHead from "@/components/primitives/SectionHead";
+import { THANK_YOU_COPY, THANK_YOU_NEXT } from "@/lib/data/profile";
+import { pageMetadata } from "@/lib/seo";
 
+/* `noindex` is preserved from the previous build and is not cosmetic:
+   this page is the form's confirmation and means nothing to anyone who
+   arrives at it from a search result. `follow` stays on, so the links
+   out of it still count. */
 export const metadata = pageMetadata({
-  title: "Message Sent",
-  description: "Your message reached my inbox. I answer genuine enquiries within a couple of working days.",
+  title: THANK_YOU_COPY.metaTitle,
+  description: THANK_YOU_COPY.metaDescription,
   path: "/thank-you",
   noindex: true,
 });
 
-const NEXT = [
-  { href: "/projects", title: "Projects", body: `${PROJECTS.length} platform builds, utilities and open source repos.`, icon: FiLayers, go: "View Projects" },
-  { href: "/certifications", title: "Certifications", body: `${CERTS.length} verified credentials with direct ID check links.`, icon: FiAward, go: "View Credentials" },
-  { href: "/resume.pdf", title: "Résumé", body: "The one-page summary in PDF format.", icon: FiDownload, go: "Download Résumé", download: true },
-];
+/* The confirmation page.
 
+   Two jobs, in order: say plainly that the message arrived and when a
+   reply can be expected, then offer somewhere to go. Nothing here
+   celebrates — a tick the size of a dinner plate is the page enjoying
+   itself at the visitor's expense when all they wanted was to know the
+   form worked.
+
+   The three destinations are ruled cells on a shared hairline grid, the
+   same construction as the 404's four. The résumé is a plain <a download>
+   rather than a <Link>, because it is a file rather than a route. */
 export default function ThankYou() {
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
-      <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center">
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        <SectionHead
+          index="01"
+          kicker={THANK_YOU_COPY.eyebrow}
+          title={THANK_YOU_COPY.heading}
+          titleAs="h1"
+          lede={THANK_YOU_COPY.body}
+        />
 
-        {/* Eyebrow badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#34c759]/10 border border-[#34c759]/30 text-emerald-700 dark:text-[#34c759] text-xs font-mono mb-6">
-          <FiCheckCircle className="w-4 h-4" />
-          <span>Message Delivered Safely</span>
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-3xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
-          Thank you for reaching out.
-        </h1>
-
-        <p className="text-base sm:text-lg text-[#5a5a5f] dark:text-[#9b9ba1] max-w-xl mx-auto leading-relaxed mb-12">
-          Your message has landed in my primary inbox. I read every email and typically reply within 24–48 hours.
-        </p>
-
-        {/* 3-Card Explore Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left mb-12">
-          {NEXT.map((n) => {
-            const Icon = n.icon;
-            // Same card either way; only the wrapper element differs
-            // (a plain <a download> for the résumé, <Link> for routes).
-            const Wrapper = n.download ? "a" : Link;
-            const wrapperProps = n.download
-              ? { href: n.href, download: true }
-              : { href: n.href };
-            return (
-              <GlowCard key={n.href}>
-                <Wrapper
-                  {...wrapperProps}
-                  className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
-                >
-                  <div className="mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] mb-3 shadow-xs dark:shadow-none">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
-                      {n.title}
-                    </h2>
-                    <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-                      {n.body}
-                    </p>
+        <div className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
+          {THANK_YOU_NEXT.map((card) => {
+            const inner = (
+              <>
+                <div>
+                  <div className="flex items-center gap-2.5 text-mute">
+                    <Icon name={card.icon} className="h-4 w-4" />
+                    <h2 className="t-anno">{card.title}</h2>
                   </div>
 
-                  <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
-                    <span>{n.go}</span>
-                    <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </Wrapper>
-              </GlowCard>
+                  <p className="mt-4 text-[0.875rem] leading-relaxed text-mute">
+                    {card.body}
+                  </p>
+                </div>
+
+                <span className="t-anno-sm mt-6 flex items-center justify-between gap-3 border-t border-rule pt-4 text-body">
+                  {card.go}
+                  <Icon name="arrowUpRight" className="h-3.5 w-3.5" />
+                </span>
+              </>
+            );
+
+            const cellClass =
+              "flex h-full flex-col justify-between bg-ground p-5 transition-colors duration-150 hover:text-detect sm:p-6";
+
+            /* A file rather than a route, so a plain anchor: <Link>
+               would have the router try to navigate to a PDF. */
+            return card.download ? (
+              <a key={card.href} href={card.href} download className={cellClass}>
+                {inner}
+              </a>
+            ) : (
+              <Link key={card.href} href={card.href} className={cellClass}>
+                {inner}
+              </Link>
             );
           })}
         </div>
 
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-semibold text-sm transition-all hover:scale-105 active:scale-95"
-        >
-          <FiHome className="w-4 h-4" />
-          <span>Back to Homepage</span>
+        <Link href="/" className="btn mt-10">
+          {THANK_YOU_COPY.home}
         </Link>
-      </div>
+      </section>
     </main>
   );
 }

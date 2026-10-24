@@ -1,36 +1,76 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌​‌​​‌‌​‌‌​​‌‌‌​‌‌​​‌​‌​‌‌‌‌​​​​‌‌​‌‌‌​​‌​‌​​​​​‌‌‌​‌​​​‌​​‌​‌‌​‌​‌​​​​​‌​​‌​‌‌​‌​‌​‌​‌​‌​​​‌‌‌​‌​‌​​​​​‌​​‌​‌‌​‌‌‌​‌‌​​‌​​‌‌‌​​‌‌​‌​​​​​‌‌‌​​‌​‌‌​​​‌‌​‌‌‌‌​​​​‌​‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌​‌​​​‌‌​​​‌​‌‌​​​‌‌​‌​​‌​​​​‌​​‌‌‌​​‌​‌‌​​‌​‌​‌​​‌​​‌‌​​​‌‌​‌‌​‌‌‌‌​‌‌‌‌​​‌​‌​‌‌​​‌​‌​​‌‌​​​‌​‌​​​‌​‌​​‌​​​​‌​​‌‌‌‌​‌‌‌​​‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌​​‌​‌‌​‌​​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ASgexnPtKPKUGPKvNh9cxV
+ * Fingerprint: AMK1.mnJ1cHNYRcoyYLQHOrcVKM
  */
 "use client";
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  CONTACT_FORM_COPY,
+  CONTACT_FORM_FIELDS,
+  type ContactFormField,
+} from "@/lib/data/profile";
 import { haptic } from "@/lib/haptics";
-import { FiSend, FiAlertCircle } from "react-icons/fi";
 
-const ENDPOINT = "https://formspree.io/f/xrpzzlaz";
+/* The contact form.
 
-type Field = "name" | "email" | "message";
+   Two things about this component are load-bearing and were preserved
+   exactly from the previous build rather than redesigned.
+
+   One: `action` and `method` are real. The site is a static export with
+   no server runtime, so the form posts straight to Formspree. With
+   JavaScript enabled the submit handler intercepts it and posts the same
+   FormData over fetch so the visitor lands on this site's own thank-you
+   page; with JavaScript off the browser performs the ordinary POST and
+   Formspree answers with its confirmation. Removing either attribute
+   would silently turn this into a form that only works for people
+   running scripts.
+
+   Two: the `_gotcha` field is Formspree's honeypot. It is named exactly
+   that, it is kept out of the tab order and out of autofill, and it has
+   to stay in the markup — a renamed or dropped honeypot does not fail
+   loudly, it just starts letting spam through.
+
+   `noValidate` is also inherited behaviour: the field messages below are
+   the author's own words, and letting the browser's validation bubbles
+   fire first would replace them with the UA's. The `required` and
+   `minLength` attributes are still declared, because they are what tells
+   a screen reader the field is mandatory — with `noValidate` present
+   they annotate without intercepting. */
+
+type Field = ContactFormField["id"];
 type Errors = Partial<Record<Field, string>>;
 type Status = "idle" | "sending" | "error";
+
+/* Deliberately not a strict RFC 5322 implementation. The only question
+   worth asking in the browser is whether the visitor can plausibly be
+   replied to; the authority on that is the mail server, and a regex
+   strict enough to be correct is strict enough to reject real
+   addresses. */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function validate(values: Record<Field, string>): Errors {
   const errors: Errors = {};
 
-  if (!values.name.trim()) errors.name = "Please enter your name.";
-  else if (values.name.trim().length < 2) errors.name = "Please provide a valid name.";
+  for (const field of CONTACT_FORM_FIELDS) {
+    const value = values[field.id].trim();
 
-  const email = values.email.trim();
-  if (!email) errors.email = "Please enter your email so I can reply.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) errors.email = "Please enter a valid email address.";
-
-  const message = values.message.trim();
-  if (!message) errors.message = "Please write a brief message.";
-  else if (message.length < 10) errors.message = "Please provide a little more detail (10+ characters).";
+    if (field.required && !value) {
+      errors[field.id] = field.errors.missing;
+      continue;
+    }
+    if (field.type === "email" && value && !EMAIL.test(value)) {
+      errors[field.id] = field.errors.invalid;
+      continue;
+    }
+    if (field.minLength && value.length < field.minLength) {
+      errors[field.id] = field.errors.invalid;
+    }
+  }
 
   return errors;
 }
@@ -53,6 +93,9 @@ export default function ContactForm() {
     };
   };
 
+  /* Nothing is marked invalid until the visitor has tried to send once.
+     Turning a field red while someone is still typing their name into it
+     is the form telling them off for not having finished. */
   const revalidate = () => {
     if (!submitted || !formRef.current) return;
     setErrors(validate(readValues(formRef.current)));
@@ -67,6 +110,8 @@ export default function ContactForm() {
     const found = validate(readValues(form));
     setErrors(found);
     if (Object.keys(found).length > 0) {
+      /* Focus the first field that failed. A list of messages the
+         visitor has to go hunting for is not an error state. */
       const first = (Object.keys(found) as Field[])[0];
       form.querySelector<HTMLElement>(`#${first}`)?.focus();
       haptic("reject");
@@ -75,7 +120,7 @@ export default function ContactForm() {
 
     setStatus("sending");
     try {
-      const res = await fetch(ENDPOINT, {
+      const res = await fetch(CONTACT_FORM_COPY.endpoint, {
         method: "POST",
         headers: { Accept: "application/json" },
         body: new FormData(form),
@@ -84,24 +129,25 @@ export default function ContactForm() {
       if (res.ok) {
         haptic("commit");
         form.reset();
-        router.push("/thank-you");
+        router.push(CONTACT_FORM_COPY.successPath);
         return;
       }
 
+      /* Formspree answers a rejected submission with its own reasons.
+         Those are more use to the visitor than a generic failure, so
+         they are shown when present and the author's own line is the
+         fallback. */
       const body = await res.json().catch(() => null);
-      const detail: string | undefined = body?.errors?.map((x: { message: string }) => x.message).join(" ");
+      const detail: string | undefined = body?.errors
+        ?.map((x: { message: string }) => x.message)
+        .join(" ");
       setStatus("error");
       haptic("reject");
-      setFormError(
-        detail ||
-          "Submission failed. Please try again or email me directly at srinivasan.shyam2000@gmail.com."
-      );
+      setFormError(detail || CONTACT_FORM_COPY.submitFailed);
     } catch {
       setStatus("error");
       haptic("reject");
-      setFormError(
-        "Network connection error. Please try again or email me directly at srinivasan.shyam2000@gmail.com."
-      );
+      setFormError(CONTACT_FORM_COPY.networkFailed);
     }
   }
 
@@ -110,112 +156,110 @@ export default function ContactForm() {
   return (
     <form
       ref={formRef}
-      action={ENDPOINT}
+      action={CONTACT_FORM_COPY.endpoint}
       method="POST"
       onSubmit={onSubmit}
       noValidate
-      className="space-y-6"
     >
-      <fieldset disabled={sending} className="space-y-5">
+      <fieldset disabled={sending} className="space-y-6 border-0 p-0">
+        {CONTACT_FORM_FIELDS.map((field) => {
+          const error = errors[field.id];
+          const errorId = `${field.id}-error`;
+          const counterId = `${field.id}-counter`;
+          const isMessage = field.type === "textarea";
 
-        {/* Name Field */}
-        <div>
-          <label htmlFor="name" className="block text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#9b9ba1] mb-2">
-            Your Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            onInput={revalidate}
-            autoComplete="name"
-            placeholder="Jane Doe"
-            className={`w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-[#09090c] border text-[#1d1d1f] dark:text-[#f5f5f7] placeholder-[#86868b] dark:placeholder-[#6e6e73] text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all ${
-              errors.name ? "border-red-500 ring-1 ring-red-500" : "border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
-            }`}
-          />
-          {errors.name && (
-            <p className="mt-1.5 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-1">
-              <FiAlertCircle className="w-3 h-3" />
-              {errors.name}
-            </p>
-          )}
-        </div>
+          return (
+            <div key={field.id}>
+              <div className="mb-2 flex items-baseline justify-between gap-3">
+                <label htmlFor={field.id} className="t-anno text-mute">
+                  {field.label}
+                </label>
 
-        {/* Email Field */}
-        <div>
-          <label htmlFor="email" className="block text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#9b9ba1] mb-2">
-            Email Address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            onInput={revalidate}
-            autoComplete="email"
-            placeholder="jane@company.com"
-            className={`w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-[#09090c] border text-[#1d1d1f] dark:text-[#f5f5f7] placeholder-[#86868b] dark:placeholder-[#6e6e73] text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all ${
-              errors.email ? "border-red-500 ring-1 ring-red-500" : "border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
-            }`}
-          />
-          {errors.email && (
-            <p className="mt-1.5 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-1">
-              <FiAlertCircle className="w-3 h-3" />
-              {errors.email}
-            </p>
-          )}
-        </div>
+                {/* The character counter is advice, not a limit, so it
+                    describes the field rather than labelling it. */}
+                {isMessage && (
+                  <span id={counterId} className="t-anno-sm text-mute">
+                    {messageLength > 0
+                      ? `${messageLength} ${CONTACT_FORM_COPY.counterSuffix}`
+                      : CONTACT_FORM_COPY.counterEmpty}
+                  </span>
+                )}
+              </div>
 
-        {/* Message Field */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <label htmlFor="message" className="block text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#9b9ba1]">
-              Message
-            </label>
-            <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
-              {messageLength > 0 ? `${messageLength} chars (10 min)` : "10 min chars"}
-            </span>
-          </div>
-          <textarea
-            id="message"
-            name="message"
-            rows={5}
-            onInput={(e) => {
-              setMessageLength(e.currentTarget.value.length);
-              revalidate();
-            }}
-            placeholder="Tell me about the role, project, or infrastructure challenge..."
-            className={`w-full px-4 py-3.5 rounded-2xl bg-white dark:bg-[#09090c] border text-[#1d1d1f] dark:text-[#f5f5f7] placeholder-[#86868b] dark:placeholder-[#6e6e73] text-sm focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all resize-y ${
-              errors.message ? "border-red-500 ring-1 ring-red-500" : "border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20"
-            }`}
-          />
-          {errors.message && (
-            <p className="mt-1.5 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-1">
-              <FiAlertCircle className="w-3 h-3" />
-              {errors.message}
-            </p>
-          )}
-        </div>
+              {isMessage ? (
+                <textarea
+                  id={field.id}
+                  name={field.id}
+                  rows={field.rows}
+                  required={field.required}
+                  minLength={field.minLength}
+                  placeholder={field.placeholder}
+                  aria-invalid={error ? true : undefined}
+                  aria-describedby={
+                    [error ? errorId : null, counterId].filter(Boolean).join(" ") ||
+                    undefined
+                  }
+                  onInput={(e) => {
+                    setMessageLength(e.currentTarget.value.length);
+                    revalidate();
+                  }}
+                  className="field resize-y"
+                />
+              ) : (
+                <input
+                  id={field.id}
+                  name={field.id}
+                  type={field.type}
+                  required={field.required}
+                  minLength={field.minLength}
+                  autoComplete={field.autoComplete}
+                  placeholder={field.placeholder}
+                  aria-invalid={error ? true : undefined}
+                  aria-describedby={error ? errorId : undefined}
+                  onInput={revalidate}
+                  className="field"
+                />
+              )}
 
-        {/* Honeypot */}
-        <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="hidden" />
+              {/* The invalid state is carried by the sentence, not by
+                  the border colour. The border is the glance; this is
+                  the fact, and it says what to do about it. */}
+              {error && (
+                <p id={errorId} role="alert" className="contingency">
+                  {/* The field's own label is the prefix, so the line
+                      names what failed without a word being invented
+                      for it. */}
+                  <span>{field.label}</span>
+                  <span>{error}</span>
+                </p>
+              )}
+            </div>
+          );
+        })}
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={sending}
-          className="w-full py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 shadow-xl"
-        >
-          <FiSend className="w-4 h-4" />
-          <span>{sending ? "Sending message..." : "Send Message"}</span>
+        {/* Formspree's honeypot — see the note at the top of the file.
+            Hidden from sight, from the tab order and from autofill, but
+            present in the markup. */}
+        <input
+          type="text"
+          name="_gotcha"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
+
+        {/* The one filled control on the page. */}
+        <button type="submit" className="btn btn-signal w-full justify-center">
+          {sending ? CONTACT_FORM_COPY.submitting : CONTACT_FORM_COPY.submit}
         </button>
       </fieldset>
 
       {formError && (
-        <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-600 dark:text-[#ff453a] flex items-center gap-2">
-          <FiAlertCircle className="w-4 h-4 shrink-0" />
+        <p role="alert" className="contingency mt-6">
+          <span>Contingency</span>
           <span>{formError}</span>
-        </div>
+        </p>
       )}
     </form>
   );

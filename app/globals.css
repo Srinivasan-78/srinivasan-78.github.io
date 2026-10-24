@@ -1,2478 +1,1954 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌‌‌​‌‌‌​‌‌​‌‌‌‌​‌​‌​​‌​​​‌‌​‌‌​​‌‌​‌​‌​​​‌‌​​​​​‌​‌​‌‌‌​​‌​‌‌​‌​‌​​‌​‌​​‌‌​​​​‌​‌‌‌‌​​‌​‌​​‌‌‌​​​‌​‌‌​‌​‌​​​‌​‌​‌‌‌‌​‌​​​‌‌​‌​​​‌​​​‌​​​‌​​‌‌‌​​‌‌‌​‌​​​‌​​‌‌‌‌​‌​‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌‌​​‌‌​​​‌​‌‌​​‌​‌​‌​‌​‌​​​​‌​‌‌​‌​‌‌​​​‌​​​‌‌​​​‌​‌​​​‌‌‌​​‌‌​​​​​​‌‌‌​​‌​‌​​​​‌​​​‌‌​‌​​​‌​‌​​​​​‌​​‌​‌​​‌​‌​‌​‌​​‌‌​​​​​‌​​‌​‌​​‌​‌​​​‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌‌‌​‌​​​‌‌​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.XwoR6j0W-JayN-Ez4DNtOW
+ * Fingerprint: AMK1.O1eT-b1G09B4PJU0JQv5tg
  */
-/* Tailwind 4: one import in place of the three layer directives.
 
-   `@config` keeps the JavaScript config file rather than moving the theme
-   into CSS. v4 prefers a CSS-first `@theme` block, but the config here is
-   the `darkMode` selector plus three `extend` entries that the rest of
-   this stylesheet does not read — porting it would be churn for no
-   behaviour change, and the supported bridge is the honest option. */
+/* ============================================================
+   CONTINGENCY — the design system for this site.
+   Direction, persona and rationale: docs/design-contingency.md
+
+   The thesis in one line: a dossier that states its own failure
+   modes. Everything below exists to serve that and nothing else.
+   ============================================================ */
+
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
-/* ---------- TYPE ----------
-   Inter and JetBrains Mono are loaded by next/font in app/layout.tsx,
-   which self-hosts them at build time and exposes them as --font-sans
-   and --font-mono-face. There is no request to a font CDN at runtime and
-   no flash of a fallback face.
+/* Tailwind 4 drives variants from CSS rather than a `darkMode` key.
+   The attribute is written by BootScript before the first paint, so
+   there is no flash and the stylesheet never duplicates a palette
+   behind a prefers-color-scheme query. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-   This replaces a commented-out block of @font-face rules for KH Teka, a
-   commercial typeface whose files were never in the repo — so every page
-   was silently rendering in the fallback stack, and the tracking and
-   leading below were tuned for metrics nothing on the site actually had.
-   Inter is the closest freely-licensed match to those metrics. */
 
-/* ---------- COLOUR ----------
-   One accent, not four.
+/* ------------------------------------------------------------
+   1. COLOUR
 
-   The palette used to carry four independent hues — sage, slate, plum
-   and brass — and hand them out per section, per card, per status pill,
-   per left border. Four accents competing at once is not a palette, it
-   is confetti: nothing can be emphasis when everything is.
+   Two palettes, authored independently rather than one derived
+   from the other by inversion. That is the Furst lesson taken
+   literally: reversing the tones makes negative space assert
+   itself as shape, and shape does not survive a filter.
 
-   The four names are kept as aliases rather than deleted, because they
-   are referenced from a few dozen places and collapsing them here means
-   one edit instead of a rename across the whole site. They all resolve
-   to the same blue. Colour now appears in exactly three places: links,
-   the primary button, and the focus ring.
+   Light is the default because <html> ships from the server with
+   no data-theme attribute, so a visitor with JavaScript off gets
+   a complete, legible palette rather than a half-themed page.
+   Dark is the one the author actually uses.
 
-   --danger is separate and deliberately is NOT the accent: form
-   validation has to read as a problem, and a problem coloured the same
-   as a call to action reads as neither. */
+   Every pairing below was measured, not eyeballed. The figures
+   are in the comments because the previous design shipped a
+   light theme that failed contrast, and a number in a comment is
+   harder to regress than an intention.
+   ------------------------------------------------------------ */
 
 :root,
 html[data-theme="light"] {
   color-scheme: light;
 
-  /* White paper, near-black ink, one step of grey between them for a
-     raised surface. --paper-raised is what every card, panel and tile
-     sits on; it has to separate from the page without becoming a
-     second background colour, which is what #f5f5f7 buys at one step. */
-  --paper: #ffffff;
-  --paper-raised: #f5f5f7;
-  --ink: #1d1d1f;
-  --ink-70: #424245;
-  --ink-45: #5a5a5f;
-  --ink-15: #d2d2d7;
-  --ink-08: #ebebed;
+  /* WHITE AND BLACK, on instruction. The ground was a warm bone
+     drafting paper; it is plain white now, and the type is black.
+     That is a sharper, colder sheet than the schematic metaphor
+     started with — but it is the correct light-mode counterpart to a
+     black-and-yellow dark mode, and a cowl is not drawn on butcher's
+     paper. The neutrals keep a trace of warmth so the gold below has
+     something to belong to rather than sitting on a blue-white. */
+  --c-ground: #ffffff;
+  --c-panel: #fbfbfa;
+  --c-panel-2: #f2f2f0;
 
-  /* #0071e3 measured 4.31:1 against --paper-raised, which is where most
-     accent-coloured text actually sits (card "go" labels, the
-     certificate links). Two steps darker clears 4.5:1 on the card and
-     5.5:1 on white without changing which blue this is. */
-  --accent: #0066cc;
-  --accent-wash: #f0f7ff;
-  --accent-line: #b6dbff;
+  --c-rule: #e4e4e1;
+  --c-rule-strong: #bfbfbb;
 
-  /* The amber the markup writes as `text-[#9a5200] dark:text-[#e5a93b]`.
-     It is declared here for the record rather than read from here — the
-     eyebrows and category labels it colours are Tailwind classes — but
-     the number needs somewhere to be explained.
+  --c-body: #141413;      /* 18.4:1 on ground */
+  --c-mute: #585856;      /*  7.3:1 on ground, 6.9:1 on panel-2 */
+  --c-faint: #8f8f8c;     /* decorative only — never carries text */
 
-     Dark mode never had a problem: #e5a93b on near-black is 8:1. Light
-     mode used Tailwind's amber-600, which is 2.9:1 on --paper-raised at
-     12px, and Tailwind 4's oklch palette made it very slightly worse
-     (rgb(225,113,0) against v3's rgb(217,119,6)). amber-700 clears 4.5
-     on white but only 4.15 on the grey chips those labels also sit on,
-     so this is one step further down: 4.83 on the worst of the four
-     light surfaces in use, and still unmistakably the same amber. */
-  --accent-amber: #9a5200;
-  /* The accent as a *fill* behind white text, which is a different
-     contrast problem from the accent as text. Kept as its own token so
-     the two can be tuned apart. */
-  --accent-solid: #0066cc;
-  --danger: #b3261e;
+  /* The yellow, translated for paper. A bat-signal yellow on white is
+     illegible — it is a colour that only exists against night — so the
+     hue is kept and the lightness taken right down to a struck gold.
+     5.2:1 on ground, and 4.6:1 even on the darkest panel — taken one
+     step down from a first pass at #8a6d00, which cleared the ground
+     but landed at 4.39:1 on panel-2. Never the same hex as the dark
+     theme's. */
+  --c-signal: #866900;
+  --c-signal-dim: #b09334;
+  --c-signal-wash: #faf6e8;
 
-  --font-display: var(--font-sans), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --font-body: var(--font-sans), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --font-mono: var(--font-mono-face), "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  /* The transient colour (§1b). Pure black here, pure white on the
+     slab: the probe is the absence of colour in both, which is what
+     keeps the palette to two inks. 21:1. */
+  --c-detect: #000000;
+  --c-detect-dim: #6b6b68;
+  --c-detect-wash: #f1f1ef;
 
-  /* One container width for every section, so every section shares the
-     same left edge.
-
-     This was briefly three tiers — 692 / 980 / 1120 — with each section
-     picking one. Centred containers of different widths have different
-     left edges, so stacking them put the headings on three separate
-     margins down the page, which reads as broken rather than as rhythm.
-
-     Line length is handled where it belongs instead: --measure caps the
-     width of a paragraph, not of the box it sits in, so prose stays
-     readable while its first character still lines up with the heading
-     above it. */
-  --max: 1040px;
-  --gutter: 24px;
-  --measure: 62ch;
-
-  /* Two curves, chosen by what the motion is doing.
-
-     --ease moves things that are already on screen: a card lifting, an
-     arrow sliding, a wash coming up. Its initial slope is 0.39, slower
-     off the mark than linear, which is fine for something the eye is
-     already tracking.
-
-     --ease-out is for anything entering or leaving. Its initial slope
-     is ~4.3: it commits immediately and decelerates into place, which
-     is what makes a short animation read as fast. This distinction used
-     to not exist — every entrance on the site ran on --ease, and on a
-     180ms error message a lazy start eats most of the only part anyone
-     sees.
-
-     Exits use --ease-out as well, not an inverted curve. Mirroring the
-     control points does trace the same path backwards, but the curve it
-     produces is an ease-in, and an ease-in on UI delays the exact
-     moment the user is watching. The path stays mirrored — same
-     keyframes, run the other way — the timing does not. */
-  --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --c-probe: #3f6b2f;     /* 5.3:1 — live status */
+  --c-alarm: #93312b;     /* 6.5:1 — failure modes only */
 }
 
-/* The dark palette. Only the colour tokens are restated — type, layout
-   and easing are theme-independent and stay inherited from the block
-   above, which still matches (:root is this same <html> element).
-
-   Nothing here is reachable until BootScript sets data-theme, so a
-   visitor with JS off gets the light palette exactly as before. */
 html[data-theme="dark"] {
   color-scheme: dark;
-  /* Neutral, not tinted. Dark here is a real black with a lifted grey
-     for raised surfaces, and the off-white ink is warm enough not to
-     vibrate against it. */
-  --paper: #000000;
-  /* #121214 rather than #1d1d1f. Card surfaces sit one step off black
-     instead of two: the panel still separates from the page, and the
-     type on it gains the contrast the lighter grey was spending.
-     Borders and washes are translucent white rather than opaque greys,
-     so a card stacked on a card does not flatten into one slab. */
-  --paper-raised: #121214;
-  --ink: #f5f5f7;
-  --ink-70: #a1a1a6;
-  --ink-45: #9b9ba1;
-  --ink-15: rgba(255, 255, 255, 0.1);
-  --ink-08: rgba(255, 255, 255, 0.055);
 
-  --accent: #2997ff;
-  --accent-wash: #0b1c2c;
-  --accent-line: #1b3a5c;
-  /* White on #2997ff is 3.02:1 — fine for a 4px rule, a failure for the
-     label on the primary button. The fill drops to the light theme's
-     blue (4.7:1 with white) while links and the focus ring keep the
-     brighter one they need against black. */
-  --accent-solid: #0071e3;
-  --danger: #ff6961;
+  /* BLACK AND YELLOW. The ground used to carry a faint blue-cold cast
+     so an amber accent had something to be warm against. The accent is
+     a true yellow now and the relationship inverts: any blue in the
+     ground would turn it green, so the black is neutral and the greys
+     are warmed by a hair instead. */
+  --c-ground: #0b0b0b;
+  --c-panel: #131313;
+  --c-panel-2: #1b1b1b;
+
+  --c-rule: #272726;
+  --c-rule-strong: #3d3d3b;
+
+  --c-body: #d8d8d4;      /* 13.8:1 on ground, 12.9:1 on panel */
+  --c-mute: #8f8f8a;      /*  6.1:1 on ground, 5.3:1 on panel-2 */
+  --c-faint: #5a5a57;     /* decorative only — see the light theme */
+
+  /* The bat-signal, and now actually one. 12.1:1 on ground. At most
+     twice per viewport: it means something only while it stays rare. */
+  --c-signal: #f5c518;
+  --c-signal-dim: #8a6d1a;
+  --c-signal-wash: #19150a;
+
+  /* The transient colour (§1b). White on the slab, black on paper —
+     the probe is the absence of colour in both. 19.7:1. */
+  --c-detect: #ffffff;
+  --c-detect-dim: #6b6b68;
+  --c-detect-wash: #161616;
+
+  --c-probe: #8cc98a;     /* 9.6:1 — live status */
+  --c-alarm: #e0756c;     /* 7.2:1 — failure modes only */
 }
 
-/* The palette switch. Everything it needs — the pill, the type, the
-   focus ring — it either carries inline or inherits from the global
-   :focus-visible rule; this is only the hover state, which an inline
-   style cannot express. Gated like every other hover on the site, so a
-   tap on a phone does not leave it stuck lit. The transition-property
-   is already in the reduced-motion whitelist above, which clamps it to
-   160ms for anyone who asked for less movement. */
-[data-theme-toggle] {
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
-}
-@media (hover: hover) and (pointer: fine) {
-  [data-theme-toggle]:hover { color: var(--ink); border-color: var(--ink-45); }
+/* ------------------------------------------------------------
+   1b. TWO INKS, TWO JOBS
+
+   The site is black and yellow on the slab, white and black on paper.
+   That is two inks, and they are split by ROLE rather than by taste —
+   which is what lets the second one appear on every surface without
+   the first losing its meaning:
+
+     yellow (--c-signal)  is STATIC. Section marks, status ticks, the
+       active destination, the one link per panel that matters. It is
+       part of the composition you see before you touch anything, and
+       the budget of two per viewport still governs it. Audited in the
+       built HTML.
+
+     the probe (--c-detect)  is TRANSIENT, and it is not a colour at
+       all: white on the dark ground, black on the light one. It exists
+       only while a surface is being read — under the pointer, under
+       focus, during a one-shot entrance. Nothing takes it at rest, so
+       it cannot compete with the yellow in the static frame and needs
+       no budget of its own.
+
+   REVISION 11 replaced the previous pair, which was amber and cyan.
+   The roles are unchanged; only the inks moved. Cyan was a detective
+   -mode quotation and it worked, but it made the page three-coloured
+   — a warm accent, a cold accent and a neutral ground — which is one
+   more than "black and yellow" can mean. Dropping the transient hue to
+   plain white and black keeps the interaction layer and removes the
+   third colour.
+
+   `.scan`, `.spotlight` and `.electric` all take the transient ink,
+   because they are hover states and by the rule above a hover state is
+   never the static accent.
+   ------------------------------------------------------------ */
+
+/* `inline` is what makes runtime theming work: the generated
+   utilities reference the custom property rather than copying its
+   value, so `text-body` resolves per theme instead of being
+   baked at build time. */
+@theme inline {
+  --color-ground: var(--c-ground);
+  --color-panel: var(--c-panel);
+  --color-panel-2: var(--c-panel-2);
+  --color-rule: var(--c-rule);
+  --color-rule-strong: var(--c-rule-strong);
+  --color-body: var(--c-body);
+  --color-mute: var(--c-mute);
+  --color-faint: var(--c-faint);
+  --color-signal: var(--c-signal);
+  --color-signal-dim: var(--c-signal-dim);
+  --color-signal-wash: var(--c-signal-wash);
+  --color-probe: var(--c-probe);
+  --color-alarm: var(--c-alarm);
+  --color-detect: var(--c-detect);
+  --color-detect-dim: var(--c-detect-dim);
+  --color-detect-wash: var(--c-detect-wash);
+
+  --font-display: var(--font-display-face), "Helvetica Neue", Arial, sans-serif;
+  --font-poster: var(--font-poster-face), "Haettenschweiler", Impact, sans-serif;
+  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* One duration and one curve, used everywhere. A system with
+     three easings has none. */
+  --ease-cx: cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 
-/* Legacy accent names, all resolving to the one accent. Declared on the
-   same element as the palettes above, so var(--accent) here computes to
-   whichever theme's accent won the cascade. */
-:root {
-  --sage: var(--accent);
-  --slate: var(--accent);
-  --plum: var(--accent);
-  --brass: var(--accent);
-  --sage-mid: var(--ink-45);
-  --sage-wash: var(--accent-wash);
-  --slate-wash: var(--accent-wash);
-  --plum-wash: var(--accent-wash);
-  --brass-wash: var(--accent-wash);
-  --sage-line: var(--accent-line);
-  --slate-line: var(--accent-line);
-  --plum-line: var(--accent-line);
-  --brass-line: var(--accent-line);
+
+/* ------------------------------------------------------------
+   2. BASE
+   ------------------------------------------------------------ */
+
+* {
+  border-color: var(--c-rule);
 }
 
-* { box-sizing: border-box; }
-
-/* Flat. The fixed purple radial gradient that used to sit here was
-   lighting for a WebGL scene that no longer exists, and it tinted every
-   surface stacked on top of it. */
 html {
-  background: var(--paper);
-  /* iOS inflates text in landscape unless told not to. It is trying to
-     help, and on a layout whose type is already sized for a phone it
-     just makes one orientation disagree with the other. */
   -webkit-text-size-adjust: 100%;
-  /* The grey flash iOS paints on a tapped element. Every control on the
-     site draws its own press now — a scale on :active — and the flash
-     lands on top of it a beat later, which reads as two different
-     things acknowledging one tap. */
-  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  /* Anchored headings have to land BELOW the sticky header, which is
+     now two rows — the nav and the skills ticker (§5g) — rather than
+     the single rail this figure was set for. An anchor that lands
+     underneath fixed chrome looks like a broken link. */
+  scroll-padding-top: 8rem;
 }
-/* NOTE: never put overflow-x: clip/hidden on html or body here. It makes
-   the root a scroll container, which breaks position:sticky for the
-   header. Full-bleed sections clip themselves instead — see .section. */
 
 body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-body);
-  /* 1.0625rem — which is 17px at the browser's default root size, and
-     which is the point of writing it this way.
-
-     It was `17px`. An absolute size ignores the reader's own text-size
-     setting completely: someone who has turned their browser's default
-     up to 20px because they need it larger got 17px anyway, on every
-     page, with no way to change it. In rem the whole scale moves with
-     that setting, and because the spacing on this site is already in
-     rem and clamp() the layout moves with the type rather than
-     breaking around it.
-
-     17 rather than 15 in the first place because the reference this
-     design follows sets body copy there, and its tightened tracking
-     assumes that size; at 15 the same tracking reads cramped and the
-     measure runs long. */
-  font-size: 1.0625rem;
-  line-height: 1.47;
-  letter-spacing: -0.01em;
+  background: var(--c-ground);
+  color: var(--c-body);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
 }
 
-/* In `@layer base`, and that is not cosmetic.
-
-   Tailwind 3 injected its utilities as unlayered rules, so this
-   one-element selector lost to any `text-*` class on the same anchor on
-   specificity. Tailwind 4 puts every utility in the `utilities` cascade
-   layer — and unlayered CSS outranks every layer, whatever its
-   specificity. Overnight this rule started winning against each of the
-   roughly ninety `<a className="... text-...">` on the site: the
-   "Discuss a Role" button went white-on-white in dark mode, every
-   "Merge Request" link lost its blue, and the footer and card links
-   all collapsed to --ink.
-
-   Declaring it in `base` restores the order the rest of the file was
-   written against: it is the default for a bare anchor, and any
-   utility on the element beats it. */
-@layer base {
-  a { color: var(--ink); text-decoration: none; }
+::selection {
+  background: var(--c-signal);
+  color: var(--c-ground);
 }
 
-/* Off-screen until focused. Without it, every route makes a keyboard
-   user tab through the whole nav before reaching any content. Not
-   display:none — that would take it out of the tab order entirely and
-   defeat the point. */
+/* A visible focus ring in the accent, on everything, in both
+   themes. This is the one place the accent budget does not
+   apply — a keyboard visitor needs it more than the composition
+   needs restraint. */
+:focus-visible {
+  outline: 2px solid var(--c-signal);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 .skip-link {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 200;
-  transform: translateY(-120%);
-  padding: 0.7rem 1.1rem;
-  background: var(--accent-solid);
-  /* White, not --paper: in dark mode --paper is black, and black on the
-     accent blue is the one contrast pair on the site that fails. */
-  color: #fff;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.05em;
-  border-bottom-right-radius: 8px;
-  transition: transform 0.2s var(--ease);
-}
-.skip-link:focus-visible { transform: translateY(0); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); width: 100%; }
-
-/* The header is sticky, so anything scrolled to by a fragment lands
-   underneath it. Measured: the bar is 105-107px from 640px up and 74px at
-   phone widths, so the reserve clears it with a little room either side.
-   Without this, "Skip to content" put the first 25px of the <h1> behind
-   the nav — the one thing that link exists to avoid. */
-html { scroll-padding-top: 7.5rem; }
-@media (max-width: 520px) {
-  html { scroll-padding-top: 5.5rem; }
-}
-
-/* Anchor jumps travel; the wheel does not.
-
-   This is the one place smooth scrolling belongs, and it is worth being
-   exact about why. A fragment link teleports the reader to somewhere
-   else in the document with no indication of which way they went or how
-   far — the two facts that tell them where they now are. Scrolling it
-   instead of jumping it hands both over for free.
-
-   What this is not is a smooth-scrolling *page*. `scroll-behavior` only
-   applies to scrolls the document initiates — a fragment navigation, a
-   `scrollIntoView`, a programmatic `scrollTo`. A wheel notch, a trackpad
-   swipe and a drag of the scrollbar are user scrolls and are untouched
-   by it, which is the correct arrangement and the opposite of what a
-   scroll-hijacking library does: the input the visitor is holding stays
-   instant and native, and only the jumps the page makes on their behalf
-   are animated.
-
-   ScrollProvider's scroll-to-top on route change opts back out with
-   `behavior: "instant"` — a route change is a new page, not a journey
-   across the old one, and animating it would make every navigation
-   start with a half-second tour of the previous route. */
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-}
-/* The skip target carries tabindex="-1" so focus actually moves there
-   rather than staying on <body>; that makes it programmatically focusable,
-   which must not draw a ring around the whole page. */
-main:focus { outline: none; }
-
-.eyebrow {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--c-signal);
+  color: var(--c-ground);
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-45);
-  margin: 0;
-  /* Section labels on the project pages are <h2>s wearing this class, so
-     the user agent's bold has to be overridden. `inherit` rather than a
-     number: on a <span> it resolves to exactly what the span already
-     inherited, so nothing that used this before moves. */
-  font-weight: inherit;
+  transition: top 160ms var(--ease-cx);
+}
+.skip-link:focus {
+  top: 0.75rem;
 }
 
-/* Display type tracks tighter than body and gets tighter still as it
-   gets bigger — that is what stops a large grotesque reading as loose.
-   -0.022em is the reference's own figure at these sizes. */
-.display {
+
+/* ------------------------------------------------------------
+   3. TYPE
+
+   Three registers that collide on purpose — an editorial serif
+   against engineering annotation. Two things that should not sit
+   together, deliberately touching. That is the Gotham move:
+   Furst heightened the city by abutting Art Deco against
+   industrial rather than by harmonising them.
+   ------------------------------------------------------------ */
+
+/* Archivo Black ships one weight and it is already heavy, so the
+   display register is about tracking and leading rather than weight.
+   Negative tracking at display sizes is what stops a heavy grotesque
+   reading as letter-spaced; it is dialled back at small sizes, where
+   tight tracking on a heavy face closes the counters. */
+.t-display {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.022em;
-  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
-/* `clip` rather than `hidden`: hidden would make the section a
-   scroll container, which breaks position:sticky inside it. */
-.section { position: relative; overflow-x: clip; }
-
-/* Links inside running prose are the accent; links that are navigation
-   (the header, footer, "back to" affordances) stay ink and rely on the
-   .lnk underline instead. */
-.legal a,
-.chat-msg a { color: var(--accent); }
-
-/* ---------- MONO MICRO-LABELS ---------- */
-/* Small uppercase mono set in the margins — running commentary on what
-   the page is doing. The reference sets these at 13.5px with normal
-   tracking; mono is already wide enough without extra letter-spacing. */
-.micro {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  line-height: 1.3;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  color: var(--ink-45);
-}
-.micro-bright { color: var(--ink); }
-
-/* Whitespace is the separator, not a rule.
-   Sections used to be divided by a 1px line each, which meant the page
-   was visually chopped into eight boxes and none of them had room to
-   breathe. The padding here is roughly double what it was; the borders
-   are gone. */
-.section {
-  padding: clamp(4.5rem, 10vw, 8rem) 0;
-}
-/* A section whose content is wider than the column above it. The change
-   of width is what marks the boundary. */
-.section-bleed { padding-top: clamp(2rem, 5vw, 3.5rem); }
-
-/* ---------- DON'T LAY OUT WHAT NOBODY IS LOOKING AT ----------
-   The home route is one long document: six or seven full sections, each
-   holding a grid of surfaces, every one of them styled, laid out and
-   painted on first load and then re-considered on every scroll even
-   though five of them are thousands of pixels off screen.
-
-   `content-visibility: auto` lets the browser skip all of that for a
-   section until it is near the viewport, and resume it when it is. The
-   whole of what it costs is that the skipped section has no measured
-   height, so `contain-intrinsic-size` has to supply a guess — and the
-   `auto` keyword means the guess is only ever used once per section, for
-   the first approach; after that the browser remembers the height it
-   actually turned out to be, which is what keeps the scrollbar from
-   growing under the reader's hand.
-
-   Scoped to `main > section` rather than to `.section` on purpose: the
-   long route renders its sections in Tailwind and does not carry that
-   class, so a `.section` rule would have missed precisely the page this
-   is for.
-
-   The first section is excluded. It is above the fold on every screen,
-   so it would be rendered immediately anyway, and leaving it out means
-   the figure below is never consulted for anything the visitor is
-   already looking at.
-
-   Safe here for two reasons worth recording, because both would make it
-   unsafe elsewhere. `content-visibility` implies `contain: layout paint`,
-   which clips to the padding box and makes the element a containing
-   block: nothing on this site is `position: fixed` inside a section (the
-   rail, the CTA bar, the notice and the chat surfaces are all chrome
-   outside <main>, and the header is the one `sticky` element on the
-   site), and no decoration reaches past a section's padding — the widest
-   is BorderGlow's 30px outer glow, against 56px of section padding at
-   the tightest breakpoint. And there are no in-page fragment links: the
-   only one on the site is the skip link, which targets <main> itself. */
-main > section:not(:first-of-type) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 760px;
-}
-
-/* Pill, filled or plain — never outlined. An outline button next to a
-   filled one gives two competing calls to action; the secondary is a
-   plain link-coloured pill that only shows its surface on hover. */
-.btn {
-  display: inline-block;
-  padding: 0.7rem 1.4rem;
-  border: 0;
-  background: transparent;
-  color: var(--accent);
-  border-radius: 999px;
-  font: inherit;
-  font-size: 1rem;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  transition: background 0.22s var(--ease), opacity 0.22s var(--ease), transform 160ms var(--ease-out);
-}
-.btn:hover { background: var(--accent-wash); }
-.btn.primary { background: var(--accent-solid); color: #fff; }
-@media (hover: hover) and (pointer: fine) {
-  .btn.primary:hover { background: var(--accent-solid); opacity: 0.85; }
-}
-
-/* Flat, borderless, generously rounded. The 3px coloured left rule
-   every card used to carry — cycling through four hues by position —
-   is gone: it was decoration that read as a status indicator. */
-.card {
-  display: block;
-  border: 0;
-  border-radius: 18px;
-  padding: 2rem 1.75rem;
-  background: var(--paper-raised);
-  /* transform is in the list because `a.card:hover` raises the card 4px.
-     Without it the lift snapped on at hover and snapped off at leave —
-     the one part of the hover that was meant to read as motion was the
-     one part that had none. */
-  transition: background 0.25s var(--ease), transform 160ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) {
-  a.card:hover { background: color-mix(in srgb, var(--paper-raised) 88%, var(--ink)); }
-}
-.card-title {
+/* Headlines above about 2rem take more negative tracking and tighter
+   leading — a heavy face at 4rem with default metrics looks loose. */
+.t-display-xl {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 0 0 0.5rem;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+  text-wrap: balance;
+  text-transform: uppercase;
 }
-.card-body {
-  margin: 0;
-  max-width: 38ch;
-  color: var(--ink-70);
-  font-size: 0.94rem;
-  line-height: 1.5;
+
+/* The poster register: condensed, tall, heavy. For figures and the few
+   places that should read as a scoreboard rather than as prose. */
+.t-poster {
+  font-family: var(--font-poster);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 0.92;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
 }
-.tag {
-  display: inline-block;
+
+/* The annotation register. Uppercase, tracked out, small, and
+   never carrying a paragraph — the moment mono runs to prose it
+   becomes the terminal pastiche this design exists to avoid. */
+.t-anno {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  border: 0;
-  background: var(--ink-08);
-  color: var(--ink-70);
-  margin: 0 6px 6px 0;
-  white-space: nowrap;
-  flex-shrink: 0;
-  line-height: 1.4;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
-/* Reduced motion means gentler, not silent. The blanket used to zero
-   `transition-duration` outright, which took the colour and opacity
-   transitions with it — the ones that aid comprehension rather than
-   move anything — and, because the zeroing was `!important`, it also
-   overrode the deliberately gentle fades further down this file, so
-   those were running at 0.001ms instead of their stated 200ms.
-
-   Narrowing `transition-property` instead removes exactly the class of
-   transition a vestibular system objects to — anything that travels —
-   while leaving the rest at a calm 160ms. */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-property: opacity, color, background-color, border-color, box-shadow,
-      fill, stroke, filter !important;
-    transition-duration: 160ms !important;
-  }
+.t-anno-sm {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
-/* The "go" affordance on a card. The four-hue cycle this used to run —
-   a different colour per card position — is now one accent, and the
-   arrow is drawn rather than typed so it can move on hover. */
-.go {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 1rem;
-  color: var(--accent);
-  font-size: 0.94rem;
-  letter-spacing: -0.01em;
-}
-.go::after {
-  content: "\203A";
-  font-size: 1.15em;
-  line-height: 1;
-  transition: transform 0.25s var(--ease);
-}
-@media (hover: hover) and (pointer: fine) {
-  .card:hover .go::after { transform: translateX(3px); }
-  a.card:hover { transform: translateY(-4px); }
-  /* The lift and the press are the same property, so a pressed card has
-     to state both or the lift wins and the press does nothing — and it
-     has to be gated *with* the lift. Ungated it outranks any touch
-     override on specificity alone (`:hover:active` beats `:hover`), so
-     on a phone, where :hover is faked on tap, pressing a card applied
-     the 4px lift and left it there. */
-  a.card:hover:active { transform: translateY(-4px) scale(0.985); }
-}
-
-/* ---------- TYPE SCALE ---------- */
-.display-lg {
-  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-  line-height: 1.1;
+/* Metrics keep mono's tabular figures but drop the tracking —
+   a number is read, not labelled. */
+.t-metric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
-/* ---------- HERO ----------
-   The .hero-actions row is the last of the bespoke hero styling still in
-   use — on the global error boundary and the project-detail links row.
-   Everything else here now renders in Tailwind. */
-.hero-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 2.5rem;
-  flex-wrap: wrap;
-  align-items: center;
+.t-prose {
+  max-width: 68ch;
+}
+.t-prose p + p {
+  margin-top: 1rem;
 }
 
-/* The chat panel's status dot. Renamed off "pulse" because that name
-   collides with Tailwind's built-in animate-pulse keyframes and was
-   overriding them site-wide with a non-composited box-shadow animation.
-   Runs on a ::after ring now, transform + opacity only, so it composites. */
-@keyframes status-ring {
-  0%   { transform: scale(1); opacity: 0.6; }
-  70%  { transform: scale(3.6); opacity: 0; }
-  100% { transform: scale(3.6); opacity: 0; }
-}
 
-/* ---------- SECTION DIVIDER RULE ---------- */
-.rule {
-  height: 1px;
-  background: var(--ink-15);
-  border: 0;
-  margin: 0;
-}
+/* ------------------------------------------------------------
+   4. PANELS — drawn, not floated
 
-/* ---------- PROGRESS RAIL ---------- */
-.rail {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  z-index: 70;
-  background: transparent;
-}
-/* One colour. The four-stop rainbow this used to be was the loudest
-   pixel on the page and it sat at the very top of every route. */
-.rail-bar {
-  height: 100%;
-  width: 100%;
-  transform-origin: left;
-  transform: scaleX(0);
-  background: var(--accent);
-  /* The one element on the site that is genuinely written to on every
-     frame of a scroll, so the one place a permanent compositor hint is
-     the honest answer rather than a guess. Without it the bar is a
-     full-width strip that re-paints on the main thread sixty times a
-     second for the whole length of the page; with it the scale is handed
-     to the compositor and the paint happens once. */
-  will-change: transform;
-}
-/* ---------- THE MOTION PRIMITIVE ----------
-   One transition, used by everything that animates on scroll.
+   No shadow, no blur, no radius above 2px. A panel is a hairline
+   rule and four corner ticks, the way a technical drawing is
+   cropped. Depth comes from value steps and rule weight, which
+   is the only kind of depth that survives a theme inversion.
+   ------------------------------------------------------------ */
 
-   The site previously ran five different motion systems at once: GSAP
-   ScrollTrigger batches, scrubbed parallax on images, a scroll-velocity
-   skew on flagged elements, per-character text scrambling, and a
-   horizontal drift on the statement type. Some were scrubbed against
-   scroll position, which means they re-render continuously while you
-   are trying to read.
-
-   Everything now does exactly this: fade in, rise 24px, once, 600ms.
-   Nothing is tied to scroll position, so nothing moves while you read.
-
-   `.reveal` is a single element; `.reveal-group` staggers its own
-   children (the delay is written per child by Reveal.tsx). Both are
-   flipped on by `.is-in`. */
-/* `html.js` is set by BootScript before the first paint. The hidden
-   starting state is scoped to it so that a visitor with scripting off
-   gets the content plainly rather than a page of invisible headings —
-   the observer that would reveal them never runs. */
-/* The curve is --ease-out, not --ease.
-
-   This file argues the distinction two hundred lines up and then the
-   largest entrance on the site was the one place not following it:
-   --ease has an initial slope of 0.39, so a reveal on it spends its
-   first eighth of a second barely moving. On a hover state nobody
-   notices. On something triggered by a scroll it is read as the page
-   failing to keep up with the wheel — the content is already on screen,
-   visibly waiting, before it starts arriving. --ease-out commits on the
-   first frame and decelerates into place, which is what makes a reveal
-   read as prompt rather than as lag.
-
-   With the lazy start gone the travel can come down with it: 20px rather
-   than 24, over 560ms rather than 600. A shorter distance on a curve
-   that leaves immediately reads as the element settling; a longer one on
-   a curve that hesitates reads as it being dragged. */
-.js .reveal,
-.js .reveal-group > * {
-  opacity: 0;
-  transform: translate3d(0, 20px, 0);
-  transition:
-    opacity 0.56s var(--ease-out),
-    transform 0.56s var(--ease-out);
-  /* No `will-change` here, deliberately. The honest place for it would be
-     this pending state, and the class flip that would retire it is the
-     same flip that starts the transition — so the hint would be withdrawn
-     on the exact frame it was needed. Opacity and transform are the two
-     properties a browser already promotes on its own when a transition on
-     them begins; there is nothing for the hint to buy, and left on it
-     would pin a layer per revealed element for the life of the page. */
-}
-.js .reveal.is-in,
-.js .reveal-group.is-in > * {
-  opacity: 1;
-  transform: none;
-}
-
-/* The card variant: the tile starts a little smaller than its final size
-   and grows into it. Only for elements with a surface — a card, a tile,
-   a diagram node. Text blocks keep the plain rise, because scaling type
-   resamples the glyphs on the way up and reads as a zoom rather than as
-   the thing arriving.
-
-   Slower than the plain reveal on purpose. The scale is the part the eye
-   tracks, and at 600ms it snaps; the extra 200ms is what makes it read
-   as settling into place. */
-.js .reveal-group.reveal-pop > * {
-  /* Same correction as the plain reveal: the entrance curve, and a
-     shorter run on it. 0.96 rather than 0.94 as well — the scale is what
-     the eye tracks, and over a tile the width of a column the extra two
-     per cent is a dozen pixels of edge travel that reads as the card
-     being inflated rather than as it arriving. */
-  transform: translate3d(0, 24px, 0) scale(0.96);
-  transition:
-    opacity 0.66s var(--ease-out),
-    transform 0.66s var(--ease-out);
-}
-.js .reveal-group.reveal-pop.is-in > * {
-  transform: none;
-}
-/* Reduced motion resolves useInView to true immediately, so the content
-   is present either way — this drops the transition so it is present
-   without a fade as well. */
-@media (prefers-reduced-motion: reduce) {
-  /* .reveal-pop is listed explicitly: it sets transform and transition at
-     a higher specificity than the plain group, so without it here the
-     scale-in would still animate for someone who asked it not to. */
-  .js .reveal,
-  .js .reveal-group > *,
-  .js .reveal-group.reveal-pop > * {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/* Selection + focus polish */
-::selection { background: var(--accent); color: var(--paper); }
-
-/* ---------- LINK SWEEP ---------- */
-/* Underline grows from the left on hover, collapses to the right on
-   leave — reads more deliberate than a static underline toggle. */
-.lnk {
+.panel {
   position: relative;
-  display: inline-block;
+  background: var(--c-panel);
+  border: 1px solid var(--c-rule);
+  border-radius: 2px;
 }
-.lnk::after {
+
+.panel-flat {
+  position: relative;
+  border: 1px solid var(--c-rule);
+  border-radius: 2px;
+}
+
+/* Corner ticks. Two pseudo-elements carry all four marks via
+   two gradients each, so a panel costs no extra DOM. The ticks
+   sit just outside the rule, which is what makes the panel read
+   as cropped rather than boxed. */
+.ticks::before,
+.ticks::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  /* 180ms, not 420. This is a hover state on the most-repeated
-     interaction on the site, and it was running 40% past the 300ms
-     ceiling — long enough that the underline was still arriving after
-     the eye had moved on. */
-  transition: transform 180ms var(--ease-out);
-}
-/* The current page. This was an inline `text-decoration: underline` in
-   Nav.tsx, which cannot animate — the underline teleported from one link
-   to the next on every route change. The sweep is already here; the
-   active link just holds it open. */
-.lnk[aria-current="page"]::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-/* :focus-visible is never gated — a keyboard user has no pointer and
-   still needs the affordance. */
-.lnk:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-@media (hover: hover) and (pointer: fine) {
-  .lnk:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-}
-
-.card {
-  position: relative;
-}
-/* The faint top highlight that used to be drawn on every dark card is
-   gone. It existed because the cards were translucent over a WebGL
-   field and needed an edge to catch light on; they are opaque
-   #1d1d1f panels now and read fine on their own. */
-
-/* Tighter, more typographic eyebrow */
-.eyebrow {
-  font-variant-numeric: tabular-nums;
-}
-
-
-/* ---------- NAV RESPONSIVE ---------- */
-/* These lived in a <style> element rendered inside the Nav client
-   component. React and Next relocate style tags during hydration, so
-   the DOM at that position stops matching what React expects — a
-   hydration mismatch that takes the whole root down to client
-   rendering. Stylesheet rules belong in the stylesheet.
-
-   !important is still required: the display value this overrides is an
-   inline style on the element itself. */
-@media (max-width: 720px) {
-  .nav-links { display: none !important; }
-}
-
-/* The header's menu button. Its look used to be a block of inline
-   styles on the element; it moved here when the button became the
-   trigger for <MobileNavigation>, unchanged in every value, so the
-   closed state is exactly the button that was already there.
-   Whether it is shown is decided by .mobile-nav__trigger. */
-.nav-toggle {
-  background: none;
-  border: 1px solid var(--ink-15);
-  border-radius: 6px;
-  padding: 0.35rem 0.7rem;
-  color: var(--ink-70);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), transform 160ms var(--ease-out);
-}
-.nav-toggle:hover,
-.nav-toggle[aria-expanded="true"] { color: var(--ink); border-color: var(--ink-45); }
-
-/* ---------- PROJECT DETAIL ---------- */
-.pd-hero { padding: 2.5rem 0 1rem; }
-
-
-/* The header's children sit in normal flow above its backdrop.
-
-   This used to read `.nav-glass > *:not(.glass-layer)`, because the bar
-   was filled by an absolutely-positioned <GlassLayer> that its own
-   markup had to be lifted over. That component is gone — the bar frosts
-   itself with a plain backdrop-filter — and the ~90 lines of
-   .glass-surface / .glass-layer rules that dressed it went with it. */
-.nav-glass > * { position: relative; z-index: 1; }
-
-/* ---------- Glass, deliberately rationed ----------
-   Every card, post, page surface and floating panel on the site used to
-   sit behind `backdrop-filter: blur(14px) saturate(1.5)`. That forces
-   the compositor to read back and re-blur the pixels behind the element
-   whenever either layer moves — which, for a card in a scrolling list,
-   is every frame. It also flattened the whole page into one frosted
-   haze, because nothing was distinguishable from anything else.
-
-   The header keeps its glass, because it is fixed over moving content
-   and the blur is telling you it is a layer above the page. Everything
-   else is now an opaque surface. */
-
-/* ── Sticky mobile CTA ────────────────────────────────────────────────────
-   Desktop keeps the nav on screen at all times, so this is phone-only. */
-.sticky-cta { display: none; }
-
-@media (max-width: 720px) {
-  .sticky-cta {
-    display: flex;
-    gap: 0.6rem;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 60;
-    padding: 0.7rem 16px calc(0.7rem + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--ink-15);
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter: blur(14px) saturate(1.4);
-    -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  }
-  .sticky-cta .btn {
-    flex: 1;
-    text-align: center;
-    padding: 0.7rem 0.5rem;
-    font-size: 0.85rem;
-  }
-  .sticky-cta-secondary { flex: 0 0 38% !important; }
-
-  /* The bar floats over the page, so the footer needs clearance or its last
-     line sits underneath it. */
-  .site-footer { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
-
-  /* The scroll-percent pill lives in the same bottom-right corner. It is
-     already hidden on touch; this also clears it on a narrow desktop
-     window, where the CTA bar appears but the pointer is still fine. */
-}
-
-/* ── Privacy notice ───────────────────────────────────────────────────────
-   Disclosure, not a consent gate — nothing is blocked behind it. */
-.cookie-notice {
-  position: fixed;
-  z-index: 70;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
-  margin: 0 auto;
-  max-width: 560px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding: 1rem 1.15rem;
-  border: 1px solid var(--ink-15);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--paper-raised) 92%, transparent);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 10px 34px rgb(0 0 0 / 0.12);
-}
-.cookie-notice-body { flex: 1 1 260px; min-width: 0; }
-.cookie-notice-body p {
-  margin: 0.35rem 0 0;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--ink-70);
-}
-.cookie-notice-btn {
-  flex: 0 0 auto;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  font-size: 0.82rem;
-}
-
-@media (max-width: 720px) {
-  /* Clears the sticky CTA bar rather than covering it. */
-  .cookie-notice { bottom: calc(4.4rem + env(safe-area-inset-bottom)); }
-  /* The chat launcher is fixed to the same corner, and on a phone the
-     notice is a full-width panel rather than a bar — so the launcher
-     landed inside it, level with "Got it", reading as a button belonging
-     to the notice.
-
-     Hidden rather than nudged upwards: the notice's height depends on how
-     its sentence wraps, so no single offset clears it at every width, and
-     a third floating control over a screen that already carries the
-     notice and the sticky CTA is too much either way. It costs one tap on
-     one visit — the notice never comes back once dismissed, and the
-     launcher returns the moment it goes. */
-  /* Not `display: none`. Display cannot transition, so dismissing the
-     notice used to make the launcher materialise out of nothing in the
-     corner. Held at opacity 0 it can be handed over instead: the delay
-     matches the notice's own 220ms exit, so the button starts arriving
-     as the notice finishes leaving and the two read as one movement. */
-  body:has(.cookie-notice) .chat-launcher {
-    opacity: 0;
-    /* `visibility`, not just `pointer-events`. An element at opacity 0 is
-       still in the tab order — the previous `display: none` took it out
-       of the document, and dropping to opacity alone quietly handed
-       keyboard users an invisible button to land on. Visibility is a
-       discrete property, so it flips at the end of the transition on the
-       way out and at the start on the way in. */
-    visibility: hidden;
-    pointer-events: none;
-  }
-  /* Opacity only, and `transform` deliberately left out of this list.
-     The launcher's transform is the press feedback — `:active` scales it
-     to 0.96 — and a 220ms delay written for the arrival would sit in
-     front of every tap on the device where taps are the only input. */
-  .chat-launcher {
-    visibility: visible;
-    transition: opacity 220ms var(--ease-out) 220ms, visibility 0s linear 220ms,
-      transform 160ms var(--ease-out), border-color 0.2s ease;
-  }
-}
-
-/* ── Legal pages ──────────────────────────────────────────────────────────
-   Long-form prose, which no other page on the site has. */
-.legal { max-width: 72ch; }
-.legal p,
-.legal li {
-  color: var(--ink-70);
-  font-size: 0.94rem;
-  line-height: 1.7;
-}
-.legal p { margin: 0 0 1rem; }
-.legal h2 {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  margin: 2.25rem 0 0.6rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--ink-15);
-}
-.legal ul { margin: 0 0 1rem; padding-left: 1.15rem; }
-.legal li { margin-bottom: 0.45rem; }
-.legal code {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.85em;
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
-  background: var(--ink-15);
-}
-
-/* ── Site assistant ───────────────────────────────────────────────────────
-   A floating launcher plus a panel, both fixed. The panel is a dialog in
-   name only — it is deliberately non-modal (aria-modal="false"), because
-   the point is to read the page while asking about it. */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-.chat-launcher {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 80;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  padding: 0.6rem 1rem;
-  font-family: var(--font-body);
-  font-size: 0.84rem;
-  color: var(--ink);
-  border: 1px solid var(--ink-15);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--paper-raised) 92%, transparent);
-  backdrop-filter: blur(16px) saturate(1.4);
-  -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 10px 34px rgb(0 0 0 / 0.12);
-  transition: transform 160ms var(--ease-out), border-color 0.2s ease;
-}
-.chat-launcher-icon { color: var(--accent); font-size: 0.9rem; line-height: 1; }
-
-.chat-panel {
-  position: fixed;
-  right: 16px;
-  bottom: 74px;
-  z-index: 80;
-  display: flex;
-  flex-direction: column;
-  width: min(380px, calc(100vw - 32px));
-  /* dvh, not vh. On a phone `vh` is the viewport with the browser
-     chrome retracted — a size the page does not actually have while
-     the URL bar is showing — so a panel measured in vh is taller than
-     the space it is in, and its foot (the input, the send button) sits
-     under the chrome. */
-  max-height: min(560px, calc(100dvh - 120px));
-  border: 1px solid var(--ink-15);
-  border-radius: 12px;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--paper-raised) 96%, transparent);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  box-shadow: 0 18px 48px rgb(0 0 0 / 0.14);
-  opacity: 0;
-  /* The panel grows out of its own launcher. It is pinned to the bottom
-     right corner and the button that opens it sits directly below that
-     corner, so the origin is a constant rather than something that has
-     to be measured — but it is the same idea as the work lightbox
-     growing out of the tile you tapped: the surface comes from the
-     control that summoned it, so the relationship between the two is
-     visible rather than implied.
-
-     Scale and blur resolve together, which is what makes a translucent
-     surface read as a material arriving rather than as an image being
-     faded up. The travel is small because the distance is small — this
-     is a panel appearing 8px above a button, not a sheet crossing the
-     screen. */
-  transform: translateY(8px) scale(0.94);
-  transform-origin: bottom right;
-  filter: blur(8px);
-  /* The delay on `visibility` is what lets the closing fade finish before
-     the box is taken away — see the [hidden] rule below.
-
-     The outbound curve is the inbound one with its control points
-     inverted, so the panel leaves along the path it arrived on. */
-  transition:
-    opacity 0.22s var(--ease-out),
-    transform 0.22s var(--ease-out),
-    filter 0.22s var(--ease-out),
-    visibility 0s linear 0.22s;
-}
-/* `display: flex` above outranks the UA's `[hidden] { display: none }`, so
-   the closed panel was still laid out: invisible at opacity 0, but a
-   380x560 fixed box in the bottom-right corner of every page that ate
-   clicks meant for whatever was under it, kept its controls in the tab
-   order, and read out to a screen reader as though it were open.
-
-   visibility rather than display, because display cannot be transitioned
-   and the fade is worth keeping. It takes the panel out of hit testing,
-   out of the tab order and out of the accessibility tree, which is the
-   whole of what the attribute was supposed to do. */
-.chat-panel[hidden] {
-  visibility: hidden;
+  width: 9px;
+  height: 9px;
   pointer-events: none;
+  background:
+    linear-gradient(var(--c-rule-strong), var(--c-rule-strong)) no-repeat,
+    linear-gradient(var(--c-rule-strong), var(--c-rule-strong)) no-repeat;
+  background-size: 9px 1px, 1px 9px;
 }
-.chat-panel.is-open {
-  opacity: 1;
-  transform: none;
-  filter: none;
-  visibility: visible;
-  /* No delay in this direction: the panel has to be there before it fades in. */
-  transition:
-    opacity 0.26s var(--ease-out),
-    transform 0.26s var(--ease-out),
-    filter 0.26s var(--ease-out),
-    visibility 0s;
+.ticks::before {
+  top: -1px;
+  left: -1px;
+  background-position: 0 0, 0 0;
+}
+.ticks::after {
+  bottom: -1px;
+  right: -1px;
+  background-position: 100% 100%, 100% 100%;
 }
 
-.chat-head {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--ink-15);
-}
-.chat-head-row {
+
+/* The contingency line. Its own class rather than a utility
+   string, because the rule in the brief is that every panel has
+   one — and a named thing is auditable in a way that
+   `text-[#d9534f]` scattered across forty files is not. */
+.contingency {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-/* The panel's own title, and the one place on this surface that takes a
-   colour. It used to ask for that colour from the markup — `.eyebrow`
-   alongside `text-amber-600 font-bold` — which worked until Tailwind 4
-   moved utilities into a cascade layer that `.eyebrow`'s `color` and
-   `font-weight: inherit` now outrank. The label went grey and regular
-   and nothing said why, so the values live here instead, where the rest
-   of this panel's type already does.
-
-   Amber 700 rather than the 600 the markup asked for: 600 is 3.4:1 on
-   this panel, and this is 12px. */
-.chat-head .eyebrow {
-  display: inline-flex;
-  align-items: center;
   gap: 0.5rem;
-  color: #b45309;
-  font-weight: 700;
+  align-items: baseline;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px dashed var(--c-rule);
+  color: var(--c-alarm);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
 }
-html[data-theme="dark"] .chat-head .eyebrow { color: #e5a93b; }
-/* Likewise the per-turn role label: it is a block with air under it,
-   which the markup's `mb-1 block` no longer delivers. */
-.chat-msg .eyebrow { display: block; margin-bottom: 0.25rem; }
-.chat-reset {
-  cursor: pointer;
-  padding: 0.15rem 0.5rem;
-  font-family: var(--font-body);
-  font-size: 0.74rem;
-  color: var(--ink-45);
-  background: var(--ink-08);
-  border: 0;
-  border-bottom: 1px solid var(--ink-15);
-  border-radius: 6px;
-  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+.contingency > span:first-child {
+  flex: none;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
 }
-.chat-reset:hover { color: var(--ink); background: var(--ink-15); border-color: var(--accent); }
-.chat-head .pulse {
+
+
+/* ------------------------------------------------------------
+   5. SCHEMATIC LAYER
+
+   Dimension lines, leaders and the measured-drawing furniture.
+   The numbers these carry are real data — a dimension line with
+   an invented measurement is decoration, and decoration without
+   a subject is what the brief forbids.
+   ------------------------------------------------------------ */
+
+/* The dimension-line furniture used to live here: `.dim` drew a
+   horizontal rule with end serifs and `.dim-tick` added the tick
+   marks, for the DimensionLine primitive. That component was never
+   called by anything once the pages settled, so it and its paint are
+   both gone. The section keeps its name and its rule — the corner
+   ticks, graph paper and rules below are the schematic layer that
+   actually survived. */
+
+/* Graph paper, at the lightest weight that still reads. Used on
+   at most one surface per page — a schematic layer everywhere is
+   wallpaper. */
+.grid-paper {
+  background-image:
+    linear-gradient(to right, var(--c-rule) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-rule) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.4;
+}
+
+
+
+/* ------------------------------------------------------------
+   5b. THE GRAPHIC LAYER
+
+   Comic and game devices, chosen because each one is a real artifact
+   of its medium rather than an illustration of it. A bat logo would be
+   costume; the halftone screen a comic is physically printed through is
+   not. That distinction is the whole rule for this section.
+
+   Every one of these is decorative, so every one of them is applied to
+   an aria-hidden element and none of them carry information.
+   ------------------------------------------------------------ */
+
+/* Ben-Day dots — the halftone screen four-colour comic printing is
+   made of, and the most honest comic reference available. Two offset
+   dot grids at half-phase give the regular diagonal lattice of a real
+   screen rather than the square grid a single gradient produces.
+
+   Kept very low contrast: this is a tooth on the surface, not a
+   pattern. At 3px it reads as texture on a phone and as a screen on a
+   desktop, which is the right way round. */
+/* EVERY layer in this section is feathered at its own edges.
+
+   This is the fix for the first version reading, in review, as a tinted
+   card that "stands out like a sore thumb". The cause was not the
+   colour — it was the boundary. A gradient painted into a box that
+   clips at `overflow: hidden` ends in a straight line, and a straight
+   line is a shape. So the eye stopped seeing light and started seeing a
+   yellow rectangle sitting on the page.
+
+   `mask-image` is what dissolves it: each layer fades its own alpha to
+   zero before the container edge, so the texture has no border of its
+   own and genuinely blends into the ground beneath it. The tint
+   strengths came down at the same time — a wash only reads as light if
+   it is weak enough to be ambiguous. */
+
+.halftone {
+  background-image:
+    radial-gradient(var(--c-rule-strong) 0.9px, transparent 0.9px),
+    radial-gradient(var(--c-rule-strong) 0.9px, transparent 0.9px);
+  background-size: 6px 6px, 6px 6px;
+  background-position: 0 0, 3px 3px;
+  opacity: 0.2;
+  /* Dense in one corner, gone by the opposite one, so the screen reads
+     as a gradient of tone rather than as a filled panel of dots. */
+  -webkit-mask-image: radial-gradient(
+    115% 115% at 0% 0%,
+    rgb(0 0 0 / 0.95) 0%,
+    rgb(0 0 0 / 0.45) 42%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    115% 115% at 0% 0%,
+    rgb(0 0 0 / 0.95) 0%,
+    rgb(0 0 0 / 0.45) 42%,
+    transparent 78%
+  );
+}
+
+
+/* The signal. A soft cone of light thrown up from the lower left, which
+   is where a searchlight would be. A gradient and not a shape: the
+   moment it has an outline it becomes a logo.
+
+   Halved in strength from the first version and now masked, so it dies
+   out well inside the container. In the light theme amber stops being
+   emission and becomes a warm wash on paper, which is the honest
+   translation rather than a bug. */
+.signal-beam {
+  background:
+    radial-gradient(
+      70% 90% at 10% 100%,
+      color-mix(in oklab, var(--c-signal) 11%, transparent) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      45% 60% at 88% 0%,
+      color-mix(in oklab, var(--c-probe) 5%, transparent) 0%,
+      transparent 78%
+    );
+  -webkit-mask-image: radial-gradient(
+    125% 125% at 20% 100%,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.5) 50%,
+    transparent 85%
+  );
+  mask-image: radial-gradient(
+    125% 125% at 20% 100%,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.5) 50%,
+    transparent 85%
+  );
+}
+
+/* Chiaroscuro. A predictable sequence of light and shade is what gives
+   a flat surface depth, and it is the one formal device the Batman
+   visual tradition is actually built on. Darkens the corners so the
+   centre of a panel sits forward. */
+.chiaro {
+  background: radial-gradient(
+    120% 90% at 50% 0%,
+    transparent 45%,
+    color-mix(in oklab, var(--c-ground) 55%, transparent) 100%
+  );
+  /* Feathered like the rest. This one darkens *towards* the ground
+     colour, so a hard edge was less visible than on the beam — but it
+     still produced a faint seam where the container ended. */
+  -webkit-mask-image: radial-gradient(
+    130% 130% at 50% 0%,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.6) 55%,
+    transparent 90%
+  );
+  mask-image: radial-gradient(
+    130% 130% at 50% 0%,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.6) 55%,
+    transparent 90%
+  );
+}
+
+/* Angular geometry. Deco, and the hard diagonal of the cowl and the
+   wing — cut with clip-path so it is a real edge rather than a drawn
+   triangle. Used on section dividers and the gaming strip. */
+.shard {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.5rem), 0 100%);
+}
+
+/* A corner cut, which is what makes a panel read as a plate rather
+   than a box. One corner only — four would be a badge. */
+.notch {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 0.875rem) 0,
+    100% 0.875rem,
+    100% 100%,
+    0 100%
+  );
+}
+
+
+/* ------------------------------------------------------------
+   5c. MOTION
+
+   The first pass had one transition and nothing else, which the review
+   correctly called styleless. This adds motion, under three rules it
+   does not break:
+
+   one, nothing loops forever — a thing still moving after you have
+   read it is demanding attention, and the persona this is built from
+   ships tools with zero telemetry and consent before counting;
+   two, every effect is on an aria-hidden or decorative element, or is
+   a one-shot entry;
+   three, prefers-reduced-motion removes all of it, not most of it.
+   ------------------------------------------------------------ */
+
+/* The drawn line. A schematic rule that draws itself once when it
+   comes into view, the way a blueprint is inked or an Arkham overlay
+   resolves. Driven by stroke-dashoffset on an SVG, so it is the real
+   geometry drawing rather than a box being revealed. */
+@keyframes draw-in {
+  from {
+    stroke-dashoffset: var(--draw-len, 1000);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+html.js .drawn path,
+html.js .drawn line,
+html.js .drawn polyline,
+html.js .drawn rect,
+html.js .drawn circle {
+  stroke-dasharray: var(--draw-len, 1000);
+  stroke-dashoffset: var(--draw-len, 1000);
+}
+html.js .drawn[data-shown="true"] path,
+html.js .drawn[data-shown="true"] line,
+html.js .drawn[data-shown="true"] polyline,
+html.js .drawn[data-shown="true"] rect,
+html.js .drawn[data-shown="true"] circle {
+  animation: draw-in 900ms var(--ease-cx) forwards;
+}
+
+/* Mask wipe. Content arrives behind a hard edge travelling across it,
+   which is how a comic panel is read — one edge at a time — and how a
+   scan resolves. A clip-path wipe rather than an opacity fade, because
+   a fade has no direction and this does. */
+@keyframes wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+html.js .wipe {
+  clip-path: inset(0 100% 0 0);
+}
+html.js .wipe[data-shown="true"] {
+  animation: wipe-in 620ms var(--ease-cx) forwards;
+}
+
+/* Rise, kept from the first pass for body copy, where a directional
+   wipe would be fussy. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Detective mode. A panel under the pointer gets a single bright edge
+   and a faint inner light — the Arkham convention of a surface
+   resolving under scrutiny, reduced to two properties. It is a hover
+   affordance on something already interactive, never the only signal
+   that a thing can be used. */
+.scan {
   position: relative;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
+  transition: border-color 220ms var(--ease-cx),
+    background-color 220ms var(--ease-cx);
 }
-.chat-head .pulse::after {
+.scan::after {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: status-ring 2.4s var(--ease-out) infinite;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    color-mix(in oklab, var(--c-detect) 12%, transparent) 50%,
+    transparent 65%
+  );
+  transition: opacity 260ms var(--ease-cx);
 }
-.chat-head p {
-  margin: 0.35rem 0 0;
-  font-size: 0.74rem;
-  line-height: 1.5;
-  color: var(--ink-45);
+@media (hover: hover) {
+  .scan:hover {
+    border-color: var(--c-detect-dim);
+  }
+  .scan:hover::after {
+    opacity: 1;
+  }
 }
-
-.chat-log {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+/* Focus gets the same treatment, so the scan is not pointer-only. */
+.scan:focus-visible,
+.scan:focus-within {
+  border-color: var(--c-detect-dim);
 }
-.chat-greeting {
-  margin: 0;
-  font-size: 0.84rem;
-  line-height: 1.6;
-  color: var(--ink-70);
-}
-.chat-msg p {
-  margin: 0.25rem 0 0;
-  font-size: 0.86rem;
-  line-height: 1.6;
-  color: var(--ink);
-  white-space: pre-wrap;
-}
-/* The chat log was the one surface on the site where content still
-   teleported: a bubble was absent one frame and present the next. Same
-   vocabulary as `err-in` below, one step gentler — this arrives, it does
-   not announce. It runs on mount only; the assistant's bubble is
-   inserted empty and then streams, so the text fills a box that has
-   already settled. */
-.chat-msg { animation: msg-in 200ms var(--ease-out) both; }
-@keyframes msg-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: none; }
-}
-.chat-msg-user { padding-left: 0.7rem; border-left: 2px solid var(--accent); }
-.chat-msg-user p { color: var(--ink-70); }
-.chat-msg-assistant { padding-left: 0.7rem; border-left: 2px solid var(--ink-15); }
-/* An off-topic question the assistant refused — marked so it reads as a
-   boundary rather than as an answer that happens to be unhelpful. */
-.chat-msg-blocked { border-left-color: var(--danger); }
-.chat-msg-blocked .eyebrow { color: var(--danger); }
-.chat-msg-blocked p { color: var(--ink-45); }
-.chat-error {
-  margin: 0;
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: var(--danger);
+.scan:focus-within::after {
+  opacity: 1;
 }
 
-.chat-suggestions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.chat-chip {
-  cursor: pointer;
-  padding: 0.35rem 0.7rem;
-  font-family: var(--font-body);
-  font-size: 0.76rem;
-  color: var(--ink-70);
-  background: var(--ink-08);
-  border: 1px solid var(--ink-15);
-  border-radius: 999px;
-  transition: color 0.15s ease, border-color 0.15s ease, transform 160ms var(--ease-out);
+/* The signal tick's pulse. Three beats and it stops — a status light
+   that throbs forever is an alarm, and alarm means one thing here. */
+@keyframes tick-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.5);
+  }
 }
-.chat-chip:hover { color: var(--ink); border-color: var(--accent); }
+html.js .tick-pulse {
+  animation: tick-pulse 1.6s var(--ease-cx) 3;
+}
 
-.chat-form {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-end;
-  padding: 0.75rem;
-  border-top: 1px solid var(--ink-15);
-}
-.chat-input {
-  flex: 1 1 auto;
-  resize: none;
-  padding: 0.5rem 0.6rem;
-  font-family: var(--font-body);
-  font-size: 0.84rem;
-  line-height: 1.5;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--ink-15);
-  border-radius: 8px;
-}
-.chat-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-/* `.btn` sets `display: inline-block`, which under Tailwind 4's layering
-   now beats the `inline-flex items-center gap-1` the markup puts on this
-   button — so the corner-return icon and the word "Send" stopped being a
-   row and stacked, and the button rendered as a two-line blob. The
-   layout belongs to the send button rather than to every `.btn`, so it
-   is stated here. */
-.chat-send {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.9rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+/* ------------------------------------------------------------
+   5d. THE RICHER EFFECTS
 
-@media (max-width: 720px) {
-  /* The sticky CTA bar owns the bottom edge on phones, so both the launcher
-     and the panel are lifted above it rather than stacked on top of it. */
-  .chat-launcher { bottom: calc(4.9rem + env(safe-area-inset-bottom)); }
-  .chat-panel {
-    bottom: calc(8.5rem + env(safe-area-inset-bottom));
-    max-height: min(440px, calc(100dvh - 220px));
+   Review asked for more, with reactbits.dev as the reference and
+   "don't worry about going overboard". These are the effects from that
+   library's vocabulary that belong in *this* design — stroke and depth
+   text, an electric border, a pointer spotlight, a plasma field,
+   decrypting text — reimplemented from scratch in CSS rather than
+   installed.
+
+   Every effect below is a gradient, a mask, a clip-path or a custom
+   property — and each one still dies completely under
+   prefers-reduced-motion.
+
+   CORRECTION, revision 3. The original note here justified the
+   from-scratch rebuild partly on the claim that the site sits "behind a
+   meta CSP with no runtime script origin". That was wrong. The meta CSP
+   in app/layout.tsx is `base-uri 'none'; object-src 'none'` and sets no
+   script-src at all — GitHub Pages cannot send the headers a real
+   script policy needs, which is the whole point of the note there. A
+   bundled dependency was therefore never blocked by policy, and
+   `motion` and `ogl` are now installed (§5e).
+
+   The honest half of the original argument survives and still governs:
+   weight. These CSS effects cost nothing and are kept for everything
+   they already do well, because an installed component that duplicates
+   a working gradient is pure cost. The dependencies earn their place
+   only where CSS genuinely cannot reach — per-pixel shader work, and
+   interruptible spring motion that has to survive being re-targeted
+   mid-flight.
+   ------------------------------------------------------------ */
+
+/* Stroke text — outlined display type, the way a comic cover sets a
+   word it wants read as a graphic rather than as language. Uses the
+   real text-stroke so the glyph outline is exact at any size. */
+.t-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-rule-strong);
+  paint-order: stroke fill;
+}
+@media (min-width: 640px) {
+  .t-stroke {
+    -webkit-text-stroke-width: 2px;
+  }
+}
+
+/* Depth text — a hard offset shadow in the rule colour, which is how
+   Deco and comic lettering fake extrusion. No blur: a blurred shadow
+   reads as a drop shadow, and this is meant to read as a second plate
+   printed slightly off-register. */
+.t-depth {
+  text-shadow:
+    2px 2px 0 var(--c-panel-2),
+    4px 4px 0 var(--c-rule);
+}
+
+/* Electric border. A conic gradient rotating behind a one-pixel inset,
+   so the *edge* carries the light rather than the surface. Three turns
+   and it stops — the loop rule in 5c applies here too.
+
+   `@property` is what makes the angle animatable: a plain custom
+   property is a string to the engine and cannot be interpolated. */
+@property --arc {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes arc-spin {
+  to {
+    --arc: 360deg;
+  }
+}
+.electric {
+  position: relative;
+  isolation: isolate;
+}
+.electric::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 3px;
+  background: conic-gradient(
+    from var(--arc),
+    transparent 0turn,
+    var(--c-detect) 0.08turn,
+    transparent 0.2turn,
+    transparent 1turn
+  );
+  opacity: 0;
+  transition: opacity 240ms var(--ease-cx);
+}
+@media (hover: hover) {
+  .electric:hover::before {
+    opacity: 1;
+    animation: arc-spin 1.6s linear 3;
+  }
+}
+/* Focus gets it too, so a keyboard visitor is not shown less than a
+   pointer one. */
+.electric:focus-visible::before {
+  opacity: 1;
+  animation: arc-spin 1.6s linear 3;
+}
+
+/* Pointer spotlight. The grid writes --mx/--my from the pointer and
+   each cell lights the part of itself nearest the cursor. One listener
+   on the container, two custom properties, no per-cell state — which
+   is what keeps it cheap enough to run on a twenty-cell grid.
+
+   Falls back to invisible: with no script the properties are never
+   set, the radial lands at 50%/50% at zero opacity, and nothing
+   happens. */
+.spotlight {
+  position: relative;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms var(--ease-cx);
+  background: radial-gradient(
+    18rem circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--c-detect) 11%, transparent) 0%,
+    transparent 60%
+  );
+}
+@media (hover: hover) {
+  .spotlight-host:hover .spotlight::before {
+    opacity: 1;
+  }
+}
+
+/* Plasma — a slow drift of two offset radial fields. The reactbits
+   version is a shader; this is two gradients and a transform, which at
+   this opacity is indistinguishable and costs nothing. Masked like
+   every other texture so it has no edge of its own.
+
+   Twelve seconds and it stops. */
+@keyframes plasma-drift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(2%, 1.5%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-2%, -1%, 0) scale(1.05);
+  }
+}
+.plasma {
+  background:
+    radial-gradient(
+      38% 50% at 22% 32%,
+      color-mix(in oklab, var(--c-signal) 10%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      42% 46% at 78% 68%,
+      color-mix(in oklab, var(--c-probe) 7%, transparent),
+      transparent 72%
+    );
+  -webkit-mask-image: radial-gradient(
+    120% 120% at 50% 50%,
+    rgb(0 0 0 / 0.9) 0%,
+    rgb(0 0 0 / 0.35) 55%,
+    transparent 88%
+  );
+  mask-image: radial-gradient(
+    120% 120% at 50% 50%,
+    rgb(0 0 0 / 0.9) 0%,
+    rgb(0 0 0 / 0.35) 55%,
+    transparent 88%
+  );
+}
+html.js .plasma {
+  animation: plasma-drift 12s ease-in-out 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .electric::before,
+  .electric:hover::before,
+  .electric:focus-visible::before {
+    animation: none !important;
+    opacity: 0;
+  }
+  .spotlight::before {
+    display: none;
+  }
+  html.js .plasma {
+    animation: none !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* No travel and no material — the panel is simply there or not there.
-     The closed state has to drop its transform and blur too, or the
-     panel arrives already shrunk and stays that way with nothing left to
-     animate it back. */
-  .chat-panel {
-    transition: none;
-    transform: none;
-    filter: none;
+  html.js .drawn path,
+  html.js .drawn line,
+  html.js .drawn polyline,
+  html.js .drawn rect,
+  html.js .drawn circle {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none !important;
   }
-  .chat-launcher { transition: none; }
-  .chat-launcher:hover { transform: none; }
-  .chat-head .pulse::after { animation: none; }
+  html.js .wipe,
+  html.js .wipe[data-shown="true"] {
+    clip-path: none;
+    animation: none !important;
+  }
+  html.js .tick-pulse {
+    animation: none !important;
+  }
+  .scan::after {
+    display: none;
+  }
 }
 
-/* ---------- TOUCH ----------
-   This block used to be long. It undid, for phones only, most of what
-   the desktop build did: the backdrop blur on every card and page
-   surface, a fixed full-viewport grain overlay, a looping marquee, a
-   scroll-velocity skew, and several pulse animations that never stopped.
 
-   Nearly all of that is gone on every device now rather than switched
-   off on one, and what remained here was the last of the old bargain:
-   the four floating panels had their blur removed and their fills taken
-   solid on any touch device.
+/* ------------------------------------------------------------
+   5e. DETECTIVE MODE
 
-   That is no longer the right trade, and it was never a consistent one.
-   The header is a translucent layer on a phone — it was not in this
-   list — so the site was already telling a visitor that floating chrome
-   is glass, and then handing them four opaque slabs that float over the
-   same scrolling content. The blur is what says "this is above the
-   page"; a solid rectangle in the corner says "this is part of the
-   page", which is the one thing a launcher pinned over content is not.
+   Revision 3 commits the whole interaction layer to one reference:
+   the detective-mode overlay from the three Arkham games in the
+   games list. Chosen over the alternatives (Ben-Day comic print,
+   Animated Series deco, Nolan industrial) for a reason that is about
+   this site and not about taste — detective mode is a *diagnostic
+   instrument*. It is what the character switches on to read a
+   structure he cannot otherwise see: load paths, wiring, where the
+   people are, what is about to fail. A portfolio whose thesis is "a
+   dossier that states its own failure modes" is already that, and the
+   overlay is the only one of the four references that is a tool
+   rather than a costume.
 
-   So they keep the material, at a lighter radius than the desktop
-   values. The ladder is preserved — the launcher is still the thinnest
-   surface and the panel the thickest — it is just compressed, which is
-   the honest way to spend less GPU without spending the hierarchy. */
-@media (pointer: coarse) {
-  .chat-launcher {
-    backdrop-filter: blur(10px) saturate(1.3);
-    -webkit-backdrop-filter: blur(10px) saturate(1.3);
-  }
-  .sticky-cta,
-  .cookie-notice {
-    backdrop-filter: blur(14px) saturate(1.3);
-    -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  }
-  .chat-panel {
-    backdrop-filter: blur(16px) saturate(1.3);
-    -webkit-backdrop-filter: blur(16px) saturate(1.3);
-  }
-  /* Without a blur behind it a translucent fill is just noise, so the
-     solid fallbacks stay — for the browsers that have no backdrop-filter
-     rather than for every phone. */
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .sticky-cta { background: var(--paper); }
-    .cookie-notice,
-    .chat-launcher,
-    .chat-panel { background: var(--paper-raised); }
-  }
-  .chat-head .pulse::after { animation: none; }
+   Which makes the rules fall out of the reference rather than being
+   imposed on it:
+
+     - It is an OVERLAY. Nothing is cyan at rest (§1b). Every rule
+       below triggers on hover, focus, or a one-shot entrance.
+     - It RESOLVES. Wireframe first, then solid — a scan completing,
+       never a surface decaying.
+     - It is DIAGNOSTIC, so it reads structure that is really there:
+       the chain rules below connect nodes that are genuinely a
+       sequence, and the reticle marks things that are genuinely
+       interactive. No wireframe over a decorative box.
+     - The loop rule from 5c still holds. Nothing here runs forever.
+   ------------------------------------------------------------ */
+
+/* The scan field's CSS fallback, and the only version a phone or a
+   reduced-motion visitor ever gets. Two crossed hairline grids plus a
+   soft cyan bloom from one corner: the WebGL field in
+   components/primitives/ScanField.tsx resolves to roughly this, so
+   swapping between them is not a visible downgrade in composition —
+   only in whether it moves. Masked at its own edges like every other
+   texture in 5b. */
+.detect-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--c-detect) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--c-detect) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      60% 70% at 12% 100%,
+      color-mix(in oklab, var(--c-detect) 9%, transparent) 0%,
+      transparent 70%
+    );
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+  -webkit-mask-image: radial-gradient(
+    120% 120% at 20% 100%,
+    rgb(0 0 0 / 0.9) 0%,
+    rgb(0 0 0 / 0.4) 48%,
+    transparent 84%
+  );
+  mask-image: radial-gradient(
+    120% 120% at 20% 100%,
+    rgb(0 0 0 / 0.9) 0%,
+    rgb(0 0 0 / 0.4) 48%,
+    transparent 84%
+  );
 }
 
-/* Hover motion is gated where it is declared, in
-   `@media (hover: hover) and (pointer: fine)` blocks throughout this
-   file, rather than declared everywhere and cancelled again here.
+/* The scan sweep. A single bright line crossing a surface once, left
+   to right, when it first comes into view — the literal gesture of
+   the overlay switching on. One pass, then the element is left
+   alone forever.
 
-   The difference matters. A phone has no hover but fakes one: tapping
-   applies :hover and leaves it applied until something else is tapped,
-   so every ungated hover rule fires on tap and then stays — a card left
-   raised, an index row that kept its neighbours dimmed to 34%, a link
-   left underlined. Overriding those afterwards worked, but the rules
-   still existed on touch, and any hover rule written later was silently
-   uncovered. Gating positively means a new hover rule is correct by
-   default unless someone deliberately writes it outside a gate. */
-
-/* ---------- SYSTEM DIAGRAM ----------
-   The site's one piece of real artwork, drawn in HTML so it reflows,
-   selects, and reads in order to a screen reader. See SystemDiagram.tsx
-   for why it is not an SVG.
-
-   Wide screens lay the stages out as a row with the connector drawn
-   between them; narrow screens turn the same list into a column and the
-   connector rotates with it. The two cases share one rule set because
-   the connector is a pseudo-element on the node, not a separate line. */
-.diagram {
-  margin: 0;
-  padding: clamp(1.75rem, 4vw, 3rem);
-  border-radius: 24px;
-  background: var(--paper-raised);
+   Separate from `.wipe` in 5c on purpose: wipe reveals CONTENT behind
+   a travelling edge, this adds a travelling LINE over content that is
+   already there. Composed together on the same element they read as
+   one gesture, which is how the panels use them. */
+@keyframes sweep-across {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
-.diagram-flow {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  counter-reset: stage;
-}
-.diagram-node {
+.sweep {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 1.1rem 1.1rem 1.1rem 1.25rem;
-  border-radius: 14px;
-  background: var(--paper);
-  /* The accent appears once per node, as a rule down its leading edge —
-     the only place colour is used inside the diagram. */
-  box-shadow: inset 2px 0 0 var(--accent);
-}
-.diagram-index {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--ink-45);
-  font-variant-numeric: tabular-nums;
-}
-.diagram-label {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: -0.015em;
-  line-height: 1.2;
-  color: var(--ink);
-}
-.diagram-note {
-  font-size: 0.86rem;
-  line-height: 1.4;
-  color: var(--ink-70);
-}
-
-/* The return path, drawn as a rule under the flow with its label sitting
-   in a gap in the middle of it. */
-.diagram-return {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--ink-45);
-}
-.diagram-return::before,
-.diagram-return::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--ink-15);
-}
-.diagram-return span { flex: 0 1 auto; text-align: center; }
-
-.diagram-caption {
-  margin: 1.75rem 0 0;
-  max-width: var(--measure);
-  font-size: 0.92rem;
-  line-height: 1.5;
-  color: var(--ink-45);
-}
-
-@media (max-width: 640px) {
-  .diagram { padding: 1.25rem; border-radius: 18px; }
-  .diagram-flow { grid-template-columns: 1fr; gap: 0.6rem; }
-}
-
-/* ---------- SECONDARY PAGE OPENERS ----------
-   Contact, thank-you, 404 and the legal pages all open with an eyebrow,
-   an h1 and a line of copy, on the page's one left edge like everything
-   else. */
-.page-head {
-  margin-bottom: 2.5rem;
-}
-.page-head h1 { margin: 0.5rem 0 0; max-width: 20ch; }
-.page-head p {
-  max-width: var(--measure);
-  margin: 1rem 0 0;
-  color: var(--ink-70);
-}
-/* A dateline or similar set as an eyebrow keeps the eyebrow's own colour. */
-.page-head p.eyebrow { color: var(--ink-45); }
-
-/* ---------- PROJECT DETAIL PROSE ----------
-   Left-aligned throughout, on the same edge as every other page. */
-.pd-top { padding-top: 2rem; }
-/* Sub-sections of one document, not top-level sections of the site, so
-   they take a tighter rhythm than the home page's. */
-.pd-section { padding: clamp(2.25rem, 5vw, 3.25rem) 0; }
-
-/* ============================================================
-   REACT BITS INTEGRATION
-   Two components remain from React Bits: LogoLoop in the header and
-   BorderGlow behind every card. Their own stylesheets ship next to them
-   in components/ui/. Everything below is this site's side of the join.
-   ============================================================ */
-
-/* ---------- LOGO LOOP ---------- */
-.tech-loop {
-  position: relative;
-  z-index: 1;
-  /* --ink-08, not --ink-15. This line used to divide two surfaces; now
-     that the header is one, it only marks a change of register inside
-     it, and a full-strength rule for that reads as a seam. */
-  border-top: 1px solid var(--ink-08);
-  padding: 0.55rem 0;
-  /* The marquee is the quietest thing in the header: it is context, not
-     navigation, so it sits below the links in contrast as well as in
-     position. */
-  color: var(--ink-45);
   overflow: hidden;
 }
-/* The marquee's edge fade, done as a mask rather than as paint.
+.sweep::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 42%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    color-mix(in oklab, var(--c-detect) 14%, transparent) 55%,
+    color-mix(in oklab, var(--c-detect) 34%, transparent) 72%,
+    transparent 76%
+  );
+}
+html.js .sweep[data-shown="true"]::before {
+  animation: sweep-across 1100ms var(--ease-cx) 1 forwards;
+}
 
-   Upstream LogoLoop fades its ends by laying two pseudo-elements over
-   them, each a gradient running from a solid colour to transparent —
-   and it has to be told which colour, because it is covering the strip
-   rather than dissolving it. That works only as long as the thing
-   behind it is one flat, known colour. The header is now translucent
-   glass over whatever is scrolling past, so a solid fill painted across
-   its ends is two opaque patches punched into the material.
+/* HUD brackets. Four corner Ls in the detect colour that appear only
+   while a surface is being probed. The corner TICKS in §4 are the
+   static, amber, always-there version; these are the transient cyan
+   overlay laid on top of them, which is exactly the relationship
+   between a drawing and a scan of it.
 
-   A mask has no colour to get wrong. It fades the logos themselves to
-   transparent, so the glass shows through exactly as it does everywhere
-   else along the bar, over any content.
+   Two pseudo-elements carry all four corners via a pair of borders
+   each, the same trick §4 uses — so this costs no extra elements. */
+.hud {
+  position: relative;
+}
+.hud::before,
+.hud::after {
+  content: "";
+  position: absolute;
+  width: 0.6875rem;
+  height: 0.6875rem;
+  pointer-events: none;
+  opacity: 0;
+  border-color: var(--c-detect);
+  border-style: solid;
+  transition: opacity 200ms var(--ease-cx);
+}
+.hud::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1px 0 0 1px;
+}
+.hud::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 1px 1px 0;
+}
+@media (hover: hover) {
+  .hud:hover::before,
+  .hud:hover::after {
+    opacity: 1;
+  }
+}
+.hud:focus-visible::before,
+.hud:focus-visible::after,
+.hud:focus-within::before,
+.hud:focus-within::after {
+  opacity: 1;
+}
 
-   `content: none` rather than `display: none` — it stops the
-   pseudo-elements being generated at all instead of generating them and
-   then hiding them. */
-.tech-loop .logoloop--fade::before,
-.tech-loop .logoloop--fade::after { content: none; }
+/* X-ray. A figure or a heading arrives as an outline and fills in —
+   the overlay resolving from structure to surface. Driven off the same
+   `data-shown` flag the rest of 5c uses, so one observer serves it.
 
-.tech-loop .logoloop--fade {
-  /* The same width upstream used, kept so the strip reads the way it
-     was drawn. */
-  --tl-fade: clamp(24px, 8%, 120px);
+   `-webkit-text-stroke` is already the mechanism behind `.t-stroke` in
+   5d; this animates between that state and a filled one. The colour
+   lands on the element's own `color`, so it inherits correctly in both
+   themes rather than hard-coding a fill. */
+@keyframes xray-resolve {
+  from {
+    -webkit-text-stroke-color: var(--c-detect);
+    color: transparent;
+  }
+  55% {
+    -webkit-text-stroke-color: var(--c-detect);
+  }
+  to {
+    -webkit-text-stroke-color: transparent;
+    color: currentColor;
+  }
+}
+html.js .xray {
+  -webkit-text-stroke: 1px var(--c-detect);
+  color: transparent;
+  paint-order: stroke fill;
+}
+html.js .xray[data-shown="true"] {
+  animation: xray-resolve 900ms var(--ease-cx) 1 forwards;
+}
+
+/* The evidence chain used to live here: a traced spine with a node
+   per run, per-title connectors, and a tally that brightened under the
+   pointer. It drew the games board's series "chains", and revision 7
+   replaced that board with genre segments — a chain only reads as
+   "finished all ten" while a completion claim stands behind it, and
+   that claim is gone. The rules went with the thing they drew:
+   `.chain`, `.chain-host`, `.chain-node`, `.chain-link`,
+   `.chain-tally`, `.spine`, `.spine-node` and `spine-trace`, plus the
+   `chain` entry in Reveal's effect map. A stylesheet that keeps the
+   paint for a removed feature is how the next person inherits a
+   vocabulary with no referents. */
+
+/* The reticle. A small crosshair that tracks the pointer inside a
+   container, marking the thing currently under scrutiny. Written from
+   one listener as --mx/--my, the same mechanism `.spotlight` in 5d
+   already uses — so a container can carry both and they stay in sync
+   off a single pointermove.
+
+   Pointer-only and hover-only by design: there is nothing to mark
+   without a pointer, and a keyboard visitor gets the HUD brackets and
+   the scan border instead, which carry the same information. */
+.reticle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms var(--ease-cx);
+  background:
+    linear-gradient(
+      to right,
+      transparent calc(var(--mx, 50%) - 0.5px),
+      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--mx, 50%) - 0.5px),
+      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--mx, 50%) + 0.5px),
+      transparent calc(var(--mx, 50%) + 0.5px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(var(--my, 50%) - 0.5px),
+      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--my, 50%) - 0.5px),
+      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--my, 50%) + 0.5px),
+      transparent calc(var(--my, 50%) + 0.5px)
+    );
+  /* Fades out towards the container edges so the crosshair does not
+     terminate in a hard stop against the border. */
+  -webkit-mask-image: radial-gradient(
+    30rem circle at var(--mx, 50%) var(--my, 50%),
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.25) 55%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    30rem circle at var(--mx, 50%) var(--my, 50%),
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.25) 55%,
+    transparent 100%
+  );
+}
+@media (hover: hover) and (pointer: fine) {
+  .spotlight-host:hover .reticle {
+    opacity: 1;
+  }
+}
+
+/* The route transition. Driven entirely by app/template.tsx being
+   remounted on navigation — no state, no route key, no exit phase.
+
+   Gated on `html.js` like every other entrance in this stylesheet, so
+   a visitor with scripting off gets the document rather than a sheet
+   stuck at zero opacity. `both` is what holds the start state for the
+   frame before the animation begins; without it the page flashes in at
+   full opacity and then animates, which is worse than no transition.
+
+   See the header of app/template.tsx for why this one is CSS while the
+   nav marker is `motion`. */
+@keyframes route-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+html.js .route-enter {
+  animation: route-in 420ms var(--ease-cx) 1 both;
+}
+
+/* ------------------------------------------------------------
+   5h. THE BAT GROUND
+
+   One mark, fixed behind every page. See the header of
+   components/primitives/BatGround.tsx for the four constraints this
+   answers and why it is one image rather than the four it used to be.
+
+   NO ANIMATION IS AUTHORED IN THIS SECTION, deliberately: the owner
+   asked for something that stays visible with reduced motion on, and
+   the only way to guarantee that is to have nothing to reduce. There
+   is consequently no prefers-reduced-motion block here — adding one
+   would imply there was something to turn off.
+   ------------------------------------------------------------ */
+
+.bat-ground {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Paper takes the ink as drawn; the slab inverts it. See the note
+     in lib/batGround.ts about what the inversion assumes. */
+  --bat-ink: var(--c-body);
+  --bat-invert: 0;
+  opacity: 0.05;
+}
+html[data-theme="dark"] .bat-ground {
+  --bat-invert: 1;
+  opacity: 0.08;
+}
+
+.bat-ground-mark {
+  /* Wider than the viewport on purpose: the mark bleeds past both
+     edges, so the eye assembles the shape instead of seeing a picture
+     of a logo sitting on the page. */
+  width: 128vw;
+  max-width: none;
+  height: auto;
+  color: var(--bat-ink);
+  fill: currentColor;
+  filter: invert(var(--bat-invert));
+  /* Its own alpha reaches zero before the viewport edges, so it has no
+     boundary to collide with anything — §5b feathering, applied to a
+     single image. */
+  -webkit-mask-image: radial-gradient(
+    62% 62% at 50% 50%,
+    rgb(0 0 0) 0%,
+    rgb(0 0 0 / 0.55) 55%,
+    transparent 88%
+  );
+  mask-image: radial-gradient(
+    62% 62% at 50% 50%,
+    rgb(0 0 0) 0%,
+    rgb(0 0 0 / 0.55) 55%,
+    transparent 88%
+  );
+}
+
+@media (max-width: 40rem) {
+  .bat-ground-mark {
+    width: 190vw;
+  }
+}
+
+/* The page sits above the ground. `z-index` on every direct child of
+   body rather than a stacking rule on the ground itself: one line, and
+   it cannot be out-specified by a component that sets its own. */
+body > *:not(.bat-ground) {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ------------------------------------------------------------
+   5g. THE STICKY HEADER AND THE TICKER
+
+   The nav was deliberately not sticky for five revisions, on the
+   grounds that a bar following you down the page is another thing
+   occupying attention. The owner has asked for it static, so it is —
+   and the trade is paid for rather than ignored: the sticky block is
+   kept to the shortest it can be while holding both rows, it carries
+   no shadow and no blur, and it is separated from the page by a single
+   hairline rather than by a floating card edge. It reads as the top of
+   the sheet, not as a toolbar over it.
+
+   The backdrop filter is the one concession to it overlapping content:
+   without it, forty small marks scroll under forty small marks. It is
+   a saturate-and-blur on the ground colour rather than a tint, so the
+   palette underneath is unchanged.
+   ------------------------------------------------------------ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in oklab, var(--c-ground) 88%, transparent);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  border-bottom: 1px solid var(--c-rule);
+}
+
+/* The ticker. See components/SkillTicker.tsx for why a marquee is
+   allowed here when it was refused everywhere else. */
+.ticker {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--c-rule);
+  /* The ends fade rather than cut, so marks enter and leave instead of
+     being clipped — the §5b feathering rule, applied to a row. */
   -webkit-mask-image: linear-gradient(
     to right,
-    transparent,
-    #000 var(--tl-fade),
-    #000 calc(100% - var(--tl-fade)),
-    transparent
+    transparent 0,
+    rgb(0 0 0) 4rem,
+    rgb(0 0 0) calc(100% - 4rem),
+    transparent 100%
   );
   mask-image: linear-gradient(
     to right,
-    transparent,
-    #000 var(--tl-fade),
-    #000 calc(100% - var(--tl-fade)),
-    transparent
+    transparent 0,
+    rgb(0 0 0) 4rem,
+    rgb(0 0 0) calc(100% - 4rem),
+    transparent 100%
   );
 }
 
-.tech-loop .logoloop__item { color: inherit; }
-.tech-loop .logoloop__node svg { display: block; }
-/* Amazon and Microsoft withdrew their marks from Simple Icons, so those
-   two are wordmarks. Set to the same optical height as the glyphs
-   beside them rather than to the same font size. */
-.logoloop-word {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-@media (max-width: 520px) {
-  /* Below this the strip is more motion than information next to a
-     one-line header. */
-  .tech-loop { display: none; }
-}
-
-/* ---------- BORDER GLOW CARDS ---------- */
-/* The wrapper is the card now: it paints the surface, holds the radius
-   and owns the shadow. The element inside it keeps its own padding and
-   layout and goes transparent, so the two do not paint the same panel
-   twice at slightly different radii. */
-.glow-card {
-  height: 100%;
-  border-color: var(--ink-15);
-  /* Upstream stacks six black shadows on every card. That is a lot of
-     paint for a page with twenty of them, and on a black background
-     five of the six are invisible. Two do the same job. */
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.06),
-    0 10px 30px rgba(0, 0, 0, 0.07);
-}
-.glow-card > .border-glow-inner {
-  height: 100%;
-  border-radius: inherit;
-  /* The card is a grid and this is its only in-flow item, so it inherits
-     `min-width: auto` — which means it refuses to shrink below its
-     content's min-content width and pushes straight out through the
-     card's own box. On a 390px screen the contact page's email card came
-     out 404px wide inside a 342px card, hanging off the side of the
-     page. A grid item that is a card's content should never be wider
-     than the card; where the content genuinely cannot fit, the clip
-     below is the right answer, not an overflowing box. */
-  min-width: 0;
-  min-height: 0;
-  /* `clip`, not upstream's `auto`: a card whose content is a pixel taller
-     than its box should clip, not grow a scrollbar.
-
-     And `clip` rather than the `hidden` this said before. Both clip, but
-     `hidden` makes the element a scroll container — one that cannot be
-     scrolled, but that the browser still registers, hit-tests and
-     considers on every scroll. On a route with forty cards that is forty
-     scroll containers tracked to hold content that was never going to
-     overflow. `clip` is the same clip with none of that. */
-  overflow: clip;
-}
-/* The titlebar keeps its own height. It used to be caught by the
-   `> *` rule below and stretched to `height: 100%` alongside the
-   content it sits above — two children each claiming the full column
-   inside a box that clips — so every chromed card lost exactly one
-   bar's worth of content off the bottom. On the experience tiles that
-   was the footer row, sheared off mid-line. */
-.glow-card > .border-glow-inner > .win-bar {
-  flex: 0 0 auto;
-}
-/* The content child takes what is left of the column rather than the
-   whole of it: `flex: 1` measures against the space the bar has
-   already taken, which `height: 100%` cannot do. */
-.glow-card > .border-glow-inner > *:not(.win-bar) {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  background: transparent;
-  border-radius: inherit;
-}
-/* The hover wash the flat cards used to carry. Kept, at a third of the
-   weight, because the proximity glow only answers the pointer near an
-   edge and a card still needs to acknowledge the pointer over its
-   middle. */
-@media (hover: hover) and (pointer: fine) {
-  .glow-card .card:hover {
-    background: rgba(0, 0, 0, 0.03);
-  }
-  /* A black wash on a near-black card is no wash at all — dark inverts
-     it to white at the weight this surface was originally tuned for. */
-  html[data-theme="dark"] .glow-card .card:hover {
-    background: rgba(255, 255, 255, 0.035);
-  }
-}
-/* Keyboard parity. The glow answers a pointer, which a keyboard user
-   does not have, so the focus ring is lifted onto the wrapper — the
-   inner element's own outline would be clipped by the overflow above. */
-@supports selector(:has(*)) {
-  .glow-card > .border-glow-inner > *:focus-visible { outline: none; }
-  .glow-card:has(:focus-visible) {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-}
-.glow-card .card { border-radius: inherit; }
-
-/* ---------- THE HEADER'S MATERIAL ----------
-   One surface, on the header itself.
-
-   This used to be two. The links row was frosted glass — the page
-   colour at 72%, blurred — and the tooling strip beneath it was
-   `background: var(--paper)`, which is to say completely opaque, with a
-   hairline drawn between them. At the top of the page the two matched
-   and nothing looked wrong. The moment anything scrolled underneath,
-   the top half ghosted and the bottom half stayed a dead black slab,
-   which put a hard horizontal seam straight through the middle of the
-   header and made it read as two bars rather than one.
-
-   So the material moves up to .nav-glass, which is the element that
-   actually is the header, and both strips inside it go transparent. The
-   blur samples the page once, for the whole bar, and there is nothing
-   left inside it to disagree.
-
-   Two values worth defending, both of them decided by the page being
-   white.
-
-   The fill is 78%, which is loose enough for the material to read as a
-   material — content passing under it should be visible as a haze, or
-   the bar may as well be opaque. Light haze over white stays legible in
-   a way that smears of colour over black do not, so this can afford
-   more transparency than a dark bar could.
-
-   The saturation is 1.4. Blurring a light backdrop averages its colours
-   toward grey and drains it; the boost is what puts the life back. (The
-   same move over a black page does the opposite — the only thing there
-   to saturate is whatever colour is scrolling past, so it arrives
-   amplified and tints the bar.) */
-.nav-bar { position: relative; background: transparent; }
-/* The marquee inside the header is the only thing on the site that moves
-   continuously, and it was moving inside the one element that carries a
-   backdrop-filter. A blurred surface has to be re-composited whenever
-   anything inside it repaints, so the full-width frosted strip was being
-   redrawn every frame — not only while scrolling, but for the entire
-   session — and the thread doing that work is the thread that has to
-   answer the wheel. That is most of what "the scroll is choppy" was.
-
-   `contain: paint` bounds the damage to the strip's own box instead of
-   the header's, and the zero translate gives the strip a compositor layer
-   of its own so the glass above it is not re-rasterised when the logos
-   shift by two pixels. The loop also stops entirely when the header is
-   off screen or the tab is in the background — see LogoLoop.tsx. */
-.tech-loop {
-  background: transparent;
-  contain: paint;
-  transform: translateZ(0);
-}
-/* 12px, down from 20px.
-
-   Blur is the expensive half of this surface and its cost goes up with
-   the radius, which is paid on every frame of every scroll because the
-   bar is sticky and the page moves underneath it. 12px still reads as a
-   material — text passing under it is a haze rather than a word — and at
-   the fill below the difference is almost invisible while costing a
-   fraction of the work. The saturation stays: it is a single cheap pass
-   over an already-sampled region, and it is what keeps the bar from
-   turning grey (argued above). */
-.nav-glass {
-  background: color-mix(in srgb, var(--paper) 80%, transparent);
-  backdrop-filter: blur(12px) saturate(1.4);
-  -webkit-backdrop-filter: blur(12px) saturate(1.4);
-}
-/* Without a blur behind it, a translucent fill is not a material — it
-   is just the page showing through as noise. Go solid there. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .nav-glass { background: var(--paper); }
-}
-
-/* BorderGlow's outer glow layer is inset by -30px, so a panel that fills
-   the container reaches 30px past it — off the side of a narrow screen,
-   which is a horizontal scrollbar for a decoration nobody can see.
-   Sections already clip themselves; the route whose <main> is the
-   container does not, so it clips here.
-
-   `clip` rather than `hidden`: hidden would make this a scroll container. */
-main.wrap {
-  overflow-x: clip;
-}
-
-/* ---------- TOUCH TARGETS AND TOUCH TYPE ----------
-   Measured, not guessed: an automated pass over /, /projects,
-   /certifications, /contact and /thank-you at 320, 375, 390, 412 and in
-   844x390 landscape, with a touch pointer, listing every control whose
-   box came in under 40px and every run of text under 11px.
-
-   These rules answer that list. They are scoped to `pointer: coarse` so
-   the desktop's typographic density is untouched — a 18px-tall link is
-   a perfectly good mouse target and a poor thumb one. */
-@media (pointer: coarse) {
-  /* 44x44 is the floor, applied as a minimum box rather than as padding
-     so a short label like "Home" or "Terms" widens to meet it too. The
-     text keeps its own size and stays centred in the larger box, so
-     nothing about the typography changes — only what the thumb can hit. */
-  .nav-bar .wrap > a.eyebrow,
-  .nav-links .lnk,
-  .site-footer .lnk,
-  .pd-top > a.lnk,
-  .nav-links button[aria-pressed],
-  .mobile-nav__foot button[aria-pressed],
-  .mobile-nav__controls button[aria-pressed],
-  .sticky-cta .btn,
-  .nav-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    min-width: 44px;
-  }
-  /* Rows that own their whole line stay left-aligned; centring those
-     would drop the label into the middle of an empty width. */
-  .pd-top > a.lnk { justify-content: flex-start; }
-
-  /* The chat widget and the privacy notice were outside the first pass.
-     Measured: launcher 142x37, suggestion chips 28 tall, chat send
-     60x32, "Got it" 64x32. Same treatment — a minimum box, type
-     untouched. */
-  .chat-launcher,
-  .chat-chip,
-  .chat-send,
-  .cookie-notice-btn {
-    min-height: 44px;
-  }
-}
-
-
-/* ---------- PRESS FEEDBACK ----------
-   Everything clickable on the site responded on release: the card
-   changed colour on hover, the button changed colour on hover, and the
-   moment between finger-down and finger-up — the one moment where the
-   user is asking "did it hear me?" — was blank. On a phone there is no
-   hover at all, so a tap on a project tile produced no feedback
-   whatsoever until the lightbox appeared.
-
-   The answer is the same everywhere: a small scale-down on :active,
-   fast enough that it is felt rather than watched. 100ms in, and the
-   release rides the element's own (slower) transition back out, which
-   is what makes the recoil read as elastic rather than as a second
-   animation. Nothing here changes layout — only `transform`, so it
-   stays on the compositor.
-
-   The scale is proportional to the surface: a large card moves less
-   than a small pill, because the same ratio on a 400px card is a much
-   larger absolute displacement and reads as the card lurching. */
-.btn:active,
-.nav-toggle:active,
-.chat-launcher:active {
-  transform: scale(0.96);
-}
-a.card:active {
-  transform: scale(0.985);
-}
-
-/* ---------- REDUCED TRANSPARENCY / INCREASED CONTRAST ----------
-   The site already answers prefers-reduced-motion. These are the other
-   two signals in the same family, and the surfaces that need them are
-   exactly the ones carrying a backdrop blur: the header, the phone's
-   navigation layer, the chat launcher and panel, the sticky CTA and the
-   cookie notice.
-
-   Reduced transparency does not mean "less blur" — it means the surface
-   stops being a window. The blur goes entirely and the fill goes solid,
-   because a half-translucent surface with no blur behind it is the
-   worst of both: it still lets the page through as noise, and it no
-   longer separates. */
-@media (prefers-reduced-transparency: reduce) {
-  .nav-glass,
-  .mobile-nav__overlay,
-  .chat-launcher,
-  .chat-panel,
-  .sticky-cta,
-  .cookie-notice {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-  .nav-glass,
-  .sticky-cta { background: var(--paper); }
-  .mobile-nav__overlay,
-  .chat-launcher,
-  .chat-panel,
-  .cookie-notice { background: var(--paper-raised); }
-}
-
-/* Increased contrast wants a defined edge, not a softer one. The pale
-   grey --ink-15 resolves to is the first thing to disappear at this
-   setting, so floating surfaces get a real border against ink. */
-@media (prefers-contrast: more) {
-  .nav-glass,
-  .chat-panel,
-  .chat-launcher,
-  .cookie-notice,
-  .sticky-cta {
-    border-color: var(--ink);
-  }
-  .card {
-    border: 1px solid var(--ink-45);
-  }
-}
-
-/* ---------- SCROLL EDGE ----------
-   The header used to draw a 1px rule along its bottom edge on every
-   route, at every scroll position — including the top of the page,
-   where there is nothing underneath it to be separated from. A divider
-   that is always there is a drawn line; an edge that appears only where
-   the floating bar actually overlaps content is the page telling you it
-   has gone behind something.
-
-   So the rule is replaced by a short gradient that fades in once the
-   page has moved. It is a pseudo-element rather than a border because a
-   border occupies layout and would shift the whole page by a pixel as it
-   arrived; this sits below the bar and paints over whatever is passing
-   under it.
-
-   Nav.tsx writes .is-floating from one passive, frame-coalesced scroll
-   listener. It changes twice in a page: leaving the top, and returning
-   to it. */
-.nav-glass { border-bottom: 0; }
-.nav-glass::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 14px;
-  pointer-events: none;
-  opacity: 0;
-  /* A soft shadow rather than a drawn line. The page is white, so there
-     is something darker to fade to and the gradient reads as content
-     passing behind the bar. What changed from the 1px border this
-     replaces is when it is drawn: only where the bar actually overlaps
-     content, rather than always. */
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--ink) 7%, transparent),
-    transparent
-  );
-  transition: opacity 0.25s var(--ease);
-}
-.nav-glass.is-floating::after { opacity: 1; }
-
-/* Vibrancy. Type sitting on a translucent surface is read against
-   whatever happens to be scrolling behind it, which changes from
-   moment to moment — so it cannot be tuned against one background the
-   way type on a solid panel can. The answer is not more colour, it is
-   more substance: a step of weight and a hair of extra tracking, which
-   hold the letterforms apart when the backdrop goes busy without making
-   the labels louder when it does not. */
-.nav-bar .eyebrow,
-.mobile-nav__overlay .option-wheel__item {
-  font-weight: 500;
-  letter-spacing: 0.07em;
-}
-.mobile-nav__overlay .option-wheel__item {
-  /* The wheel's labels are display type, not micro-labels — they take
-     the weight but not the wide tracking. */
-  letter-spacing: -0.015em;
-  font-weight: 600;
-}
-
-/* ---------- COMPOSITOR HINTS ----------
-   will-change on the handful of things that are about to move, and only
-   while they are about to move. Left on permanently it is worse than
-   useless: each hint promotes an element to its own layer for the life
-   of the page, and a page of promoted layers costs more memory than the
-   paints it saves.
-
-   The mobile layer animates the moment it mounts, so the hint is on the
-   class that only exists while it does. The wheel's options are written
-   to on every frame of a drag. */
-.mobile-nav__overlay,
-.mobile-nav__wheel {
-  will-change: transform, opacity;
-}
-.option-wheel__item { will-change: transform, opacity, filter; }
-
-/* ---------- OPTICAL SIZING ----------
-   Inter is a variable font with an optical size axis; left unset the
-   browser picks one size's shapes for every size on the page. `auto`
-   lets the face do what it was drawn to do — open up the small sizes,
-   tighten the large ones — which is the same correction the tracking
-   scale above is making by hand, applied to the letterforms rather than
-   to the space between them. */
-body,
-.display,
-.display-lg {
-  font-optical-sizing: auto;
-}
-
-
-/* ---------- DIM TO FOCUS, PUSH THE PAGE BACK ----------
-   A modal dims what is behind it and pushes it back. The site had the
-   first half — the lightbox and the phone's navigation both put a layer
-   over the page — and none of the second, so the result read as a dark
-   rectangle painted onto a flat page rather than as one surface
-   floating above another.
-
-   The push is small on purpose. 0.985 is roughly a 15px inset on a
-   1040px column: enough that the page is visibly further away, small
-   enough that nothing about it becomes unreadable. It settles on the
-   site's own curve over 0.3s, which is slower than the scrim so the
-   depth resolves after the dimming rather than competing with it.
-
-   ScrollProvider adds .dialog-open on the one lock every modal already
-   goes through, so this covers the work lightbox and the phone's
-   navigation without either of them knowing about it.
-
-   The origin is the top of the viewport, not its centre: the header is
-   pinned there, and scaling about the centre would slide it up out of
-   its own sticky position. */
-html.dialog-open .nav-glass,
-html.dialog-open main,
-html.dialog-open footer {
-  transform: scale(0.985);
-  transform-origin: 50% 0;
-  transition: transform 0.3s var(--ease);
-}
-/* The transform on .nav-glass is on the sticky element itself, which is
-   fine — it is a transformed *ancestor* that would break a sticky or
-   fixed descendant, and the bar has neither. */
-html:not(.dialog-open) .nav-glass,
-html:not(.dialog-open) main,
-html:not(.dialog-open) footer {
-  transition: transform 0.3s var(--ease-out);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /* The scrim still dims — that is the part that says "this is modal".
-     The travel is what goes, because a whole page moving is exactly the
-     large-object motion this setting is asking not to see. */
-  html.dialog-open .nav-glass,
-  html.dialog-open main,
-  html.dialog-open footer {
-    transform: none;
-  }
-}
-
-/* ---------- HIT PADDING ----------
-   The chat panel's reset link and its suggestion chips are set at
-   caption sizes because that is the right size for them to *look*, and
-   neither is the right size to *hit*.
-
-   The target is grown without growing the control: a pseudo-element
-   extends the hit area ~10px past every edge, so the drawn pill stays
-   the size it was designed at while the region that responds to a
-   finger is the region a finger can actually land on. It also gives a
-   press that starts slightly off the control something to catch, which
-   is what makes a tap forgiving rather than precise. */
-.chat-reset,
-.chat-chip {
-  position: relative;
-}
-.chat-reset::before,
-.chat-chip::before {
-  content: "";
-  position: absolute;
-  inset: -10px;
-  /* Nothing is drawn here — it exists only to be hit. */
-  border-radius: inherit;
-}
-
-/* ---------- MATERIAL WEIGHT ----------
-   Bigger surfaces read as thicker. The site's floating layers were all
-   frosted at roughly the same strength regardless of size, which
-   flattens the hierarchy: a small pill and a full-screen layer looked
-   like the same material cut to different sizes rather than like a chip
-   and a slab.
-
-   The ladder now runs with the surface area — launcher, panel, header,
-   full-screen layer — in both blur and shadow depth. The shadow is what
-   carries most of it: a large surface casts further because it sits
-   further off the page. */
-.chat-launcher {
-  backdrop-filter: blur(12px) saturate(1.4);
-  -webkit-backdrop-filter: blur(12px) saturate(1.4);
-  box-shadow: 0 6px 20px rgb(0 0 0 / 0.10);
-}
-.chat-panel {
-  backdrop-filter: blur(22px) saturate(1.4);
-  -webkit-backdrop-filter: blur(22px) saturate(1.4);
-  box-shadow: 0 22px 60px rgb(0 0 0 / 0.16);
-}
-
-
-/* ---------- PRESS FEEDBACK, THE REST OF IT ----------
-   The first pass covered buttons, cards and tiles. These are the
-   controls it missed, and they are missed in the same way: each shows
-   something on hover, which a phone does not have, so on the device
-   where the gap matters most there was no acknowledgement between the
-   finger landing and the page changing.
-
-   These controls show something on hover, which a phone does not have. */
-.chat-chip:active,
-.mobile-nav__close:active {
-  transform: scale(0.96);
-}
-
-
-/* ---------- THE NOTICE ARRIVES ----------
-   The privacy notice was the last surface on the site that simply
-   appeared: `if (!show) return null` one frame, a panel pinned over the
-   page the next. Everything else that floats — the work lightbox, the
-   phone's navigation, the chat panel — arrives from somewhere.
-
-   It arrives from the edge it is pinned to, which is the bottom, and it
-   is a `backdrop-filter` surface, so it materialises rather than fades:
-   blur and scale resolve together, the way a real material comes into
-   focus. Exit runs the same path on the mirrored curve, so dismissing
-   it reads as a return rather than as a second, unrelated animation.
-
-   CookieNotice.tsx keeps it mounted through the exit — see EXIT_MS
-   there, which is this duration. */
-.cookie-notice {
-  transform-origin: 50% 100%;
-  animation: cn-in 280ms var(--ease-out) both;
-}
-.cookie-notice.is-closing {
-  animation: cn-out 220ms var(--ease-out) both;
-}
-
-@keyframes cn-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.97);
-    filter: blur(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
-  }
-}
-@keyframes cn-out {
-  from {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(12px) scale(0.97);
-    filter: blur(8px);
-  }
-}
-
-/* ---------- ERRORS ARRIVE TOO ----------
-   The three places the site tells someone that something went wrong —
-   a field that failed validation, the submit-failure banner, and the
-   chat's error line — all appeared in a single frame, shoving whatever
-   was below them down the page with no warning.
-
-   One treatment for all three, because they are one kind of event and
-   should read as one. It moves *down* into place: the message is
-   injected above the content it displaces, so the motion points the
-   same way the layout is about to move.
-
-   Under 200ms, deliberately. This is a message someone is waiting to
-   read; an error that arrives gracefully is an error that arrives late.
-   It also has to land with the `haptic("reject")` fired at these same
-   call sites in ContactForm — the visual and the haptic are one event,
-   and one arriving after the other is what makes them read as two. */
-.chat-error {
-  animation: err-in 180ms var(--ease-out) both;
-}
-
-@keyframes err-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ---------- REDUCED MOTION, GENTLY ----------
-   The blanket rule near the top of this file collapses every animation
-   on the page to 0.001ms. That is the right default — it is a safety
-   net for anything added without thought — but it is not what this
-   setting asks for. Reduced motion means a gentler, non-vestibular
-   equivalent, not the absence of feedback: a surface that appears with
-   no transition at all is exactly the jarring change these animations
-   were added to prevent.
-
-   So the two new ones keep a cross-fade and lose only the travel — no
-   translate, no scale, no blur, which are the parts a vestibular system
-   objects to. These selectors outrank the `*` the blanket rule uses, so
-   they win on specificity without needing to fight over !important. */
-@media (prefers-reduced-motion: reduce) {
-  /* `!important` because the blanket rule above zeroes animation-duration
-     with the same weight; without it these fades are declared and then
-     immediately cut to nothing. */
-  .cookie-notice { animation: cn-fade 200ms linear both !important; }
-  /* Its own keyframes, not `cn-fade` reversed. Swapping direction on an
-     animation that has already finished does not restart it — the
-     browser keeps the same timeline, lands past the end, and applies the
-     reversed fill in one frame, which is a snap rather than a fade. */
-  .cookie-notice.is-closing { animation: cn-fade-out 160ms linear both !important; }
-  .chat-error,
-  .chat-msg { animation: err-fade 140ms linear both !important; }
-}
-
-@keyframes cn-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes cn-fade-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-@keyframes err-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* ---------- WINDOW EDGE ----------
-   Every raised surface on the site was a fill and nothing else: a card
-   was #f5f5f7 on #ffffff, and that one step of grey was doing all of
-   the work of saying "this is a separate thing". On a bright screen it
-   holds; on a dim one, or through a phone's auto-brightness, the step
-   closes and the cards dissolve back into the page.
-
-   The fix is the same one a macOS window uses: a hairline at the edge
-   plus a shadow soft enough that you read it as depth rather than as a
-   drawn effect. The hairline is what survives when the fill contrast
-   goes; the shadow is what makes the surface sit above the page instead
-   of being a lighter patch of it.
-
-   Both are tokens, so the whole ladder moves from one place, and both
-   are deliberately weaker than they look like they should be in
-   isolation — the effect is meant to be noticed only by its absence.
-
-   --edge-color is an alpha black, not --ink-15, on purpose: it has to
-   land the same over the white page, over the grey card and over a
-   translucent panel, and a solid grey only matches one of those. */
-:root {
-  --edge-color: rgb(0 0 0 / 0.13);
-  --edge: 1px solid var(--edge-color);
-  /* Two layers: a tight one that reads as the contact shadow right
-     under the edge, and a wide, very faint one that carries the height.
-     One layer alone reads either as a border (tight only) or as a smudge
-     (wide only). */
-  --shadow-window:
-    0 1px 2px rgb(0 0 0 / 0.05),
-    0 8px 24px rgb(0 0 0 / 0.10);
-  /* A `--shadow-window-lift` used to sit here for the hover state. It
-     went when the hover stopped animating the shadow; an unread token is
-     a promise the next reader has to check. */
-}
-
-/* The flat surfaces. These all declared `border: 0` and no shadow, so
-   the border here is an addition rather than an override — box-sizing is
-   border-box site-wide, so the 1px comes out of the padding box and no
-   layout moves. */
-.card,
-.diagram {
-  border: var(--edge);
-  box-shadow: var(--shadow-window);
-}
-
-/* No `box-shadow` in this list, and no shadow change on hover.
-
-   The first pass raised the shadow on hover and put it in the transition
-   so it would move with the lift. It looked right and it was the wrong
-   property: `box-shadow` paints, and a 24px-blurred shadow repainted on
-   every card the pointer crosses in a grid is real work for a difference
-   nobody can name afterwards. The lift is already carried by `transform`
-   and the wash by `background` — both composited, both saying the same
-   thing.
-
-   The resting shadow stays. It is static, painted once, and it is what
-   makes the surface sit above the page. */
-.card {
-  transition:
-    background 0.25s var(--ease),
-    transform 160ms var(--ease-out),
-    border-color 160ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) {
-  a.card:hover {
-    border-color: rgb(0 0 0 / 0.18);
-  }
-}
-
-/* Nested surfaces get the hairline and no shadow. A stage inside the
-   diagram is on the card, not above it, and giving it its own drop
-   shadow would claim a second layer of depth that is not there. */
-.diagram-node {
-  border: var(--edge);
-}
-
-/* The floating layers already carried a border and a shadow of their
-   own — those are tuned to their size by the material-weight ladder
-   above and stay as they are. Only the border *colour* is unified, so
-   an edge over frosted glass matches an edge over paper. */
-.cookie-notice,
-.chat-launcher,
-.chat-panel {
-  border-color: var(--edge-color);
-}
-
-/* Most content surfaces on the site are not the flat element itself —
-   they render inside GlowCard, which already draws the border and the
-   shadow one level up and hands the inner element a transparent fill at
-   the same radius. Drawing the edge on both paints two hairlines a
-   pixel apart, so inside a glow card the edge belongs to the wrapper
-   and the inner element gives it up. */
-.glow-card > .border-glow-inner > *:not(.win-bar) {
-  border: 0;
-  box-shadow: none;
-}
-.glow-card {
-  border-color: var(--edge-color);
-  box-shadow: var(--shadow-window);
-  transition: border-color 160ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) {
-  .glow-card:hover {
-    border-color: rgb(0 0 0 / 0.18);
-  }
-}
-
-/* Increased contrast already replaces the pale edges site-wide with a
-   real line against ink; the same applies to the surfaces that rule
-   does not name, for the same reason — a 13%-alpha hairline is the
-   first thing to vanish at that setting. */
-@media (prefers-contrast: more) {
-  .diagram,
-  .diagram-node,
-  .glow-card {
-    border-color: var(--ink-45);
-  }
-}
-
-/* ---------- WINDOW CHROME, THE SURFACE SIDE ----------
-   WindowChrome.css styles the bar itself. What follows is the part the
-   surface has to agree to: the clipping box now holds two children
-   instead of one, and the rule above it — `> * { height: 100% }`,
-   written when there was only ever one child — would give the bar the
-   full height of the card and leave the content nothing.
-
-   A flex column is the whole fix. The bar takes its own 34px, the
-   content takes the rest, and neither has to know the other's size. */
-.glow-card > .border-glow-inner {
+.ticker-track {
   display: flex;
-  flex-direction: column;
-}
-.glow-card > .border-glow-inner > .win-bar {
-  height: var(--win-bar-h, 34px);
-  width: 100%;
-  /* Restated, because the rule that hands every child of the clipping
-     box a transparent fill still matches the bar and is what makes a
-     GlowCard's inner element take the wrapper's colour. The bar is the
-     one child that is not the card surface — it paints its own. */
-  background: var(--win-bar-bg, #3a3a3c);
-  /* The bar is the one child that keeps square corners: it is flush in
-     the top two, and the parent's overflow already rounds them. A
-     radius here would land a pixel inside that clip and read as a
-     double corner. */
-  border-radius: 0;
-}
-.glow-card > .border-glow-inner > *:not(.win-bar) {
-  height: auto;
-  flex: 1 1 auto;
-  min-height: 0;
-  /* Only the bottom corners are the content's to round now — the top
-     two belong to the bar. `inherit` is not per-corner in the
-     shorthand, so this reads the wrapper's radius variable directly;
-     BorderGlow sets it from the same `radius` prop the wrapper rounds
-     itself with, so the two cannot drift. */
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  width: max-content;
 }
 
-/* The diagram is the one full-width surface that does not render
-   through GlowCard, so it has no bar to be handed. It gets one drawn
-   in CSS instead: same height, same lights, same trailing edge — the
-   three dots are one background-image of three radial gradients rather
-   than three elements, because a decorative pseudo-element cannot hold
-   children and adding three spans to the markup for a picture of a
-   window is not worth the DOM. */
-.diagram {
-  position: relative;
-  /* Room for the bar, which is drawn over the top edge rather than
-     laid out in the flow — the diagram's padding is a clamp() and
-     unpicking it into a flex column would change its rhythm at every
-     breakpoint. */
-  padding-top: calc(clamp(1.75rem, 4vw, 3rem) + var(--win-bar-h, 34px));
-  overflow: hidden;
+/* Exactly -50%: the track holds two identical runs, so when the first
+   has travelled its own width the second is precisely where the first
+   began. Any other distance leaves a visible jump. */
+@keyframes ticker-roll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
-.diagram::before {
-  content: "";
+html.js .ticker-track {
+  animation: ticker-roll 64s linear infinite;
+  will-change: transform;
+}
+/* Looking closely stops it. Both states, so a keyboard visitor
+   tabbing past gets the same courtesy as a pointer hovering. */
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker-run {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.5rem;
+  color: var(--c-faint);
+}
+
+/* The marks sit at the faint value at rest and come up to full on
+   hover of their own row — a logo wall at full contrast would out-shout
+   every headline on the page it sits above. */
+.ticker-glyph {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  flex: none;
+  color: var(--c-mute);
+  transition: color 200ms var(--ease-cx);
+}
+@media (hover: hover) {
+  .ticker-item:hover .ticker-glyph {
+    color: var(--c-detect);
+  }
+}
+
+/* The divider: the same bat that crosses the screen on navigation,
+   at the size of a punctuation mark. */
+.ticker-bat {
+  width: 0.875rem;
+  height: 0.4375rem;
+  flex: none;
+  margin-inline-start: 0.6875rem;
+  color: var(--c-rule-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .ticker-track {
+    animation: none !important;
+  }
+  /* Frozen content must still be reachable, so the strip becomes a
+     scroller rather than a window onto the first thirteen marks. */
+  .ticker {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   5f. THE SWARM — route transition
+
+   Driven entirely by components/primitives/BatTransit.tsx being
+   mounted by app/template.tsx on navigation. Four layers of motion per
+   bat, which is what makes twenty-two silhouettes read as a flock
+   rather than as a row of sliding stickers:
+
+     1. the crossing   — `bat-cross` on the outer span, horizontal
+                         travel plus vertical drift and a body tilt
+     2. the bob        — `bat-bob`, a vertical sine on the inner span,
+                         out of phase with the wingbeat
+     3. the wingbeat   — `bat-beat`, each wing rotating about the body
+     4. the shroud     — one darkening sweep across the viewport
+
+   Nothing here is content. The whole layer is fixed, aria-hidden and
+   pointer-events-none, and the component unmounts it when the last bat
+   has left. See that file's header for why it is an overlay rather
+   than a transition ON the page.
+   ------------------------------------------------------------ */
+
+.bat-transit {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* The outer span owns the flight path. `translate3d` on the x axis
+   keeps it on the compositor; starting and ending outside the viewport
+   means no bat is ever seen to appear or vanish. */
+@keyframes bat-cross {
+  from {
+    transform: translate3d(-24vw, 0, 0) rotate(var(--bat-tilt))
+      scale(var(--bat-scale));
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--bat-opacity);
+  }
+  86% {
+    opacity: var(--bat-opacity);
+  }
+  to {
+    transform: translate3d(124vw, var(--bat-drift), 0) rotate(var(--bat-tilt))
+      scale(var(--bat-scale));
+    opacity: 0;
+  }
+}
+@keyframes bat-cross-rev {
+  from {
+    transform: translate3d(124vw, 0, 0) rotate(calc(var(--bat-tilt) * -1))
+      scale(var(--bat-scale)) scaleX(-1);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--bat-opacity);
+  }
+  86% {
+    opacity: var(--bat-opacity);
+  }
+  to {
+    transform: translate3d(-24vw, var(--bat-drift), 0)
+      rotate(calc(var(--bat-tilt) * -1)) scale(var(--bat-scale)) scaleX(-1);
+    opacity: 0;
+  }
+}
+
+.bat-fly {
   position: absolute;
-  top: 0;
+  top: var(--bat-top);
   left: 0;
-  right: 0;
-  height: var(--win-bar-h, 34px);
-  background-color: var(--win-bar-bg, #3a3a3c);
-  background-image:
-    radial-gradient(circle 6px at 20px 50%, #ee4f67 99%, transparent 100%),
-    radial-gradient(circle 6px at 40px 50%, #f5c443 99%, transparent 100%),
-    radial-gradient(circle 6px at 60px 50%, #34c98a 99%, transparent 100%);
-  background-repeat: no-repeat;
+  width: 120px;
+  height: 56px;
+  color: var(--c-body);
+  filter: blur(var(--bat-blur));
+  will-change: transform, opacity;
+  /* Linear, deliberately. A bat in level flight does not ease — an
+     eased crossing reads as a UI element gliding to a stop. */
+  animation: bat-cross var(--bat-dur) linear var(--bat-delay) 1 both;
+}
+.bat-fly.bat-rev {
+  animation-name: bat-cross-rev;
 }
 
-@media (max-width: 720px) {
-  .glow-card > .border-glow-inner > .win-bar { height: var(--win-bar-h, 28px); }
-  .diagram {
-    padding-top: calc(clamp(1.25rem, 4vw, 3rem) + var(--win-bar-h, 28px));
+/* The bob. A short vertical sine with a period unrelated to the
+   wingbeat, so the two never visibly sync up. */
+@keyframes bat-beat-bob {
+  0%,
+  100% {
+    transform: translateY(-14%);
   }
-  .diagram::before {
-    height: var(--win-bar-h, 28px);
-    background-image:
-      radial-gradient(circle 5px at 16px 50%, #ee4f67 99%, transparent 100%),
-      radial-gradient(circle 5px at 32px 50%, #f5c443 99%, transparent 100%),
-      radial-gradient(circle 5px at 48px 50%, #34c98a 99%, transparent 100%);
+  50% {
+    transform: translateY(14%);
+  }
+}
+.bat-bob {
+  display: block;
+  animation: bat-beat-bob calc(var(--bat-flap) * 2.6) ease-in-out infinite;
+}
+
+.bat-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* A raster bat. The wing groups in the drawn glyph can rotate about
+   the shoulder; a bitmap has no parts, so the beat becomes a vertical
+   pulse of the whole silhouette. At the size and speed the swarm runs
+   at the two are hard to tell apart, and this costs one transform
+   instead of two animated groups.
+
+   `object-fit: contain` matters: the cut-out poses have different
+   aspect ratios, and without it the wide ones stretch. */
+@keyframes bat-pulse {
+  0%,
+  100% {
+    transform: scaleY(0.82);
+  }
+  45% {
+    transform: scaleY(1.1);
+  }
+}
+.bat-img {
+  object-fit: contain;
+  animation: bat-pulse var(--bat-flap) cubic-bezier(0.35, 0, 0.3, 1) infinite;
+  /* Same ink rule as the ground: drawn dark, inverted on the slab. */
+  filter: invert(var(--bat-invert, 0));
+}
+html[data-theme="dark"] .bat-img {
+  --bat-invert: 1;
+}
+
+/* The wingbeat. Each wing rotates about the body rather than scaling,
+   because a wing pivots at the shoulder — and the downstroke is given
+   a sharper curve than the recovery, which is the asymmetry that makes
+   a beat read as effort rather than as a wobble. */
+@keyframes bat-beat-r {
+  0%,
+  100% {
+    transform: rotate(-26deg) scaleY(0.9);
+  }
+  45% {
+    transform: rotate(22deg) scaleY(1.06);
+  }
+}
+@keyframes bat-beat-l {
+  0%,
+  100% {
+    transform: rotate(26deg) scaleY(0.9);
+  }
+  45% {
+    transform: rotate(-22deg) scaleY(1.06);
+  }
+}
+.bat-wing {
+  /* The shoulder: the body's centre line, at wing height. */
+  transform-origin: 60px 24px;
+  transform-box: view-box;
+}
+.bat-wing-r {
+  animation: bat-beat-r var(--bat-flap) cubic-bezier(0.35, 0, 0.3, 1) infinite;
+}
+.bat-wing-l {
+  animation: bat-beat-l var(--bat-flap) cubic-bezier(0.35, 0, 0.3, 1) infinite;
+}
+
+/* The shroud. One pass, slightly ahead of the swarm, carrying the
+   amber signal on its leading edge — the one frame per navigation
+   where the searchlight genuinely sweeps the page. Kept weak: this is
+   a veil the bats pass in front of, not a curtain. */
+@keyframes bat-shroud {
+  from {
+    transform: translate3d(-100%, 0, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+  }
+}
+.bat-shroud {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    color-mix(in oklab, var(--c-ground) 55%, transparent) 26%,
+    color-mix(in oklab, var(--c-ground) 72%, transparent) 50%,
+    color-mix(in oklab, var(--c-signal) 12%, transparent) 72%,
+    transparent 84%
+  );
+  animation: bat-shroud 1.25s var(--ease-cx) 1 both;
+}
+
+/* The component already declines to mount under reduced motion, so
+   this is the belt to that braces — it also covers the case of the
+   setting being switched on while a swarm is mid-flight. */
+@media (prefers-reduced-motion: reduce) {
+  .bat-transit {
+    display: none !important;
   }
 }
 
-/* ---------- THE ASK BUTTON ----------
-   The launcher's fill is the site's near-black chrome colour, the same
-   as the window bars it sits under, so the darkest thing on the site is
-   consistently its chrome. White label on it clears 15:1 either way.
 
-   --launcher-bg is a token because the reduced-transparency rule below
-   has to restate the background to drop the blur, and it should not
-   have to know the colour to do that. */
-:root {
-  --launcher-bg: #1d1d1f;
+/* The composite layer for a vendored WebGL field.
+   See rule five in components/primitives/FxBackdrop.tsx.
+
+   Two jobs, and the second is the one that matters. The opacity holds
+   the field well below full strength so it reads as tooth on the
+   surface rather than as a panel. The mask feathers its own alpha to
+   zero before the container edge, so the field has no boundary of its
+   own — which is the §5b rule, and the thing whose absence made these
+   read as dark rectangles sitting on the page.
+
+   `isolation: isolate` is deliberate. It confines the canvas to its own
+   stacking context so a field can never composite with, or paint over,
+   the content layered above it. */
+.fx-layer {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  opacity: var(--fx-opacity, 0.3);
+  -webkit-mask-image: radial-gradient(
+    135% 135% at 15% 100%,
+    rgb(0 0 0 / 0.95) 0%,
+    rgb(0 0 0 / 0.5) 45%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(
+    135% 135% at 15% 100%,
+    rgb(0 0 0 / 0.95) 0%,
+    rgb(0 0 0 / 0.5) 45%,
+    transparent 82%
+  );
 }
 
-.chat-launcher {
+/* The scan field's host. The WebGL canvas is absolutely positioned
+   into this and the CSS grid sits behind it, so a context failure
+   leaves the gradient version visible rather than a blank box. */
+.scanfield {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  background: color-mix(in srgb, var(--launcher-bg) 96%, transparent);
-  color: #ffffff;
-  border-color: rgb(255 255 255 / 0.16);
+  pointer-events: none;
 }
-@media (hover: hover) and (pointer: fine) {
-  .chat-launcher:hover { border-color: var(--accent); }
+.scanfield canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
-.chat-launcher-icon { color: #ffffff; }
 
-/* The dark fill survives both accessibility settings — it is the blur
-   and the translucency that go, not the colour. */
-@media (prefers-reduced-transparency: reduce) {
-  .chat-launcher { background: var(--launcher-bg); }
-}
-@media (prefers-contrast: more) {
-  .chat-launcher {
-    background: var(--launcher-bg);
-    border-color: #ffffff;
+/* Everything in 5e is either an overlay on an interactive element or
+   a one-shot entrance, so reduced motion keeps the colour and removes
+   the movement — it does not remove the affordance. The HUD brackets
+   and the scan border stay: they are the only hover feedback a
+   reduced-motion visitor has, and taking them away would leave less
+   information, not less motion. */
+@media (prefers-reduced-motion: reduce) {
+  html.js .sweep[data-shown="true"]::before {
+    animation: none !important;
+    opacity: 0;
+  }
+  html.js .xray,
+  html.js .xray[data-shown="true"] {
+    -webkit-text-stroke: 0;
+    color: currentColor;
+    animation: none !important;
+  }
+  html.js .chain[data-shown="true"] .chain-rule {
+    animation: none !important;
+    transform: none;
+  }
+  .reticle {
+    display: none;
+  }
+  html.js .route-enter {
+    animation: none !important;
   }
 }
 
-/* ---------- DARK: FLAT SURFACES ----------
-   Every treatment on this site was tuned against white paper, and three
-   of them do not survive the move to black.
 
-   A backdrop blur needs a backdrop with something in it. Over white,
-   content passing under the header averages to a light haze and the bar
-   still reads as one surface. Over black there is nothing to average
-   toward — the blur samples whatever colour happens to be scrolling
-   past, the 1.4 saturation boost amplifies it (the comment at the
-   .nav-glass declaration already says so), and the bar smears through
-   the hue of the section underneath it. That is the "haywire texture
-   through the nav bar".
+/* ------------------------------------------------------------
+   6. CONTROLS
+   ------------------------------------------------------------ */
 
-   A drop shadow needs a surface lighter than the shadow. `rgb(0 0 0 /
-   0.10)` under a card on #000000 paints nothing at all where the page
-   is black and paints mud where the card sits over another raised
-   surface, so twenty cards each spend a 24px-blurred paint on a
-   difference that is either invisible or wrong.
-
-   And --edge-color is an alpha *black*, chosen because it had to land
-   the same over white paper, grey card and frosted panel. On black it
-   lands on none of them: the hairline that is supposed to survive when
-   the fill contrast closes is the first thing to go.
-
-   So dark takes the shape the file already reaches for in three other
-   places — prefers-reduced-transparency, the no-backdrop-filter
-   @supports fallbacks, prefers-contrast — and takes it as the default:
-   blur off, fill opaque, depth carried by a light hairline instead of a
-   dark shadow. Same colours, same tokens, same reasoning, applied for a
-   different reason.
-
-   Nothing here changes a box, a radius, a z-index or a duration. A dark
-   visitor gets the same page at the same size moving the same way; only
-   the material is flatter. */
-
-/* The two tokens the whole ladder hangs off. Inverting --edge-color
-   gives every card, tile, post, diagram, lightbox and floating panel a
-   hairline that is actually visible, and it costs one declaration
-   instead of nineteen. --shadow-window goes to none in the same breath:
-   with a readable edge there is nothing left for the shadow to say, and
-   on this background it could not say it anyway. */
-html[data-theme="dark"] {
-  --edge-color: rgb(255 255 255 / 0.12);
-  --shadow-window: none;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.125rem;
+  border: 1px solid var(--c-rule-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--c-body);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-cx), color 160ms var(--ease-cx),
+    background-color 160ms var(--ease-cx);
+}
+.btn:hover {
+  border-color: var(--c-signal);
+  color: var(--c-signal);
 }
 
-/* Glass to solid. The selector list is the one the
-   prefers-reduced-transparency block above already uses, and so are the
-   fills — .nav-glass and .sticky-cta are page chrome and take --paper,
-   the floating panels take --paper-raised, and the launcher keeps its
-   own near-black token. Killing the blur without taking the fill opaque
-   is the failure mode this file warns about twice; both halves are in
-   the same rule so they cannot drift apart. */
-html[data-theme="dark"] .nav-glass,
-html[data-theme="dark"] .mobile-nav__overlay,
-html[data-theme="dark"] .chat-launcher,
-html[data-theme="dark"] .chat-panel,
-html[data-theme="dark"] .sticky-cta,
-html[data-theme="dark"] .cookie-notice {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+/* The primary control. There is exactly one primary action per screen,
+   so there is exactly one of these.
+
+   REVISION 4 — no longer filled. It was a solid amber rectangle, and
+   the owner's reading of it was simply "the yellow box": on a page
+   whose entire graphic language is hairline rules, corner ticks and
+   value steps, a block of saturated fill is the one element that is
+   not drawn. It read as a widget pasted onto a drawing.
+
+   So primacy is carried by COLOUR rather than by AREA. At rest `.btn`
+   is a neutral rule with body-coloured text and this is an amber rule
+   with amber text, which is unambiguous at a glance without putting a
+   filled shape on the sheet. The accent budget is also better for it:
+   a filled button spends far more amber than a one-pixel rule does,
+   and §1b counts area, not instances.
+
+   Hover adds a wash rather than a fill — weak enough to stay
+   ambiguous, which is the same rule every texture in §5b follows. */
+.btn-signal {
+  background: transparent;
+  border-color: var(--c-signal);
+  color: var(--c-signal);
 }
-html[data-theme="dark"] .nav-glass,
-html[data-theme="dark"] .sticky-cta { background: var(--paper); }
-html[data-theme="dark"] .mobile-nav__overlay,
-html[data-theme="dark"] .chat-panel,
-html[data-theme="dark"] .cookie-notice { background: var(--paper-raised); }
-html[data-theme="dark"] .chat-launcher { background: var(--launcher-bg); }
-
-/* The header's floating edge. The gradient this replaces is a fade to
-   7% ink, and ink in dark is #f5f5f7 — so the "soft shadow under the
-   bar" arrives as a 14px white glow bleeding down over the content, the
-   one thing a plain bar must not do.
-
-   The pseudo-element stays, at the same position and the same height,
-   because it is what carries the fade-in on .is-floating and that
-   motion is not mine to change. Only what it paints changes: one
-   hairline at the top of the box instead of a gradient filling it. */
-html[data-theme="dark"] .nav-glass::after {
-  background: linear-gradient(to bottom, var(--ink-15) 0 1px, transparent 1px);
+.btn-signal:hover {
+  background: color-mix(in oklab, var(--c-signal) 12%, transparent);
+  border-color: var(--c-signal);
+  color: var(--c-signal);
 }
 
-/* Shadows that are not on the --shadow-window token, and so have to be
-   named. The floating panels do not need one: they already carry the
-   inverted hairline from --edge-color, which separates them from black
-   in a way a black shadow cannot. */
-html[data-theme="dark"] .chat-launcher,
-html[data-theme="dark"] .chat-panel,
-html[data-theme="dark"] .cookie-notice {
-  box-shadow: none;
+/* Filter chips — the select-screen furniture. Pressed state is
+   carried by border and weight as well as colour. */
+.chip {
+  padding: 0.375rem 0.6875rem;
+  border: 1px solid var(--c-rule);
+  border-radius: 2px;
+  color: var(--c-mute);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-cx), color 160ms var(--ease-cx);
+}
+.chip:hover {
+  color: var(--c-body);
+  border-color: var(--c-rule-strong);
+}
+.chip[aria-pressed="true"] {
+  color: var(--c-signal);
+  border-color: var(--c-signal);
 }
 
-/* The hover edge is the same problem one level down: the resting border
-   is now light, so darkening it on hover reads as the card going away.
-   Same step in the other direction. */
-@media (hover: hover) and (pointer: fine) {
-  html[data-theme="dark"] a.card:hover,
-  html[data-theme="dark"] .glow-card:hover {
-    border-color: rgb(255 255 255 / 0.24);
+/* Inline links in prose. Underlined from the start — an
+   underline that appears on hover is a link a reader has to go
+   looking for. */
+.link {
+  color: var(--c-body);
+  text-decoration: underline;
+  text-decoration-color: var(--c-signal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 160ms var(--ease-cx);
+}
+.link:hover {
+  color: var(--c-signal);
+}
+
+/* Form fields. Flat, ruled, and with the invalid state carrying
+   a label as well as a colour — see the field markup. */
+.field {
+  width: 100%;
+  padding: 0.6875rem 0.75rem;
+  background: var(--c-ground);
+  border: 1px solid var(--c-rule-strong);
+  border-radius: 2px;
+  color: var(--c-body);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  transition: border-color 160ms var(--ease-cx);
+}
+.field::placeholder {
+  color: var(--c-faint);
+}
+.field:hover {
+  border-color: var(--c-signal-dim);
+}
+.field[aria-invalid="true"] {
+  border-color: var(--c-alarm);
+}
+
+
+/* ------------------------------------------------------------
+   7. DISCLOSURE & MOTION
+
+   Nothing moves without input. No parallax, no scroll-jacking,
+   no autoplay, nothing that expands on hover. The visitor opens
+   what they want to open — which is the introvert's reading of
+   progressive disclosure, and also simply the polite one.
+   ------------------------------------------------------------ */
+
+/* Scroll reveal, gated on html.js so a visitor with scripting
+   off gets the content rather than a page of invisible headings.
+   One transform, small, once. */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 400ms var(--ease-cx), transform 400ms var(--ease-cx);
+}
+html.js .reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.disclose-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms var(--ease-cx);
+}
+.disclose-body[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.disclose-body > div {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .disclose-body {
+    transition: none;
   }
 }
 
-/* Nothing decorative is switched off below this point, and that is the
-   rule rather than an omission. "Remove the glass" means the
-   backdrop-filters above, and "the shadows are bad" means the two
-   tokens above. It does not mean the motion: the border-glow sweep is
-   the site's one effect, painted against its own surface, and dark mode
-   is not a reason for it to stop. */
+
+/* ------------------------------------------------------------
+   8. CHROME
+   ------------------------------------------------------------ */
+
+/* Scrollbar, themed rather than hidden. Hiding it is a habit
+   from designs that could not survive being measured. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-rule-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--c-rule-strong);
+  border: 3px solid var(--c-ground);
+  border-radius: 10px;
+}
+
+/* Wide content — tables, the graph, long stack rows — scrolls
+   inside its own box. The page body never scrolls sideways. */
+/* Wide content — a long stack row, the pipeline — scrolls inside its
+   own box. The page body never scrolls sideways.
+
+   The scrollbar here is deliberately thinner than the page's. The
+   global rule paints a 10px thumb with a 3px ground-coloured border,
+   which is right for a page-height bar and much too heavy for a 32px
+   strip of chips: parked at the left it reads as a small square sitting
+   under the content rather than as a scrollbar. Any row short enough to
+   need `scroll-x` gets a hairline instead. */
+.scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.scroll-x::-webkit-scrollbar {
+  height: 4px;
+}
+.scroll-x::-webkit-scrollbar-thumb {
+  background: var(--c-rule-strong);
+  border: 0;
+  border-radius: 4px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

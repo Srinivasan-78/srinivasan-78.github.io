@@ -1,82 +1,78 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​‌​​‌‌​​​‌‌​‌​‌‌​‌‌‌​‌​​​‌‌​​​​‌​‌​‌‌​‌​​‌​‌​‌​‌​​‌‌​​‌​​‌‌‌​​‌​​‌‌​‌​‌‌​‌‌‌​​‌‌​​‌‌​‌​​​​‌‌​‌​‌​‌​‌​‌​‌​‌​​​​‌​​‌‌​​‌​​​​‌‌​​​​​‌‌‌‌​​​​‌‌‌​​​‌​‌‌‌​​​‌​‌‌​​‌​​​‌‌​​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​​‌‌​​‌​​‌‌​​‌​​​‌​‌​​​​​‌‌​​‌‌​​‌‌​‌​‌‌​‌​‌‌​​​​‌‌‌‌​‌​​‌‌‌​​‌‌​‌​​​​‌‌​‌​​‌‌‌​​‌‌‌​‌‌​​‌‌‌​‌​​​‌​​‌‌‌​​‌​‌​‌‌​​‌‌​‌‌‌‌​‌‌​‌​​‌​​‌‌​‌‌​​‌‌​​​‌‌​‌‌​‌‌‌‌​​‌‌​​‌​​​‌​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.pLktaZU2rks45UBd0xqqdf
+ * Fingerprint: AMK1.z2dPfkXzsCNvtNVoi6co2-
  */
-import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import GlowCard from "@/components/ui/GlowCard";
-import { CERTS } from "@/lib/certs";
-import { PROJECTS } from "@/lib/projects";
-import { FiArrowUpRight, FiHome, FiLayers, FiAward, FiMail } from "react-icons/fi";
+import Icon from "@/components/primitives/Icon";
+import SectionHead from "@/components/primitives/SectionHead";
+import { NOT_FOUND_COPY, NOT_FOUND_ROUTES } from "@/lib/data/profile";
+import { pageMetadata } from "@/lib/seo";
 
+/* `path: null` is preserved deliberately and the reason is in lib/seo:
+   this page answers every wrong address on the site, so a canonical tag
+   here would nominate one of them as the real page. */
 export const metadata = pageMetadata({
-  title: "Page Not Found",
-  description: "The requested address was not found. Explore the active pages of Srinivasan's DevOps portfolio.",
+  title: NOT_FOUND_COPY.metaTitle,
+  description: NOT_FOUND_COPY.metaDescription,
   path: null,
 });
 
-const ROUTES = [
-  { href: "/", title: "Home", body: "Overview, production architecture, and work status.", icon: FiHome, go: "Go Home" },
-  { href: "/projects", title: "Projects", body: `${PROJECTS.length} platform builds, utilities, and open source tools.`, icon: FiLayers, go: "View Projects" },
-  { href: "/certifications", title: "Certifications", body: `${CERTS.length} verified credentials and skills.`, icon: FiAward, go: "View Credentials" },
-  { href: "/contact", title: "Contact", body: "Send a direct message or discuss a role.", icon: FiMail, go: "Get in Touch" },
-];
+/* 404.
 
+   A missing page is a failure mode, and this site's whole argument is
+   that failure modes get typeset rather than hidden. So the admission
+   uses the same `contingency` line every panel on the site uses — the
+   author's own sentence, in the alarm colour, labelled with the word
+   rather than relying on the colour to carry it. It sits directly above
+   the routes because it is the sentence that introduces them.
+
+   Dry, not jokey. Nobody arrives here on purpose, and a 404 making
+   jokes is a site enjoying its own breakage. */
 export default function NotFound() {
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
-      <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center">
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        <SectionHead
+          index="404"
+          kicker={NOT_FOUND_COPY.eyebrow}
+          title={NOT_FOUND_COPY.heading}
+          titleAs="h1"
+        />
 
-        {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
-          <span>Error 404 · Page Not Found</span>
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-3xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
-          Let&rsquo;s get you back on track.
-        </h1>
-
-        <p className="text-base sm:text-lg text-[#5a5a5f] dark:text-[#9b9ba1] max-w-xl mx-auto leading-relaxed mb-12">
-          That link seems to point somewhere that no longer exists. Here are the main sections ready for you:
+        <p className="contingency mb-10 max-w-2xl">
+          <span>Contingency</span>
+          <span>{NOT_FOUND_COPY.body}</span>
         </p>
 
-        {/* 4-Card Navigation Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-          {ROUTES.map((r) => {
-            const Icon = r.icon;
-            return (
-              <GlowCard key={r.href}>
-                <Link
-                  href={r.href}
-                  className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
-                >
-                  <div className="mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] mb-3 shadow-xs dark:shadow-none">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
-                      {r.title}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-                      {r.body}
-                    </p>
-                  </div>
+        <div className="grid gap-px border border-rule bg-rule sm:grid-cols-2">
+          {NOT_FOUND_ROUTES.map((route) => (
+            <Link
+              key={route.href}
+              href={route.href}
+              className="flex h-full flex-col justify-between bg-ground p-5 transition-colors duration-150 hover:text-detect sm:p-6"
+            >
+              <div>
+                <div className="flex items-center gap-2.5 text-mute">
+                  <Icon name={route.icon} className="h-4 w-4" />
+                  <h2 className="t-anno">{route.title}</h2>
+                </div>
 
-                  <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
-                    <span>{r.go}</span>
-                    <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </Link>
-              </GlowCard>
-            );
-          })}
+                <p className="mt-4 text-[0.875rem] leading-relaxed text-mute">
+                  {route.body}
+                </p>
+              </div>
+
+              <span className="t-anno-sm mt-6 flex items-center justify-between gap-3 border-t border-rule pt-4 text-body">
+                {route.go}
+                <Icon name="arrowUpRight" className="h-3.5 w-3.5" />
+              </span>
+            </Link>
+          ))}
         </div>
-
-      </div>
+      </section>
     </main>
   );
 }

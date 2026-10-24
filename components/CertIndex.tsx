@@ -1,261 +1,264 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌‌​​‌‌​‌‌​​​‌​‌​‌‌​​‌‌​‌​​​​‌​‌​‌​‌​‌‌‌​​‌​​​‌‌​‌‌‌​‌‌‌‌​​‌​​‌‌​​​​​​‌‌‌​​​​‌​‌‌​​​​‌​​‌‌‌​​‌‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌‌‌​‌​‌​‌​​​‌​‌​​​‌​‌‌​​‌‌‌​‌​​​​​‌​‌‌‌‌​​​​‌​‌​‌‌‌​​‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌‌​‌​‌‌​‌‌​​​​‌​​‌​‌‌​‌​‌​​​‌‌‌​‌​​‌‌​​​‌​​‌‌‌‌​‌‌​‌‌‌‌​‌‌​​​‌‌​‌​‌‌​‌​​‌​‌​​‌​​​‌‌​​‌‌​‌‌​​‌‌‌​‌​‌​‌​​​‌‌‌‌​​​​‌​​​‌‌​​‌​‌​​‌‌​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​‌​​​‌‌‌‌​​‌​​‌‌​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.flVhUr7y08XNwcWTQgAxW5
+ * Fingerprint: AMK1.Ska-GLOocZR3gTxFSwsty6
  */
 "use client";
 
 import { useMemo, useState } from "react";
+import SectionHead from "@/components/primitives/SectionHead";
+import TagRow from "@/components/primitives/TagRow";
+import Reveal from "@/components/primitives/Reveal";
+import FxBackdrop from "@/components/primitives/FxBackdrop";
+import { Halftone } from "@/components/primitives/Texture";
 import { CERTS, ROWS, forRow, type Cert } from "@/lib/certs";
-import GlowCard from "./ui/GlowCard";
-import { useCappedList, ShowMoreButton } from "./ui/RevealMore";
-import {
-  FiAward,
-  FiExternalLink,
-  FiCheckCircle,
-  FiSearch,
-  FiCalendar,
-} from "react-icons/fi";
+import { CERTIFICATIONS_COPY } from "@/lib/data/profile";
+
+/* The credential index.
+
+   Twenty-four LinkedIn Learning certificates are twenty-four
+   near-identical records: a name, a month, a skill or two, a
+   verification URL. The previous design drew each one as a card with a
+   glyph and a hover state, which made the page read as twenty-four
+   claims of equal weight and buried the only thing that distinguishes
+   them — the verification link — at the bottom of a tile.
+
+   So this is an index, the way a bibliography is an index: a single
+   ruled column, grouped by year, every row the same shape. Scanning it
+   top to bottom is the point. The year headings in the display serif
+   are the only rhythm the page needs, and they carry the one piece of
+   information the list itself cannot state — that the learning is
+   continuous rather than a single burst.
+
+   Provenance is a stated value of this record, so the verification link
+   is a column of the row rather than a faint afterthought: it sits on
+   the `link` class with its underline already drawn, because an
+   underline that appears on hover is a citation the reader has to go
+   looking for.
+
+   Only the chip row has state, so this whole component is the client
+   leaf and the page above it stays a server component. */
+
+/* The year order comes from the data rather than from sorting the
+   records, because the strip that reads these years is part of the copy
+   and its order is the author's. A year with nothing under the current
+   filter is dropped, not shown empty. */
+const YEARS = CERTIFICATIONS_COPY.timelineYears;
 
 export default function CertIndex() {
-  const [rowId, setRowId] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [rowId, setRowId] = useState(ROWS[0].id);
 
+  /* Counts are computed once for all six rows, not per render pass of
+     the pressed one: a chip that only knows its own total cannot tell
+     the visitor what pressing it would cost them. */
   const counts = useMemo(
     () => Object.fromEntries(ROWS.map((r) => [r.id, forRow(r).length])),
     []
   );
 
-  const yearBreakdown = useMemo(() => {
-    return {
-      "2026": CERTS.filter((c) => c.year === "2026").length,
-      "2025": CERTS.filter((c) => c.year === "2025").length,
-      "2023": CERTS.filter((c) => c.year === "2023").length,
-      "2021": CERTS.filter((c) => c.year === "2021").length,
-    };
-  }, []);
-
-  const filteredCerts = useMemo(() => {
+  const shown = useMemo(() => {
     const row = ROWS.find((r) => r.id === rowId) ?? ROWS[0];
-    const baseList = forRow(row);
+    return forRow(row);
+  }, [rowId]);
 
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return baseList;
-
-    return baseList.filter(
-      (c) =>
-        c.name.toLowerCase().includes(q) ||
-        c.skills.some((s) => s.toLowerCase().includes(q)) ||
-        c.date.toLowerCase().includes(q)
-    );
-  }, [rowId, searchQuery]);
-
-  /* Nine again, for the same reason as the projects grid: three complete
-     rows of the three-column layout, so the cap reads as a resting point
-     rather than a truncation. */
-  const certList = useCappedList(filteredCerts, 9, `${rowId}|${searchQuery}`);
+  /* Grouped in the years' own order, with empty groups removed. */
+  const groups: { year: string; certs: Cert[] }[] = YEARS.map((year) => ({
+    year,
+    certs: shown.filter((c) => c.year === year),
+  })).filter((g) => g.certs.length > 0);
 
   return (
-    <main
-      id="content"
-      tabIndex={-1}
-      className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white"
-    >
-      {/* 1. Hero Section */}
-      <header className="pt-20 pb-12 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
-          <FiAward className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
-          <span>Continuous Learning & Verification</span>
-        </div>
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        {/* The page header, written out here rather than taken from
+            SectionHead for one reason: the display register a page
+            headline needs is the xl one, and SectionHead is a shared
+            primitive serving every section on the site at the smaller
+            size. The anatomy is the same — index on its own rule, the
+            kicker interrupting it, then the subject.
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
-          Certifications & verified skills.
-        </h1>
+            One halftone screen, cut on the diagonal, and nothing else.
+            This page is a reference table; a graphic layer running all
+            the way down twenty-four rows would be wallpaper. */}
+        <div className="relative mb-10 overflow-hidden sm:mb-14">
+          <Halftone className="shard" />
+          {/* Shafts of light across a dark plane — deco, and the
+              right register for a wall of credentials. */}
+          <FxBackdrop
+            kind="beams"
+            opacity={0.3}
+            props={{
+              beamWidth: 2.4,
+              rotation: 28,
+              speed: 0.7,
+              waveLength: 1.6,
+              sharpness: 0.4,
+              glow: 0.45,
+              /* Left undefined on purpose: supplying it makes the
+                 component paint `background` on its own wrapper div,
+                 which is the straight-edged panel this layer exists to
+                 avoid. */
+              backgroundColor: undefined,
+            }}
+            lightProps={{ color: "#bfbfbb", brightness: 0.9 }}
+            darkProps={{ color: "#f5c518", brightness: 0.4 }}
+          />
 
-        <p className="text-base sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mb-8">
-          24 verified industry credentials covering cloud platforms (AWS & Azure), automation (Ansible & IaC), Linux systems, and observability. Every credential links to its official permanent verification ID.
-        </p>
-
-        {/* Yearly Growth Timeline Counters */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] mb-10 pb-8 border-b border-black/10 dark:border-white/10 max-w-3xl mx-auto">
-          <div className="flex items-center gap-1.5">
-            <FiCalendar className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
-            <span>2026 ({yearBreakdown["2026"]})</span>
-          </div>
-          <div>•</div>
-          <div>2025 ({yearBreakdown["2025"]})</div>
-          <div>•</div>
-          <div>2023 ({yearBreakdown["2023"]})</div>
-          <div>•</div>
-          <div>2021 ({yearBreakdown["2021"]})</div>
-          <div>•</div>
-          <span className="text-[#047857] dark:text-[#34c759] font-semibold">
-            ✓ 100% Issuer Verified
-          </span>
-        </div>
-
-        {/* Search & Category Filter Matrix */}
-        <div className="max-w-3xl mx-auto space-y-4">
           <div className="relative">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9b9ba1]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by credential or skill (e.g. Ansible, Azure, Chef, Puppet, Datadog)..."
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 text-sm text-[#1d1d1f] dark:text-white placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20 transition-all"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            {ROWS.map((r) => {
-              const isSelected = rowId === r.id;
-              return (
-                <button
-                  key={r.id}
-                  type="button"
-                  onClick={() => setRowId(r.id)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                    isSelected
-                      ? "bg-black text-white dark:bg-white dark:text-black shadow-md scale-105"
-                      : "bg-[#f5f5f7] hover:bg-black/5 dark:bg-[#09090c] dark:hover:bg-white/5 border border-black/10 dark:border-white/10 text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white"
-                  }`}
-                >
-                  <span>{r.label}</span>
-                  <span
-                    className={`text-[10px] font-mono ${
-                      isSelected ? "" : "text-[#5a5a5f] dark:text-[#a1a1a6]"
-                    }`}
-                  >
-                    {counts[r.id]}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </header>
-
-      {/* 2. Credentials Bento Grid */}
-      <section className="px-6 max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono px-2">
-          {/* Honest while capped: the figure here and the figure on the
-              control below the grid have to agree. */}
-          <span>
-            {certList.visible.length < filteredCerts.length
-              ? `Showing ${certList.visible.length} of ${filteredCerts.length} verified credentials`
-              : `Showing ${filteredCerts.length} verified credentials`}
-          </span>
-          <span>Issuer: LinkedIn Learning</span>
-        </div>
-
-        {filteredCerts.length === 0 ? (
-          <div className="text-center py-20 p-8 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
-            <FiAward className="w-8 h-8 mx-auto text-[#9b9ba1] mb-3" />
-            <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1">
-              No certifications found matching &ldquo;{searchQuery}&rdquo;
-            </h3>
-            <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] mb-4">
-              Try searching for &ldquo;Azure&rdquo;, &ldquo;Ansible&rdquo;, &ldquo;Chef&rdquo;, or &ldquo;Puppet&rdquo;.
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setSearchQuery("");
-                setRowId("all");
-              }}
-              className="px-5 py-2 rounded-full text-xs font-semibold bg-black text-white dark:bg-white dark:text-black"
-            >
-              Reset Filters
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certList.visible.map((cert) => (
-              <GlowCard key={cert.url}>
-                <article className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 flex flex-col justify-between h-full hover:border-black/25 dark:hover:border-white/25 transition-all group">
-                  <div>
-                    {/* Seal & Date */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] group-hover:scale-110 transition-transform shadow-xs dark:shadow-none">
-                        <FiAward className="w-5 h-5" />
-                      </div>
-                      <span className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
-                        {cert.date}
-                      </span>
+            <SectionHead
+              index="03"
+              total="05"
+              kicker={CERTIFICATIONS_COPY.eyebrow}
+              title={CERTIFICATIONS_COPY.heading}
+              titleAs="h1"
+              lede={CERTIFICATIONS_COPY.body}
+              size="xl"
+              titleReveal
+              titleEffect="xray"
+              className="mb-0"
+              aside={
+                /* The count is announced once, not printed twice. It
+                   used to appear as a figure and then again inside
+                   "Showing 24 verified credentials" directly beneath —
+                   the same number two inches apart, which is the
+                   duplication the brief forbids. The live region now
+                   wraps the figure and its noun and nothing else, so a
+                   chip press announces "24 / 24 verified credentials"
+                   rather than reading the issuer out again every time. */
+                <div className="text-left md:text-right">
+                  <div aria-live="polite">
+                    <div className="t-poster text-[2.75rem] leading-none text-body">
+                      {shown.length}
+                      {shown.length !== CERTS.length && (
+                        <span className="text-[0.55em] text-mute">
+                          {" "}
+                          / {CERTS.length}
+                        </span>
+                      )}
                     </div>
 
-                    {/* Cert Name */}
-                    <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-4 group-hover:text-[#0066cc] dark:group-hover:text-[#f5f5f7] transition-colors leading-snug">
-                      {cert.name}
-                    </h2>
-
-                    {/* Skills Tags */}
-                    {cert.skills.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-6">
-                        {cert.skills.map((skill) => (
-                          <span
-                            key={skill}
-                            className="px-2.5 py-0.5 rounded-lg text-[11px] font-mono bg-white dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-[#424245] dark:text-[#a1a1a6]"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    <div className="t-anno-sm mt-2 text-mute">
+                      {CERTIFICATIONS_COPY.showingSuffix}
+                    </div>
                   </div>
 
-                  {/* Verification CTA */}
-                  <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold">
-                    <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] flex items-center gap-1">
-                      <FiCheckCircle className="w-3.5 h-3.5 text-[#34c759]" />
-                      Verified ID
-                    </span>
-
-                    <a
-                      href={cert.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[#0066cc] dark:text-[#2997ff] hover:underline"
-                      aria-label={`Verify credential for ${cert.name}`}
-                    >
-                      <span>Verify ↗</span>
-                      <FiExternalLink className="w-3 h-3" />
-                    </a>
+                  <div className="t-anno-sm mt-1 text-mute">
+                    {CERTIFICATIONS_COPY.issuerLabel}
                   </div>
-                </article>
-              </GlowCard>
-            ))}
+                </div>
+              }
+            />
           </div>
-        )}
+        </div>
 
-        {certList.showControl && (
-          <ShowMoreButton
-            expanded={certList.expanded}
-            hiddenCount={certList.hiddenCount}
-            noun="credentials"
-            onClick={certList.toggle}
-          />
-        )}
+        {/* The filter. Six groupings, each labelled with what it holds —
+            the count is the whole reason a chip is worth pressing. */}
+        <div className="flex flex-wrap gap-2" role="group" aria-label={CERTIFICATIONS_COPY.eyebrow}>
+          {ROWS.map((row) => (
+            <button
+              key={row.id}
+              type="button"
+              className="chip"
+              aria-pressed={row.id === rowId}
+              onClick={() => setRowId(row.id)}
+            >
+              {row.label}
+              <span aria-hidden="true" className="ml-2 text-mute">
+                {counts[row.id]}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-12 space-y-14">
+          {/* One wipe per year group rather than one per row. Twenty-four
+              rows arriving one at a time would be a page animating
+              itself while it is being read; four groups is the rhythm
+              the content already has. */}
+          {groups.map((group, i) => (
+            <Reveal
+              key={group.year}
+              as="section"
+              effect="wipe"
+              delay={Math.min(i, 3) * 40}
+            >
+              {/* The year on its own rule, the way the section heads
+                  carry their index: the label interrupts the line
+                  rather than sitting above it. Set in the poster
+                  register — condensed, tall, tabular — because a year
+                  is a figure, and four of them down the page are the
+                  only rhythm a reference table needs. */}
+              <div className="flex items-baseline gap-4">
+                <h2 className="t-poster shrink-0 text-[2rem] sm:text-[2.5rem]">
+                  {group.year}
+                </h2>
+                <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+                <span className="t-anno-sm shrink-0 text-mute">
+                  {group.certs.length}
+                </span>
+              </div>
+
+              <ul className="mt-5 divide-y divide-rule border-y border-rule">
+                {group.certs.map((cert) => (
+                  <li
+                    key={cert.url}
+                    /* Twelve columns from `sm` up and one column below
+                       it. At 360px the name gets the full width and
+                       wraps; nothing in the row is allowed to set a
+                       minimum that would push the page sideways, which
+                       is why every cell carries `min-w-0` and the name
+                       breaks on a long word rather than overflowing. */
+                    className="grid gap-x-4 gap-y-2.5 py-5 sm:grid-cols-12"
+                  >
+                    <div className="min-w-0 sm:col-span-7">
+                      <h3 className="text-[0.9375rem] leading-snug break-words text-body">
+                        {cert.name}
+                      </h3>
+
+                      {cert.skills.length > 0 && (
+                        <TagRow className="mt-2.5" items={cert.skills} wrap />
+                      )}
+                    </div>
+
+                    <div className="t-metric min-w-0 text-[0.8125rem] text-mute sm:col-span-2">
+                      {cert.date}
+                    </div>
+
+                    <div className="min-w-0 sm:col-span-3 sm:text-right">
+                      <a
+                        href={cert.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link t-anno-sm"
+                        /* The visible label is two words, which is
+                           ample next to the name on screen and useless
+                           read out of context in a list of twenty-four
+                           identical links. The accessible name names
+                           the credential it verifies. */
+                        aria-label={`${CERTIFICATIONS_COPY.verifiedIdLabel} — ${cert.name}`}
+                      >
+                        {CERTIFICATIONS_COPY.verifyCta}
+                      </a>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* The provenance statement, in the author's words. It is the
+            claim the whole page rests on, so it is typeset rather than
+            tucked into a tooltip. */}
+        <div className="mt-10 border-t border-rule pt-6">
+          <div className="t-anno text-signal">{CERTIFICATIONS_COPY.verifiedStrip}</div>
+          <p className="t-prose mt-3 text-[0.875rem] leading-relaxed text-mute">
+            {CERTIFICATIONS_COPY.footerNote}
+          </p>
+        </div>
       </section>
-
-      {/* 3. Footer */}
-      <footer className="mt-20 px-6 max-w-4xl mx-auto text-center text-xs text-[#5a5a5f] dark:text-[#9b9ba1] border-t border-black/10 dark:border-white/10 pt-10">
-        <p>
-          All 24 certifications are official credentials issued by LinkedIn Learning and verified with permanent certificate IDs.
-        </p>
-      </footer>
     </main>
   );
 }
