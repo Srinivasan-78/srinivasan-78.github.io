@@ -1,220 +1,187 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌​​‌​​​​​‌‌‌​​​​‌​​‌‌‌​​‌‌‌‌​​​​​‌‌​‌​‌​‌​‌‌​​​​‌‌​​‌​​​‌‌‌​‌‌​​‌‌​​​‌​​‌‌‌​‌​​​​‌‌​​‌​​‌​‌​‌‌​​‌​​​​‌‌​​‌‌​​​‌​‌​‌​​​​​‌‌​‌​‌​​​‌​‌‌​‌​‌‌‌‌​​‌​‌‌​​‌‌‌​‌​​‌‌​‌​‌​​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌‌‌​‌‌​​‌​​​‌‌​​‌‌​‌​‌​​‌​‌​‌‌‌​‌​​‌‌​‌​‌‌‌​‌‌‌​‌‌‌​​​​​‌‌‌​​​‌​‌​‌​‌​​​‌‌‌​‌​‌​‌‌‌​​‌​​‌‌‌​​​‌​‌‌‌‌​‌​​‌​‌‌​‌​​‌​‌​​‌​​‌‌‌​​​​​‌‌‌​​‌​​‌‌‌‌​‌​​​‌‌​​​​​‌‌​‌‌‌​​‌​​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.GH8Nx5Xdvbt2VC1Pj-ygMH
+ * Fingerprint: AMK1.AvFjWMwpqTurqzZRprz0nF
  */
-import { pageMetadata } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
 import CopyEmailCard from "@/components/CopyEmailCard";
-import GlowCard from "@/components/ui/GlowCard";
-import { FiMail, FiLinkedin, FiGithub, FiCheckCircle, FiClock, FiMapPin, FiPhone, FiGlobe, FiDownload } from "react-icons/fi";
+import Icon from "@/components/primitives/Icon";
+import Reveal from "@/components/primitives/Reveal";
+import SectionHead from "@/components/primitives/SectionHead";
+import FxBackdrop from "@/components/primitives/FxBackdrop";
+import { SignalBeam } from "@/components/primitives/Texture";
+import { CONTACT_COPY, CONTACT_METHODS } from "@/lib/data/profile";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Contact",
-  description: "Get in touch about DevOps, cloud infrastructure and automation roles.",
+  title: CONTACT_COPY.metaTitle,
+  description: CONTACT_COPY.metaDescription,
   path: "/contact",
 });
 
+/* Contact.
+
+   A 7/5 sheet: the form takes seven columns because it is the one thing
+   on this page with a primary action, and the six direct channels take
+   five as a ruled list rather than six tiles. Six identical cards would
+   say the six routes are interchangeable; they are not — the email is
+   the one he actually reads, which is why it is the first row and the
+   only one that carries a control.
+
+   This page is a server component. The two stateful leaves are the form
+   and the copy button, and both are imported rather than inlined, so
+   everything else here is HTML by the time a browser sees it.
+
+   One h1, in the header below. One `btn-signal`, inside the form — and
+   the form is the one thing on this page that does not get a graphic or
+   a motion effect. A field that animates while someone is filling it in
+   is a field arguing with them.
+
+   CORRECTION, revision 7: this comment used to say that `phone`,
+   `linkedin` and `github` had no entry in the Icon primitive's map and
+   were falling back to a neutral glyph. All three are in `ICONS` —
+   lines 70, 77 and 82 — mapped to FiGithub, FiLinkedin and FiPhone.
+   Either they were added and the note was not updated, or the note was
+   wrong when written. Corrected rather than deleted, because a comment
+   describing a defect that does not exist sends the next reader to fix
+   nothing. */
 export default function Contact() {
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white">
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        {/* This comment used to say the header was written out here
+            rather than taken from SectionHead, because the primitive's
+            title size was hard-coded below the xl page register. That
+            stopped being true when the register became a prop and all
+            three hand-rolled copies were migrated back — the call is
+            right there. Correcting it rather than deleting it, because
+            a comment that describes code that no longer exists is how
+            the drift started.
 
-      {/* 1. Human Hero Section */}
-      <header className="pt-20 pb-16 px-6 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
-          <span className="w-2 h-2 rounded-full bg-[#34c759]" />
-          <span>Direct Contact · Bangalore, IN</span>
+            The beam is the warm graphic on the page: a cone of light
+            thrown up from the lower left, where a searchlight would be.
+            The detective grid is the cold one over it. Both are sibling
+            layers, aria-hidden and pointer-events off, because each
+            carries its own opacity and would otherwise fade the
+            headline sitting on top of it. */}
+        <div className="relative mb-10 overflow-hidden sm:mb-14">
+          <SignalBeam />
+          {/* The searchlight, moving. The static cone in §5b is
+              exactly this shape; the page asking someone to step into
+              the light gets the animated version. */}
+          <FxBackdrop
+            kind="rays"
+            opacity={0.34}
+            props={{
+              raysOrigin: "top-center",
+              raysSpeed: 0.7,
+              lightSpread: 0.9,
+              rayLength: 1.6,
+              rayDensity: 1.4,
+              glow: 0.45,
+              haze: 0.25,
+              followMouse: true,
+              mouseInfluence: 0.12,
+              intro: true,
+              maxDevicePixelRatio: 1.5,
+            }}
+            lightProps={{ raysColor: "#bfbfbb", intensity: 0.45 }}
+            darkProps={{ raysColor: "#f5c518", intensity: 0.5 }}
+          />
+
+          <div className="relative">
+            <SectionHead
+              index="05"
+              total="05"
+              kicker={CONTACT_COPY.eyebrow}
+              title={CONTACT_COPY.heading}
+              titleAs="h1"
+              lede={CONTACT_COPY.body}
+              size="xl"
+              titleReveal
+              titleEffect="xray"
+              className="mb-0"
+            />
+          </div>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-4xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
-          Let&rsquo;s work together.
-        </h1>
-
-        <p className="text-base sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed">
-          Whether you&rsquo;re hiring for a senior DevOps, Site Reliability, Cloud Architecture or AI developer-tooling role, or want to talk through an infrastructure challenge, feel free to reach out.
-        </p>
-
-        <p className="text-sm text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mt-4 font-mono">
-          Bangalore, India · +91 97910 25934 · srinivasan.shyam2000@gmail.com
-        </p>
-      </header>
-
-      {/* 2. Main Contact Grid */}
-      <section className="px-6 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-          {/* Left Column: Form */}
-          <div className="lg:col-span-7 p-8 sm:p-10 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2">
-              Send a Message
+        {/* The résumé's contact line used to be printed here as a title
+            block: location, phone and email set as annotation between
+            two rules. It is gone, because every fact in it appears
+            again within one screen of itself — the location in the
+            kicker above, the phone and the email as rows of the list to
+            the right, each with its own label and its own control. The
+            email was on the page three times once the mailto was
+            counted. A fact appears once per page, so the strip was the
+            copy that had to go rather than the row that can be used. */}
+        <div className="grid gap-12 border-t border-rule pt-12 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-7">
+            <h2 className="t-display text-[1.5rem] sm:text-[1.75rem]">
+              {CONTACT_COPY.formHeading}
             </h2>
-            <p className="text-sm text-[#5a5a5f] dark:text-[#9b9ba1] mb-8 leading-relaxed">
-              Fill in your details below. Messages go straight to my primary inbox.
+            <p className="t-prose mt-3 text-[0.9375rem] leading-relaxed text-mute">
+              {CONTACT_COPY.formBody}
             </p>
 
-            <ContactForm />
+            <div className="mt-8">
+              <ContactForm />
+            </div>
           </div>
 
-          {/* Right Column: Direct Channels & Status */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-5">
+            {/* Six channels as one ruled column. No heading: the data
+                carries no label for this block, and a list of six
+                labelled links needs no second label to introduce it. */}
+            <ul className="divide-y divide-rule border-y border-rule">
+              {CONTACT_METHODS.map((method) =>
+                method.copyable ? (
+                  <li key={method.id}>
+                    <CopyEmailCard method={method} />
+                  </li>
+                ) : (
+                  <li key={method.id}>
+                    <a
+                      href={method.href}
+                      {...(method.external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                      {...(method.download ? { download: true } : {})}
+                      className="group flex items-start justify-between gap-4 p-5"
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-2.5 text-mute">
+                          <Icon name={method.icon} className="h-4 w-4" />
+                          <span className="t-anno">{method.label}</span>
+                        </span>
 
-            {/* Quick Availability Card */}
-            <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
-              <div className="flex items-center gap-2.5 mb-2">
-                <FiClock className="w-4 h-4 text-[#047857] dark:text-[#34c759]" />
-                <span className="text-xs font-mono uppercase tracking-wider text-[#5a5a5f] dark:text-[#a1a1a6]">
-                  Response Time
-                </span>
-              </div>
-              <div className="text-base font-bold text-[#1d1d1f] dark:text-white mb-1">
-                Typically responds within 24 hours
-              </div>
-              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-                Available for interviews, technical consultations, and architecture discussions.
+                        <span className="mt-3 block text-[0.9375rem] break-all text-body transition-colors duration-150 group-hover:text-detect">
+                          {method.value}
+                        </span>
+                      </span>
+
+                      <span className="t-anno-sm mt-1 shrink-0 text-mute">
+                        {method.action}
+                      </span>
+                    </a>
+                  </li>
+                )
+              )}
+            </ul>
+
+            <div className="mt-8 border-t border-rule pt-6">
+              <h2 className="t-anno-sm text-mute">{CONTACT_COPY.responseLabel}</h2>
+              <p className="t-display mt-2 text-[1.25rem]">
+                {CONTACT_COPY.responseHeadline}
+              </p>
+              <p className="mt-3 text-[0.875rem] leading-relaxed text-mute">
+                {CONTACT_COPY.responseBody}
               </p>
             </div>
-
-            {/* Direct Channel Cards */}
-            <div className="space-y-3">
-
-              {/* Email with copy-to-clipboard feedback */}
-              <CopyEmailCard />
-
-              {/* Phone — as published on the résumé */}
-              <GlowCard>
-                <a
-                  href="tel:+919791025934"
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#047857] dark:text-[#34c759] shadow-xs dark:shadow-none shrink-0">
-                      <FiPhone className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Phone</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#047857] dark:group-hover:text-[#34c759] transition-colors">
-                        +91 97910 25934
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Call ↗</span>
-                </a>
-              </GlowCard>
-
-              {/* LinkedIn */}
-              <GlowCard>
-                <a
-                  href="https://www.linkedin.com/in/srini-solution-architect/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#0066cc] dark:text-[#2997ff] shadow-xs dark:shadow-none shrink-0">
-                      <FiLinkedin className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">LinkedIn</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#0066cc] dark:group-hover:text-[#2997ff] transition-colors">
-                        srini-solution-architect
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Connect ↗</span>
-                </a>
-              </GlowCard>
-
-              {/* GitHub */}
-              <GlowCard>
-                <a
-                  href="https://github.com/Srinivasan-78"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-xs dark:shadow-none shrink-0">
-                      <FiGithub className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">GitHub</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#0066cc] dark:group-hover:text-[#f5f5f7] transition-colors">
-                        github.com/Srinivasan-78
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Source ↗</span>
-                </a>
-              </GlowCard>
-
-              {/* Website */}
-              <GlowCard>
-                <a
-                  href="https://www.srinidevops.com"
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] shadow-xs dark:shadow-none shrink-0">
-                      <FiGlobe className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Website</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
-                        srinidevops.com
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Home ↗</span>
-                </a>
-              </GlowCard>
-
-              {/* Résumé */}
-              <GlowCard>
-                <a
-                  href="/resume.pdf"
-                  download
-                  className="p-5 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex items-center justify-between group block"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white shadow-xs dark:shadow-none shrink-0">
-                      <FiDownload className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase">Résumé</div>
-                      <div className="text-sm font-semibold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
-                        Download PDF
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono shrink-0 ml-2">Save ↓</span>
-                </a>
-              </GlowCard>
-
-            </div>
-
-            {/* Work Authorization Notice */}
-            <div className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10">
-              <div className="flex items-center gap-2 text-xs font-semibold text-[#1d1d1f] dark:text-white mb-2">
-                <FiCheckCircle className="w-4 h-4 text-[#047857] dark:text-[#34c759]" />
-                <span>Work Authorization Status</span>
-              </div>
-              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-2">
-                <strong>United States:</strong> US Citizen (Immediate hire, zero visa sponsorship required).
-              </p>
-              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-2">
-                <strong>India:</strong> OCI Cardholder (Indefinite right to live and work in India).
-              </p>
-              <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-                U.S. Citizen · OCI Holder — authorized to work in the United States and India.
-              </p>
-            </div>
-
           </div>
         </div>
       </section>
-
     </main>
   );
 }

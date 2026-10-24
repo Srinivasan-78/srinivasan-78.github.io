@@ -12,6 +12,7 @@
     "*.svg",
     "out",
     ".next",
-    "REUSE.toml"
+    "REUSE.toml",
+    "components/reactbits"
   ]
 }

@@ -1,23 +1,34 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​​​​‌​‌‌​‌​‌​​​‌‌‌​‌​‌​​‌‌​‌​‌‌​​​​‌​​​‌‌‌​‌‌‌​‌‌​​‌​‌​​‌‌​​‌‌‌​​‌​‌​​​‌​​​‌​‌​​‌​​‌​​‌‌‌‌​‌​‌​‌​​​‌​​‌‌‌‌​‌​​‌‌‌‌​‌‌​​‌‌​​‌​‌‌​​‌​​‌‌​‌‌‌​‌​​​‌​​​‌​​‌​‌​​‌‌​​‌​‌​‌‌​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌​​‌​​​​​‌‌‌​​​​‌‌​‌​‌‌​‌‌​​​‌‌​‌​​​​‌‌​​‌‌‌​​​​‌​‌‌‌‌‌​‌‌‌​​‌​​‌‌​​​‌​​​‌‌​‌​​​‌‌​​​‌​​‌​‌‌​‌​​​‌​‌‌​‌​‌​‌‌​‌​​‌​​‌‌​​​‌‌‌​‌‌​​‌​​​‌​​​‌​‌‌​​​​‌‌‌​​​‌​‌‌‌​‌​​​​‌‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.D-GSXGvS9DROTOOfY7DJek
+ * Fingerprint: AMK1.TH8kcC8_rb4bZ-ZLvDXqt2
  */
 "use client";
 
 import { useEffect } from "react";
 import Link from "next/link";
-import GlowCard from "@/components/ui/GlowCard";
-import { FiRefreshCw, FiHome, FiArrowUpRight, FiLayers, FiMail } from "react-icons/fi";
+import Icon from "@/components/primitives/Icon";
+import SectionHead from "@/components/primitives/SectionHead";
+import { NOT_FOUND_ROUTES } from "@/lib/data/profile";
 
-const ROUTES = [
-  { href: "/", title: "Home", body: "Overview, production architecture, and work status.", icon: FiHome, go: "Go Home" },
-  { href: "/projects", title: "Projects", body: "Platform builds, utilities, and tools.", icon: FiLayers, go: "View Projects" },
-  { href: "/contact", title: "Contact", body: "Send a direct message.", icon: FiMail, go: "Get in Touch" },
-];
+/* The route-level error boundary.
 
+   `reset()` is Next's re-render of the failed segment and it is the only
+   thing on this page that can actually fix anything, so it is the one
+   filled control. The `console.error` in the effect is preserved too:
+   this site has no error-reporting service, which means the browser
+   console is the only place a digest ever lands.
+
+   The admission uses the `contingency` line, same as the 404 — a
+   boundary that says "oops, something went wrong" and nothing else is a
+   boundary pretending it does not know what happened. It says which
+   layer failed and that nothing was lost.
+
+   The destinations are the 404's routes rather than a second list kept
+   in this file: there is exactly one set of places a stuck visitor
+   should be offered, and two copies of it drift. */
 export default function AppError({
   error,
   reset,
@@ -30,80 +41,67 @@ export default function AppError({
   }, [error]);
 
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
-      <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center">
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        <SectionHead
+          index="500"
+          kicker="Application Error"
+          title="Let’s try that again."
+          titleAs="h1"
+        />
 
-        {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-600 dark:text-[#ff453a] mb-6">
-          <span>Application Error</span>
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tightest leading-[1.18] pb-1 max-w-3xl mx-auto mb-6 text-[#1d1d1f] dark:text-white">
-          Let&rsquo;s try that again.
-        </h1>
-
-        <p className="text-base sm:text-lg text-[#5a5a5f] dark:text-[#9b9ba1] max-w-xl mx-auto leading-relaxed mb-4">
-          A client component encountered an unexpected error. Everything you had is safe.
+        <p className="contingency max-w-2xl">
+          <span>Contingency</span>
+          <span>
+            A client component encountered an unexpected error. Everything you
+            had is safe.
+          </span>
         </p>
 
+        {/* The digest is the only handle anyone has on this failure, so
+            it is set in the metric register and shown verbatim rather
+            than summarised. */}
         {error.digest && (
-          <p className="text-xs font-mono text-[#9b9ba1] mb-8">
+          <p className="t-metric mt-4 text-[0.8125rem] text-mute">
             Reference code: {error.digest}
           </p>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <button
-            type="button"
-            onClick={reset}
-            className="px-8 py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center gap-2"
-          >
-            <FiRefreshCw className="w-4 h-4" />
-            <span>Try Again</span>
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <button type="button" onClick={reset} className="btn btn-signal">
+            Try Again
           </button>
-          <Link
-            href="/"
-            className="px-7 py-3.5 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-semibold text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
-          >
+          <Link href="/" className="btn">
             Back Home
           </Link>
         </div>
 
-        {/* Navigation Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-          {ROUTES.map((r) => {
-            const Icon = r.icon;
-            return (
-              <GlowCard key={r.href}>
-                <Link
-                  href={r.href}
-                  className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block"
-                >
-                  <div className="mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center text-[#9a5200] dark:text-[#e5a93b] mb-3 shadow-xs dark:shadow-none">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h2 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-1 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">
-                      {r.title}
-                    </h2>
-                    <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-                      {r.body}
-                    </p>
-                  </div>
+        <div className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-2">
+          {NOT_FOUND_ROUTES.map((route) => (
+            <Link
+              key={route.href}
+              href={route.href}
+              className="flex h-full flex-col justify-between bg-ground p-5 transition-colors duration-150 hover:text-detect sm:p-6"
+            >
+              <div>
+                <div className="flex items-center gap-2.5 text-mute">
+                  <Icon name={route.icon} className="h-4 w-4" />
+                  <h2 className="t-anno">{route.title}</h2>
+                </div>
 
-                  <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
-                    <span>{r.go}</span>
-                    <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </Link>
-              </GlowCard>
-            );
-          })}
+                <p className="mt-4 text-[0.875rem] leading-relaxed text-mute">
+                  {route.body}
+                </p>
+              </div>
+
+              <span className="t-anno-sm mt-6 flex items-center justify-between gap-3 border-t border-rule pt-4 text-body">
+                {route.go}
+                <Icon name="arrowUpRight" className="h-3.5 w-3.5" />
+              </span>
+            </Link>
+          ))}
         </div>
-
-      </div>
+      </section>
     </main>
   );
 }

@@ -1,238 +1,78 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​‌‌​‌‌‌‌​​‌‌​‌‌‌​‌‌‌​​‌‌​‌​‌​​‌​​‌‌​‌‌‌​​‌​‌​‌‌‌​‌‌​‌​‌‌​​‌‌‌​​​​‌‌‌​​​‌​‌‌​​​​‌​‌​​​​‌‌​​‌‌​‌‌‌​‌‌​‌‌‌​​‌​‌​‌​‌​‌‌​‌​​​​‌‌‌‌​​​​‌​‌‌​​‌​‌​‌​​‌​​‌​​‌​‌‌​‌‌‌​​​‌​‌​​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌‌‌‌​​‌​​‌‌​‌‌‌​‌​‌​​‌​​​‌‌​​‌​​‌‌​‌‌​​​​‌​‌‌​‌​‌‌​‌​‌​​‌‌​​​‌​​‌‌‌‌​​​​‌​​​‌‌​​‌​​‌‌‌‌​‌​​‌​‌‌​‌‌‌​‌​​​​‌‌​‌‌​​‌​​‌​‌​​​‌‌​‌​​​‌‌​‌‌‌‌​‌‌​​​‌​​‌​‌‌‌‌‌​‌​​​‌‌‌​‌​​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Yo7sRnWk8qaC7nUhxYRKqB
+ * Fingerprint: AMK1.iy7R2l-jbxFOKt6J4ob_GG
  */
-import Link from "next/link";
-import { PROJECTS } from "@/lib/projects";
-import { CERTS } from "@/lib/certs";
-import AppleSkillsExperience from "@/components/AppleSkillsExperience";
-import AppleEnterpriseExperience from "@/components/AppleEnterpriseExperience";
-import AppleWorkAuthorization from "@/components/AppleWorkAuthorization";
-import SystemDiagram from "@/components/SystemDiagram";
-import { CountUp } from "@/components/Bits";
-import AppleHeroPipeline from "@/components/AppleHeroPipeline";
-import {
-  FiArrowUpRight,
-  FiDownload,
-  FiGlobe,
-  FiZap,
-} from "react-icons/fi";
+import Hero from "@/components/home/Hero";
+import Figures from "@/components/home/Figures";
+import ReleasePath from "@/components/home/ReleasePath";
+import Loadout from "@/components/home/Loadout";
+import Initiatives from "@/components/home/Initiatives";
+import Clearance from "@/components/home/Clearance";
 
-const STATS = [
-  { value: 5, suffix: " Years", label: "Keeping production running at scale" },
-  { value: 15, suffix: "+", label: "Microservices architected & maintained" },
-  { value: CERTS.length, label: "Verified industry credentials earned" },
-  { value: 2, suffix: " Clouds", label: "Deep production experience (AWS & Azure)" },
-  { value: 100, suffix: "%", label: "Data integrity held across same-region & cross-region Azure DR migrations" },
-  { value: 17, suffix: " Languages", label: "Parsed by repo2graph, his open-source MCP server for AI coding agents" },
-];
+/* The home page is the dossier's table of contents and its five cases,
+   in reading order.
 
-const RELEASE_FLOW = [
-  { label: "Commit", note: "Automated PR linting & test suite" },
-  { label: "Build", note: "Lean immutable container image tagged" },
-  { label: "Backup", note: "T-SQL-verified backup, safe-skip on live SQL jobs" },
-  { label: "Gate", note: "Synthetic health & latency verified" },
-  { label: "Promote", note: "Gradual zero-downtime traffic shift" },
-  { label: "Verify", note: "Error rate nominal & Datadog OK" },
-];
+   REVISION 6 — three sections removed and one promoted, on
+   instruction. Worth recording what went and why it is not a loss:
 
-export default function Page() {
+     Builds   "Things I've built on the side" + "Patches sent to other
+              people's projects". Both were a preview of /projects
+              rendered on the home page — the same twenty builds, the
+              same two contributions, one level of detail down. A home
+              page that summarises a page one click away is a page
+              asking to be scrolled past twice.
+
+     Close    "Let's build something dependable together". A closing
+              CTA, which duplicated the hero's own Contact control and
+              the whole of /contact. The nav is sticky now, so the
+              contact destination is on screen at every scroll
+              position; a terminal call to action is what you need when
+              it is NOT.
+
+     Tooling  "Tooling I work with day to day". Not deleted — promoted.
+              It is the ticker in the sticky header now, so the
+              toolchain is visible from every page and every scroll
+              position rather than once, in case 07, on one page. That
+              is a straight upgrade in reach for the same content.
+
+   The three components are deleted rather than commented out. Their
+   copy survives in lib/data/profile.ts (`sideProjects`, `closing`) and
+   the contributions data is still rendered on /projects, so nothing
+   here is unrecoverable.
+
+   Section indices renumbered 01–05. They are the page's real ordinals,
+   not decoration — a dossier whose contents jump from 04 to 06 is a
+   dossier with a page missing.
+
+   No metadata export, deliberately: the root layout's title, description
+   and social card already describe this page, and declaring them again
+   here is how the two drift apart.
+
+   Every section owns its own <section>, its own container and its own
+   top rule, so the page is a list of cases rather than a layout with
+   nine special cases in it. Nothing here is a client component — the
+   three stateful leaves (domain selection, the initiative filter, the
+   operations clocks) are imported by the sections that need them, and
+   the rest of this page is HTML by the time it reaches a browser.
+
+   Section rhythm and the container width are fixed by the build
+   contract in docs/design-contingency.md §4, not chosen per section. */
+export default function Home() {
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors duration-300 selection:bg-[#e5a93b]/30 selection:text-black dark:selection:text-white">
-
-      {/* 1. Human-Centered Hero Section */}
-      <header className="relative pt-16 pb-16 px-6 max-w-6xl mx-auto flex flex-col items-center text-center overflow-hidden">
-
-        {/* Status Eyebrow */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] mb-6">
-          <span className="w-2 h-2 rounded-full bg-[#34c759]" />
-          <span>Srinivasan Vijayaraghavan · DevOps / Site Reliability Engineer · Bangalore, IN</span>
-        </div>
-
-        {/* Clear, Human Headline */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tightest leading-[1.12] pb-1 max-w-5xl mb-6 text-[#1d1d1f] dark:text-white">
-          I build infrastructure that makes shipping software feel easy.
-        </h1>
-
-        {/* Calm, Grounded Description */}
-        <p className="text-lg sm:text-xl font-normal text-[#5a5a5f] dark:text-[#9b9ba1] max-w-3xl mx-auto leading-relaxed mb-8">
-          Five years automating releases, cloud migrations, and disaster recovery across AWS and Azure. At Thomson Reuters I own release, upgrade and disaster-recovery automation for a multitenant Azure platform of 15+ microservices, built on GitHub Actions, Ansible and Datadog. I design resilient systems so engineering teams can focus on building products, not fighting deployments.
-        </p>
-
-        {/* Secondary line: the open-source side of the same discipline */}
-        <p className="text-sm sm:text-base text-[#5a5a5f] dark:text-[#9b9ba1] max-w-2xl mx-auto leading-relaxed mb-8 -mt-4">
-          I also maintain{" "}
-          <Link href="/projects/repo2graph" className="font-semibold text-[#1d1d1f] dark:text-white underline decoration-amber-500/50 decoration-2 underline-offset-4 hover:decoration-amber-500 transition-colors">
-            repo2graph
-          </Link>
-          , an open-source MCP server that gives AI coding agents cited, token-bounded answers about any codebase.
-        </p>
-
-        {/* Dual Primary Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 z-20">
-          <Link
-            href="/contact"
-            className="px-8 py-3.5 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl"
-          >
-            Get in touch
-          </Link>
-          <a
-            href="/resume.pdf"
-            download
-            className="px-7 py-3.5 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-semibold text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
-          >
-            <FiDownload className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
-            Download Résumé
-          </a>
-          <Link
-            href="/projects"
-            className="px-7 py-3.5 rounded-full bg-transparent text-[#5a5a5f] hover:text-[#1d1d1f] dark:text-[#9b9ba1] dark:hover:text-white font-medium text-sm transition-colors flex items-center gap-1.5"
-          >
-            <span>Explore all {PROJECTS.length} builds</span>
-            <FiArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* Calm Architecture Blueprint Showcase */}
-        <div className="w-full max-w-5xl">
-          <AppleHeroPipeline />
-        </div>
-      </header>
-
-      {/* 2. Key Metrics */}
-      <section className="py-14 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {STATS.map((st) => (
-            <div
-              key={st.label}
-              className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-all flex flex-col justify-between"
-            >
-              <div className="text-3xl sm:text-4xl font-extrabold text-[#1d1d1f] dark:text-white tracking-tight font-mono mb-2">
-                <CountUp value={st.value} suffix={st.suffix} />
-              </div>
-              <div className="text-xs font-medium text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-                {st.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Release Reliability Architecture */}
-      <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
-            <span>Reliability by Design</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white mb-4">
-            How I approach zero-downtime releases.
-          </h2>
-          <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Every step is automated, measured, and verified before user traffic touches it. If something looks off, traffic reverts immediately.
-          </p>
-        </div>
-
-        <SystemDiagram
-          stages={RELEASE_FLOW}
-          returnPath="Rollback executes the exact same pipeline in reverse — RESTORE-based database rollback, service resets, checkpoint cleanup & external system resync, all automated"
-          caption="Production release architecture across Azure & AWS. Automated health gates verify four conditions before traffic is routed — service state, HTTP 200, load-balancer convergence and the health-check file — with drain timeouts and retry/backoff at 5 attempts on a 2-second delay so a slow start is never mistaken for a failure."
-        />
-      </section>
-
-      {/* 4. Skills & Disciplines (Interactive Engineering Matrix) - Placed above Selected Experience */}
-      <AppleSkillsExperience />
-
-      {/* 5. Enterprise Experience (Apple Case Study Matrix) */}
-      <AppleEnterpriseExperience />
-
-      {/* 6. Personal Projects & Tooling (Card-free Showcase Gateway to Projects) */}
-      <section className="py-20 px-6 max-w-6xl mx-auto border-t border-black/10 dark:border-white/10">
-        <div className="p-8 sm:p-12 lg:p-14 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left shadow-lg dark:shadow-none">
-
-          <div className="max-w-2xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
-              <span>Side Projects & Tools</span>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tightest leading-tight text-[#1d1d1f] dark:text-white">
-              Things I&rsquo;ve built on the side.
-            </h2>
-
-            <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg leading-relaxed">
-              Practical tools, deployment orchestrators, AI developer tooling, and browser utilities I use in my day-to-day workflow — including repo2graph, an MIT-licensed code-graph engine and MCP server shipped on PyPI, npm, Docker and the GitHub Marketplace.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6] justify-center md:justify-start">
-              <span>• {PROJECTS.length} Production Builds</span>
-              <span>• Self-Healing Pipelines</span>
-              <span>• Open Source Tools</span>
-              <span>• MCP Servers & Agentic Workflows</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row md:flex-col items-center gap-3 w-full md:w-auto shrink-0">
-            <Link
-              href="/projects"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center justify-center gap-2 whitespace-nowrap"
-            >
-              <span>Explore All {PROJECTS.length} Projects</span>
-              <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b]" />
-            </Link>
-            <span className="text-[11px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
-              Interactive filters, live demos & source code
-            </span>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 7. Creative Work Authorization Terminal */}
-      <AppleWorkAuthorization />
-
-      {/* 8. Human Closing Banner */}
-      <section className="py-24 px-6 relative overflow-hidden bg-linear-to-b from-[#f5f5f7] to-white dark:from-[#09090c] dark:to-black border-t border-black/10 dark:border-white/10">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="w-14 h-14 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/15 mx-auto flex items-center justify-center mb-6 shadow-xs">
-            <FiZap className="w-6 h-6 text-[#9a5200] dark:text-[#e5a93b]" />
-          </div>
-
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white mb-4">
-            Let&rsquo;s build something dependable together.
-          </h2>
-          <p className="text-[#5a5a5f] dark:text-[#9b9ba1] text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-            I&rsquo;m open to senior DevOps, Site Reliability Engineering, Cloud Architecture, and AI developer-tooling roles. Let&rsquo;s talk about what your team is building.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/contact"
-              className="w-full sm:w-auto px-10 py-4 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-base transition-all hover:scale-105 active:scale-95 shadow-xl"
-            >
-              Start a Conversation
-            </Link>
-            <a
-              href="https://www.linkedin.com/in/srini-solution-architect/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15 font-medium text-base transition-all flex items-center justify-center gap-2"
-            >
-              <FiGlobe className="w-4 h-4 text-[#0066cc] dark:text-[#2997ff]" />
-              LinkedIn Profile
-            </a>
-          </div>
-
-          <div className="mt-8 text-xs text-[#5a5a5f] dark:text-[#9b9ba1] flex flex-wrap items-center justify-center gap-6">
-            <span>✓ US Citizen (No visa sponsorship needed)</span>
-            <span>✓ OCI Cardholder (India)</span>
-            <span>✓ 5 Years Enterprise Cloud Track Record</span>
-            <span>✓ Open-Source MCP Server Maintainer</span>
-          </div>
-        </div>
-      </section>
-
+    /* tabIndex={-1} is what makes the skip link actually work. Without
+       it, following #content moves the viewport but leaves focus on the
+       link, so the next Tab goes back into the header the visitor just
+       asked to skip. */
+    <main id="content" tabIndex={-1}>
+      <Hero />
+      <Figures />
+      <ReleasePath />
+      <Loadout />
+      <Initiatives />
+      <Clearance />
     </main>
   );
 }

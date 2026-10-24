@@ -1,58 +1,98 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌‌​‌‌​​‌​‌​‌‌‌‌​‌​​​‌‌​​‌‌​‌​‌​‌​‌​‌​​‌‌‌​​‌‌​‌‌​‌​‌‌​‌‌​‌​‌‌​‌​​​​‌‌​‌‌‌‌​‌​​‌‌‌​​‌​​​‌​​​‌​‌‌‌‌‌​‌​​‌‌​​​​‌‌​​‌‌​‌‌​​‌‌​​‌‌​​​​‌​‌‌​‌​​​​‌​‌​‌​‌​‌​​​‌​‌​‌‌​‌​‌‌​‌‌​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​‌​​‌‌​​‌​​​‌​​​​‌‌​‌‌‌​‌‌‌​‌‌​​​‌‌​‌‌‌​​​​​‌​‌​‌‌​​‌​‌‌​‌​​‌​‌​​​‌​‌‌​‌​‌‌​‌​​‌​‌​​‌‌‌‌​‌​​‌‌‌​‌​​​​‌‌​​​‌​‌‌​‌​​​​‌​​‌‌‌​​‌‌​‌‌‌​​‌​​​‌​‌​‌‌​​‌‌​​‌​​‌‌‌​​‌‌​​​‌‌​‌​​​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Gez3UNmmhoND_L3fahUEkk
+ * Fingerprint: AMK1.BdCwcpVZQkJzt1hNnEfNcG
  */
 import Link from "next/link";
+import { FOOTER_LINKS, FOOTER_COPY, PROFILE } from "@/lib/data/profile";
 
+/* The colophon.
+
+   Set as a drawing's title block: the ruled strip at the corner of a
+   technical drawing that records who drew it, when, and under what
+   revision. That is a real convention rather than a borrowed look, and
+   it is the correct form for a footer on a site whose subject is
+   provenance — this is a repository where every source file carries a
+   keyed authorship watermark and a bot audits the account nightly to
+   check they are all still there.
+
+   The year is computed, not written. A footer that says 2026 in 2027 is
+   the smallest possible broken promise, and this one is rendered on the
+   server at build time — the site is statically exported — so it is the
+   build date rather than the visitor's clock. For a site that rebuilds
+   on every push that is the more honest of the two. */
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-black/10 dark:border-white/10 py-12 px-6 bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors duration-300">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    /* No top rule — see the matching note in components/Nav.tsx. The
+       header's bottom border and this one were the two sides of a frame
+       around the whole document. The title block below keeps its own
+       rules, because a drawing's title block genuinely is a bordered
+       box; what it does not need is a second border enclosing the
+       sheet it sits on. */
+    <footer className="mt-16">
+      <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
+        {/* The title block. Three ruled cells on a wide screen, stacked
+            on a narrow one, each labelled in the annotation register. */}
+        <div className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
+          <div className="bg-ground p-4">
+            <div className="t-anno-sm mb-1.5 text-mute">Drawn by</div>
+            <div className="t-display text-base text-body">{PROFILE.name}</div>
+            <div className="t-anno-sm mt-1 text-mute">{PROFILE.role}</div>
+          </div>
 
-        {/* Copyright & Location */}
-        <div className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono text-center md:text-left">
-          <span>© {currentYear} Srinivasan Vijayaraghavan · Bangalore, IN</span>
+          <div className="bg-ground p-4">
+            <div className="t-anno-sm mb-1.5 text-mute">Station</div>
+            <div className="t-metric text-[0.8125rem] text-body">
+              {PROFILE.location}
+            </div>
+            <div className="t-anno-sm mt-1 text-mute">{PROFILE.website.host}</div>
+          </div>
+
+          <div className="bg-ground p-4">
+            <div className="t-anno-sm mb-1.5 text-mute">Revision</div>
+            <div className="t-metric text-[0.8125rem] text-body">
+              © {year} · MIT
+            </div>
+            <div className="t-anno-sm mt-1 text-mute">
+              Watermarked at source
+            </div>
+          </div>
         </div>
 
-        {/* Links Navigation */}
-        <div className="flex items-center gap-6 flex-wrap justify-center text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">
-          <Link className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors" href="/projects">
-            Projects
-          </Link>
-          <Link className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors" href="/certifications">
-            Certifications
-          </Link>
-          <Link className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors" href="/contact">
-            Contact
-          </Link>
-          <Link className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors" href="/privacy">
-            Privacy
-          </Link>
-          <Link className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors" href="/terms">
-            Terms
-          </Link>
-          <a
-            className="hover:text-[#0066cc] dark:hover:text-[#2997ff] transition-colors"
-            href="https://www.linkedin.com/in/srini-solution-architect/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn ↗
-          </a>
-          <a
-            className="hover:text-[#1d1d1f] dark:hover:text-white transition-colors"
-            href="https://github.com/Srinivasan-78"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub ↗
-          </a>
-        </div>
+        <nav
+          aria-label="Footer"
+          className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2.5"
+        >
+          {FOOTER_LINKS.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
+              >
+                {link.label}
+              </Link>
+            )
+          )}
+        </nav>
+
+        <p className="t-anno-sm mt-5 text-mute">
+          © {year} {FOOTER_COPY.copyrightSuffix}
+        </p>
       </div>
     </footer>
   );

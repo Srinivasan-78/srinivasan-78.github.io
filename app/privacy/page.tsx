@@ -1,165 +1,62 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌‌​​​‌‌‌​​​​​‌‌​‌​​​‌​​‌​​‌​‌‌​‌‌‌‌​‌​​​‌‌​​‌‌​‌‌​‌​‌​​‌‌​​​‌‌​​​‌‌​‌​‌​​‌‌​‌‌​​‌​​​‌​‌‌​‌​​​‌‌‌​​​​‌‌​‌‌‌​​‌‌​​​‌​​‌‌​‌‌‌‌​‌​​‌​​‌​‌​​​‌‌‌​‌‌‌‌​​‌​‌​‌​​‌​​‌‌​‌​​​​​‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌‌​​‌​‌​​​‌​‌‌​​‌‌‌​​‌‌​‌‌​​​‌‌‌​​​​‌​​​​‌‌​‌​​​​‌‌​‌‌​​‌‌​​‌‌‌​​​‌​‌​‌‌​‌​​‌​​‌‌​​​‌​‌​‌​​​‌​​‌​​​​‌​​​‌​‌​‌‌‌​‌‌‌​‌​​‌‌‌​​‌‌‌‌​​‌​‌‌​​​‌‌​‌​​‌​‌​​‌‌‌​​‌​​‌​‌​​‌​​‌‌​​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.v84IoFmLcSdZ8nboIGyRh0
+ * Fingerprint: AMK1.FQg68CCfqZLTHEwNycJrRa
  */
-import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import SplitReveal from "@/components/SplitReveal";
+import LegalSections from "@/components/legal/LegalSections";
+import SectionHead from "@/components/primitives/SectionHead";
+import { PRIVACY_COPY } from "@/lib/data/profile";
+import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Privacy Policy",
-  description:
-    "What this site stores, and how the contact form and analytics look after your data.",
+  title: PRIVACY_COPY.metaTitle,
+  description: PRIVACY_COPY.metaDescription,
   path: "/privacy",
 });
 
-const UPDATED = "18 August 2026";
+/* The privacy policy.
 
+   Read by the small number of people who care about exactly this, so it
+   is typeset as a document rather than hidden in a 12px grey column: the
+   seven sections are numbered, the headings sit out in their own margin,
+   and the prose keeps a 68ch measure. The whole thing is prose from the
+   data — including the links, which are stored as records and spliced
+   back into the sentences by LegalSections.
+
+   The last-updated date is the aside rather than a line under the title.
+   On a legal page it is the second thing a reader looks for, and it is a
+   date, so it belongs in the metric register next to the head. */
 export default function Privacy() {
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
-      <div className="wrap legal py-16 px-6 max-w-4xl mx-auto space-y-8">
-        <div className="page-head mb-8">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
-            <span>Legal & Privacy</span>
-          </div>
-          <SplitReveal as="h1" text="Privacy Policy" className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-2 text-[#1d1d1f] dark:text-white" />
-          <p className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1]">Last updated: {UPDATED}</p>
-        </div>
+    <main id="content" tabIndex={-1}>
+      <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        <SectionHead
+          index="01"
+          kicker={PRIVACY_COPY.eyebrow}
+          title={PRIVACY_COPY.heading}
+          titleAs="h1"
+          lede={PRIVACY_COPY.lead}
+          aside={
+            <div className="text-left md:text-right">
+              <div className="t-anno-sm text-mute">
+                {PRIVACY_COPY.updatedPrefix}
+              </div>
+              <div className="t-metric mt-1.5 text-[0.8125rem] text-body">
+                {PRIVACY_COPY.updated}
+              </div>
+            </div>
+          }
+        />
 
-        <p className="text-base sm:text-lg leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-          This is a personal portfolio, and your visit stays refreshingly simple. It&rsquo;s a
-          static site with no application server, no user accounts and no database behind it. Below
-          is exactly what happens to your data when you visit.
-        </p>
+        <LegalSections sections={PRIVACY_COPY.sections} />
 
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Who runs this site</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Srinivasan Vijayaraghavan, an individual based in Bangalore, India. For any privacy
-            question or request, email{" "}
-            <a className="lnk text-[#0066cc] dark:text-[#2997ff] hover:underline" href="mailto:srinivasan.shyam2000@gmail.com">
-              srinivasan.shyam2000@gmail.com
-            </a>
-            .
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">What the site stores in your browser</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The site sets no tracking cookies and no advertising cookies. It uses one entry of
-            browser <code>localStorage</code>:
-          </p>
-          <ul className="list-disc pl-5 text-sm space-y-1 text-[#424245] dark:text-[#a1a1a6]">
-            <li>
-              <b>Notice dismissal</b> — remembers that you closed the privacy notice, so it is not
-              shown on every page.
-            </li>
-          </ul>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Your browser keeps it locally, and you can clear it any time through its site-data
-            settings. It stays on your own device.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Analytics</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Site traffic is measured with <b>Plausible Analytics</b>, a privacy-focused, cookieless
-            analytics service. Plausible does not set cookies, does not collect personal data, and
-            does not track visitors across sites or over time. It records aggregate counts only:
-            page URL, referrer, country, and the general browser and device type. Every visitor stays
-            anonymous, and the numbers serve one purpose: telling me which pages are useful.
-          </p>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Plausible processes this data in the EU. Their privacy policy is at{" "}
-            <a className="lnk text-[#0066cc] dark:text-[#2997ff] hover:underline" href="https://plausible.io/privacy" target="_blank" rel="noopener noreferrer">
-              plausible.io/privacy ↗
-            </a>
-            . If you run a content blocker the analytics script just doesn&rsquo;t load, and the site
-            works exactly the same.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">The contact form</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The contact form is handled by <b>Formspree</b>, a third-party form service. When you
-            submit it, the name, email address, and message you typed are sent to Formspree, which
-            forwards them to my email inbox and retains a copy in its own dashboard.
-          </p>
-          <ul className="list-disc pl-5 text-sm space-y-1 text-[#424245] dark:text-[#a1a1a6]">
-            <li>
-              <b>What I do with it:</b> read it and reply. That is the only purpose.
-            </li>
-            <li>
-              <b>Who else sees it:</b> nobody. It is not added to a mailing list, not sold, and not
-              shared with third parties.
-            </li>
-            <li>
-              <b>How long it is kept:</b> as long as the conversation is useful. Ask me to delete a
-              submission and I will remove it from both my inbox and the Formspree dashboard.
-            </li>
-          </ul>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Formspree&rsquo;s own privacy policy is at{" "}
-            <a className="lnk text-[#0066cc] dark:text-[#2997ff] hover:underline" href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
-              formspree.io/legal/privacy-policy ↗
-            </a>
-            . If you would rather not use a third-party form at all, email me directly instead.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Hosting and server logs</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The site is hosted on GitHub Pages. Like any web host, GitHub receives the requests
-            your browser makes and may log IP addresses for security and abuse prevention. I have
-            no access to those logs. See{" "}
-            <a
-              className="lnk text-[#0066cc] dark:text-[#2997ff] hover:underline"
-              href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub&rsquo;s privacy statement ↗
-            </a>
-            .
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Files you download</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            The résumé PDF is a plain static file. Downloading it is an ordinary file request.
-            Nothing is gated, nothing is tracked per person, and you don&rsquo;t have to give me
-            anything for it.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-bold text-[#1d1d1f] dark:text-white">Your rights</h2>
-          <p className="text-sm leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            Because the site holds no account data, the only personal data that can exist is a
-            contact-form message you chose to send, and you stay in control of it. Ask me at any time
-            to tell you what I hold, correct it, or delete it. Email{" "}
-            <a className="lnk text-[#0066cc] dark:text-[#2997ff] hover:underline" href="mailto:srinivasan.shyam2000@gmail.com">
-              srinivasan.shyam2000@gmail.com
-            </a>{" "}
-            and I will action it.
-          </p>
-        </section>
-
-        <div className="pt-6 border-t border-black/10 dark:border-white/10">
-          <Link className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0066cc] dark:text-[#2997ff] hover:underline" href="/terms">
-            <span>Read Terms of Use →</span>
-          </Link>
-        </div>
-      </div>
+        <Link href={PRIVACY_COPY.crossLink.href} className="btn mt-10">
+          {PRIVACY_COPY.crossLink.label}
+        </Link>
+      </section>
     </main>
   );
 }

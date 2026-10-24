@@ -1,19 +1,35 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌‌​​‌‌​‌​​‌​‌​‌​‌​‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌‌​​​​‌​‌‌​​​​‌​‌​​‌‌‌​​‌​‌‌​​‌​​‌‌​​‌‌​‌‌‌​​‌‌​‌‌‌‌​​‌​‌​​​‌‌​​‌‌​‌​​‌​‌​‌​​‌‌​‌‌​‌​‌​​‌‌‌​‌​‌​‌‌​‌‌​​​‌‌​​‌‌‌​‌‌‌​​​‌​‌​​‌​​‌​‌‌‌​‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌‌​‌‌​‌​‌​​​‌​​​‌‌‌​‌​​​​‌‌​‌​‌​‌​​​​​‌​‌​​‌​‌‌​‌‌​​‌‌‌​​‌‌​‌‌‌​‌‌​‌​​​​‌‌​‌​‌‌​‌‌​‌​​​​​‌‌‌​​​​‌‌​‌​​​​‌‌‌​​‌​​‌​​‌​‌‌​‌‌​‌​‌​​‌‌​‌​​​​‌‌‌‌​​​​‌​​‌​‌​​‌​‌​​​​​‌‌​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ViUsraaNY3syFiSjulgqIu
+ * Fingerprint: AMK1.zmDt5AKg7hkh8hrKjhxJPm
  */
-import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
-import GlowCard from "@/components/ui/GlowCard";
 import { notFound } from "next/navigation";
-import SplitReveal from "@/components/SplitReveal";
-import Reveal from "@/components/Reveal";
-import SystemDiagram from "@/components/SystemDiagram";
+import { pageMetadata } from "@/lib/seo";
 import { PROJECTS, projectBySlug } from "@/lib/projects";
-import { FiArrowUpRight, FiArrowLeft, FiExternalLink } from "react-icons/fi";
+import { PROJECT_DETAIL_COPY } from "@/lib/data/profile";
+import TagRow from "@/components/primitives/TagRow";
+import Reveal from "@/components/primitives/Reveal";
+import ScanField from "@/components/primitives/ScanField";
+import { Chiaroscuro, SignalBeam } from "@/components/primitives/Texture";
+
+/* The dossier.
+
+   This is the page the whole design is built to serve. The writing here
+   is genuinely good — six to eleven architecture notes per project, each
+   one explaining a decision and the failure it was guarding against —
+   and the previous design's chief sin was burying it under card chrome.
+   So there is almost no chrome: a rule, a number, and the prose at a
+   measure you can actually read.
+
+   The architecture list is set as a measured drawing's callout
+   schedule: numbered down the left, the label in the annotation
+   register, the body in prose. That is a real convention for annotating
+   a mechanism, which is exactly what each of these entries is.
+
+   Nothing here is a client component. */
 
 export const dynamicParams = false;
 
@@ -45,239 +61,327 @@ export default async function ProjectDetail({
   const p = projectBySlug(slug);
   if (!p) notFound();
 
+  /* The demo is promoted to the front of the action row when it is not
+     already one of the links. Several projects list the same URL twice
+     — once as `demo` and once as a labelled link — and showing it twice
+     would read as two different destinations. */
   const actions =
     p.demo && !p.links.some((l) => l.url === p.demo)
-      ? [{ url: p.demo, label: "Open live build ↗" }, ...p.links]
+      ? [{ url: p.demo, label: PROJECT_DETAIL_COPY.demoActionLabel }, ...p.links]
       : p.links;
 
+  /* The author's own admission, lifted out of the highlights list.
+     Burying "Honest about the limit: an origin check stops casual abuse"
+     as bullet six is the opposite of what writing it was for. */
+  const honest = p.highlights.find((h) => /^Honest about/i.test(h));
+  const highlights = p.highlights.filter((h) => h !== honest);
+
+  const position = PROJECTS.findIndex((x) => x.slug === p.slug);
+  const prev = position > 0 ? PROJECTS[position - 1] : undefined;
+  const next =
+    position < PROJECTS.length - 1 ? PROJECTS[position + 1] : undefined;
+
   return (
-    <main id="content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#f5f5f7] pb-24 transition-colors duration-300">
-      <div className="wrap pd-top py-12 px-6 max-w-5xl mx-auto">
-        <Link href="/projects" className="inline-flex items-center gap-2 text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white transition-colors mb-8">
-          <FiArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to Projects</span>
+    <main id="content" tabIndex={-1}>
+      <article className="mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-10">
+        <Link
+          href="/projects"
+          className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
+        >
+          ← {PROJECT_DETAIL_COPY.back}
         </Link>
 
-        <div className="pd-hero mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b] mb-4">
-            <span>{p.client} · {p.category}</span>
-          </div>
-          <SplitReveal as="h1" text={p.title} className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tightest leading-[1.15] mb-4 text-[#1d1d1f] dark:text-white" />
-          <p className="text-base sm:text-xl text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-6 max-w-3xl">
-            {p.teaser}
-          </p>
+        {/* Cover.
+            The standfirst stays in Inter Tight. It was set in the
+            display face when that face was a high-contrast serif, where
+            a sentence at 1.5rem reads as an editorial opening; the
+            display face is now a heavy uppercase grotesque, and a
+            two-line teaser in Archivo Black is a brick. So the display
+            register is spent on the title alone and the standfirst goes
+            up a size in the body face instead, which is the pairing a
+            poster uses: one shout, then prose.
 
-          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#5a5a5f] dark:text-[#a1a1a6]">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#34c759]" />
-              Status: {p.status}
-            </span>
-            <span>·</span>
-            <span>{p.stack.length} technologies in stack</span>
-          </div>
-        </div>
-      </div>
+            Chiaroscuro and the beam sit behind it as sibling layers —
+            corners in shade so the middle of the sheet comes forward,
+            and a cone of light from the lower left where a searchlight
+            would be. Both are gradients. An outline would make the
+            second one a logo, and the brief forbids that. */}
+        <header className="relative mt-10 overflow-hidden border-b border-rule pb-10">
+          <SignalBeam />
+          <Chiaroscuro />
+          {/* The hand-written ogl scan field, which revision 4 moved
+              here off the home cover. The cover took the much louder
+              FaultyTerminal, and this is the right home for the quiet
+              one: a dossier is the page someone actually READS, across
+              twenty-three routes, and a glyph storm behind three
+              thousand words of prose would be unreadable. A slow cyan
+              grid with a scan band passing over it is a field you can
+              read on top of.
 
-      {/* Architecture System Diagram */}
-      <section className="section section-bleed py-12 border-y border-black/10 dark:border-white/10 bg-[#f5f5f7] dark:bg-[#09090c]/50">
-        <div className="wrap max-w-5xl mx-auto px-6">
-          <SystemDiagram
-            stages={p.architecture.map((a) => ({ label: a.label }))}
-            caption={`System Architecture: How ${p.title} functions.`}
-          />
-        </div>
-      </section>
+              It carries its own reduced-motion, no-WebGL and
+              context-lost fallbacks internally — see the header of the
+              component — so it needs no gate here. */}
+          <ScanField />
 
-      <div className="wrap max-w-5xl mx-auto px-6 py-12 space-y-12">
-        <section className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
-            <span>Overview</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
-            Architecture Overview
-          </h2>
-          <p className="text-base sm:text-lg leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-            {p.overview}
-          </p>
-        </section>
-
-        <section className="space-y-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
-              <span>Architecture Breakdown</span>
+          <div className="relative">
+            <div className="t-anno mb-4 text-signal">
+              {p.client} · {p.category}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
-              How it works
-            </h2>
-            <p className="text-sm sm:text-base text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed">
-              Core mechanics, failure recovery paths, and system design decisions.
+
+            {/* Uppercase and tracked in hard, so it takes a smaller size
+                and fewer words per line than the serif it replaced, and
+                is allowed to wrap to three lines rather than being shrunk
+                to fit one.
+
+                `xray` rather than `wipe` from revision 3: this is the
+                page's own h1, and a dossier resolving out of a wireframe
+                is the detective-mode arrival. One per page — the
+                sections below keep the wipe, because a document where
+                every heading unscrambles cannot be skimmed. */}
+            <Reveal
+              as="h1"
+              effect="xray"
+              className="t-display-xl max-w-[22ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[3.75rem]"
+            >
+              {p.title}
+            </Reveal>
+
+            <p className="mt-6 max-w-3xl text-lg leading-snug text-mute sm:text-[1.375rem]">
+              {p.teaser}
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {p.architecture.map((a, index) => (
-              <div
-                key={a.label}
-                className="p-6 sm:p-7 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#9a5200] dark:text-[#e5a93b]">
-                      Step {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="w-2 h-2 rounded-full bg-[#34c759]" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-2.5 leading-snug">
-                    {a.label}
-                  </h3>
-                  <p className="text-sm sm:text-base leading-relaxed text-[#424245] dark:text-[#a1a1a6]">
-                    {a.body}
-                  </p>
-                </div>
+
+            {/* The title block's three figures. Each cell used to carry
+                its label twice over — "Stack" above "6 technologies in
+                stack", "Notes" above "7 architecture entries" — which is
+                a column header repeated inside its own column. The label
+                is the term; the cell is the figure, set in the poster
+                register because that is what a figure is for. */}
+            <dl className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-3">
+              <div className="bg-ground p-3.5">
+                <dt className="t-anno-sm mb-1 text-mute">
+                  {PROJECT_DETAIL_COPY.statusPrefix}
+                </dt>
+                <dd className="t-poster text-xl text-body">{p.status}</dd>
               </div>
-            ))}
+              <div className="bg-ground p-3.5">
+                <dt className="t-anno-sm mb-1 text-mute">Stack</dt>
+                <dd className="t-poster text-xl text-body">{p.stack.length}</dd>
+              </div>
+              <div className="bg-ground p-3.5">
+                <dt className="t-anno-sm mb-1 text-mute">Architecture notes</dt>
+                <dd className="t-poster text-xl text-body">
+                  {p.architecture.length}
+                </dd>
+              </div>
+            </dl>
+
+            {actions.length > 0 ? (
+              <div className="mt-8 flex flex-wrap gap-3">
+                {actions.map((link, i) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    /* Exactly one filled control per page. The live build
+                       is the thing a visitor most wants, so it gets it. */
+                    className={i === 0 ? "btn btn-signal" : "btn"}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              /* No links is a deliberate state, not a gap: the repository
+                 is private or internal. The data file's rule is that a
+                 button going nowhere is worse than no button, so this
+                 says why and offers the one route that does work. */
+              <div className="panel-flat ticks mt-8 p-5">
+                <p className="t-anno-sm text-mute">
+                  {PROJECT_DETAIL_COPY.noLinksNote}
+                </p>
+                <Link href="/contact" className="btn mt-4">
+                  {PROJECT_DETAIL_COPY.noLinksCta}
+                </Link>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Overview */}
+        <section className="py-12">
+          <h2 className="t-anno mb-5 text-signal">
+            {PROJECT_DETAIL_COPY.overviewEyebrow}
+          </h2>
+          <p className="t-prose text-[1.0625rem] leading-relaxed">{p.overview}</p>
+        </section>
+
+        {/* The callout schedule. */}
+        <section className="border-t border-rule py-12">
+          <header className="mb-10">
+            <h2 className="t-anno mb-3 text-signal">
+              {PROJECT_DETAIL_COPY.breakdownEyebrow}
+            </h2>
+            <Reveal
+              as="p"
+              effect="wipe"
+              className="t-display-xl text-[1.75rem] sm:text-[2.25rem]"
+            >
+              {PROJECT_DETAIL_COPY.breakdownHeading}
+            </Reveal>
+            <p className="t-prose mt-3 text-mute">
+              {PROJECT_DETAIL_COPY.breakdownBody}
+            </p>
+          </header>
+
+          {/* The leader line of the drawing, and the one place on the
+              site where the real geometry animates rather than a box
+              being revealed: an SVG rule that inks itself from the top
+              once the schedule comes into view, the way a blueprint is
+              drawn or an overlay resolves.
+
+              `preserveAspectRatio="none"` lets one 100-unit line stretch
+              to whatever height eleven entries need, which is why the
+              dash length passed to Reveal is 100 — the line's own length
+              in user units, before the stretch. `non-scaling-stroke`
+              keeps it a hairline at any height.
+
+              Hidden below `sm`, where the grid collapses to one column
+              and there is no gutter for it to run down. */}
+          <div className="relative">
+            <Reveal
+              effect="draw"
+              drawLength={100}
+              className="pointer-events-none absolute inset-y-0 left-[4.75rem] hidden w-px sm:block"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 1 100"
+                preserveAspectRatio="none"
+                className="h-full w-full"
+              >
+                <line
+                  x1="0.5"
+                  y1="0"
+                  x2="0.5"
+                  y2="100"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                  className="stroke-rule-strong"
+                />
+              </svg>
+            </Reveal>
+
+            <ol className="divide-y divide-rule border-y border-rule">
+              {p.architecture.map((entry, i) => (
+                <li
+                  key={entry.label}
+                  className="grid gap-x-6 gap-y-2 py-6 sm:grid-cols-[4rem_1fr]"
+                >
+                  {/* The number is the drawing's callout tag. It sits in
+                      its own column so the prose keeps a single left edge
+                      all the way down the page — a list that indents its
+                      body under a number loses that, and the measure is
+                      the only thing making eleven entries readable. */}
+                  <div className="t-anno-sm pt-1 text-mute">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+
+                  <div className="min-w-0">
+                    <h3 className="t-anno mb-2 text-body">{entry.label}</h3>
+                    <p className="max-w-[62ch] leading-relaxed text-mute">
+                      {entry.body}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
-        <section className="space-y-4">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
-              <span>Key Takeaways</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
-              Engineering Highlights
-            </h2>
-          </div>
-          <ul className="space-y-2.5 text-sm sm:text-base text-[#424245] dark:text-[#a1a1a6]">
-            {p.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-2.5 leading-relaxed">
-                <span className="text-[#047857] dark:text-[#34c759] font-bold mt-0.5">•</span>
-                <span>{h}</span>
+        {/* Highlights, with the admission given its own weight. */}
+        <section className="border-t border-rule py-12">
+          <h2 className="t-anno mb-3 text-signal">
+            {PROJECT_DETAIL_COPY.highlightsEyebrow}
+          </h2>
+          <Reveal
+            as="p"
+            effect="wipe"
+            className="t-display-xl mb-8 text-[1.75rem] sm:text-[2.25rem]"
+          >
+            {PROJECT_DETAIL_COPY.highlightsHeading}
+          </Reveal>
+
+          <ul className="divide-y divide-rule border-y border-rule">
+            {highlights.map((h) => (
+              <li key={h} className="flex gap-4 py-4">
+                {/* A decorative dash, so it is coloured as furniture.
+                    In the accent family it repeated up to eleven times
+                    down a single list, which is the accent budget spent
+                    entirely on punctuation. */}
+                <span aria-hidden="true" className="t-anno-sm mt-1 text-mute">
+                  —
+                </span>
+                <span className="max-w-[64ch] leading-relaxed">{h}</span>
               </li>
             ))}
           </ul>
-        </section>
 
-        <section className="space-y-4">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-[#9a5200] dark:text-[#e5a93b]">
-              <span>Stack & Tools</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#1d1d1f] dark:text-white">
-              Technologies Used
-            </h2>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {p.stack.map((t) => (
-              <span key={t} className="px-3.5 py-1.5 rounded-lg text-xs font-mono bg-[#f5f5f7] dark:bg-white/5 border border-black/10 dark:border-white/10 text-[#1d1d1f] dark:text-[#a1a1a6]">
-                {t}
+          {honest && (
+            /* The contingency, at full size rather than as a footnote.
+               The whole design is named after this sentence existing. */
+            <p className="contingency mt-8 border-t-0 pt-0 text-[0.8125rem]">
+              <span>Honest about</span>
+              <span className="max-w-[64ch]">
+                {honest.replace(/^Honest about\s*/i, "")}
               </span>
-            ))}
-          </div>
+            </p>
+          )}
         </section>
 
-        {actions.length > 0 ? (
-          <Reveal className="hero-actions flex flex-wrap items-center gap-4 pt-6 border-t border-black/10 dark:border-white/10">
-            {actions.map((l, i) => (
-              <a
-                key={l.url}
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`px-6 py-3 rounded-full font-semibold text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 ${
-                  i === 0
-                    ? "bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 shadow-lg"
-                    : "bg-black/5 hover:bg-black/10 text-[#1d1d1f] border border-black/10 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white dark:border-white/15"
-                }`}
-              >
-                <span>{l.label}</span>
-                <FiExternalLink className="w-3.5 h-3.5" />
-              </a>
-            ))}
-          </Reveal>
-        ) : (
-          <Reveal className="hero-actions flex flex-wrap items-center gap-4 pt-6 border-t border-black/10 dark:border-white/10">
-            <Link href="/contact" className="px-6 py-3 rounded-full bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg">
-              Ask me about this project
-            </Link>
-            <span className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] font-mono">Internal enterprise or private repository</span>
-          </Reveal>
-        )}
-      </div>
-
-      {/* Sequential Project Pagination */}
-      {(() => {
-        const currentIndex = PROJECTS.findIndex((o) => o.slug === p.slug);
-        const prevProject = currentIndex > 0 ? PROJECTS[currentIndex - 1] : PROJECTS[PROJECTS.length - 1];
-        const nextProject = currentIndex < PROJECTS.length - 1 ? PROJECTS[currentIndex + 1] : PROJECTS[0];
-
-        return (
-          <div className="wrap max-w-5xl mx-auto px-6 py-8 border-t border-black/10 dark:border-white/10">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <Link
-                href={`/projects/${prevProject.slug}`}
-                className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center gap-3 text-left group"
-              >
-                <FiArrowLeft className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:-translate-x-1 transition-transform" />
-                <div>
-                  <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Previous Build</span>
-                  <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">{prevProject.title}</span>
-                </div>
-              </Link>
-
-              <Link
-                href="/projects"
-                className="text-xs font-mono text-[#5a5a5f] dark:text-[#9b9ba1] hover:text-[#1d1d1f] dark:hover:text-white transition-colors py-2 px-4 rounded-full bg-black/5 dark:bg-white/5"
-              >
-                Directory ({currentIndex + 1}/{PROJECTS.length})
-              </Link>
-
-              <Link
-                href={`/projects/${nextProject.slug}`}
-                className="w-full sm:w-auto p-4 rounded-2xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex items-center justify-between sm:justify-end gap-3 text-right group"
-              >
-                <div>
-                  <span className="text-[10px] font-mono text-[#5a5a5f] dark:text-[#9b9ba1] uppercase block">Next Build</span>
-                  <span className="text-xs font-bold text-[#1d1d1f] dark:text-white group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">{nextProject.title}</span>
-                </div>
-                <FiArrowUpRight className="w-4 h-4 text-[#9a5200] dark:text-[#e5a93b] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* Explore Other Projects */}
-      <div className="wrap max-w-5xl mx-auto px-6 pt-12 border-t border-black/10 dark:border-white/10">
-        <section className="pd-section space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-[#1d1d1f] dark:text-white">Explore More Projects</h2>
-            <Link href="/projects" className="text-xs font-semibold text-[#9a5200] dark:text-[#e5a93b] hover:underline flex items-center gap-1">
-              <span>All {PROJECTS.length} builds</span>
-              <FiArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          <Reveal className="grid grid-cols-1 sm:grid-cols-3 gap-4" pop>
-            {PROJECTS.filter((o) => o.slug !== p.slug)
-              .slice(0, 3)
-              .map((o) => (
-                <GlowCard key={o.slug}>
-                  <Link href={`/projects/${o.slug}`} className="p-6 rounded-3xl bg-[#f5f5f7] dark:bg-[#09090c] border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 transition-all flex flex-col justify-between h-full group block">
-                    <div>
-                      <span className="text-[11px] font-mono text-[#9a5200] dark:text-[#e5a93b] uppercase tracking-wider block mb-2">{o.client}</span>
-                      <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white mb-2 group-hover:text-[#9a5200] dark:group-hover:text-[#e5a93b] transition-colors">{o.title}</h3>
-                      <p className="text-xs text-[#5a5a5f] dark:text-[#9b9ba1] leading-relaxed mb-4 line-clamp-2">{o.teaser}</p>
-                    </div>
-                    <div className="pt-3 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#1d1d1f] dark:text-white">
-                      <span>Overview</span>
-                      <FiArrowUpRight className="w-3.5 h-3.5 text-[#9a5200] dark:text-[#e5a93b]" />
-                    </div>
-                  </Link>
-                </GlowCard>
-              ))}
-          </Reveal>
+        {/* Stack */}
+        <section className="border-t border-rule py-12">
+          <h2 className="t-anno mb-5 text-signal">
+            {PROJECT_DETAIL_COPY.stackEyebrow}
+          </h2>
+          <TagRow items={p.stack} wrap />
         </section>
-      </div>
+
+        {/* Prev / next, so the set reads as a set. */}
+        <nav
+          aria-label="Other projects"
+          className="grid gap-px border border-rule bg-rule sm:grid-cols-2"
+        >
+          {prev ? (
+            <Link href={`/projects/${prev.slug}`} className="group scan hud bg-ground p-5">
+              <span className="t-anno-sm block text-mute">
+                ← {PROJECT_DETAIL_COPY.prevLabel}
+              </span>
+              <span className="t-display mt-2 block text-lg transition-colors duration-150 group-hover:text-detect">
+                {prev.title}
+              </span>
+            </Link>
+          ) : (
+            <span className="bg-ground p-5" />
+          )}
+
+          {next ? (
+            <Link
+              href={`/projects/${next.slug}`}
+              className="group scan hud bg-ground p-5 sm:text-right"
+            >
+              <span className="t-anno-sm block text-mute">
+                {PROJECT_DETAIL_COPY.nextLabel} →
+              </span>
+              <span className="t-display mt-2 block text-lg transition-colors duration-150 group-hover:text-detect">
+                {next.title}
+              </span>
+            </Link>
+          ) : (
+            <span className="bg-ground p-5" />
+          )}
+        </nav>
+      </article>
     </main>
   );
 }
