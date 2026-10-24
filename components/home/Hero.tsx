@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌‌​​‌‌​​‌​​‌​‌​​‌​‌​​‌​​‌​​‌​‌​​‌​‌​​‌​​‌​​​‌‌‌​​‌‌​‌​‌​‌‌​​‌‌​​‌​​‌​​‌​​‌‌​​‌​​‌‌‌‌​‌​​​‌‌​​​​​​‌‌​​​‌​‌‌‌​‌‌‌​‌​​‌​‌‌​‌​​​‌​​​‌‌​‌‌​​​​‌‌​‌‌‌​‌‌‌​‌​‌​‌​​‌​‌​​‌‌‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌​​‌‌​‌​​‌​‌‌​​‌‌​​​‌‌​‌‌​​‌‌​​‌‌​​‌‌‌​​‌​​‌‌‌​‌‌‌​​‌‌​‌​‌​‌​​‌‌​‌​‌​‌​​​‌​‌​‌‌​‌​​‌‌‌​​​‌​​‌‌​‌​‌​‌‌​‌​‌‌​‌‌​​‌​‌​‌​​​​‌‌​‌​​‌​​​​‌​​​‌‌​​‌​​​‌​‌​​‌‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.3fJRJRG5fI2z01wKDl7uJp
+ * Fingerprint: AMK1.KkJif6frw5MQZq5keCHFE8
  */
 import Link from "next/link";
 import DecryptText from "@/components/primitives/DecryptText";
@@ -129,7 +129,16 @@ export default function Hero() {
           glow: 0.5,
           clickEffect: true,
           pageLoadAnimation: true,
-          dpr: 1.5,
+          /* ONE, not 1.5, and this is free rather than a concession.
+             Fragment cost scales with the square of this: 1.5 means
+             2.25× the shader invocations per frame of a full-bleed
+             canvas on the largest element of the page. What it buys is
+             finer detail in the glyph field and the scanlines — behind
+             `opacity: 0.34` and a feathered mask, under a headline.
+             There is nothing there to see at the higher rate, and the
+             cover is the one place on the site that cannot afford to
+             be the thing that drops frames. */
+          dpr: 1,
         }}
         /* Yellow on the slab, graphite on paper.
            The tint has to change with the palette and the reasoning
