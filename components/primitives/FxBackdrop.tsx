@@ -1,15 +1,16 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌‌​‌​​​​‌‌​​‌‌‌​‌‌​​​​‌​‌‌​‌​​​​‌‌‌​​​‌​‌​‌‌​‌​​‌​‌‌​‌​​‌​‌‌​‌​​‌​‌​​​‌​​‌‌​‌‌‌​‌​‌​‌​‌​‌​​​‌‌​​‌​‌​‌‌‌​‌​‌‌‌‌‌​‌​‌‌​‌​​‌​​‌‌‌‌​‌‌​​‌‌‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌​‌‌​​​‌​​​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​​‌‌​‌​​​‌​​‌​‌​​‌​‌‌​‌​​‌‌​​‌​​​‌​‌​‌‌‌​‌‌‌​‌​‌​​‌‌​‌​‌​‌‌‌‌​​‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌​​‌​‌‌​‌‌​‌​‌​​‌​​​‌​​​‌‌​​‌​‌​‌‌‌​​‌‌​‌​​​‌​​​‌​‌​‌​​​​‌‌​​​​​‌​‌‌​​‌​​‌‌​‌‌​​‌‌​‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.8hgahqZZZQ7UFW_ZOghulB
+ * Fingerprint: AMK1.Y4JZdWu5ysrKjDesDT0Y6h
  */
 "use client";
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import useTheme from "@/lib/useTheme";
+import usePerfTier from "@/lib/usePerfTier";
 
 /* The one gate every heavy background goes through.
  *
@@ -71,6 +72,39 @@ import useTheme from "@/lib/useTheme";
  * overlay comes up" than having it already running before the page is
  * legible.
  *
+ * SIX — the field is sized to the machine, not to the monitor. Added
+ * in revision 13, for "how does this run on a potato PC".
+ *
+ * Rules one through five are all about WHEN a field runs. None of them
+ * touched HOW MUCH it costs per frame while it does, and that is the
+ * number that decides whether a visitor gets sixty frames or twenty.
+ * Every field here is a full-bleed fragment shader, so its cost is
+ * literally the pixel count of the largest element on the page times
+ * the instruction count of the shader, every frame. Both halves are
+ * configurable, and `lite` in LITE_PROPS turns both down:
+ *
+ *   RESOLUTION. `dpr: 0.6` renders at 36% of the fragments of `dpr: 1`
+ *   and the browser scales the result up. On a field held at 0.34
+ *   opacity behind a feathered mask and under a headline, the
+ *   difference is not visible — which is the test that matters, not
+ *   whether it is measurable.
+ *
+ *   PER-POINTER WORK. `mouseReact` is the expensive one, and not
+ *   because of the uniform write. Each vendored field sleeps when
+ *   nothing is changing — FaultyTerminal stops its loop after 2.5
+ *   quiet seconds — and a pointer-reactive field wakes on every single
+ *   pointermove, so a cursor resting anywhere over the cover pins the
+ *   shader at the refresh rate indefinitely. Turning it off is what
+ *   lets the field go quiet and stay quiet.
+ *
+ * On `off` nothing mounts at all, which is the reduced-motion path in
+ * rule three reached by a second route.
+ *
+ * SEVEN caps the canvas to a pixel budget so the cost is set by the
+ * machine rather than by the monitor, and EIGHT stops the autonomous
+ * animation after twenty seconds — both at every tier, including
+ * `full`. Each has its own note above its table below.
+ *
  * Deliberately NOT here: a pause-when-hidden listener. Each vendored
  * component already drives its own rAF and several accept a `pause`
  * prop, and reaching into them to coordinate that would mean patching
@@ -129,6 +163,167 @@ const SUPPORTS_LIGHT_MODE: Record<BackdropKind, boolean> = {
   dither: false,
 };
 
+/* SEVEN — the canvas is sized to a pixel budget, not to the monitor.
+ *
+ * This is the memory rule, and it is separate from the tier rules
+ * because it applies at every tier including `full`. A WebGL field's
+ * resident cost is not its shader, it is its buffers, and they are all
+ * proportional to the backing store:
+ *
+ *   canvas colour buffer   w × h × 4 bytes
+ *   driver's second buffer same again, for double buffering
+ *   FaultyTerminal's FBOs  two targets × two attachments
+ *
+ * At `dpr: 1` on a 2560-wide monitor that backing store is 2560 × 1200,
+ * so the canvas alone is 12 MB and the whole context lands somewhere
+ * north of 40 MB — for a texture rendered at 0.34 opacity behind a
+ * feathered mask, under a headline.
+ *
+ * The budget caps the LONG EDGE in device pixels and lets CSS scale
+ * the result up to fill the element. 1100 is the number because these
+ * fields have no fine detail to lose: the glyph grid, the dither
+ * matrix and the ray cone are all low-frequency at the opacities §5b
+ * holds them to, and the mask destroys the edges where upscaling would
+ * show. On a 1440p monitor that is a dpr near 0.43 and roughly a fifth
+ * of the memory; on a laptop at 1366 it is 0.8 and barely a change; on
+ * a phone it is capped at 1 and the `lite` tier takes it from there.
+ *
+ * It also makes cost independent of the display, which is the property
+ * that actually matters: a 4K monitor is not evidence of a fast GPU,
+ * and before this the biggest screens were charged the most for the
+ * same decoration. */
+const PIXEL_BUDGET = 1100;
+
+/* EIGHT — nothing loops forever, including these. Revision 13.
+ *
+ * §5c of globals.css opens by stating this as the first of three
+ * motion rules the stylesheet does not break: "nothing loops forever —
+ * a thing still moving after you have read it is demanding attention".
+ * Every CSS animation on the site honours it. The vendored fields never
+ * did, and the audit that found it was looking for something else.
+ *
+ * Only ONE of the five has an idle path of its own: FaultyTerminal
+ * stops its loop after 2.5 seconds with nothing changing. LetterGlitch,
+ * LightRays, Beams and Dither all gate correctly on document
+ * visibility and on their own IntersectionObserver — so none of them
+ * burns frames in a background tab or while scrolled away — but while
+ * on screen they animate at the refresh rate indefinitely. On /projects,
+ * /contact, /certifications and /hobby that is a shader running for as
+ * long as the page head is in view, which on a short page is the whole
+ * visit.
+ *
+ * So the gate is applied from out here instead. Each field has a prop
+ * that genuinely halts its `requestAnimationFrame` loop rather than
+ * just hiding the result — verified against each one's `busy`
+ * condition, which is why these are five different prop names and not
+ * a guess at a common one:
+ *
+ *   terminal  `pause`            -> busy = !(pause || reduce) || ...
+ *   letters   `speed: 0`         -> busy = (!reduce && speed > 0) || ...
+ *   rays      `raysSpeed: 0`     -> busy = speed > 0 || ...
+ *   beams     `paused`           -> moving = !paused && !reduce
+ *   dither    `disableAnimation` -> busy = !disableAnimation || ...
+ *
+ * IT HALTS THE CLOCK, NOT THE FIELD, and that distinction is why this
+ * is safe to do while someone is looking at it. Every one of those
+ * `busy` conditions has further terms after the `|| ...` — pointer
+ * presence, a click still decaying, an intro still playing — so a
+ * halted field still redraws in response to the pointer and still
+ * finishes whatever it was mid-way through. What stops is time
+ * advancing on its own. A visitor who moves the mouse over a held
+ * field gets the same response they always did; a visitor who has
+ * stopped interacting gets a still image instead of a shader.
+ *
+ * TWENTY SECONDS, which is §5c's own scale rather than a new one: the
+ * cover's wash ran two twelve-second cycles before revision 13 removed
+ * it, the status tick pulses three times, the sweep crosses once.
+ * Twenty is long enough that the field reads as ambient rather than as
+ * an intro that cuts off, and short enough that it is not still running
+ * when someone is three paragraphs into the page.
+ *
+ * Scrolling away and back restarts it, because rule two unmounts the
+ * field entirely when it leaves the viewport — so this is a budget per
+ * visit to a page head, not per session. */
+const MOTION_MS = 20000;
+
+const HALT_PROPS: Record<BackdropKind, Record<string, unknown>> = {
+  terminal: { pause: true },
+  letters: { speed: 0 },
+  rays: { raysSpeed: 0 },
+  beams: { paused: true },
+  dither: { disableAnimation: true },
+};
+
+/* Which prop each field takes its ratio in. Four call it `dpr`;
+   LightRays calls it `maxDevicePixelRatio`. Getting this wrong fails
+   silently — an unknown prop is ignored and the field quietly renders
+   at full resolution — which is why it is a table rather than a
+   spread. */
+const DPR_PROP: Record<BackdropKind, string> = {
+  terminal: "dpr",
+  letters: "dpr",
+  rays: "maxDevicePixelRatio",
+  beams: "dpr",
+  dither: "dpr",
+};
+
+/* Rule six, per field. Merged over the caller's props on the `lite`
+   tier and ignored on `full`.
+ *
+ * Written here rather than at each call site on purpose: the downgrade
+ * is a property of the SHADER, not of the page it sits behind, and
+ * five call sites each guessing at it is five chances to leave one
+ * expensive. A caller that needs to differ passes `liteProps`.
+ *
+ * Note which props are NOT turned down. Colour, tint and `lightMode`
+ * stay exactly as the caller set them, because a field that changes
+ * palette on a slow machine is a visibly different design rather than
+ * a cheaper one. `lite` is the same composition drawn with fewer
+ * fragments, and anything that breaks that promise does not belong in
+ * this table. */
+const LITE_PROPS: Record<BackdropKind, Record<string, unknown>> = {
+  /* The cover's CRT, and the heaviest thing on the site — four of the
+     six knobs below are per-fragment costs rather than features.
+     `chromaticAberration` alone triples the samples in the main pass,
+     for a fringe that is invisible under a 0.34-opacity mask. */
+  terminal: {
+    dpr: 0.6,
+    mouseReact: false,
+    chromaticAberration: 0,
+    glow: 0,
+    flickerAmount: 0.2,
+    scanlineIntensity: 0.2,
+    timeScale: 0.25,
+    clickEffect: false,
+    pageLoadAnimation: false,
+  },
+  /* A glyph field redraws every cell it decides to mutate, so the rate
+     is the cost here rather than the resolution. */
+  letters: { dpr: 0.65, smooth: false, interactive: false },
+  /* `followMouse` is this field's `mouseReact`; the rest of the cone is
+     already cheap. */
+  rays: {
+    maxDevicePixelRatio: 0.7,
+    followMouse: false,
+    cursorShadow: false,
+    clickPulse: false,
+    noiseAmount: 0,
+  },
+  /* `quality` is Beams' own ray-step count — the one knob in the set
+     that reduces shader instructions rather than fragments, so it is
+     the cheapest win available here. */
+  beams: { dpr: 0.65, quality: 0.5, mouseInteraction: false, glow: 0 },
+  /* Dither's ordered-matrix pass is applied at the pixel size it is
+     given, so dropping the ratio makes the dots larger rather than the
+     image softer — which is why it goes less far than the others. */
+  dither: {
+    dpr: 0.75,
+    enableMouseInteraction: false,
+    clickRipple: false,
+    trail: 0,
+  },
+};
+
 type FxBackdropProps = {
   kind: BackdropKind;
   /** Passed through to the vendored component, for both themes. */
@@ -137,6 +332,8 @@ type FxBackdropProps = {
   lightProps?: Record<string, unknown>;
   /** Merged over `props` only on the dark palette. */
   darkProps?: Record<string, unknown>;
+  /** Merged last, on the `lite` tier only — overrides LITE_PROPS. */
+  liteProps?: Record<string, unknown>;
   /** Layer opacity. These are TEXTURES, not backgrounds — see below. */
   opacity?: number;
   className?: string;
@@ -147,6 +344,7 @@ export default function FxBackdrop({
   props = {},
   lightProps = {},
   darkProps = {},
+  liteProps = {},
   opacity = 0.3,
   className = "",
 }: FxBackdropProps) {
@@ -157,6 +355,68 @@ export default function FxBackdrop({
      `visible` keeps tracking the viewport for the life of the page. */
   const [settled, setSettled] = useState(false);
   const theme = useTheme();
+  /* Rule six. Live rather than read-once, so PerfGuard measuring a bad
+     framerate unmounts the field — or re-mounts it at a lower
+     resolution — without a reload. */
+  const tier = usePerfTier();
+  /* Rule seven. Tracked rather than read once, because a window resize
+     or a drag to a second monitor changes the answer — and passing it
+     as a prop rather than remounting is deliberate: every field re-reads
+     its ratio from a live settings ref inside its own ResizeObserver
+     callback, so a new value takes effect on the resize that caused it
+     without the shader being torn down and recompiled. */
+  const [budgetDpr, setBudgetDpr] = useState(1);
+  /* Rule eight. False while the field is allowed to animate. */
+  const [held, setHeld] = useState(false);
+
+  useEffect(() => {
+    /* The clock only runs while the field is actually mounted and on
+       screen, so a visitor who arrives, scrolls straight past the head
+       and comes back later gets the motion they would have got on
+       arrival rather than a field that spent its budget unwatched. */
+    if (!visible || !settled) return;
+
+    const t = window.setTimeout(() => setHeld(true), MOTION_MS);
+    return () => {
+      window.clearTimeout(t);
+      /* Reset on the way out, so the next time this becomes visible the
+         budget starts over. Cheap: leaving the viewport unmounts the
+         field anyway under rule two, so there is nothing running to be
+         restarted by this. */
+      setHeld(false);
+    };
+  }, [visible, settled]);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
+      /* The long edge, not the width: a tall narrow viewport still has
+         a backing store as large as the side it is long on. */
+      const edge = Math.max(window.innerWidth, window.innerHeight);
+      const device = window.devicePixelRatio || 1;
+      /* Never UP. On a small window `PIXEL_BUDGET / edge` exceeds 1 and
+         would ask for a backing store larger than the device can show,
+         which is the opposite of the point. */
+      setBudgetDpr(Math.min(device, PIXEL_BUDGET / Math.max(edge, 1)));
+    };
+
+    /* Coalesced to one measurement per frame. A window drag fires
+       `resize` far faster than the screen refreshes, and each extra
+       call here would re-render every backdrop on the page. */
+    const onResize = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(measure);
+    };
+
+    measure();
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   useEffect(() => {
     /* Two routes to the same latch, whichever arrives first.
@@ -258,9 +518,41 @@ export default function FxBackdrop({
      half — a gradient painted into a box that clips at
      `overflow: hidden` ends in a straight line, and a straight line is
      a shape. `.fx-layer` in globals.css §5e carries both. */
+  const dprKey = DPR_PROP[kind];
+  const tierProps = tier === "lite" ? { ...LITE_PROPS[kind], ...liteProps } : {};
+
   const tuned = {
     ...props,
     ...(theme === "dark" ? darkProps : lightProps),
+    /* Rule six, applied after the palette merges so a downgrade cannot
+       be silently undone by a palette override. */
+    ...tierProps,
+    /* Rule seven, applied after rule six and last of all, and the two
+       MULTIPLY rather than one overriding the other — which is the
+       whole reason this is computed here instead of being a number in
+       LITE_PROPS.
+     *
+     * They answer different questions. The budget asks how many pixels
+     * this DISPLAY should be charged for, and is the same on a fast
+     * machine as a slow one. `lite` asks what fraction of that a weak
+     * GPU should actually draw. Taking the lower of the two instead
+     * would mean a slow machine on a large monitor getting no reduction
+     * at all from `lite`, because the budget had already cut deeper —
+     * exactly backwards, since that is the machine that needs both.
+     *
+     * Floored at 0.25 so the product cannot collapse on a very large
+     * display: below that the upscale starts to show as softness in the
+     * mask's falloff rather than as nothing. */
+    [dprKey]: Math.max(
+      0.25,
+      budgetDpr *
+        (typeof tierProps[dprKey] === "number"
+          ? (tierProps[dprKey] as number)
+          : 1)
+    ),
+    /* Rule eight, after the resolution rules because it is unrelated to
+       them and must not be overridden by either. */
+    ...(held ? HALT_PROPS[kind] : {}),
     ...(SUPPORTS_LIGHT_MODE[kind] ? { lightMode: theme === "light" } : {}),
   };
 
@@ -272,18 +564,24 @@ export default function FxBackdrop({
     >
       {/* Rule four: unconditional, and first so it sits behind. */}
       <div className="detect-grid absolute inset-0" />
-      {visible && settled && (
+      {visible && settled && tier !== "off" && (
         <div
           className="fx-layer"
           style={{ ["--fx-opacity" as string]: opacity }}
         >
-          {/* Keyed on the theme so a palette change remounts the
-              field rather than leaving a shader that compiled its
-              colours as uniforms under the old one. Cheaper than it
-              looks: a theme change is a deliberate, rare act, and the
-              alternative is a field that silently disagrees with the
-              page it sits behind. */}
-          <Live key={theme} {...tuned} />
+          {/* Keyed on the theme AND the tier, so either change remounts
+              the field rather than leaving a shader that compiled the
+              old values as uniforms. Cheaper than it looks: a theme
+              change is a deliberate, rare act and a demotion happens
+              at most twice in a session, while the alternative is a
+              field that silently disagrees with the page it sits
+              behind — or, for the tier, one that keeps drawing at full
+              resolution after the page has decided it cannot afford
+              to. Several of the props in LITE_PROPS are read live from
+              a settings ref and would have taken effect anyway; the
+              resolution ones are not, which is what makes the remount
+              the honest mechanism rather than an optimisation. */}
+          <Live key={`${theme}:${tier}`} {...tuned} />
         </div>
       )}
     </div>

@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌‌​‌​‌‌​‌‌‌​​‌‌​‌​​​​‌‌​‌‌‌​‌‌​​‌‌​‌‌‌​​‌‌​​‌​‌​‌​‌‌​​​​‌‌‌​​​‌​‌​​​‌‌​​‌​​‌​‌​​‌​​​​​‌​‌​​‌‌‌​​‌‌‌​​‌‌​‌​​‌‌‌‌​‌‌​‌​​​​‌‌‌​‌​‌​​‌‌​‌​‌​‌‌​​‌​​​​‌‌​‌‌​​​‌‌​​​​​‌​​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​‌​​​‌​​​‌​​​‌‌​​​‌‌‌​​​​‌​​​​‌‌​‌‌​‌‌​‌​‌​‌‌‌‌‌​‌‌​‌‌‌​​​‌‌​‌​​​‌‌‌​​‌​​‌​‌‌​​‌​‌‌​​​​‌​‌‌​‌‌‌‌​‌​‌‌​‌​​‌‌‌​​​​​‌​​​‌‌‌​‌‌​‌‌‌​​‌‌‌​‌​‌​​‌‌‌​​​​‌​​‌​​‌​‌‌‌​‌‌​​‌‌​‌‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.MksCvneXqFJANsOhu5d60O
+ * Fingerprint: AMK1.jDF8Cm_n4rYaoZpGnu8Ivm
  */
 
 /* ============================================================
@@ -506,34 +506,44 @@ body {
    is where a searchlight would be. A gradient and not a shape: the
    moment it has an outline it becomes a logo.
 
-   Halved in strength from the first version and now masked, so it dies
-   out well inside the container. In the light theme amber stops being
-   emission and becomes a warm wash on paper, which is the honest
-   translation rather than a bug. */
+   Halved in strength from the first version, and it dies out well
+   inside the container. In the light theme amber stops being emission
+   and becomes a warm wash on paper, which is the honest translation
+   rather than a bug.
+
+   NO MASK, as of revision 13 — see the long note on `.plasma` below
+   for why that is a redundancy removed and not a rule broken. Both
+   gradients terminate in `transparent` inside the box, so the layer
+   feathers itself and §5b is satisfied by the stops. The mask was
+   attenuating the mid-distance of a wash that was already heading to
+   zero, at the price of a second full-viewport compositor buffer on
+   every page that uses this — the cover, /contact and every project
+   page. The stops come in by six and eight points to land the falloff
+   where the masked version put it, so this is the same light.
+
+   THE MIDPOINT STOPS ARE THE POINT, and leaving them out was the first
+   attempt's mistake. The removed mask was not a flat cut — it held
+   alpha 1.0 at the anchor, 0.5 at half its extent and zero by 85%. Drop
+   it and keep two-stop gradients and the wash does not merely lose an
+   edge treatment, its whole mid-distance roughly doubles in strength,
+   because nothing is attenuating it there any more. The third stop in
+   each gradient below reproduces that 1.0 → 0.5 → 0 curve inside the
+   gradient itself, which is what makes this a cheaper way of painting
+   the same light rather than a brighter wash with fewer buffers. */
 .signal-beam {
   background:
     radial-gradient(
       70% 90% at 10% 100%,
       color-mix(in oklab, var(--c-signal) 11%, transparent) 0%,
+      color-mix(in oklab, var(--c-signal) 5%, transparent) 38%,
       transparent 72%
     ),
     radial-gradient(
       45% 60% at 88% 0%,
       color-mix(in oklab, var(--c-probe) 5%, transparent) 0%,
-      transparent 78%
+      color-mix(in oklab, var(--c-probe) 2%, transparent) 40%,
+      transparent 76%
     );
-  -webkit-mask-image: radial-gradient(
-    125% 125% at 20% 100%,
-    rgb(0 0 0 / 1) 0%,
-    rgb(0 0 0 / 0.5) 50%,
-    transparent 85%
-  );
-  mask-image: radial-gradient(
-    125% 125% at 20% 100%,
-    rgb(0 0 0 / 1) 0%,
-    rgb(0 0 0 / 0.5) 50%,
-    transparent 85%
-  );
 }
 
 /* Chiaroscuro. A predictable sequence of light and shade is what gives
@@ -832,6 +842,25 @@ html.js .tick-pulse {
 .spotlight {
   position: relative;
 }
+/* DEAD PAINT WITH A WARNING ON IT. Nothing on this site carries
+   `.spotlight` — the only consumer of `Spotlight` is the home cover,
+   which uses it for the reticle. Kept rather than deleted because it
+   is the documented half of a reusable primitive, which is the one
+   exception to the rule stated at the chain removal above.
+ *
+ * DO NOT USE IT AS IT STANDS. The gradient's ORIGIN is driven by
+ * `var(--mx) var(--my)`, and a gradient whose geometry comes from a
+ * custom property cannot be composited: change the property and the
+ * gradient is a different image, so the element re-rasterises on the
+ * CPU. That is exactly the bug revision 13 took out of `.reticle` —
+ * and where the reticle paid it once on one element, a grid pays it
+ * once per cell per pointer frame. On the twenty-cell project grid
+ * this was written for, that is twenty element rasters per mouse
+ * movement.
+ *
+ * The compositable version is a fixed-size glow element moved with
+ * `translate3d`, the way `.reticle::before` and `::after` now work.
+ * Whoever revives the grid case should write that instead. */
 .spotlight::before {
   content: "";
   position: absolute;
@@ -851,50 +880,90 @@ html.js .tick-pulse {
   }
 }
 
-/* Plasma — a slow drift of two offset radial fields. The reactbits
-   version is a shader; this is two gradients and a transform, which at
-   this opacity is indistinguishable and costs nothing. Masked like
-   every other texture so it has no edge of its own.
-
-   Twelve seconds and it stops. */
-@keyframes plasma-drift {
-  0% {
-    transform: translate3d(-2%, -1%, 0) scale(1.05);
-  }
-  50% {
-    transform: translate3d(2%, 1.5%, 0) scale(1.12);
-  }
-  100% {
-    transform: translate3d(-2%, -1%, 0) scale(1.05);
-  }
-}
+/* The cover's wash. ONE element carrying all four radial fields that
+   used to be two elements, no mask, no opacity, no animation.
+ *
+ * REVISION 13, and this is a memory fix rather than a paint fix. What
+ * it replaced was `.plasma` (two gradients, a mask, a 24-second drift)
+ * and a `.signal-beam` sibling (two gradients, a mask) stacked on top
+ * of each other. The cost of that arrangement is not in the gradients
+ * — a gradient is rasterised once and cached — it is in what the
+ * compositor has to HOLD:
+ *
+ *   A masked element cannot be composited in one pass. The browser
+ *   rasterises the element into an offscreen buffer, rasterises the
+ *   mask into a second buffer, multiplies the two, and composites the
+ *   result. Both buffers are the size of the element, and these
+ *   elements are `inset: 0` on the cover — so on a 1920×1080 viewport
+ *   that is two 8 MB buffers each, held for the life of the page, and
+ *   re-blended on every frame the shader behind them draws.
+ *
+ *   Four masked layers on the cover — these two, the detect grid and
+ *   the halftone — was therefore about 64 MB of compositor memory and
+ *   eight full-viewport blends per frame, to draw four gradients and
+ *   two patterns that never change.
+ *
+ * THE MASK WAS REDUNDANT HERE, which is what makes this free rather
+ * than a trade. Every gradient below already terminates in
+ * `transparent` well inside the box — that is what the stop
+ * percentages are — so each layer feathers ITSELF. §5b's rule is "no
+ * texture may end on a straight line", and a radial that reaches zero
+ * alpha before the edge satisfies it without a mask ever being
+ * involved. The mask was belt-and-braces over gradients that were
+ * already compliant, and it cost a second viewport buffer per layer to
+ * add nothing.
+ *
+ * Masks remain where they do real work: `.halftone` and `.detect-grid`
+ * are REPEATING patterns, which have uniform alpha by definition and
+ * genuinely cannot feather themselves.
+ *
+ * THE DRIFT IS GONE, and that is a real removal rather than a
+ * redundancy. It was a 24-second transform on the largest element of
+ * the page, running during the exact window the document is parsing
+ * and the shader is compiling — and a transform is only cheap when the
+ * layer is not masked, which this one was. What it animated was two
+ * fields at 10% and 7% colour strength, behind a 0.34-opacity shader,
+ * under a headline. §5c already says nothing loops forever; this is
+ * that rule extended to say nothing drifts while the page is still
+ * arriving. The light is now simply there, which is what a searchlight
+ * on a fixed building does anyway.
+ *
+ * Strengths are carried on the colour stops instead of an element
+ * `opacity`, which is the other half of why this is one element: the
+ * Texture.tsx header explains that these layers are siblings rather
+ * than classes because `opacity` applies to a whole subtree. Bake the
+ * strength into `color-mix` and that constraint disappears — the
+ * layers can share one element because none of them needs an element
+ * property any more. */
 .plasma {
   background:
+    /* The searchlight, from the lower left where a searchlight would
+       be. Was `.signal-beam`'s first layer. */
+    radial-gradient(
+      70% 90% at 10% 100%,
+      color-mix(in oklab, var(--c-signal) 11%, transparent) 0%,
+      color-mix(in oklab, var(--c-signal) 5%, transparent) 38%,
+      transparent 72%
+    ),
+    /* Cold light from the upper right, answering it. */
+    radial-gradient(
+      45% 60% at 88% 0%,
+      color-mix(in oklab, var(--c-probe) 5%, transparent) 0%,
+      color-mix(in oklab, var(--c-probe) 2%, transparent) 40%,
+      transparent 76%
+    ),
+    /* The two former plasma fields, which are the flicker in the
+       light rather than a second accent — see the Hero header. */
     radial-gradient(
       38% 50% at 22% 32%,
-      color-mix(in oklab, var(--c-signal) 10%, transparent),
-      transparent 70%
+      color-mix(in oklab, var(--c-signal) 8%, transparent) 0%,
+      transparent 68%
     ),
     radial-gradient(
       42% 46% at 78% 68%,
-      color-mix(in oklab, var(--c-probe) 7%, transparent),
-      transparent 72%
+      color-mix(in oklab, var(--c-probe) 6%, transparent) 0%,
+      transparent 70%
     );
-  -webkit-mask-image: radial-gradient(
-    120% 120% at 50% 50%,
-    rgb(0 0 0 / 0.9) 0%,
-    rgb(0 0 0 / 0.35) 55%,
-    transparent 88%
-  );
-  mask-image: radial-gradient(
-    120% 120% at 50% 50%,
-    rgb(0 0 0 / 0.9) 0%,
-    rgb(0 0 0 / 0.35) 55%,
-    transparent 88%
-  );
-}
-html.js .plasma {
-  animation: plasma-drift 12s ease-in-out 2;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -906,9 +975,6 @@ html.js .plasma {
   }
   .spotlight::before {
     display: none;
-  }
-  html.js .plasma {
-    animation: none !important;
   }
 }
 
@@ -1150,40 +1216,107 @@ html.js .xray[data-shown="true"] {
 
    Pointer-only and hover-only by design: there is nothing to mark
    without a pointer, and a keyboard visitor gets the HUD brackets and
-   the scan border instead, which carry the same information. */
+   the scan border instead, which carry the same information.
+
+   REVISION 13 — TWO ELEMENTS, NOT TWO GRADIENTS, and this was the
+   larger half of the lag at the top of the home page.
+
+   The first version drew the crosshair as two linear-gradients whose
+   COLOUR STOPS were positioned at calc(var(--mx)) and calc(var(--my)),
+   under a radial mask centred on the same two properties. It read
+   beautifully and it was the most expensive thing on the page, for a
+   reason that is invisible in the source: a gradient stop is not a
+   compositable property. Moving a transform or an opacity is a job the
+   GPU does to a layer it already has. Moving a gradient stop means the
+   gradient is a different image, so the browser must re-rasterise the
+   element — and this element is `inset: 0` on the cover, so that is a
+   full-viewport raster, on the CPU, every frame the pointer moves. The
+   mask made it twice: once for the paint, once for the mask channel.
+   Three hundred thousand pixels of CPU rasterisation per mouse
+   movement, to draw two one-pixel lines.
+
+   So the lines are now two actual elements, one pixel wide and one
+   pixel tall, positioned at the origin and moved with `translate3d`.
+   Identical result, except that the only thing changing per frame is a
+   transform on a tiny layer — which is the cheapest thing a browser
+   can be asked to animate, and costs the same whether the container is
+   a phone or a 4K monitor.
+
+   WHAT CHANGED VISUALLY, stated rather than hidden: the fade along each
+   line is now anchored to the container's centre instead of following
+   the cursor, because a mask-position that tracks the pointer has the
+   same rasterisation cost the stops did. At 26% of a cyan on a dark
+   ground, over a one-pixel line, the difference is not findable without
+   the two versions side by side.
+
+   The fallback is `0px` and not a percentage, because a percentage in
+   a transform resolves against the ELEMENT's box — and these elements
+   are one pixel wide, so `50%` would be half a pixel rather than the
+   middle of the container. It is unreachable in practice: the lines
+   only become visible on `:hover`, which cannot happen without a
+   pointermove having already written both properties, and
+   `onPointerLeave` deliberately leaves the last values in place so a
+   re-entry resumes where it left off. */
 .reticle {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
   opacity: 0;
   transition: opacity 180ms var(--ease-cx);
-  background:
-    linear-gradient(
-      to right,
-      transparent calc(var(--mx, 50%) - 0.5px),
-      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--mx, 50%) - 0.5px),
-      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--mx, 50%) + 0.5px),
-      transparent calc(var(--mx, 50%) + 0.5px)
-    ),
-    linear-gradient(
-      to bottom,
-      transparent calc(var(--my, 50%) - 0.5px),
-      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--my, 50%) - 0.5px),
-      color-mix(in oklab, var(--c-detect) 26%, transparent) calc(var(--my, 50%) + 0.5px),
-      transparent calc(var(--my, 50%) + 0.5px)
-    );
-  /* Fades out towards the container edges so the crosshair does not
-     terminate in a hard stop against the border. */
-  -webkit-mask-image: radial-gradient(
-    30rem circle at var(--mx, 50%) var(--my, 50%),
-    rgb(0 0 0 / 1) 0%,
-    rgb(0 0 0 / 0.25) 55%,
+}
+.reticle::before,
+.reticle::after {
+  content: "";
+  position: absolute;
+  background: color-mix(in oklab, var(--c-detect) 26%, transparent);
+  /* Promoted once, at rest, rather than per frame. The pair are the
+     one thing on the site that is written on every pointer frame, so
+     they are also the one place `will-change` earns its keep instead
+     of being a hint that costs memory for nothing. */
+  will-change: transform;
+}
+/* The vertical line: full height, moved along x. */
+.reticle::before {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  transform: translate3d(var(--mx, 0px), 0, 0);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(0 0 0 / 1) 35%,
+    rgb(0 0 0 / 1) 65%,
     transparent 100%
   );
-  mask-image: radial-gradient(
-    30rem circle at var(--mx, 50%) var(--my, 50%),
-    rgb(0 0 0 / 1) 0%,
-    rgb(0 0 0 / 0.25) 55%,
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(0 0 0 / 1) 35%,
+    rgb(0 0 0 / 1) 65%,
+    transparent 100%
+  );
+}
+/* The horizontal line: full width, moved along y. */
+.reticle::after {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  transform: translate3d(0, var(--my, 0px), 0);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 1) 30%,
+    rgb(0 0 0 / 1) 70%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 1) 30%,
+    rgb(0 0 0 / 1) 70%,
     transparent 100%
   );
 }
@@ -1252,11 +1385,47 @@ html[data-theme="dark"] .bat-ground {
   opacity: 0.08;
 }
 
+/* REVISION 13 — THE SAME PICTURE IN 39% FEWER PIXELS, and this is the
+   largest resident buffer on the site.
+ *
+ * What makes this element expensive is not that it is an image, it is
+ * that it is a LARGE image carrying both a `filter` and a `mask`. Each
+ * of those is an element-level effect, so the browser rasterises the
+ * element into an offscreen buffer, runs the filter, rasterises the
+ * mask into a second buffer, and multiplies — and it holds all of that
+ * for as long as the element exists. The element is `position: fixed`
+ * inside `.bat-ground`, so it exists on every page, for the whole
+ * session, and `content-visibility` can never reclaim it because it is
+ * always in view.
+ *
+ * At 128vw on a 1920 viewport that was a 2458 × 1137 element: 2.8
+ * megapixels, several buffers deep, to show a silhouette at `opacity:
+ * 0.05`.
+ *
+ * THE 28VW WAS CLIPPED ANYWAY. `.bat-ground` is `overflow: hidden`, so
+ * everything past the viewport edge was rasterised into the buffer and
+ * then thrown away at composite — and because the effects apply to the
+ * element before the parent clips it, the full box was paid for. The
+ * bleed the old comment describes is real and worth keeping, but it was
+ * being bought at 1.28× the width when the viewport only ever shows
+ * 1.0× of it.
+ *
+ * SO THE BOX SHRINKS AND THE GRADIENT GROWS TO MATCH. The mask radius
+ * is a PERCENTAGE OF THE BOX, so shrinking the box alone would pull the
+ * falloff inward and visibly tighten the mark. 79% of 100vw is the same
+ * absolute radius 62% of 128vw was, which is why the visible gradient
+ * is unchanged rather than approximated: every screen position inside
+ * the viewport maps to the same point on the same curve. The mobile
+ * case lands on the same 79% for the same reason — 150vw × 0.79 is the
+ * absolute radius 190vw × 0.62 was.
+ *
+ * The bleed survives because the box is still full-viewport and the
+ * mask still reaches the edges with alpha to spare; what is gone is
+ * only the part that was never on screen. */
 .bat-ground-mark {
-  /* Wider than the viewport on purpose: the mark bleeds past both
-     edges, so the eye assembles the shape instead of seeing a picture
-     of a logo sitting on the page. */
-  width: 128vw;
+  /* Full viewport, not wider. The mark still bleeds — the mask carries
+     it off both edges rather than the box doing it. */
+  width: 100vw;
   max-width: none;
   height: auto;
   color: var(--bat-ink);
@@ -1264,15 +1433,16 @@ html[data-theme="dark"] .bat-ground {
   filter: invert(var(--bat-invert));
   /* Its own alpha reaches zero before the viewport edges, so it has no
      boundary to collide with anything — §5b feathering, applied to a
-     single image. */
+     single image. 79%, not 62%, against a box that is now 100vw rather
+     than 128vw: the same absolute radius, so the same picture. */
   -webkit-mask-image: radial-gradient(
-    62% 62% at 50% 50%,
+    79% 79% at 50% 50%,
     rgb(0 0 0) 0%,
     rgb(0 0 0 / 0.55) 55%,
     transparent 88%
   );
   mask-image: radial-gradient(
-    62% 62% at 50% 50%,
+    79% 79% at 50% 50%,
     rgb(0 0 0) 0%,
     rgb(0 0 0 / 0.55) 55%,
     transparent 88%
@@ -1281,7 +1451,11 @@ html[data-theme="dark"] .bat-ground {
 
 @media (max-width: 40rem) {
   .bat-ground-mark {
-    width: 190vw;
+    /* 150vw, down from 190vw, against the same 79% radius — the narrow
+       viewport needs more overscale for the shape to read as bleeding
+       rather than as a centred logo, but it does not need forty
+       viewport-widths of it. */
+    width: 150vw;
   }
 }
 
@@ -1377,22 +1551,52 @@ body > *:not(.bat-ground) {
      never escape this box, which keeps it off the rest of the header
      and off the page under it. */
   contain: layout paint;
-  /* The ends fade rather than cut, so marks enter and leave instead of
-     being clipped — the §5b feathering rule, applied to a row. */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    rgb(0 0 0) 4rem,
-    rgb(0 0 0) calc(100% - 4rem),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    rgb(0 0 0) 4rem,
-    rgb(0 0 0) calc(100% - 4rem),
-    transparent 100%
-  );
+}
+
+/* The ends fade rather than cut, so marks enter and leave instead of
+   being clipped — the §5b feathering rule, applied to a row.
+ *
+ * REVISION 13 — TWO OVERLAYS, NOT A MASK, and this one runs on every
+ * page of the site rather than just the cover.
+ *
+ * `contain: layout paint` above was the right fix for the repaint and
+ * it is still there. It does not help with a mask, because a mask is
+ * not a repaint — it is a compositing step. A masked element is
+ * rasterised to an offscreen buffer, the mask is rasterised to a
+ * second, and the two are multiplied on every frame that the element's
+ * content changes. The content here is a track on `animation:
+ * ticker-roll 64s linear infinite`, so "every frame that the content
+ * changes" means every frame, for the entire session, on every page.
+ *
+ * This is the same trap the §5f note describes for `backdrop-filter`,
+ * reached through a different property. The fix there was to move the
+ * expensive thing off the animating element's ancestor; the fix here is
+ * that the expensive thing was never needed. `.ticker` carries an
+ * OPAQUE ground, so fading its ends to transparent and fading them to
+ * the ground colour are the same picture — and the second is two small
+ * gradients composited normally, which is what a GPU does anyway.
+ *
+ * `4rem` and the stop order are carried over unchanged, so the fade is
+ * the same width and the same curve it was. The overlays sit above the
+ * track and below nothing, because the row holds nothing else. */
+.ticker::before,
+.ticker::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4rem;
+  pointer-events: none;
+  /* Above the track. The row has no other stacking, so 1 is enough. */
+  z-index: 1;
+}
+.ticker::before {
+  left: 0;
+  background: linear-gradient(to right, var(--c-ground), transparent);
+}
+.ticker::after {
+  right: 0;
+  background: linear-gradient(to left, var(--c-ground), transparent);
 }
 
 .ticker-track {
@@ -1467,13 +1671,21 @@ html.js .ticker-track {
     animation: none !important;
   }
   /* Frozen content must still be reachable, so the strip becomes a
-     scroller rather than a window onto the first thirteen marks. */
+     scroller rather than a window onto the first thirteen marks.
+
+     The two `mask-image: none` declarations that used to be here went
+     with the mask itself in revision 13 — there is nothing left to
+     cancel. The edge fade is now two overlays, and they are left ON
+     deliberately: a scroller whose ends fade is the clearer affordance
+     for "there is more this way", and unlike the mask they do not hide
+     anything from the pointer or from find-in-page. */
   .ticker {
     overflow-x: auto;
-    -webkit-mask-image: none;
-    mask-image: none;
   }
 }
+/* The overlays sit over a scrollable row under reduced motion, so they
+   must not eat the drag. They are already `pointer-events: none`, which
+   is what makes that work. */
 
 
 /* ------------------------------------------------------------
@@ -1767,6 +1979,174 @@ html[data-theme="dark"] .bat-img {
   html.js .route-enter {
     animation: none !important;
   }
+}
+
+
+/* ------------------------------------------------------------
+   5i. THE EFFECTS BUDGET
+   ------------------------------------------------------------
+
+   `html[data-fx]` is written before the first paint by
+   components/BootScript.tsx and lowered at runtime by
+   components/primitives/PerfGuard.tsx when measured frames say the
+   machine cannot hold the rate. lib/usePerfTier.ts is the contract;
+   this section is the CSS half of it, and the vendored WebGL fields
+   are the JavaScript half, in FxBackdrop.
+
+   WHAT GOES IN HERE AND WHAT DOES NOT. Only rules that remove
+   PER-FRAME work. A one-shot entrance — a reveal, a wipe, a sweep —
+   costs a few hundred milliseconds once and then the element is
+   static forever; dropping those would make the page arrive more
+   abruptly without making it run faster, which is a worse page for no
+   gain. What is dropped below are the things that keep running, keep
+   repainting, or keep re-blending a viewport-sized layer after the
+   page has finished arriving.
+
+   The reduced-motion block above stays as it is and is NOT replaced by
+   this. A motion preference is a stated request about motion, which is
+   a different question from how many frames a GPU can draw, and
+   collapsing the two would mean a fast machine with the preference set
+   getting a cheaper page it never asked for — or worse, a slow machine
+   without it having its accessibility answer decided by a benchmark. */
+
+/* OFFSCREEN SECTIONS COST NOTHING. Every tier, no exceptions, and the
+   largest single memory saving available on this site.
+ *
+ * `content-visibility: auto` lets the browser skip layout, paint and
+ * compositing for a subtree that is outside the viewport — not just
+ * the drawing, the retained buffers too. On a page that is a stack of
+ * six full-width cases, each with its own panels, rules, ticks and
+ * revealed headings, that is five sixths of the document's render cost
+ * and render memory not being paid while you are reading the sixth.
+ *
+ * THIS IS A HOME-PAGE RULE. Say so, because the first version of it
+ * claimed to apply to every `<main>` on the site, on the assumption
+ * that every route renders a flat list of `<section>` children.
+ * Checked against the built HTML that is true of the home page and
+ * nothing else: /projects and each project page have no direct
+ * `<section>` child of `#content` at all, and /certifications,
+ * /contact, /hobby, /privacy and /terms have exactly one.
+ *
+ * Widening it to a descendant selector was tried and reverted. It
+ * reaches the nested groups `ProjectIndex` and `CertIndex` use, and
+ * measured against the built pages it deferred nothing at all on
+ * /projects and one section on /certifications — no gain, and a real
+ * cost, because a nested group is short and the 1200px estimate below
+ * is sized for a full case. Being wrong by 800px per section is worse
+ * than not applying.
+ *
+ * THE LONG PAGES NEED A DIFFERENT UNIT, and that is the open item
+ * rather than something this rule should stretch to cover. Their
+ * repeating element is a grid CELL — twenty project cells, two dozen
+ * certification rows — and `content-visibility` on a grid item makes
+ * the placeholder height participate in track sizing, so a wrong
+ * estimate becomes a wrong row height rather than merely a wrong
+ * scrollbar. Doing it properly means either a measured
+ * `contain-intrinsic-size` per card shape or moving the cards off grid
+ * layout, and neither is a one-line change. Sections are block-level
+ * and own their full width, so here the estimate can only be wrong
+ * about length.
+ *
+ * FROM THE FOURTH, not the first. The cover and the first two cases
+ * are either on screen or within a scroll of it on a tall monitor, and
+ * deferring something that is about to be looked at buys nothing and
+ * risks it arriving late.
+ *
+ * IT DOES NOT FIGHT THE SCROLL REVEALS, and the margins are why. A
+ * browser makes a deferred subtree relevant on PROXIMITY to the
+ * scrollport, well before it is visible, whereas `REVEAL_OPTIONS` in
+ * components/primitives/Reveal.tsx waits for an element to be 8%
+ * INSIDE the viewport. So a section has already rendered by the time
+ * its reveal threshold is crossed, and the observer sees an ordinary
+ * intersection rather than a subtree that was being skipped. Had the
+ * reveal used a positive rootMargin — firing before the element was on
+ * screen — the two would have raced, and this rule would have had to
+ * go on a wrapper instead.
+ *
+ * THE TRADE, stated rather than buried: `contain-intrinsic-size` is the
+ * height the browser assumes for a section it has not rendered, so
+ * until a section has been seen once, the scrollbar is based on a
+ * guess. `auto` is what keeps that honest — the browser stores each
+ * section's real height the first time it renders it and uses that
+ * from then on, so the estimate is wrong only on the first pass down a
+ * page and self-corrects permanently. The cost is some scrollbar creep
+ * during that first scroll; what it buys is a page whose memory does
+ * not grow with its length. 1200px is a deliberate overestimate,
+ * because a scrollbar that shrinks as you scroll reads as the page
+ * loading and one that grows reads as a bug. */
+#content > section:nth-of-type(n + 4) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1200px;
+}
+
+/* LITE. Shaders still run, at a fraction of the resolution — that half
+   is in FxBackdrop. What goes here is the CSS work that is paid per
+   frame for the whole life of the page.
+
+   The cover's wash is NOT in this list, and the reason is worth
+   stating: revision 13 removed its drift and its mask outright, for
+   every tier. A 24-second transform on a viewport-sized masked layer
+   was not something to switch off for slow machines — it was something
+   no machine should have been asked to pay for. See the note on
+   `.plasma` in §5b. The tiers are for work that is genuinely worth
+   doing when there is headroom; they are not a place to park work that
+   was never worth doing. */
+
+/* The bat ground's crossings carry `filter: blur()`, and a blur on a
+   moving element is re-evaluated every frame over the blur radius —
+   the one filter that cannot be cached as a layer and translated. */
+html[data-fx="lite"] .bat-fly,
+html[data-fx="off"] .bat-fly {
+  filter: none;
+}
+
+/* The header glass. The §5f note explains why the blur is on a sibling
+   of the ticker rather than on the header — a forever-animating
+   descendant would re-rasterise it every frame. That fixed the idle
+   cost; it does not fix the scrolling one. A `backdrop-filter` samples
+   whatever is behind the element, so the moment the page moves, the
+   source of the blur is different and the ten-pixel gather runs again
+   across the full width of the header, every scroll frame. On an
+   integrated GPU that is one of the most expensive things a page can
+   ask for, and it is asked on every page of the site.
+
+   The glass becomes near-opaque instead. The reason the blur was there
+   at all is stated in §5f — "without it, forty small marks scroll
+   under forty small marks" — and an opaque ground solves that problem
+   completely rather than partially. What is lost is the sense of depth,
+   on the tier that cannot pay for it. */
+html[data-fx="lite"] .site-header-glass,
+html[data-fx="off"] .site-header-glass {
+  background: var(--c-ground);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* The ticker rolls forever. It is a composited transform on a short
+   element so it is close to free on `lite` — but `off` means nothing
+   on this site runs continuously, and the row is still perfectly
+   readable sitting still. */
+html[data-fx="off"] .ticker-track {
+  animation: none !important;
+}
+
+/* OFF. No canvas mounts at all (FxBackdrop rule six), so what is left
+   here is every remaining continuous animation. The static fields
+   underneath carry the composition — which is the arrangement rule
+   four was built for, reached by a second route. */
+html[data-fx="off"] .reticle {
+  display: none;
+}
+html[data-fx="off"] .bat-fly,
+html[data-fx="off"] .electric::before,
+html[data-fx="off"] .tick-pulse {
+  animation: none !important;
+}
+html[data-fx="off"] .electric::before {
+  opacity: 0;
+}
+html[data-fx="off"] .spotlight::before {
+  display: none;
 }
 
 

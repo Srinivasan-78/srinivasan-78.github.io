@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​​​‌​​‌‌​‌​‌​​‌​​‌​‌​​‌​‌‌​‌​​‌‌‌‌​‌‌​‌​​​​‌‌​​‌‌​​‌​​​‌‌​​​‌‌​​​‌​‌‌​​​‌​​‌‌​​​‌​​‌‌​‌‌​‌​‌‌‌​​​​​‌​‌​‌​​​‌‌​‌​​​​‌​‌​​​‌​‌‌‌‌​‌​​‌​‌‌‌‌‌​‌​​​​‌​​‌​​​‌‌​​‌‌‌​‌​​​‌‌‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​​​‌​​​‌​‌​‌‌‌​‌‌​​‌​​‌‌​​​​‌‌​‌​​​​‌‌​‌‌‌​‌‌​‌​​​​‌​‌​​‌​​‌‌‌​​‌​​‌‌‌​‌​‌​‌​​‌​‌‌​‌‌​‌‌‌‌​‌​​‌​‌‌​‌​‌​‌​‌​‌​‌​‌​‌​‌​​‌‌‌​​‌​​​‌​‌​‌‌​‌‌​​​‌‌‌​​‌‌​‌‌‌​‌‌‌​​‌‌‌​​‌​​‌‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.XMIKOhfF1bbmpThQz_BFty
+ * Fingerprint: AMK1.hEvL47hRruKoKUUNElsw95
  */
 "use client";
 
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import ClickSpark from "@/components/reactbits/ClickSpark/ClickSpark";
 import TargetCursor from "@/components/reactbits/TargetCursor/TargetCursor";
 import useTheme from "@/lib/useTheme";
+import usePerfTier from "@/lib/usePerfTier";
 
 /* The site-wide interaction layer: a spark on every click, and a
  * targeting reticle for a cursor.
@@ -52,6 +53,7 @@ export default function InteractionFx({
   children: React.ReactNode;
 }) {
   const theme = useTheme();
+  const tier = usePerfTier();
   const [motionOk, setMotionOk] = useState(false);
   const [pointerFine, setPointerFine] = useState(false);
 
@@ -83,8 +85,27 @@ export default function InteractionFx({
   /* The reticle locks onto anything interactive. Driven off real
      selectors rather than a bespoke class, so a control added later is
      targeted automatically instead of being silently left out. */
+  /* THE TOP TIER ONLY, and this is the single biggest frame saving on
+     the site rather than a marginal one.
+
+     `spinDuration` is what makes it expensive, and not obviously: the
+     reticle rotates continuously, so the component's `busy` condition
+     is never false and its requestAnimationFrame loop never stops. It
+     is not a cursor that costs something while you move the mouse — it
+     is a permanent sixty-times-a-second loop writing transforms to
+     four corner elements, running on every page of the site, forever,
+     whether or not anything is happening. Every other animation here
+     sleeps; this one cannot, because spinning IS the animation.
+
+     On a machine with frames to spare that is affordable and it is the
+     signature interaction of the whole register. On one without, it is
+     a tax levied on scrolling, on reading, and on every other effect
+     that now has to share what is left. So `lite` and `off` get the
+     real cursor, which is not a degraded version of anything — the
+     spark below still fires on click, and the lock-on brackets were
+     always pointer-only decoration over an already-complete page. */
   const cursor =
-    motionOk && pointerFine ? (
+    motionOk && pointerFine && tier === "full" ? (
       <TargetCursor
         targetSelector="a, button, [role='button'], summary, input, select, textarea"
         /* The two inks of §1b, and the reticle uses both: it rests in

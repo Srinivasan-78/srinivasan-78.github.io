@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌​​‌‌​‌​​‌​‌‌​​‌‌​​​‌‌​‌‌​​‌‌​​‌‌​​‌‌‌​​‌​​‌‌‌​‌‌‌​​‌‌​‌​‌​‌​​‌‌​‌​‌​‌​​​‌​‌​‌‌​‌​​‌‌‌​​​‌​​‌‌​‌​‌​‌‌​‌​‌‌​‌‌​​‌​‌​‌​​​​‌‌​‌​​‌​​​​‌​​​‌‌​​‌​​​‌​‌​​‌‌‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​​‌‌​​‌‌​‌​​​​‌​​‌​​‌‌‌​​‌​​‌​​​​‌‌​​​‌​​‌‌‌​​​​​‌​​‌‌​‌​‌​‌‌‌‌‌​‌‌​​‌​‌​‌​​​​‌‌​‌‌‌​​​​​‌​​‌​‌‌​​‌‌​‌​‌​‌‌‌‌​​​​​‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​​‌​​‌​‌​‌‌‌​‌​​​‌‌‌​‌​‌​​​‌​‌​​‌​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.KkJif6frw5MQZq5keCHFE8
+ * Fingerprint: AMK1.r3BNHbpM_eCpK5x7cRWGQK
  */
 import Link from "next/link";
 import DecryptText from "@/components/primitives/DecryptText";
@@ -11,7 +11,7 @@ import Reveal from "@/components/primitives/Reveal";
 import FxBackdrop from "@/components/primitives/FxBackdrop";
 import SpecBlock from "@/components/primitives/SpecBlock";
 import Spotlight from "@/components/primitives/Spotlight";
-import { Halftone, SignalBeam } from "@/components/primitives/Texture";
+import { Halftone } from "@/components/primitives/Texture";
 import { HOME_COPY, PROFILE } from "@/lib/data/profile";
 import { AUTHORIZATION_COPY } from "@/lib/data/authorization";
 
@@ -24,23 +24,33 @@ import { AUTHORIZATION_COPY } from "@/lib/data/authorization";
    between them is what makes the two read as separate registers rather
    than as one crowded header.
 
-   Two texture layers sit behind the content, and they are siblings
-   rather than classes on the container for a reason that is easy to get
-   wrong: `.halftone` and the beam both carry their own `opacity`, and
-   opacity applies to a whole subtree. Put either class on the grid and
-   the headline, the bio and the buttons all fade with it. As siblings
-   they stay behind the type instead of over it. The halftone is cut on
-   a `shard` — one of only two hard diagonals on the page, so the cover
-   ends on the same angle the closing poster begins on.
+   The texture layers sit behind the content as siblings rather than as
+   classes on the container, for a reason that is easy to get wrong:
+   `.halftone` carries its own `opacity`, and opacity applies to a whole
+   subtree. Put that class on the grid and the headline, the bio and the
+   buttons all fade with it. As a sibling it stays behind the type
+   instead of over it. The halftone is cut on a `shard` — one of only
+   two hard diagonals on the page, so the cover ends on the same angle
+   the closing poster begins on.
 
-   The plasma field sits *under* the beam rather than beside it, and the
-   two are deliberately counted as one accent. Both are the same fact —
-   light arriving from off-page — at two frequencies: the beam is a fixed
-   cone, the plasma a slow drift behind it that stops after two cycles.
-   Read as two separate marks they would blow the budget; read as one
-   light source with a flicker in it, which is how they actually land,
-   the viewport still spends amber exactly twice — this, and the one
-   filled control.
+   The wash escapes that constraint, which is how it became one element
+   instead of two: its strengths are baked into `color-mix` stops rather
+   than carried on an element `opacity`, so nothing about it has to be
+   its own node any more.
+
+   The plasma field and the beam were always deliberately counted as
+   ONE accent — both are the same fact, light arriving from off-page,
+   and read as two separate marks they would blow the §1b budget. As of
+   revision 13 they are also one element, which is the arrangement
+   finally matching the reading: four gradients stacked on a single
+   unmasked layer. The viewport still spends amber exactly twice — this,
+   and the one filled control.
+
+   What went with the merge is the drift. It was a 24-second transform
+   on the largest element of the page, overlapping the window in which
+   the document parses and the shader compiles, and the thing it moved
+   was a wash at 8% colour strength under a headline. See the §5b note
+   on `.plasma` for the full accounting.
 
    The status tick is `probe`, not signal, and it pulses three times and
    stops — a status light that throbs forever is an alarm, and alarm
@@ -72,12 +82,12 @@ import { AUTHORIZATION_COPY } from "@/lib/data/authorization";
    arrival, and a site where every section runs a shader is a site
    with a framerate problem instead of an opening.
 
-   It is a fourth texture sibling rather than a class, for the same
-   subtree-opacity reason the comment above gives for the other three,
-   and it is listed first so it sits furthest back: the beam and the
-   plasma are warm light arriving from off-page, and the scan is a
-   cold grid laid over the sheet. The order is what keeps them reading
-   as two different kinds of light rather than one muddle.
+   It is a texture sibling rather than a class, for the same
+   subtree-opacity reason the comment above gives for the halftone, and
+   it is listed first so it sits furthest back: the wash is warm light
+   arriving from off-page, and the scan is a cold grid laid over the
+   sheet. The order is what keeps them reading as two different kinds
+   of light rather than one muddle.
 
    The pointer reticle needs the hero to be a spotlight host, so the
    content is wrapped in `Spotlight`. That wrapper is also what writes
@@ -88,9 +98,11 @@ import { AUTHORIZATION_COPY } from "@/lib/data/authorization";
 export default function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* All three are siblings, absolutely positioned, aria-hidden and
-          pointer-events off — and each carries its own mask, so none of
-          them ends on a straight line where the section clips. */}
+      {/* Siblings, absolutely positioned, aria-hidden and pointer-events
+          off. None of them ends on a straight line where the section
+          clips — the halftone and the detect grid because they carry a
+          mask, the wash because its gradients reach zero alpha on their
+          own, which is the cheaper way to satisfy the same §5b rule. */}
       {/* REVISION 4 — the cover's field is the Arkham CRT now.
           `ScanField` (the hand-written ogl shader) was correct and far
           too quiet; the owner's reading of the whole revision was
@@ -129,7 +141,14 @@ export default function Hero() {
           glow: 0.5,
           clickEffect: true,
           pageLoadAnimation: true,
-          /* ONE, not 1.5, and this is free rather than a concession.
+          /* SUPERSEDED by rule seven in FxBackdrop, which now computes
+             the ratio from a pixel budget and overrides whatever is
+             set here. Kept as the documented intent — and as the value
+             a caller would get if the budget were ever removed —
+             because the reasoning below is still the reasoning, and it
+             is the argument the budget generalises.
+
+             ONE, not 1.5, and this is free rather than a concession.
              Fragment cost scales with the square of this: 1.5 means
              2.25× the shader invocations per frame of a full-bleed
              canvas on the largest element of the page. What it buys is
@@ -149,11 +168,18 @@ export default function Hero() {
         lightProps={{ tint: "#8f8f8c", brightness: 0.9 }}
         darkProps={{ tint: "#f5c518", brightness: 0.5 }}
       />
+      {/* REVISION 13 — one wash, not two. `.plasma` now carries the
+          searchlight and the two drifting fields as four gradients on
+          a single unmasked element, so the cover holds one compositor
+          buffer here instead of four. The `<SignalBeam />` sibling is
+          gone because its two gradients are the first two in that
+          list; the component itself stays, for /contact and the project
+          pages that render it alone. The full accounting is in the
+          §5b note on `.plasma`. */}
       <div
         aria-hidden="true"
         className="plasma pointer-events-none absolute inset-0"
       />
-      <SignalBeam />
       <Halftone className="shard" />
 
       <Spotlight className="relative">
