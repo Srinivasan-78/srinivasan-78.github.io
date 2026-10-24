@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​​‌​‌‌​‌‌​‌​‌​‌​​‌​​‌‌‌​​‌‌​​‌‌​‌​‌​‌‌​‌‌‌​​‌‌​‌​‌​​‌‌​​​​‌​​‌‌​‌‌​​​‌‌​​‌​​‌​​‌​​‌​‌​‌​‌‌‌​‌‌​‌‌‌‌​​‌‌​‌‌​​​‌‌​‌​​​​‌‌​‌​‌​‌​‌​​‌‌​​‌‌​‌​​​‌‌‌​​‌‌​‌‌​‌​‌​​‌​​‌​​​​‌‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​​​‌​‌​​‌‌​​‌‌​‌​​​‌​‌​‌​​​‌​​‌​‌‌​‌​​‌​‌‌​‌​‌​‌‌‌​‌​​​​‌​​​‌‌​‌‌​​‌​‌‌​‌​​​‌​‌‌​‌​‌‌​​​‌‌​‌‌​​‌‌‌​​‌‌​‌‌‌​​‌‌​​‌​​‌‌‌​​​‌​‌‌​‌​​​​​‌​‌‌​‌​‌‌​​‌​​​‌​​​​‌‌​‌​​‌‌‌‌​‌​‌​‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ymRs5nja62IWo645S4sjHv
+ * Fingerprint: AMK1.dS4TKKWB6Z-cg72qh-dCOW
  */
 import BatGlyph from "./BatGlyph";
 import { groundMark } from "@/lib/batGround";
@@ -72,6 +72,24 @@ export default function BatGround() {
              the bytes land, which is what stops a layout shift. */
           width={mark.width}
           height={mark.height}
+          /* REVISION 12. This is the first <img> in the body and it is
+             genuinely inside the viewport, so the browser was treating
+             it as a candidate for the largest contentful paint and
+             emitting a `rel=preload` for it in <head> — ahead of the
+             stylesheet, alongside the four font preloads. A 10 KB
+             decoration behind the entire document was therefore
+             competing for the opening connection with the type the
+             headline is set in.
+
+             `fetchPriority="low"` states the truth instead: it is in
+             view, so lazy-loading would be wrong and would only make
+             it arrive late with a visible fade-in, but nothing waits
+             on it. `decoding="async"` keeps the decode off the main
+             thread, which matters because this is the largest raster
+             on the page and the decode would otherwise land in the
+             same window as hydration. */
+          fetchPriority="low"
+          decoding="async"
           className="bat-ground-mark"
         />
       ) : (

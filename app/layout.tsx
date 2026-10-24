@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​​​‌​‌‌​‌​‌‌​‌‌‌​‌​‌​​‌‌​‌​​​‌​‌​​​​​‌​​‌‌​‌​‌‌​‌​​​​​‌‌‌​​‌​‌​‌​​‌‌​‌‌‌‌​‌​​‌​​‌​‌‌​‌​‌​‌‌​​‌‌‌​​‌‌​‌‌​​​​‌​​‌‌​​‌‌​​‌‌‌​​‌​‌‌​‌​​‌​‌​​​​‌‌​‌​‌‌‌‌‌​‌​‌​‌​​​‌​‌​‌​​​‌‌​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​​‌‌​​‌​​‌​‌‌‌‌‌​‌‌‌​​‌‌​‌‌​‌​‌​​‌​‌​​​‌​‌‌‌​‌​‌​‌​​​​​‌​​‌‌​‌​‌​‌​​​​‌‌​​‌‌​​‌‌​‌‌‌​​‌​​‌​‌​‌​​​‌​‌​​​‌​‌​‌​‌‌​​‌‌‌‌​‌​​‌​‌‌​‌​​‌‌‌​​​‌​​‌‌​‌‌​​‌​​‌​​‌​‌‌​‌​‌‌​‌‌​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.aku4PMh9SzKVsa39iC_TTk
+ * Fingerprint: AMK1.E2_sjQuA5C3rTQVzZq6Ikb
  */
 import type { Metadata, Viewport } from "next";
 import {
@@ -15,6 +15,7 @@ import {
 import "./globals.css";
 import BootScript from "@/components/BootScript";
 import Nav from "@/components/Nav";
+import SkillTicker from "@/components/SkillTicker";
 import Footer from "@/components/Footer";
 import InteractionFx from "@/components/primitives/InteractionFx";
 import BatGround from "@/components/primitives/BatGround";
@@ -63,10 +64,28 @@ const display = Archivo_Black({
   variable: "--font-display-face",
 });
 
+/* REVISION 12 — one weight, and not preloaded.
+
+   It asked for 500, 600 and 700, which is three font files per subset.
+   `.t-poster` in §3 is the ONLY rule in the stylesheet that selects
+   this face, and it hard-sets `font-weight: 700`, so nothing could
+   ever reach the other two — they were downloaded and never drawn.
+
+   `preload: false` because the poster face is not on the cover. Its
+   first appearance is the figure in case 01, below the fold on every
+   viewport this was checked at. A preload is a promise that the bytes
+   are needed for the first screen, and four of them were competing
+   with each other and with the critical CSS for the opening
+   connection; this one was the promise that was not true. It still
+   loads immediately — `swap` plus the Haettenschweiler/Impact
+   fallback means the figures are legible in a condensed face
+   throughout, which is the whole reason that fallback stack is
+   specific rather than `sans-serif`. */
 const poster = Oswald({
   subsets: ["latin"],
   display: "swap",
-  weight: ["500", "600", "700"],
+  weight: "700",
+  preload: false,
   variable: "--font-poster-face",
 });
 
@@ -367,7 +386,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             Everything it adds is decoration over an already-complete
             page — see the header of the component. */}
         <InteractionFx>
-          <Nav />
+          {/* The ticker is handed to Nav rather than imported by it, so
+              it stays a server component and its thirty-nine marks
+              stay markup instead of becoming JavaScript. Measured at
+              24 KB gzipped on the home page, and in the expensive
+              place — see the header of SkillTicker.tsx. */}
+          <Nav ticker={<SkillTicker />} />
           {children}
           <Footer />
         </InteractionFx>

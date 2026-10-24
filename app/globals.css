@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌‌​​‌‌​​​‌​‌‌​​‌​‌​‌​‌​‌​​​​‌​‌‌​‌​‌‌​​​‌​​​‌‌​​​‌​‌​​​‌‌‌​​‌‌​​​​​​‌‌‌​​‌​‌​​​​‌​​​‌‌​‌​​​‌​‌​​​​​‌​​‌​‌​​‌​‌​‌​‌​​‌‌​​​​​‌​​‌​‌​​‌​‌​​​‌​‌‌‌​‌‌​​​‌‌​‌​‌​‌‌‌​‌​​​‌‌​​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​‌​‌‌​‌​‌‌​‌‌‌​​‌‌​‌​​​​‌‌​‌‌‌​‌‌​​‌‌​‌‌‌​​‌‌​​‌​‌​‌​‌‌​​​​‌‌‌​​​‌​‌​​​‌‌​​‌​​‌​‌​​‌​​​​​‌​‌​​‌‌‌​​‌‌‌​​‌‌​‌​​‌‌‌‌​‌‌​‌​​​​‌‌‌​‌​‌​​‌‌​‌​‌​‌‌​​‌​​​​‌‌​‌‌​​​‌‌​​​​​‌​​‌‌‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.O1eT-b1G09B4PJU0JQv5tg
+ * Fingerprint: AMK1.MksCvneXqFJANsOhu5d60O
  */
 
 /* ============================================================
@@ -1316,10 +1316,49 @@ body > *:not(.bat-ground) {
   position: sticky;
   top: 0;
   z-index: 50;
+  border-bottom: 1px solid var(--c-rule);
+}
+
+/* The glass. Wraps the nav rows ONLY, and the reason it is not just
+   `.site-header` itself is the whole of the revision 12 note in
+   components/Nav.tsx: the ticker animates forever, and a forever-
+   animating descendant of a backdrop-filter root re-rasterises that
+   blur on every frame of the session. As a sibling it does not. */
+.site-header-glass {
   background: color-mix(in oklab, var(--c-ground) 88%, transparent);
   backdrop-filter: blur(10px) saturate(1.1);
   -webkit-backdrop-filter: blur(10px) saturate(1.1);
-  border-bottom: 1px solid var(--c-rule);
+}
+
+/* The tracking marker. One element for the whole list; the route
+   change moves it rather than swapping two. See the revision 12 note
+   in components/Nav.tsx for why this replaced `motion`'s `layoutId`.
+
+   1px wide and stretched by `scaleX` from the left edge, so the width
+   is carried by the transform too. That is the point of the shape: a
+   transition on `width` or on `left` is a layout and a repaint every
+   frame, while this is one compositor transform on a promoted layer
+   and costs the main thread nothing while it travels. */
+.nav-marker {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  width: 1px;
+  transform-origin: left center;
+  background: var(--c-detect);
+  /* Matches the settle time of the spring it replaced — about 300ms,
+     and deliberately without overshoot: a marker that bounces past its
+     destination reads as a toy. */
+  transition: transform 300ms var(--ease-cx);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Belt and braces. Nav already declines to mount the slider at all
+     under this setting, so this only catches the window before the
+     measuring effect has run. */
+  .nav-marker {
+    transition: none;
+  }
 }
 
 /* The ticker. See components/SkillTicker.tsx for why a marquee is
@@ -1328,6 +1367,16 @@ body > *:not(.bat-ground) {
   position: relative;
   overflow: hidden;
   border-top: 1px solid var(--c-rule);
+  /* OPAQUE, not blurred. This row used to be legible because the
+     header above it carried a backdrop blur; it carries its own ground
+     now, which is both cheaper and more complete — see the revision 12
+     note in components/Nav.tsx. */
+  background: var(--c-ground);
+  /* The track inside is on an infinite transform, so this row repaints
+     for the whole session. `paint` tells the browser the repaint can
+     never escape this box, which keeps it off the rest of the header
+     and off the page under it. */
+  contain: layout paint;
   /* The ends fade rather than cut, so marks enter and leave instead of
      being clipped — the §5b feathering rule, applied to a row. */
   -webkit-mask-image: linear-gradient(

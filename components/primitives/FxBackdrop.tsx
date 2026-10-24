@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌​‌‌​​​​​‌‌​​‌‌​‌​​‌‌​‌​‌​​‌‌‌‌​‌​​​‌​‌​​‌‌​‌​‌​‌​‌‌​‌​​‌‌​‌‌​​​‌​‌‌​‌​​‌‌​​​​‌​‌‌‌​​​​​‌​‌‌​​​​‌‌​‌‌‌‌​‌‌​​​​‌​‌​​​‌‌​​​‌‌​‌​‌​‌‌‌​​​​​‌‌​​​‌‌​​‌​‌‌​‌​‌​‌​‌‌‌​​‌‌​‌​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌‌​‌​​​​‌‌​​‌‌‌​‌‌​​​​‌​‌‌​‌​​​​‌‌‌​​​‌​‌​‌‌​‌​​‌​‌‌​‌​​‌​‌‌​‌​​‌​‌​​​‌​​‌‌​‌‌‌​‌​‌​‌​‌​‌​​​‌‌​​‌​‌​‌‌‌​‌​‌‌‌‌‌​‌​‌‌​‌​​‌​​‌‌‌‌​‌‌​​‌‌‌​‌‌​‌​​​​‌‌‌​‌​‌​‌‌​‌‌​​​‌​​​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.EX3MOE5ZlZapXoaF5pc-W4
+ * Fingerprint: AMK1.8hgahqZZZQ7UFW_ZOghulB
  */
 "use client";
 
@@ -45,6 +45,31 @@ import useTheme from "@/lib/useTheme";
  * GL context or a lost context leaves the composition intact rather
  * than leaving a hole. Nothing here has to detect failure for that to
  * work, which is why it is the arrangement rather than a handler.
+ *
+ * FIVE — nothing mounts while the page is still arriving. Added in
+ * revision 12, for the lag at the top of the home page.
+ *
+ * Rules one and two were about weight and about offscreen work, and
+ * both held. Neither covered the case that actually hurt: a field that
+ * is ON screen at the top of the page, whose IntersectionObserver
+ * therefore fires on the very first callback. The cover's field is
+ * `FaultyTerminal`, the heaviest shader in the set, and it was
+ * compiling its program, allocating its textures and drawing its first
+ * frames in the same few hundred milliseconds the browser was parsing
+ * a large document, executing the page's JavaScript and hydrating the
+ * React tree. Everything in that window competes for one main thread,
+ * and the shader was winning — which is why arriving felt slow while
+ * scrolling, later, felt fine.
+ *
+ * So the mount now waits for the browser to tell us it is no longer
+ * busy: `requestIdleCallback` after a frame has been painted, raced
+ * against a plain timer so the field cannot fail to arrive on a page
+ * that never produces a frame — see the effect for why that case is
+ * real rather than theoretical. The visitor sees the static
+ * `.detect-grid` composition for a beat and then the live field
+ * switches on over it, which is a better reading of "the detective
+ * overlay comes up" than having it already running before the page is
+ * legible.
  *
  * Deliberately NOT here: a pause-when-hidden listener. Each vendored
  * component already drives its own rAF and several accept a `pause`
@@ -126,8 +151,58 @@ export default function FxBackdrop({
   className = "",
 }: FxBackdropProps) {
   const host = useRef<HTMLDivElement | null>(null);
-  const [live, setLive] = useState(false);
+  const [visible, setVisible] = useState(false);
+  /* Rule five. Separate from `visible` on purpose: this one latches
+     true once and stays, because the page only arrives once, while
+     `visible` keeps tracking the viewport for the life of the page. */
+  const [settled, setSettled] = useState(false);
   const theme = useTheme();
+
+  useEffect(() => {
+    /* Two routes to the same latch, whichever arrives first.
+     *
+     * THE FAST ROUTE is a frame, then idle: `requestAnimationFrame`
+     * puts this behind the first paint rather than alongside it, and
+     * `requestIdleCallback` then waits for the main thread to have
+     * nothing better to do — which is exactly the condition a
+     * decorative shader should wait for.
+     *
+     * THE BACKSTOP is a plain timer, and it is here because the fast
+     * route can legitimately never run. `requestAnimationFrame` does
+     * not fire when the page is not producing frames — a background
+     * tab is the real-world case, and a headless browser under a
+     * virtual time budget is how this was found. Hinging the mount on
+     * rAF alone meant that in those conditions the cover kept its
+     * static field forever and the live one never arrived. A decorative
+     * layer failing to a composition that is complete without it is
+     * the right failure, but it should not be reachable by something
+     * as ordinary as opening the site in a background tab.
+     *
+     * So the timer guarantees arrival and the idle path gets there
+     * sooner on a normal load. Nothing is double-counted: `setSettled`
+     * to the same value twice is one state change, and React bails out
+     * of the second render. */
+    let idle = 0;
+    let usedIdle = false;
+
+    const backstop = window.setTimeout(() => setSettled(true), 1500);
+
+    const raf = requestAnimationFrame(() => {
+      const ric = window.requestIdleCallback;
+      if (typeof ric !== "function") {
+        setSettled(true);
+        return;
+      }
+      usedIdle = true;
+      idle = ric(() => setSettled(true), { timeout: 1200 }) as unknown as number;
+    });
+
+    return () => {
+      window.clearTimeout(backstop);
+      cancelAnimationFrame(raf);
+      if (usedIdle) window.cancelIdleCallback?.(idle);
+    };
+  }, []);
 
   useEffect(() => {
     /* Rule three. Checked in an effect rather than with a CSS query so
@@ -148,13 +223,13 @@ export default function FxBackdrop({
        here, because the static field underneath is what would show
        otherwise and it is not a failure state. */
     if (typeof IntersectionObserver === "undefined") {
-      setLive(true);
+      setVisible(true);
       return;
     }
 
     const io = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) setLive(entry.isIntersecting);
+        for (const entry of entries) setVisible(entry.isIntersecting);
       },
       /* A generous margin so the field is already running by the time
          it is actually looked at, rather than starting as it arrives. */
@@ -197,7 +272,7 @@ export default function FxBackdrop({
     >
       {/* Rule four: unconditional, and first so it sits behind. */}
       <div className="detect-grid absolute inset-0" />
-      {live && (
+      {visible && settled && (
         <div
           className="fx-layer"
           style={{ ["--fx-opacity" as string]: opacity }}

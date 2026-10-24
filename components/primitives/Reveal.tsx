@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​​​‌‌‌‌​​​​‌‌‌​​​​​‌‌‌‌​​​​‌‌‌​​​​​‌​‌​‌‌‌​‌‌​​‌​​​​‌‌​‌‌​​‌​‌‌​​​​‌‌‌​​‌‌​‌‌‌‌​​‌​‌​‌​‌‌​​‌​‌‌‌‌‌​​‌‌​‌​‌​‌​​​‌​‌​​‌‌​​‌​​‌‌​‌​‌​​‌​​‌‌​​​‌​​​​​‌​‌‌​‌‌​​​‌‌​​​​‌​‌‌​‌‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​‌​‌​​​‌​​​​‌‌‌​​​​‌‌​​​‌​​‌‌​​‌‌​​‌‌‌​‌​​​‌‌‌​‌‌‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌‌​​​‌​‌‌​​‌​​​‌‌​‌‌‌‌​‌‌​‌‌‌​​‌​‌‌​​​​‌‌‌​​‌​​‌​​‌‌‌‌​​‌‌​​​​​‌‌‌‌​‌​​​‌‌​​‌‌​‌‌‌​​‌‌​‌‌​​​‌​​‌​‌​‌​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.lxpxpWd6XsyV_5E2jLAlan
+ * Fingerprint: AMK1.9D8bftwkrqdonXrO0z3sbU
  */
 "use client";
 
@@ -59,6 +59,95 @@ import { useEffect, useRef, type ElementType, type ReactNode } from "react";
    spine. Revision 7 replaced that board with genre segments and the
    effect went with the thing it drew — see the note where its CSS
    used to be in globals.css §5e. */
+/* ONE OBSERVER FOR THE WHOLE PAGE, shared by every instance.
+ *
+ * Revision 12. This component used to construct its own
+ * IntersectionObserver per element, which on the home page meant
+ * twenty-three of them and on /projects more — each with its own root
+ * bookkeeping, and all twenty-three created during the same hydration
+ * pass that the browser is already spending its first few hundred
+ * milliseconds on. The options were identical in every case, so the
+ * observers were identical, so they could be one.
+ *
+ * A single observer with many targets is the arrangement the API is
+ * actually designed for: `entries` arrives as a batch, the browser
+ * computes intersections for all targets in one pass off the main
+ * thread, and there is one callback instead of twenty-three.
+ *
+ * It is created lazily on the first `observe` rather than at module
+ * scope, so importing this file on the server — or on a client where
+ * nothing reveals — constructs nothing. */
+const REVEAL_OPTIONS: IntersectionObserverInit = {
+  /* A negative bottom margin means an element has to be properly
+     on screen before it animates, not merely one pixel in. */
+  rootMargin: "0px 0px -8% 0px",
+  threshold: 0.05,
+};
+
+let shared: IntersectionObserver | null = null;
+
+/* The live targets, as a SET rather than a count, and that choice is
+   load-bearing rather than taste.
+ *
+ * `unobserve` is reached by two paths that can both run for the same
+ * element — the callback drops it once it has revealed, and the effect
+ * cleanup drops it on unmount — so the bookkeeping has to be
+ * idempotent. A counter can be made idempotent with a flag, but it
+ * still has a hole: if one entry in a batch takes the count to zero
+ * the observer is torn down mid-loop, and the later entries in that
+ * same batch are then operating against a disconnected observer and a
+ * stale flag. A double-decrement that follows disconnects a NEW
+ * observer early, and the elements still waiting on it never reveal
+ * until their 2.5s floor fires — i.e. the page quietly stops
+ * animating.
+ *
+ * A set has no such state to get wrong: membership IS the flag,
+ * `delete` is naturally idempotent, and `size` is always the truth. */
+const watched = new Set<HTMLElement>();
+
+function reveal(el: HTMLElement) {
+  /* The per-instance delay rides on the element rather than in a map
+     keyed by it: it is already a DOM-shaped fact, it needs no cleanup,
+     and it cannot leak a detached node the way a Map would. */
+  const delay = Number(el.dataset.revealDelay) || 0;
+  window.setTimeout(() => {
+    el.dataset.shown = "true";
+  }, delay);
+}
+
+function observe(el: HTMLElement) {
+  if (!shared) {
+    shared = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const target = entry.target as HTMLElement;
+        /* Reveal BEFORE dropping it, so an element always animates
+           even if dropping it is what tears the observer down. */
+        reveal(target);
+        /* Fires once per element. Scrolling back up must not replay
+           anything — a thing that re-animates every time it passes the
+           viewport is a thing still demanding attention after you have
+           read it. */
+        unobserve(target);
+      }
+    }, REVEAL_OPTIONS);
+  }
+  if (watched.has(el)) return;
+  watched.add(el);
+  shared.observe(el);
+}
+
+function unobserve(el: HTMLElement) {
+  if (!shared || !watched.delete(el)) return;
+  shared.unobserve(el);
+  /* Torn down when the last target goes, rather than outliving the
+     page that needed it. A later mount builds a fresh one. */
+  if (watched.size === 0) {
+    shared.disconnect();
+    shared = null;
+  }
+}
+
 export type RevealEffect =
   | "rise"
   | "wipe"
@@ -112,23 +201,8 @@ export default function Reveal({
       return;
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const target = entry.target as HTMLElement;
-          window.setTimeout(() => {
-            target.dataset.shown = "true";
-          }, delay);
-          io.unobserve(target);
-        }
-      },
-      /* A negative bottom margin means an element has to be properly
-         on screen before it animates, not merely one pixel in. */
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
-    );
-
-    io.observe(el);
+    el.dataset.revealDelay = String(delay);
+    observe(el);
 
     /* The safety net.
      *
@@ -156,7 +230,7 @@ export default function Reveal({
     }, 2500 + delay);
 
     return () => {
-      io.disconnect();
+      unobserve(el);
       window.clearTimeout(floor);
     };
   }, [delay]);
