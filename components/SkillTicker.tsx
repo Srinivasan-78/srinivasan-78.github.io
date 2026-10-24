@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​‌​‌​‌‌​​‌‌​​‌‌​​‌​‌​‌​​‌‌‌​​‌‌​‌‌‌​​‌‌​​‌​‌​‌‌‌‌​​‌​‌​‌‌​‌​​‌​​​​‌​​‌‌‌​‌‌‌​‌‌‌​​‌​​​‌‌‌​​‌​‌‌​​​‌​​‌​‌​‌​​​‌‌​‌‌​‌​​‌‌‌​​​​​‌‌‌​​‌​‌​​‌​​‌​‌‌​​​​‌​‌​‌​‌​‌​‌‌​​​‌​​‌​​‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌‌​‌​​​‌‌​​‌‌​‌‌​​​‌​‌​​​​​‌‌‌​‌​​​‌​​​​‌​​​‌​‌‌​‌​‌‌​​‌‌‌​‌‌‌‌​​‌​‌​​‌​​​​‌​‌‌​‌​​‌​‌​‌​​​‌‌​‌‌​‌​‌​‌​‌‌‌​‌​​​‌​‌​‌​‌​​‌‌​‌​​​‌​​​‌‌​‌​​‌​‌‌‌​‌‌​​‌​‌​​‌‌​‌​​‌​​‌​‌​​‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.EfeNneyZBwr9bTm89IaUbO
+ * Fingerprint: AMK1.kFlPtB-gyHZTmWESDivSIH
  */
 import BatGlyph from "@/components/primitives/BatGlyph";
 import BrandMark from "@/components/primitives/BrandMark";
@@ -45,7 +45,30 @@ import { TOOLING_STRIP, TOOLING_STRIP_LABEL } from "@/lib/data/skills";
    silhouette that crosses the screen on navigation — see
    components/primitives/BatGlyph.tsx. A separator is the one place a
    motif can repeat thirty-nine times without becoming a logo, because
-   nobody reads a divider as a claim. */
+   nobody reads a divider as a claim.
+
+   THIS MUST STAY A SERVER COMPONENT, which is why it is mounted from
+   app/layout.tsx and passed into Nav as a slot rather than imported by
+   Nav directly. Nav carries "use client", so importing it there pulls
+   this file — and lib/data/skills.ts with it — into the client graph.
+
+   Measured, both ways, on the home page, gzipped:
+
+     imported by Nav     114 KB HTML + 270 KB JS = 384 KB
+     slot from layout    117 KB HTML + 243 KB JS = 360 KB
+
+   The 24 KB is the thirty-nine marks' data and this file's JSX moving
+   out of the JavaScript bundle. It is a bigger win than the byte count
+   suggests, because the two sides are not equivalent: bytes in the
+   bundle have to be parsed and executed as JavaScript on the main
+   thread during arrival, while bytes in the HTML are markup the parser
+   streams. Shipping a static list of thirty-nine logos as a program
+   that builds it was the wrong shape.
+
+   It also stops the reconciliation. Nav re-renders on every `pathname`
+   change, and as a direct import this rebuilt all 156 SVG elements for
+   React to diff on every navigation — for a component with no props
+   and no state, which can never produce a different tree. */
 export default function SkillTicker() {
   /* One pass of the marks. Rendered twice below. */
   const run = (duplicate: boolean) => (

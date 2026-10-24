@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-24T07:37:10.822Z",
+  "sealedAt": "2026-10-24T12:37:19.084Z",
   "fileCount": 91,
-  "digest": "418f2b02f5353df2eb1e48c83ae5b51f8a86a71d47b038d355a15287f179e696",
-  "proof": "a8d8f54e6d83cb1bb2f28ea75a58b1e4fb38b066fe0cc13d117e301ce53635b9",
+  "digest": "21620fbcc44eff82cbee4e0d9e6782fe8e546fd94c22e9dfc9d35aad71ad6626",
+  "proof": "27c928c795997339ab52ad2a76f25daabef815777e16f7e71ab3a386d8f74325",
   "files": [
     {
       "path": "AGENTS.md",
@@ -46,8 +46,8 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "521298aa36514e94066df39b03827caea4a6c36cfa4928e3e9bc986404285c11",
-      "bytes": 60752
+      "sha256": "4ca996bd286955a7a275a8afe9ef3230503e798e2571e630e8b0d01c98652bfc",
+      "bytes": 62853
     },
     {
       "path": "app\\hobby\\page.tsx",
@@ -56,8 +56,8 @@
     },
     {
       "path": "app\\layout.tsx",
-      "sha256": "c227e1008dac918c401c88579b0676062d03b89e00a3b656e810f762c3de24ea",
-      "bytes": 16620
+      "sha256": "6d19ef70e6c3d5bf83cee163dcf895f0bcd61298adede787dafd59c0112f01ac",
+      "bytes": 17639
     },
     {
       "path": "app\\loading.tsx",
@@ -101,13 +101,13 @@
     },
     {
       "path": "app\\sitemap.ts",
-      "sha256": "41860090540ff70f711cb406f856abd28309c687d0f5229c0a054b6c6cb49edd",
-      "bytes": 1772
+      "sha256": "a1d36210d90e80cbedf24ae7f1176e11111a224ea998af7b45050ab1e4deb9ed",
+      "bytes": 1743
     },
     {
       "path": "app\\template.tsx",
-      "sha256": "3c2c8bc2a4b22ec626e347d456d98f7e3b7f561aa994a6f3408ad486e5b16781",
-      "bytes": 4310
+      "sha256": "2ebc059a6be4dc563f0fb74c4944521c876602582b6eef0855814d72751ff14e",
+      "bytes": 4244
     },
     {
       "path": "app\\terms\\page.tsx",
@@ -156,18 +156,18 @@
     },
     {
       "path": "components\\Nav.tsx",
-      "sha256": "dd8f30a442ce50cbe03fe758e3fd48ea8689f09fede6426ea7147b6686ce1224",
-      "bytes": 11301
+      "sha256": "6e1a9a5f99c08579563bba4f06cbd6ba7f0617d94c9918210544bda09ea247f3",
+      "bytes": 16450
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "38beeb4d3513aaa5feebb289f92985f5ef9f6897dcc7951a69739a0178f8b5ba",
-      "bytes": 28567
+      "sha256": "79b324a7ffc7d4ddb0138d3bd384aab03112489a07a748a620e851e69e8b3658",
+      "bytes": 28862
     },
     {
       "path": "components\\SkillTicker.tsx",
-      "sha256": "8f2e2959d404d736b06d592af76966a0c6608049d709302817b6b1b1f2b5e7b8",
-      "bytes": 3905
+      "sha256": "dd11c2d13b467c6c56b0323e9d7d9e8c5f1ddeeb626d785ee5c3c0e5cdfea606",
+      "bytes": 5097
     },
     {
       "path": "components\\ThemeToggle.tsx",
@@ -176,8 +176,8 @@
     },
     {
       "path": "components\\gaming\\GameBoard.tsx",
-      "sha256": "00eec321fc19a474c9d10d790fc65cb138410330fea3ab805c382aa4f67fab6b",
-      "bytes": 10500
+      "sha256": "5ed14fb6afab7e39f50957105574329f9e70f8ded1c9cd425e120ebd669f9ef5",
+      "bytes": 10272
     },
     {
       "path": "components\\home\\CaseHead.tsx",
@@ -201,8 +201,8 @@
     },
     {
       "path": "components\\home\\Hero.tsx",
-      "sha256": "097ec7352253fc3a9520ba90e8582d4c081647dfa492630f5e0452dcf0602cd2",
-      "bytes": 12468
+      "sha256": "388c5c5ce85c5928e1d1950a28935a35f5a75a2d265edbdb56448fbe37eb9613",
+      "bytes": 12838
     },
     {
       "path": "components\\home\\InitiativeDeck.tsx",
@@ -211,13 +211,13 @@
     },
     {
       "path": "components\\home\\Initiatives.tsx",
-      "sha256": "fb444c3bc67c85b82a7e7d8218c36210e6aa89e89d95c0d0e9e4c7eaa142063c",
-      "bytes": 2592
+      "sha256": "cb310ef32f7d5ae63d5552910c56c59b98ac5ad50154e28ce5a445bbf4e2c8d5",
+      "bytes": 2547
     },
     {
       "path": "components\\home\\Loadout.tsx",
-      "sha256": "39a4a11e478995bdabbbc65dcf8a0490f198c6d8c1e71e8cd695ea7d1461f4a7",
-      "bytes": 2146
+      "sha256": "c66c1405b98d7f5a194fed506381fd11d64bdf7e09a8c1409878a0dcba1d32d5",
+      "bytes": 2109
     },
     {
       "path": "components\\home\\LoadoutSelect.tsx",
@@ -246,28 +246,28 @@
     },
     {
       "path": "components\\primitives\\BatGlyph.tsx",
-      "sha256": "3b02229ce5dce9ca8e497e4891407819bdbc5fefb529936cc9105acd49df9708",
-      "bytes": 4224
+      "sha256": "3c63187a3359d1d5fc741eeaed33e0356c669282947f7d6f6ea92e6c03d60042",
+      "bytes": 4125
     },
     {
       "path": "components\\primitives\\BatGround.tsx",
-      "sha256": "1d312c1cc526182e79e999956563502184081e00d03cb6cef5478958d950e147",
-      "bytes": 4391
+      "sha256": "22905dcb218fcb8b0e5cd5911f23dc95c0f887dd5bd240c2cf868ed3003b3f98",
+      "bytes": 5349
     },
     {
       "path": "components\\primitives\\BatTransit.tsx",
-      "sha256": "238f3f7f80bfac62c43b0c4ecbb2cc0dead64021649820a442bd348bbac891bb",
-      "bytes": 8064
+      "sha256": "2763320ffaa12bd0215aeb20d5c569f3360f409207d13757b62635719eb84c39",
+      "bytes": 7875
     },
     {
       "path": "components\\primitives\\BrandMark.tsx",
-      "sha256": "842e626fe654c7da3c6a41b01a33cc2cf6b03aa7af327faeb74776d464ee9a70",
-      "bytes": 5236
+      "sha256": "e5563880cf159eb2e6b3aa7be661279c060d2be337f9a7cc4e6db6b44863b927",
+      "bytes": 5091
     },
     {
       "path": "components\\primitives\\BrandSprite.tsx",
-      "sha256": "55eee2b72875496d73af075312f14b9fa290edf74f0aa6267551260c8354605b",
-      "bytes": 3145
+      "sha256": "921c217335c07a9c71279c8321d82102b58bf4f291758167a4d308cbf0b8dccb",
+      "bytes": 3091
     },
     {
       "path": "components\\primitives\\CountUp.tsx",
@@ -286,8 +286,8 @@
     },
     {
       "path": "components\\primitives\\FxBackdrop.tsx",
-      "sha256": "7bc1d3966bf8d7356413bc1666172686e1290cf5667d30e47d3d82ba0ee84cd2",
-      "bytes": 9440
+      "sha256": "939589ff0830fa1d149e6e7803ba0921e965a3faa1d77c370d63381bb9fbaf8f",
+      "bytes": 13066
     },
     {
       "path": "components\\primitives\\GlitchHeading.tsx",
@@ -301,8 +301,8 @@
     },
     {
       "path": "components\\primitives\\InteractionFx.tsx",
-      "sha256": "a4d52065449a5dacfe8a0544e04e9db25c10e337fa53fc8f8377f3d82b77a9f9",
-      "bytes": 8969
+      "sha256": "d163503ed46f460d7c110747b3be9868f057db3d8dda6ac8898fcb24f9e25e6d",
+      "bytes": 8788
     },
     {
       "path": "components\\primitives\\Panel.tsx",
@@ -311,8 +311,8 @@
     },
     {
       "path": "components\\primitives\\Reveal.tsx",
-      "sha256": "cd04984218fbb1980398e911417a825f6882b02c0a9943d5cef8ed45d1d0c19f",
-      "bytes": 7328
+      "sha256": "7db3ce71d6b4bde8635c011161d06b7df5784a0b5b07b099354ebe32d5259c78",
+      "bytes": 10355
     },
     {
       "path": "components\\primitives\\ScanField.tsx",
@@ -341,8 +341,8 @@
     },
     {
       "path": "components\\primitives\\Texture.tsx",
-      "sha256": "c0a41b52ae2856362ec6aa0cc580bb54b599d8e0edc871fc47d8cef8e0943235",
-      "bytes": 2949
+      "sha256": "7e3c99843b422d1358b11fdb24987859b37d98b7aa8ebe94c2737ca163eb84f3",
+      "bytes": 2891
     },
     {
       "path": "eslint.config.mjs",
@@ -351,8 +351,8 @@
     },
     {
       "path": "lib\\batGround.ts",
-      "sha256": "47d85dc555f7e747c0f7887e073dd71a77c84ccd8a22b5d1aea4bd7ba76ac7a2",
-      "bytes": 5268
+      "sha256": "99e8e470de2cb4494b26ef0c23f7f2a2929d43fa72cd4907207f9dbcc6a893f4",
+      "bytes": 5159
     },
     {
       "path": "lib\\certs.ts",
@@ -381,8 +381,8 @@
     },
     {
       "path": "lib\\data\\gaming.ts",
-      "sha256": "e5d8b8588010ecc7f92ea1c2f19e7c7de693fd5c5813ab8a929a3e653d92c59b",
-      "bytes": 15017
+      "sha256": "70cd5626655bed63630475006b5dcf4ad87baf415508f055f3f557095449f52b",
+      "bytes": 14557
     },
     {
       "path": "lib\\data\\pipeline.ts",
@@ -411,8 +411,8 @@
     },
     {
       "path": "lib\\nav.ts",
-      "sha256": "1294e3337b7533a575b113b624395a58fa1420267b6036d4fdb53fb89663e393",
-      "bytes": 2712
+      "sha256": "70b49fa1dfc63b5c85b5dfd3e21b69468da0da86c5a934d8c364232233b7a75a",
+      "bytes": 2668
     },
     {
       "path": "lib\\projects.ts",
@@ -436,8 +436,8 @@
     },
     {
       "path": "postcss.config.js",
-      "sha256": "bc16d70a2541f7ba3c5ac2bacda631296d741de8d9ba3ea596b4e48621900252",
-      "bytes": 1949
+      "sha256": "d9983fac5fc7422b0c0e903477e4230016d426cd5daf8f8501701033ce4acd58",
+      "bytes": 1925
     },
     {
       "path": "public\\bat\\ground.svg",
@@ -451,8 +451,8 @@
     },
     {
       "path": "scripts\\gen-brand-paths.mjs",
-      "sha256": "3cbfc7a6e6c92581dec65def27687feccc3826ae907bf15de9813f4e64d9acaf",
-      "bytes": 4671
+      "sha256": "00af35bc4203ac3b7a882583fb5211b5b9d099d6c64e2d2b006345a1e9078744",
+      "bytes": 4565
     },
     {
       "path": "scripts\\make-brand-assets.mjs",
@@ -461,8 +461,8 @@
     },
     {
       "path": "tailwind.config.js",
-      "sha256": "7b0242e9ab605ca6bfdcaaf4f6e48f617909c13b8fd4141e35661d4e7698a20a",
-      "bytes": 1937
+      "sha256": "9c27277331151603a8d1d16ab6d6edfd3d7ea6637b2af4e18d8984941b69d190",
+      "bytes": 1908
     }
   ]
 }

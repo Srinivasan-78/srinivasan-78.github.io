@@ -1,19 +1,17 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌‌‌​‌​​​​‌‌​​​​​‌‌​‌​​​​‌‌‌​​​​​‌‌​​​​‌​​‌‌‌​​‌​‌‌‌​‌​​​‌‌‌‌​​‌​‌‌‌​‌‌​​‌​‌​‌​‌​​‌‌​‌‌‌​‌‌​‌‌​‌​‌​‌​‌‌​​‌​​​‌​​​‌‌‌​‌‌​​​‌‌​​​​​‌​​‌‌​​​‌‌​​‌‌​​‌‌‌​‌‌‌​‌​​‌​​​​‌‌‌​​‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌‌​​‌‌​‌‌‌​‌​​‌‌‌‌​‌​‌‌​‌​​‌‌​‌​‌​​​‌‌​‌​‌​​‌‌​​‌‌​‌‌‌​​​‌​‌​‌​‌‌​​‌​‌​‌​‌​‌‌‌‌​‌​​​‌‌​​‌​​​‌‌​‌​​​‌​​‌​​​​‌‌​‌‌​​​‌​​​‌​‌​‌‌‌​‌‌​​‌‌​​‌​‌​‌​‌​​‌​​‌​​‌​​‌​‌​‌​‌​‌​​‌‌​​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.3t0hpa9tyvU7mVDv0LfwHr
+ * Fingerprint: AMK1.O7OZj53qVUz24HlEveRIU2
  */
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { NAV_ITEMS, isActiveRoute } from "@/lib/nav";
 import ThemeToggle from "./ThemeToggle";
-import SkillTicker from "./SkillTicker";
 
 /* The dossier header.
 
@@ -41,39 +39,107 @@ import SkillTicker from "./SkillTicker";
 
    The active destination carries a cyan rule that SLIDES between the
    four items as the route changes, rather than switching off under one
-   and on under the next. It is the one place on the site that uses
-   `motion` for what only `motion` can do.
+   and on under the next.
 
-   That claim is worth justifying, because the rest of this design
-   rebuilt its effects in CSS rather than installing them. A shared
-   marker needs to measure where it currently is, measure where it has
-   to end up, and interpolate between two *different DOM elements* —
-   and it has to survive being re-targeted mid-flight when someone
-   clicks a third destination while it is still travelling. CSS has no
-   way to express "animate from that element's box to this one":
-   `transition` interpolates a property on one element, and a
-   view-transition would animate the whole document rather than a
-   marker inside persistent chrome. `layoutId` is exactly this problem,
-   and re-targeting is handled by the spring rather than by restarting.
+   REVISION 12 — THIS NO LONGER USES `motion`, AND THE OLD ARGUMENT FOR
+   IT WAS WRONG. It read: a shared marker has to interpolate between
+   two *different DOM elements*, CSS has no way to express "animate
+   from that element's box to this one", so `layoutId` is the only
+   tool for the job. The flaw is in the premise. There do not have to
+   be two elements. There is ONE marker, a persistent child of the
+   list, and the route change moves it — which is the ordinary case a
+   CSS transition handles, not the exotic one.
+
+   What it cost to be wrong about that: `motion/react` was the only
+   import of the library on the site, it sits in the root layout, and
+   it is not tree-shakeable down to `layoutId` — the whole layout
+   projection engine comes with it. 215 KB raw, 78 KB gzipped, parsed
+   and executed on every page load on every route, in the same window
+   the browser is hydrating the document and the cover's shader is
+   compiling. For a one-pixel line. That is the single largest thing
+   that was making the top of this site lag, and it was spent on the
+   quietest effect in the design.
+
+   The replacement measures the active item's box and writes it to the
+   marker as `translate3d` plus `scaleX` on a 1px-wide element, so the
+   travel is a compositor transform and never a layout or a repaint —
+   cheaper per frame than the spring was, as well as free to load.
+   Re-targeting mid-flight works for the reason the old comment
+   assumed it would not: a CSS transition whose target changes
+   interpolates from the current *computed* value, so clicking a third
+   destination while the marker is still travelling redirects it from
+   wherever it has got to.
 
    Reduced motion gets a plain static rule under the active item. Not a
    faster slide — no slide. The marker's job is to say which
    destination you are on, and the static version says it completely.
+   It is also the first-paint and no-JS marker: the static rule is what
+   the server renders, and the slider only takes over once it has a
+   real measurement, so the marker is never missing and never wrong.
 
    The marker is also the reason the active item keeps `text-signal`
    while everything else in revision 3 moved to cyan. Active is not a
    hover state: it is a persistent fact about the page you are on, so
    by the §1b rule it belongs to the static amber register. The cyan
    here is the marker's travel, which is transient by definition. */
-export default function Nav() {
+export default function Nav({ ticker }: { ticker?: React.ReactNode }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion();
 
   /* Close on route change. Without this the panel stays open over the
      new page, because the component is not remounted by navigation. */
   useEffect(() => {
     setOpen(false);
+  }, [pathname]);
+
+  /* The tracking marker's measured box, or null for "not measured yet,
+     or motion is refused" — in which case the static per-item rule
+     below is what renders. */
+  const list = useRef<HTMLUListElement | null>(null);
+  const [marker, setMarker] = useState<{ x: number; w: number } | null>(null);
+
+  useEffect(() => {
+    const ul = list.current;
+    if (!ul) return;
+
+    const reduce =
+      typeof matchMedia !== "undefined"
+        ? matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+
+    const place = () => {
+      if (reduce?.matches) {
+        setMarker(null);
+        return;
+      }
+      /* The <li> is the box, not the <a>: the rule has always spanned
+         the full item including its leading ordinal. `offsetLeft` is
+         relative to the nearest positioned ancestor, which is this
+         list — hence `relative` on the <ul> below. */
+      const item = ul.querySelector<HTMLElement>("[data-active]");
+      if (!item || !item.offsetWidth) {
+        setMarker(null);
+        return;
+      }
+      setMarker({ x: item.offsetLeft, w: item.offsetWidth });
+    };
+
+    place();
+
+    /* Three things move the items after the first measurement, and all
+       three would leave the marker under the wrong word:
+       a viewport resize, the display face arriving and re-metricking
+       the labels, and the visitor changing the motion setting. */
+    const ro =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(place) : null;
+    ro?.observe(ul);
+    reduce?.addEventListener("change", place);
+    document.fonts?.ready.then(place).catch(() => {});
+
+    return () => {
+      ro?.disconnect();
+      reduce?.removeEventListener("change", place);
+    };
   }, [pathname]);
 
   /* Escape closes it. A disclosure that can only be dismissed by
@@ -100,10 +166,32 @@ export default function Nav() {
        sheet; this is one rule marking a real boundary between a fixed
        layer and a moving one. Different thing, same hairline.
 
-       `.site-header` in §5g carries the stickiness, a backdrop blur
-       and that rule. The blur is the only way forty small marks
-       scrolling under forty small marks stays legible. */
+       `.site-header` in §5g carries the stickiness and that rule.
+
+       REVISION 12 — THE BLUR MOVED OFF IT, onto `.site-header-glass`
+       around the nav rows only, and that one level of nesting is a
+       real performance fix rather than tidying.
+
+       `backdrop-filter` was on this element, and this element also
+       contained the ticker — thirty-nine marks on a 64-second
+       `infinite` transform, running from the first frame of every page
+       load for as long as the tab is open. A continuously animating
+       descendant inside a backdrop-filter root keeps forcing that
+       filter to be re-rasterised: a 10px blur plus a saturate over the
+       full width of the viewport, every frame, forever, whether or not
+       anything is scrolling. It was the most expensive thing on the
+       site per frame, it was at the top of the page where arrival
+       already competes with hydration and the cover's shader, and it
+       was paid on every route.
+
+       The ticker is now a sibling of the blurred element rather than
+       its child, so the filter is only re-evaluated when the backdrop
+       actually changes — i.e. while scrolling, which is what it was
+       for. The ticker gets an opaque ground instead, which solves
+       "forty small marks scrolling under forty small marks" more
+       completely than a blur did: nothing shows through at all. */
     <header className="site-header">
+      <div className="site-header-glass">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
         {/* Identity. The monogram is set in the display serif at a size
             where its high contrast actually reads, with the role in the
@@ -121,11 +209,17 @@ export default function Nav() {
         <div className="flex items-center gap-2 sm:gap-5">
           {/* Desktop destinations */}
           <nav aria-label="Primary" className="hidden sm:block">
-            <ul className="flex items-center gap-5">
+            <ul ref={list} className="relative flex items-center gap-5">
               {NAV_ITEMS.map((item, i) => {
                 const active = isActiveRoute(item.href, pathname);
                 return (
-                  <li key={item.href} className="relative">
+                  <li
+                    key={item.href}
+                    className="relative"
+                    /* The measurement hook, and only on the active one
+                       so the query above cannot match two. */
+                    data-active={active ? "" : undefined}
+                  >
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
@@ -141,39 +235,39 @@ export default function Nav() {
                       {item.label}
                     </Link>
 
-                    {/* Only the active item renders a marker, and every
-                        one of them shares the same `layoutId` — which is
-                        what makes the single element travel from the old
-                        item to the new one instead of being swapped.
+                    {/* The static rule: what the server renders, what a
+                        visitor with no JS keeps, and what reduced
+                        motion keeps. It yields to the slider below the
+                        moment that has a real measurement, so the two
+                        are never both present.
+
                         aria-hidden because `aria-current` above already
                         states which destination is active; this is the
-                        visual half of a fact that is already announced. */}
-                    {active &&
-                      (reduced ? (
-                        <span
-                          aria-hidden="true"
-                          className="absolute -bottom-px left-0 h-px w-full bg-detect"
-                        />
-                      ) : (
-                        <motion.span
-                          aria-hidden="true"
-                          layoutId="nav-active"
-                          className="absolute -bottom-px left-0 h-px w-full bg-detect"
-                          /* Stiff and well-damped: a marker that
-                             overshoots its destination reads as a toy.
-                             This settles in about 300ms without a
-                             visible bounce. */
-                          transition={{
-                            type: "spring",
-                            stiffness: 520,
-                            damping: 38,
-                            mass: 0.6,
-                          }}
-                        />
-                      ))}
+                        visual half of a fact that is already
+                        announced. */}
+                    {active && !marker && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute -bottom-px left-0 h-px w-full bg-detect"
+                      />
+                    )}
                   </li>
                 );
               })}
+
+              {/* The slider. One element for the whole list, 1px wide
+                  and stretched by `scaleX`, so both the travel and the
+                  resize are a single compositor transform — see the
+                  revision 12 note above. */}
+              {marker && (
+                <span
+                  aria-hidden="true"
+                  className="nav-marker"
+                  style={{
+                    transform: `translate3d(${marker.x}px, 0, 0) scaleX(${marker.w})`,
+                  }}
+                />
+              )}
             </ul>
           </nav>
 
@@ -229,13 +323,33 @@ export default function Nav() {
           })}
         </ul>
       </nav>
+      </div>
 
       {/* The ticker rides with the header rather than sitting in the
           page, so the thing the owner asked to be "static along with"
           the nav genuinely is. It is the second of the two rows the
           sticky block holds, and the reason that block is kept as
-          short as it is. */}
-      <SkillTicker />
+          short as it is.
+
+          PASSED IN, NOT IMPORTED, and that is a performance fix rather
+          than a style preference. This file carries "use client", so
+          anything it imports joins the client graph — and the ticker
+          is thirty-nine marks rendered twice, each with a brand glyph
+          and a bat divider, plus the whole of lib/data/skills.ts.
+          Measured on the home page, gzipped, importing it here cost
+          24 KB more than taking it as a slot, and cost it in the
+          expensive place: as JavaScript to parse and execute during
+          arrival rather than as markup to stream. The full numbers are
+          in the header of components/SkillTicker.tsx.
+
+          It also re-rendered on every route change, because this
+          component re-renders on `pathname` — 156 SVG nodes for React
+          to diff, for a component that takes no props and holds no
+          state and therefore cannot produce a different tree.
+
+          The root layout owns the import. This is the same arrangement
+          BrandSprite already uses there, for the same reason. */}
+      {ticker}
     </header>
   );
 }

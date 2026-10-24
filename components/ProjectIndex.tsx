@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌​​​​‌‌​‌‌​​​‌​​‌‌​‌‌​​​‌​​‌‌‌‌​‌​​‌‌​​​‌‌‌​‌‌‌​‌‌​​​​‌​‌‌​‌​​‌​‌‌​‌​​‌​‌​​​​​‌​‌‌​‌‌‌‌​‌​​​‌​​​‌​​‌​​‌​​‌‌​‌​​​‌​​​​‌​​‌‌‌​‌‌​​‌‌​‌‌‌‌​‌‌‌​​‌​​‌‌​​​‌‌​‌​‌‌‌‌‌​‌​‌‌‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​​​‌​​​​​‌​‌​​‌‌​​​‌‌‌​​‌‌​‌‌‌​​​​​‌‌‌‌​‌​​‌‌​​‌​‌​‌​‌‌​​‌​‌‌​‌‌‌‌​​‌‌​‌‌‌​‌‌‌​​​‌​‌‌​‌‌‌​​‌​‌‌‌‌‌​‌​​‌‌​​​‌​‌​‌​‌​‌​​​‌‌‌​​‌‌​‌​‌​​‌‌​​‌​​‌‌‌​‌‌​​‌​​​‌‌​​‌‌​​‌‌‌​‌​‌​​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.TCblOLwaiiAoDI4Bvorc__
+ * Fingerprint: AMK1.lALspzeYo7qn_LUG52vFgP
  */
 "use client";
 
@@ -176,7 +176,12 @@ export default function ProjectIndex() {
               edgeFade: 0.6,
               centerFade: 0.35,
               intro: true,
-              dpr: 1.5,
+              /* One, for the reason given at the same prop in
+                 components/home/Hero.tsx: fragment cost is quadratic
+                 in this, and the extra detail lands under a mask at a
+                 fraction of full opacity where there is nothing to
+                 see. */
+              dpr: 1,
               /* NO backgroundColor, and that is the fix rather than an
                  omission.
 
