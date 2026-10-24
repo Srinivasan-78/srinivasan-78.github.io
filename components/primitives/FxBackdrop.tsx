@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​​‌‌​‌​​​‌​​‌​‌​​‌​‌‌​‌​​‌‌​​‌​​​‌​‌​‌‌‌​‌‌‌​‌​‌​​‌‌​‌​‌​‌‌‌‌​​‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌​​‌​‌‌​‌‌​‌​‌​​‌​​​‌​​​‌‌​​‌​‌​‌‌‌​​‌‌​‌​​​‌​​​‌​‌​‌​​​​‌‌​​​​​‌​‌‌​​‌​​‌‌​‌‌​​‌‌​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​​​‌‌​‌‌​‌​‌​‌‌​‌​​‌​‌​‌‌​​‌​‌‌​‌​​​‌‌‌​​‌​‌​‌‌​​‌​‌‌‌​‌​‌​‌​‌​​​‌​‌‌‌​​​​​‌‌​​​‌‌​‌‌​‌‌‌‌​‌‌‌‌​​‌​​‌‌​​​​​‌‌‌‌​​‌​‌​‌​​​​​‌‌‌‌​‌​​​‌‌​‌‌‌​‌​​​‌‌‌​‌‌​‌‌‌​​‌‌​‌‌‌​​​‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Y4JZdWu5ysrKjDesDT0Y6h
+ * Fingerprint: AMK1.hmZVZ9YuQpcoy0yPz7Gnn1
  */
 "use client";
 
@@ -111,7 +111,22 @@ import usePerfTier from "@/lib/usePerfTier";
  * vendored files — which is the one thing that makes a vendored
  * dependency unmaintainable. The mount gate in rule two is the coarser
  * but honest version: offscreen means unmounted, which stops the loop
- * by removing it. */
+ * by removing it.
+ *
+ * ONE VENDORED FILE IS PATCHED, and it is recorded here rather than
+ * left to be rediscovered. `FaultyTerminal` treated `mouseReact` as a
+ * shader uniform only: the flag reached `uUseMouse` and nothing else,
+ * so a field told to ignore the pointer still ran
+ * `getBoundingClientRect` on every pointermove over the document, still
+ * woke its loop, and still counted the resulting chase as `busy`. That
+ * made rules six and eight above both partly fictional — `lite` did not
+ * stop the field waking on the mouse, and `pause` could not reach an
+ * idle state while a cursor sat over the cover. The patch reads the
+ * flag in the two listeners and in the frame's `engaged` term, so it
+ * governs the whole pointer path instead of one uniform. It is a
+ * behaviour fix to a prop the component already documents, not a new
+ * feature, which is the only shape of change worth making to a
+ * vendored file. */
 
 /* Each entry is its own chunk. Keyed by name rather than taking a
    component as a prop, because `next/dynamic` needs a static import
@@ -247,7 +262,26 @@ const PIXEL_BUDGET = 1100;
 const MOTION_MS = 20000;
 
 const HALT_PROPS: Record<BackdropKind, Record<string, unknown>> = {
-  terminal: { pause: true },
+  /* The CRT halts its pointer inputs as well as its clock, and it is
+     the only field here that needs to.
+   *
+     The note above says a halted field still responds to the pointer,
+     and for the other four that is both true and cheap. For this one
+     it was the hole in the rule. `terminal` is the only field in the
+     set with an idle path of its own — it stops after 2.5 quiet
+     seconds — and `mouseReact` is what prevents it ever reaching one:
+     a cursor resting anywhere over the cover counts as activity, so
+     the loop stays open at the refresh rate indefinitely. Setting
+     `pause` alone therefore bought nothing on the one page it was
+     most needed: the field kept drawing the heaviest shader on the
+     site at full rate, now without even the motion to show for it.
+   *
+     So for the first twenty seconds the cover is fully reactive —
+     which is the whole of the design intent, since arriving is a
+     thing that happens once — and after that it is a still image.
+     Scrolling away and back restores it, the same as every other
+     field here, because rule two unmounts on exit. */
+  terminal: { pause: true, mouseReact: false, clickEffect: false },
   letters: { speed: 0 },
   rays: { raysSpeed: 0 },
   beams: { paused: true },

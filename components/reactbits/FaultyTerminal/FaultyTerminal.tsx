@@ -820,12 +820,22 @@ export default function FaultyTerminal({
       last = now;
       clock += dt;
       if (!s.pause && !reduce) iTime += dt * s.timeScale;
-      const targetX = pointer.inside ? pointer.x : 0.5;
-      const targetY = pointer.inside ? pointer.y : 0.5;
-      const follow = 1 - Math.exp(-dt / (pointer.inside ? 0.19988 : 0.6));
+      /* `mouseReact` is read here rather than only at the uniform, so
+         the flag is authoritative over the whole pointer path. With
+         `uUseMouse` at zero the cell shader's `lift` is zero, and
+         `heat` therefore collapses to `strike` — so a pointer this
+         field has been told to ignore has provably no effect on a
+         pixel of it, while chasing it still counts as `busy` below and
+         holds the loop open. Reading it per frame also means a field
+         switched to non-reactive mid-session unwinds to rest rather
+         than freezing wherever the cursor last was. */
+      const engaged = s.mouseReact && pointer.inside;
+      const targetX = engaged ? pointer.x : 0.5;
+      const targetY = engaged ? pointer.y : 0.5;
+      const follow = 1 - Math.exp(-dt / (engaged ? 0.19988 : 0.6));
       mouse.x += (targetX - mouse.x) * follow;
       mouse.y += (targetY - mouse.y) * follow;
-      hover += ((pointer.inside ? 1 : 0) - hover) * (1 - Math.exp(-dt / 0.35));
+      hover += ((engaged ? 1 : 0) - hover) * (1 - Math.exp(-dt / 0.35));
       for (let k = 0; k < MAX_CLICKS; k++) {
         if (clicks[k * 4 + 3] > 0 && clock - clicks[k * 4 + 2] > s.clickSeconds) clicks[k * 4 + 3] = 0;
       }
@@ -836,7 +846,7 @@ export default function FaultyTerminal({
       if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
       let busy = !(s.pause || reduce) || introClock < 1;
       busy = busy || Math.abs(targetX - mouse.x) + Math.abs(targetY - mouse.y) > 0.0001;
-      busy = busy || Math.abs((pointer.inside ? 1 : 0) - hover) > 0.001;
+      busy = busy || Math.abs((engaged ? 1 : 0) - hover) > 0.001;
       for (let k = 0; k < MAX_CLICKS; k++) busy = busy || clicks[k * 4 + 3] > 0;
       quiet = busy ? 0 : quiet + dt;
       if (quiet < 2.5) raf = requestAnimationFrame(frame);
@@ -858,6 +868,16 @@ export default function FaultyTerminal({
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      /* The listener is on `window`, not the container, because a field
+         has to know when the pointer leaves it as well as where it is
+         inside it. That means `locate` — and the
+         `getBoundingClientRect` in it — would otherwise run on every
+         pointermove anywhere on the document, and `wake()` would pin
+         this shader at the refresh rate for as long as a cursor rests
+         anywhere over the field. Both are the exact costs a caller is
+         turning `mouseReact` off to avoid, so the flag has to be
+         checked here and not only at the uniform. */
+      if (!settingsRef.current.mouseReact) return;
       const { x, y, inside } = locate(event);
       const was = pointer.inside;
       pointer.inside = inside;
@@ -882,6 +902,9 @@ export default function FaultyTerminal({
     };
 
     const onPointerLeave = () => {
+      /* Nothing to unwind if the pointer was never tracked, and waking
+         for it would reopen the loop this flag closes. */
+      if (!settingsRef.current.mouseReact) return;
       pointer.inside = false;
       wake();
     };

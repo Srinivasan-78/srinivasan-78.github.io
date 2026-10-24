@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌​​​‌‌​​‌‌​‌​​​​‌​​‌​​‌‌‌​​‌​​‌​​​​‌‌​​​‌​​‌‌‌​​​​​‌​​‌‌​‌​‌​‌‌‌‌‌​‌‌​​‌​‌​‌​​​​‌‌​‌‌‌​​​​​‌​​‌​‌‌​​‌‌​‌​‌​‌‌‌‌​​​​​‌‌​‌‌‌​‌‌​​​‌‌​‌​‌​​‌​​‌​‌​‌‌‌​‌​​​‌‌‌​‌​‌​​​‌​‌​​‌​‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​‌‌​‌‌‌​​​‌​‌‌​‌​‌‌​‌​​​‌​‌​‌​​‌​​‌​‌‌‌‌​​‌​‌‌‌‌​‌​​‌​​​‌‌‌​‌​‌‌​​‌​‌‌‌​​‌​​‌‌​‌​​‌​‌‌​​‌‌‌​‌​‌​‌‌​​‌‌‌​​​​​‌‌​‌​​​​​‌‌​‌‌‌​‌‌​‌​​‌​‌​‌‌​​​​‌​‌​‌‌​​​‌‌‌​​‌​‌‌​​​‌‌​‌‌​‌​‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.r3BNHbpM_eCpK5x7cRWGQK
+ * Fingerprint: AMK1.3qkEIyzGYrigVph7iXV9cj
  */
 import Link from "next/link";
 import DecryptText from "@/components/primitives/DecryptText";
@@ -116,7 +116,10 @@ export default function Hero() {
           field belongs to the detective register in §1b instead of
           introducing a third colour. `mouseReact` is on: the overlay
           responding to where you point is the entire Arkham
-          convention. */}
+          convention — for the first twenty seconds. After that
+          HALT_PROPS in FxBackdrop takes it off along with the clock,
+          because this is the one field in the set that can go idle
+          and the pointer was the only thing stopping it. */}
       <FxBackdrop
         kind="terminal"
         /* Held low and masked — see rule five in FxBackdrop. The CRT
@@ -133,7 +136,34 @@ export default function Hero() {
           glitchAmount: 1,
           flickerAmount: 0.5,
           noiseAmp: 0.7,
-          chromaticAberration: 1.5,
+          /* ZERO, and this is the single largest per-frame saving
+             available on the cover.
+
+             It does not look like a cost knob, but it is the most
+             expensive one in the component. The main pass's `getLight`
+             calls `digit()` ten times — once for the glyph and nine
+             more for the soft sum around it — and a non-zero
+             aberration runs `getLight` three times instead of once,
+             for the red and blue fringes. That is thirty texture-fetch
+             glyph evaluations per fragment, every frame, over a
+             full-bleed canvas, instead of ten.
+
+             What it buys at 1.5 is a sub-pixel fringe: the offset is
+             1.5 / viewport width in UV, which on a 1080p display is
+             under a thousandth of the frame, held at `opacity: 0.34`
+             behind a feathered mask and under a headline. The LITE_PROPS
+             table in FxBackdrop already zeroed it on slow machines with
+             exactly that reasoning; the reasoning was never actually
+             about the machine. A fringe nobody can see does not become
+             visible on a fast GPU, it only becomes affordable, and
+             spending two thirds of the cover's frame budget on it is
+             not a trade worth making at any tier.
+
+             Clicks are unaffected: `clickSplit` adds to the same
+             `split` term in the shader, so the glitch still throws a
+             real aberration while it decays, which is the one moment
+             the effect is large enough to read. */
+          chromaticAberration: 0,
           curvature: 0.08,
           vignette: 0.6,
           mouseReact: true,
