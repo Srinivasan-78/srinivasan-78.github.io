@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-24T07:34:13.962Z",
+  "sealedAt": "2026-10-24T07:37:10.822Z",
   "fileCount": 91,
-  "digest": "2d4d528ca462eea3bee340d7885180c4ab8ccf227b51d5c76e485c6ad9014335",
-  "proof": "c3f57c71cb59d1ed3d508d0bc3b05e77329aa4be76c5314c9e5da1f2b46f2c2b",
+  "digest": "418f2b02f5353df2eb1e48c83ae5b51f8a86a71d47b038d355a15287f179e696",
+  "proof": "a8d8f54e6d83cb1bb2f28ea75a58b1e4fb38b066fe0cc13d117e301ce53635b9",
   "files": [
     {
       "path": "AGENTS.md",
@@ -31,8 +31,8 @@
     },
     {
       "path": "app\\contact\\page.tsx",
-      "sha256": "a33ec923bee66fca628e41bb4a4418a6c4755e158f0169eba47c38de99e3ccd6",
-      "bytes": 8848
+      "sha256": "776cae58c201902adade2e7fcc11af5cc0979fce848323f18e26e11c0c38d701",
+      "bytes": 8668
     },
     {
       "path": "app\\error.tsx",
@@ -46,8 +46,8 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "54e593cdf16d92101f6ae608736e9feeff1c90bf3817b5a3aa3da1dadb349cc9",
-      "bytes": 62699
+      "sha256": "521298aa36514e94066df39b03827caea4a6c36cfa4928e3e9bc986404285c11",
+      "bytes": 60752
     },
     {
       "path": "app\\hobby\\page.tsx",
@@ -131,8 +131,8 @@
     },
     {
       "path": "components\\CertIndex.tsx",
-      "sha256": "b6d321ad7fd7d49d380dca99ebb0496b3adb66536cf1a1374863b033e39162fe",
-      "bytes": 12179
+      "sha256": "60e8df14d73a29c768f1d5093795e525ce2d456d6fcb07996faf0d070244d986",
+      "bytes": 11922
     },
     {
       "path": "components\\ContactForm.tsx",
@@ -161,8 +161,8 @@
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "31e1cfc31acf0c20540b763ba0b2d186e8228e11f9df8c75cb9dba365e965b38",
-      "bytes": 29214
+      "sha256": "38beeb4d3513aaa5feebb289f92985f5ef9f6897dcc7951a69739a0178f8b5ba",
+      "bytes": 28567
     },
     {
       "path": "components\\SkillTicker.tsx",
@@ -396,8 +396,8 @@
     },
     {
       "path": "lib\\data\\skills.ts",
-      "sha256": "7692520de12f4e414c5ce46f64bf4955aceb2132886f44a0759bf0b876f745f3",
-      "bytes": 32516
+      "sha256": "7fc5743e1279cd700cfe81ff1327fed65f8b5da2f51c453e533334b55679843d",
+      "bytes": 31921
     },
     {
       "path": "lib\\haptics.ts",
