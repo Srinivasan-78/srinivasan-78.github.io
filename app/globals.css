@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​‌​​‌​​​‌​​​‌​​​‌‌​​​‌‌‌​​​​‌​​​​‌‌​‌‌​‌‌​‌​‌​‌‌‌‌‌​‌‌​‌‌‌​​​‌‌​‌​​​‌‌‌​​‌​​‌​‌‌​​‌​‌‌​​​​‌​‌‌​‌‌‌‌​‌​‌‌​‌​​‌‌‌​​​​​‌​​​‌‌‌​‌‌​‌‌‌​​‌‌‌​‌​‌​​‌‌‌​​​​‌​​‌​​‌​‌‌‌​‌‌​​‌‌​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​‌​​​‌‌​‌​​​‌​​​‌‌​​​‌‌​‌‌​​‌​​‌​‌‌​​‌‌​​​‌​‌‌​​​​‌​‌‌‌‌​​​​‌‌‌​‌​‌​​‌‌​​‌‌​​‌‌‌​​‌​​‌‌​‌​​​‌‌​​​​‌​‌​‌​‌​‌​‌‌‌‌​‌​​‌‌‌‌​​​​‌​​‌​‌​​‌‌‌​​‌‌​‌‌​​​‌​​‌‌​‌​​​​‌‌​‌‌‌‌​​‌‌‌​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.jDF8Cm_n4rYaoZpGnu8Ivm
+ * Fingerprint: AMK1.Z4F6K1axu394aUzxJsbho9
  */
 
 /* ============================================================
@@ -2137,10 +2137,23 @@ html[data-fx="off"] .ticker-track {
 html[data-fx="off"] .reticle {
   display: none;
 }
-html[data-fx="off"] .bat-fly,
 html[data-fx="off"] .electric::before,
 html[data-fx="off"] .tick-pulse {
   animation: none !important;
+}
+/* The swarm is removed on this tier, not stopped. `animation: none` is
+   the right lever for everything else here because those elements are
+   correct at rest — but a bat's rest position is `left: 0` with no
+   transform, so freezing the crossing parked all twenty-two silhouettes
+   against the left edge of the viewport and left them there for the
+   life of the overlay. Reduced motion already hid the layer, which is
+   why this only showed up on the routes to `off` that are NOT the
+   motion preference: Save-Data, and the framerate watchdog's remembered
+   demotion, which outlasts the visit that caused it by a week.
+   BatTransit now declines to mount on this tier; this is the brace for
+   the tier changing while a swarm is in flight. */
+html[data-fx="off"] .bat-transit {
+  display: none !important;
 }
 html[data-fx="off"] .electric::before {
   opacity: 0;
