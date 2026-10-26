@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-24T14:39:09.739Z",
+  "sealedAt": "2026-10-26T14:06:57.231Z",
   "fileCount": 93,
-  "digest": "dd88f98e8a305c7ff5c2502af12b1ed147023e50fe0ea376ff14725066c2892e",
-  "proof": "8d931912b13ab1c552e6b1c5096366c8be30daa1157f8eed969f403fded3e9f1",
+  "digest": "77c734a2b22f68d2fbddb79351bee5359742573e8cc3cabb60ffe1a5d00d25b2",
+  "proof": "bfa839519be2eb70fcd39bd3dc90661524917cea4d55a65d7ba37395694cd2bf",
   "files": [
     {
       "path": "AGENTS.md",
@@ -46,8 +46,8 @@
     },
     {
       "path": "app\\globals.css",
-      "sha256": "e9b39b1632a6f38a9c2328f93e13d1c0a0a524e09587a4367bd90173794c911a",
-      "bytes": 83253
+      "sha256": "61094b9b1316ab95d3b4c3f2a1185ef3ff0d19bff7849bae734ea2fc8d1a8e26",
+      "bytes": 84042
     },
     {
       "path": "app\\hobby\\page.tsx",
@@ -201,8 +201,8 @@
     },
     {
       "path": "components\\home\\Hero.tsx",
-      "sha256": "16b42417d26c3c416bf9b406619319e64a3f593b06c8a88fbc4695c21e36160b",
-      "bytes": 14340
+      "sha256": "c417e08e4995ed4568120b86bbdccfd26fb514cd3e6ccecdae2fa540fbf327aa",
+      "bytes": 16158
     },
     {
       "path": "components\\home\\InitiativeDeck.tsx",
@@ -256,8 +256,8 @@
     },
     {
       "path": "components\\primitives\\BatTransit.tsx",
-      "sha256": "2763320ffaa12bd0215aeb20d5c569f3360f409207d13757b62635719eb84c39",
-      "bytes": 7875
+      "sha256": "c8ac54f7bcb2be470165972537a0ba221e9a2ec148fa53ecc89c748846e38829",
+      "bytes": 8718
     },
     {
       "path": "components\\primitives\\BrandMark.tsx",
@@ -286,8 +286,8 @@
     },
     {
       "path": "components\\primitives\\FxBackdrop.tsx",
-      "sha256": "079349c470403c4fabdf0ed4b2a8c5034e15768bb0e4e12bb768f419001edecc",
-      "bytes": 27130
+      "sha256": "1340b9a5f59a8e7e6ae13a14614c87a75d33db68248690173d3f4b8501daf291",
+      "bytes": 29216
     },
     {
       "path": "components\\primitives\\GlitchHeading.tsx",
