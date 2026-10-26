@@ -1,14 +1,15 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​​​​‌​‌‌​​‌​‌​‌​​‌​​‌​‌​‌​‌​‌‌‌‌​​‌​‌​​​‌​‌​‌‌‌‌​​​​‌​​‌‌‌‌​‌‌​‌‌​​​‌‌‌​​​​​‌​​‌‌​‌​​‌‌‌​​​​‌‌‌​​‌‌​‌​‌‌‌‌‌​‌​‌​​‌​​‌‌​​​‌​​‌‌​​​‌​​‌‌​​​‌​​‌​​‌‌​‌​‌‌​‌​‌​​‌​‌‌​‌​​​‌‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌​​​‌‌‌​​​​​‌​​​‌‌​​‌​‌​‌‌‌​‌​​​‌‌‌​‌​‌‌​​​​‌​​​​‌​​‌‌​‌‌​​​‌​‌‌​​‌​‌​‌​‌‌​​‌‌‌​​‌​​‌​​‌‌​‌​​‌‌​​​‌​‌​​​​‌​​‌‌‌​​​‌​‌‌​​‌‌​​​‌‌​‌​‌​‌​‌‌​​‌​‌​‌‌​‌​​‌​​‌‌​​​‌​​‌‌​​​‌‌‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.PYRUyExOlpM8s_RbbbMjZ7
+ * Fingerprint: AMK1.LpFWGXBlYVrM1Bqf5YZLLs
  */
 "use client";
 
 import { useEffect, useState } from "react";
 import BatGlyph from "./BatGlyph";
+import { readTier } from "@/lib/usePerfTier";
 import type { Mark } from "@/lib/batGround";
 
 /* The route transition: a swarm crossing the screen.
@@ -135,6 +136,19 @@ export default function BatTransit({ bats = [] }: { bats?: Mark[] }) {
     ) {
       return;
     }
+
+    /* And nothing on the `off` tier either. The swarm is the heaviest
+       thing on the site and that tier means no continuous motion at
+       all — but the reason this is a MOUNT check rather than a CSS one
+       is specific: `off` is also reached without the motion preference
+       (Save-Data, or a remembered demotion from the framerate
+       watchdog, which outlives the visit that caused it by a week). In
+       those cases the reduced-motion rule that hides this layer does
+       not apply, so the swarm mounted with its animations switched off
+       by §5f's tier block — and a bat at rest is `left: 0` with no
+       transform, which stacked all twenty-two against the left edge of
+       the viewport for the life of the overlay. */
+    if (readTier() === "off") return;
 
     setPlaying(true);
     const t = window.setTimeout(() => setPlaying(false), TOTAL_MS);
