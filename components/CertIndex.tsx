@@ -3,7 +3,7 @@
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.wCYB-tbnBDeeurzwgMkHWx
+ * Fingerprint: AMK1.dEncrgCqaASsIZ_qQusZLd
  */
 "use client";
 
@@ -50,19 +50,25 @@ const YEARS = CERTIFICATIONS_COPY.timelineYears;
 export default function CertIndex() {
   const [rowId, setRowId] = useState(ROWS[0].id);
 
-  // Optimistic row snapshot restoration from sessionStorage on mount
+  // Optimistic UI filter persistence across navigation
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem("sv_cert_row");
-      if (saved && ROWS.some((r) => r.id === saved)) {
-        setRowId(saved);
+      const savedIndex = sessionStorage.getItem("sv_active_tab");
+      if (savedIndex !== null) {
+        const idx = Number.parseInt(savedIndex, 10);
+        if (Number.isInteger(idx) && idx >= 0 && idx < ROWS.length) {
+          setRowId(ROWS[idx].id);
+        }
       }
     } catch {}
   }, []);
 
   useEffect(() => {
     try {
-      sessionStorage.setItem("sv_cert_row", rowId);
+      const idx = ROWS.findIndex((r) => r.id === rowId);
+      if (idx >= 0) {
+        sessionStorage.setItem("sv_active_tab", String(idx));
+      }
     } catch {}
   }, [rowId]);
 
