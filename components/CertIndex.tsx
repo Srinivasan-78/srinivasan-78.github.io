@@ -1,13 +1,13 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌‌​‌​‌‌​‌‌​​​​‌​​‌​‌‌​‌​‌​​​‌‌‌​‌​​‌‌​​​‌​​‌‌‌‌​‌‌​‌‌‌‌​‌‌​​​‌‌​‌​‌‌​‌​​‌​‌​​‌​​​‌‌​​‌‌​‌‌​​‌‌‌​‌​‌​‌​​​‌‌‌‌​​​​‌​​​‌‌​​‌​‌​​‌‌​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​‌​​​‌‌‌‌​​‌​​‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Ska-GLOocZR3gTxFSwsty6
+ * Fingerprint: AMK1.wCYB-tbnBDeeurzwgMkHWx
  */
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SectionHead from "@/components/primitives/SectionHead";
 import TagRow from "@/components/primitives/TagRow";
 import Reveal from "@/components/primitives/Reveal";
@@ -49,6 +49,22 @@ const YEARS = CERTIFICATIONS_COPY.timelineYears;
 
 export default function CertIndex() {
   const [rowId, setRowId] = useState(ROWS[0].id);
+
+  // Optimistic row snapshot restoration from sessionStorage on mount
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("sv_cert_row");
+      if (saved && ROWS.some((r) => r.id === saved)) {
+        setRowId(saved);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem("sv_cert_row", rowId);
+    } catch {}
+  }, [rowId]);
 
   /* Counts are computed once for all six rows, not per render pass of
      the pressed one: a chip that only knows its own total cannot tell
