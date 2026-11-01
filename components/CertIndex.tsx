@@ -1,13 +1,13 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​​‌‌​‌‌​‌​‌‌​‌‌​​​​‌​​‌​‌‌​‌​‌​​​‌‌‌​‌​​‌‌​​​‌​​‌‌‌‌​‌‌​‌‌‌‌​‌‌​​​‌‌​‌​‌‌​‌​​‌​‌​​‌​​​‌‌​​‌‌​‌‌​​‌‌‌​‌​‌​‌​​​‌‌‌‌​​​​‌​​​‌‌​​‌​‌​​‌‌​‌‌‌​‌‌‌​‌‌‌​​‌‌​‌‌‌​‌​​​‌‌‌‌​​‌​​‌‌​‌‌​⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Ska-GLOocZR3gTxFSwsty6
+ * Fingerprint: AMK1.dEncrgCqaASsIZ_qQusZLd
  */
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SectionHead from "@/components/primitives/SectionHead";
 import TagRow from "@/components/primitives/TagRow";
 import Reveal from "@/components/primitives/Reveal";
@@ -49,6 +49,28 @@ const YEARS = CERTIFICATIONS_COPY.timelineYears;
 
 export default function CertIndex() {
   const [rowId, setRowId] = useState(ROWS[0].id);
+
+  // Optimistic UI filter persistence across navigation
+  useEffect(() => {
+    try {
+      const savedIndex = sessionStorage.getItem("sv_active_tab");
+      if (savedIndex !== null) {
+        const idx = Number.parseInt(savedIndex, 10);
+        if (Number.isInteger(idx) && idx >= 0 && idx < ROWS.length) {
+          setRowId(ROWS[idx].id);
+        }
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      const idx = ROWS.findIndex((r) => r.id === rowId);
+      if (idx >= 0) {
+        sessionStorage.setItem("sv_active_tab", String(idx));
+      }
+    } catch {}
+  }, [rowId]);
 
   /* Counts are computed once for all six rows, not per render pass of
      the pressed one: a chip that only knows its own total cannot tell

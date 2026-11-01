@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​‌‌​‌​‌​​‌​​‌​‌‌​​‌​​‌‌​‌‌‌​‌‌‌​​‌​​‌​​‌​‌‌​‌​‌​​‌​​‌​‌​​‌​​‌​​​​​‌​‌‌‌​‌‌‌​​‌‌​​​‌​‌‌​‌​​‌​‌‌‌​​‌​​​‌‌​​​​​‌‌‌‌​​​​‌​‌‌​‌​​‌​‌‌​​‌​‌‌​​​‌​​‌​‌‌​​‌​‌​​‌​‌‌​‌​‌‌​​‌​‌​​‌​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.sRY7rKRRAw1ir0xZYbYKYH
+ * Fingerprint: AMK1.zIcse4GTuZaDwekD10wIjV
  */
 import type { Metadata, Viewport } from "next";
 import {
@@ -325,6 +325,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             route, immediately after hydration. */}
         <link rel="preconnect" href="https://plausible.io" />
         <link rel="dns-prefetch" href="https://plausible.io" />
+        {/* Formspree endpoint prefetch for zero-latency contact form dispatch */}
+        <link rel="dns-prefetch" href="https://formspree.io" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

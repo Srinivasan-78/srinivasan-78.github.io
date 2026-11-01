@@ -1,14 +1,14 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​​​‌​​​​​‌​‌​​‌‌​​​‌‌‌​​‌‌​‌‌‌​​​​​‌‌‌‌​‌​​‌‌​​‌​‌​‌​‌‌​​‌​‌‌​‌‌‌‌​​‌‌​‌‌‌​‌‌‌​​​‌​‌‌​‌‌‌​​‌​‌‌‌‌‌​‌​​‌‌​​​‌​‌​‌​‌​‌​​​‌‌‌​​‌‌​‌​‌​​‌‌​​‌​​‌‌‌​‌‌​​‌​​​‌‌​​‌‌​​‌‌‌​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.lALspzeYo7qn_LUG52vFgP
+ * Fingerprint: AMK1.pIHDs5-a3xuIEfmmxGABn2
  */
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PROJECTS, CONTRIBUTIONS, type Project } from "@/lib/projects";
 import { PROJECTS_COPY, PROFILE } from "@/lib/data/profile";
 import Panel, { type PanelState } from "@/components/primitives/Panel";
@@ -97,6 +97,33 @@ export default function ProjectIndex() {
    * then on. This is also the design brief's own rule — a thing still
    * moving after you have read it is demanding attention. */
   const [interacted, setInteracted] = useState(false);
+
+  // Optimistic snapshot restoration from sessionStorage on mount
+  useEffect(() => {
+    try {
+      const savedQuery = sessionStorage.getItem("sv_project_query");
+      const savedCat = sessionStorage.getItem("sv_project_category");
+      if (savedQuery) setQuery(savedQuery);
+      if (savedCat) setCategory(savedCat);
+      if (savedQuery || (savedCat && savedCat !== "all")) {
+        setInteracted(true);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (query) sessionStorage.setItem("sv_project_query", query);
+      else sessionStorage.removeItem("sv_project_query");
+    } catch {}
+  }, [query]);
+
+  useEffect(() => {
+    try {
+      if (category && category !== "all") sessionStorage.setItem("sv_project_category", category);
+      else sessionStorage.removeItem("sv_project_category");
+    } catch {}
+  }, [category]);
 
   const categories = useMemo(
     () => sortedUnique(PROJECTS.map((p) => p.category)),

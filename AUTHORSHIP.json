@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-10-26T14:06:57.231Z",
-  "fileCount": 93,
-  "digest": "77c734a2b22f68d2fbddb79351bee5359742573e8cc3cabb60ffe1a5d00d25b2",
-  "proof": "bfa839519be2eb70fcd39bd3dc90661524917cea4d55a65d7ba37395694cd2bf",
+  "sealedAt": "2026-11-01T16:19:35.941Z",
+  "fileCount": 94,
+  "digest": "fff522fb8b10b02d43fd0a270ec13ed4b6b0ee6b33280a9e1df39769c76fd9d2",
+  "proof": "b5981f60368285f3e2cfa38d5f8af5e7e043d6ac1aae7f9361784659bf5e2ef0",
   "files": [
     {
       "path": "AGENTS.md",
@@ -56,8 +56,8 @@
     },
     {
       "path": "app\\layout.tsx",
-      "sha256": "f6faf7e8110a2e0b82ab0d324d0984fd2f9d9638b98b969152e249c09443772b",
-      "bytes": 18138
+      "sha256": "8065d2d6b18d44fb03dea5baaf9da393ce2f3b795d9baff9226be754151a1a6e",
+      "bytes": 17751
     },
     {
       "path": "app\\loading.tsx",
@@ -126,18 +126,18 @@
     },
     {
       "path": "components\\BootScript.tsx",
-      "sha256": "1cb1d049e63cb5ff3b37f9bd8989bd08aac5c76d600441de109e071a3916d535",
-      "bytes": 5882
+      "sha256": "fe1526807fbe75904369cf07f31de4a0f54ec20d0b5560037e9ebb61cfc32039",
+      "bytes": 5907
     },
     {
       "path": "components\\CertIndex.tsx",
-      "sha256": "60e8df14d73a29c768f1d5093795e525ce2d456d6fcb07996faf0d070244d986",
-      "bytes": 11922
+      "sha256": "b8732ea137a517d6ac900c31d17020c9f3b4eb9f2cd7072ba9547a1674ec07fb",
+      "bytes": 11995
     },
     {
       "path": "components\\ContactForm.tsx",
-      "sha256": "e0999c927cfe9c650a697231521493d8d99d99da896f6b88f45c40ee5c764be6",
-      "bytes": 10057
+      "sha256": "3354ee9a86f353bdcbad95691acd9c47b13035b2997dbd58c6e7b86cfb75bf70",
+      "bytes": 10947
     },
     {
       "path": "components\\CookieNotice.tsx",
@@ -161,8 +161,8 @@
     },
     {
       "path": "components\\ProjectIndex.tsx",
-      "sha256": "79b324a7ffc7d4ddb0138d3bd384aab03112489a07a748a620e851e69e8b3658",
-      "bytes": 28862
+      "sha256": "35b6ee211bcd8ae7aa0409a05b46e0d780ffa38d08e71b48d698f2b7be01db1c",
+      "bytes": 29195
     },
     {
       "path": "components\\SkillTicker.tsx",
@@ -458,6 +458,11 @@
       "path": "public\\googled95713cd5a2b1318.html",
       "sha256": "a43fab6b9a5b4954e9f362af10829f637a38236b06d25e10656d31cc425b27d4",
       "bytes": 850
+    },
+    {
+      "path": "public\\sw.js",
+      "sha256": "53bedca188556812f19e13ee4bf7a46ed8c78172d99f2081c23c0e62a83ccae9",
+      "bytes": 3030
     },
     {
       "path": "scripts\\gen-brand-paths.mjs",

@@ -1,13 +1,13 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌​‌​​​‌‌​​​‌​‌‌​​​‌‌​‌​​‌​​​​‌​​‌‌‌​​‌​‌‌​​‌​‌​‌​​‌​​‌‌​​​‌‌​‌‌​‌‌‌‌​‌‌‌‌​​‌​‌​‌‌​​‌​‌​​‌‌​​​‌​‌​​​‌​‌​​‌​​​​‌​​‌‌‌‌​‌‌‌​​‌​​‌‌​​​‌‌​‌​‌​‌‌​​‌​​‌​‌‌​‌​​‌‌​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.mnJ1cHNYRcoyYLQHOrcVKM
+ * Fingerprint: AMK1.J0R3AGrGN6AW6oV08cg6aI
  */
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   CONTACT_FORM_COPY,
@@ -84,6 +84,44 @@ export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [messageLength, setMessageLength] = useState(0);
 
+  const DRAFT_KEY = "sv_contact_draft";
+
+  // Speculative parallel prefetch of success route and optimistic draft restoration
+  useEffect(() => {
+    try {
+      router.prefetch(CONTACT_FORM_COPY.successPath);
+    } catch {}
+
+    try {
+      const saved = sessionStorage.getItem(DRAFT_KEY);
+      if (saved && formRef.current) {
+        const draft = JSON.parse(saved) as Record<string, string>;
+        if (draft.name) {
+          const el = formRef.current.elements.namedItem("name") as HTMLInputElement | null;
+          if (el) el.value = draft.name;
+        }
+        if (draft.email) {
+          const el = formRef.current.elements.namedItem("email") as HTMLInputElement | null;
+          if (el) el.value = draft.email;
+        }
+        if (draft.message) {
+          const el = formRef.current.elements.namedItem("message") as HTMLTextAreaElement | null;
+          if (el) {
+            el.value = draft.message;
+            setMessageLength(draft.message.length);
+          }
+        }
+      }
+    } catch {}
+  }, [router]);
+
+  const saveDraft = () => {
+    if (!formRef.current) return;
+    try {
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify(readValues(formRef.current)));
+    } catch {}
+  };
+
   const readValues = (form: HTMLFormElement): Record<Field, string> => {
     const data = new FormData(form);
     return {
@@ -128,6 +166,9 @@ export default function ContactForm() {
 
       if (res.ok) {
         haptic("commit");
+        try {
+          sessionStorage.removeItem(DRAFT_KEY);
+        } catch {}
         form.reset();
         router.push(CONTACT_FORM_COPY.successPath);
         return;
@@ -201,6 +242,7 @@ export default function ContactForm() {
                   }
                   onInput={(e) => {
                     setMessageLength(e.currentTarget.value.length);
+                    saveDraft();
                     revalidate();
                   }}
                   className="field resize-y"
@@ -216,7 +258,10 @@ export default function ContactForm() {
                   placeholder={field.placeholder}
                   aria-invalid={error ? true : undefined}
                   aria-describedby={error ? errorId : undefined}
-                  onInput={revalidate}
+                  onInput={() => {
+                    saveDraft();
+                    revalidate();
+                  }}
                   className="field"
                 />
               )}

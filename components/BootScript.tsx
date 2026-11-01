@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​​​​‌​‌‌‌​​​​​‌‌​‌​‌​​‌‌‌​​​​​‌​‌​‌‌​​‌​​‌‌​‌​‌​​​​‌​​‌​​​​‌​​‌‌‌‌​‌​​‌‌‌‌​‌​​‌‌‌​‌‌​​​‌‌​​‌‌​​‌​‌‌​‌​‌​‌​​​​​‌‌‌​​​‌​‌​‌​‌​​​​‌‌​​‌‌​‌‌‌​​‌​​‌‌​​‌​​​‌‌​‌​‌‌​‌​‌‌​‌​​‌​​‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.ApjpVMBBzzv3-PqT3rdkZI
+ * Fingerprint: AMK1.RUb3Lm7sAK0HpHLFlR1M-6
  */
 const BOOT_SCRIPT = `
 (function(){
@@ -85,6 +85,21 @@ const BOOT_SCRIPT = `
     // probe threw has lost nothing they can name; the reverse is a
     // machine being handed five shaders it cannot draw.
     document.documentElement.setAttribute('data-fx', 'lite');
+  }
+
+  // Register the Stale-While-Revalidate Service Worker asynchronously on idle.
+  // Never blocks paint or hydration; skipped on localhost for dev hygiene.
+  if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+    window.addEventListener('load', function() {
+      var register = function() {
+        navigator.serviceWorker.register('/sw.js').catch(function() {});
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(register);
+      } else {
+        setTimeout(register, 1500);
+      }
+    });
   }
 })();
 `;
