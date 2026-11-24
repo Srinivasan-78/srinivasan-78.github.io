@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​​​‌‌​​‌‌‌​‌​​‌​‌​​‌​​‌‌​‌​‌​‌​​‌‌​‌​​‌‌‌​​‌​​‌‌​​​‌‌​‌​​‌​​‌‌‌​​‌​‌‌​‌​​‌​​‌‌​​​​​‌​​‌‌‌​​‌​​​‌​‌​‌​​‌‌‌​​‌‌‌‌​​​​​‌‌‌​​‌​​‌‌​‌​‌​‌‌‌‌​​​​‌​​​​​‌​‌​​‌‌‌‌​‌​​​​​‌​​‌‌​‌‌‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌‌‌‌​‌​​​‌​‌​​‌‌‌​​​​‌‌​​‌‌​​‌​​‌​‌​​‌‌​​‌‌​​‌​‌‌​​​​‌‌‌​‌‌‌​‌​​‌‌‌​​‌​​​​​‌​‌‌​‌​​​​​‌‌‌​​‌​‌‌​‌‌‌‌​‌‌​‌‌‌​​‌‌​​‌‌​​‌‌‌‌​​‌​‌‌​​‌​‌​‌‌‌​‌​‌​‌​‌​‌‌‌​‌​​​​‌‌​‌‌‌​‌​​​‌‌‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.dgJMSNLi9i0NENx95xAOA7
+ * Fingerprint: AMK1._E8fJfXwNAh9onfyeuWCts
  */
 export type ProjectLink = { url: string; label: string };
 
@@ -423,56 +423,92 @@ export const PROJECTS: Project[] = [
       "Honest about its own cost: fifteen installed skills advertise roughly 1.5k tokens per session, and status prints your figure",
       "No network call anywhere in the repository, and the installer prints its plan and asks before writing",
       "20 automated smoke tests running in CI on push and PR with zero external network dependencies",
+      "Fourteen of the fifteen skills are now vendored into Pennywright, where a router decides which one fires",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" }],
+    links: [
+      { url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" },
+      { url: "https://github.com/Srinivasan-78/pennywright", label: "Pennywright \u2197" },
+    ],
   },
   {
-    slug: "agentic-app-loop",
-    title: "Agentic App Loop",
+    slug: "pennywright",
+    title: "Pennywright",
     client: "Platform engineering",
     category: "Developer tooling",
     status: "Active",
     teaser:
-      "Build an app through seven bounded phases \u2014 plan, test, implement, review, verify, remember, improve \u2014 each its own subagent.",
-    tags: ["Claude Code", "Subagents", "TDD"],
-    stack: ["Claude Code skills", "Node.js", "Markdown", "npx installer", "GitHub Actions"],
+      "One front door for a coding agent: it reads what you asked for, works out what kind of work it is, and hands it to the right tool on the belt.",
+    tags: ["Claude Code", "Subagents", "Token cost"],
+    stack: ["Claude Code skills", "Codex agents", "Node.js", "Python", "Bash", "Markdown", "TOML"],
     overview:
-      "A Claude Code skill that builds and extends real applications through a fixed seven-phase loop \u2014 PLAN, TEST, IMPLEMENT, REVIEW, VERIFY, REMEMBER, IMPROVE \u2014 where each phase runs as its own bounded subagent with a written contract. The orchestrator never writes feature code itself: it runs the phases, enforces a gate after each one, and handles loop-backs when review finds a blocking bug or verification fails. Phases never talk directly; they pass state through a single BUILD_STATE.md file in the target repo, which is also what keeps the orchestrator's own context small. It is the difference between 'just build it' and a run that cannot skip its own tests.",
+      "A utility belt for coding agents, grown out of the seven-phase build loop that started it. `/penny` is the only command you need day to day: it classifies a request from the prompt alone \u2014 no file reads, so routing is effectively free \u2014 and sends it down one of seven lanes, to a build loop, a five-member council, a bounded scout, or just does it when the request is smaller than the ceremony. Underneath sits one principle: an expensive brain plans, cheap hands do the work, and the verbose middle never reaches your context. Work is handed to a subagent whose context is discarded when it finishes, so a phase that burned 40k tokens exploring a codebase costs the main session about fifty. The same repo drives Claude Code and Codex.",
     architecture: [
       {
-        label: "Orchestrator that writes no code",
-        body: "The main build-app skill runs the loop and nothing else \u2014 it starts each phase's subagent, checks the gate, and decides the next move. Delegating every verbose step keeps its context small enough to see the whole run.",
+        label: "Hard layer and soft layer",
+        body: "The design knows which of its rules are guarantees. `model: haiku` is Haiku, a `tools` allowlist means no write tool exists to call, and `maxTurns` kills a run at its budget \u2014 the harness enforces those. Word caps and \"review the diff, not the summary\" are prose the model follows because the reasoning is given. The expensive guarantees are deliberately put in the hard layer.",
       },
       {
-        label: "One file between phases",
-        body: "Every phase reads and writes a single BUILD_STATE.md at the repo root: the plan, the numbered acceptance criteria, review findings, verify evidence. No phase calls another, so any one can be re-run in isolation.",
+        label: "The front door, seven lanes",
+        body: "REFINE sharpens an idea then re-routes, BUILD runs the loop, DECIDE convenes the council, FIND sends a scout, TUNE adjusts the agent rather than the app, DO skips the ceremony, EXPLAIN just answers. The lane is announced in one line so it can be redirected in one word.",
       },
       {
-        label: "A gate after every phase",
-        body: "PLAN needs tasks, criteria and a test strategy; TEST's tests must fail only because the code is absent, not because of a typo; REVIEW must reach zero unresolved blocking findings; VERIFY must show every criterion met with evidence before the loop moves on.",
+        label: "The test that does the routing",
+        body: "Only REFINE versus BUILD is genuinely hard, and it has a sharp test: can three checkable acceptance criteria be written from the request alone, without inventing requirements? A thin request is not a vague one \u2014 \"add CSV export to the reports page\" is BUILD, because convention recovers the criteria and the loop's own gates catch a wrong guess. The router is biased against interrogating someone who was already clear.",
       },
       {
-        label: "Loop-backs, capped",
-        body: "A blocking review finding sends the run back to IMPLEMENT; a failed VERIFY back to IMPLEMENT or PLAN; a wrong test back to TEST. After four iterations without a green VERIFY the loop stops and asks the operator rather than grinding.",
+        label: "Refinement that sorts before it asks",
+        body: "Gaps are split three ways first: a fact about the repo is scouted rather than asked, anything with an obvious default is assumed and labelled so it can be vetoed at a glance, and only a decision nobody else can make reaches you. Then one round, at most four questions, each with concrete options and a recommendation. The brief must come out sharper and shorter than the conversation that produced it \u2014 and must carry your exact words for error codes, numbers and anything you ruled out.",
       },
       {
-        label: "Phases adapt to the job",
-        body: "Greenfield app, new feature, bug fix, refactor and spike keep the same shape: a bug fix makes TEST write a failing regression test first, a refactor makes it add characterization tests, a spike explicitly waives everything but PLAN, IMPLEMENT and REMEMBER.",
+        label: "The build loop, gated",
+        body: "PLAN, TEST, IMPLEMENT, REVIEW, VERIFY, REMEMBER, IMPROVE \u2014 one subagent each, a gate between every pair, the orchestrator writing no feature code. Phases never talk; everything crosses through a single BUILD_STATE.md, with the baseline sha recorded up front because it is the only thing REVIEW and VERIFY can diff against later. Past ~1500 lines older iteration blocks collapse to their summaries, since by iteration three reading the file whole costs more than the phase did.",
       },
       {
-        label: "Installed as skill plus agents",
-        body: "An npx installer copies the skill, the seven subagents and the /build-app command into a project's .claude or the global one. The plan and review phases default to a stronger model, the rest inherit; the iteration cap and loop-back rules live in one file.",
+        label: "Two rules the agents cannot talk themselves out of",
+        body: "IMPLEMENT may never edit a test to make it pass \u2014 it hands back to TEST and explains which test and why, because editing a test to go green destroys the only evidence the loop has. REVIEW and VERIFY may never touch code at all, not even an obvious one-line fix: fixing it themselves hides the failure from the loop log and from the retro.",
+      },
+      {
+        label: "The council, and its referee",
+        body: "Five mandates rather than personalities \u2014 Architect on what the choice forecloses, Skeptic on how it breaks, Pragmatist on the shortest honest path, Operator on the day after, Economist on the maintenance tail nobody counts. Each writes its own file in parallel, capped at 250 words, and must state the strongest argument against its own position. One rebuttal round crosses only a ~40-line digest. A separate referee then separates verified fact from confident assertion and reduces each disagreement to a measurement.",
+      },
+      {
+        label: "The scout",
+        body: "One bounded question answered in a throwaway context, returning the answer rather than the files. Haiku, read-only, with no write tool at all, climbing a cheapest-first ladder \u2014 search, then signatures, then a range read, then the whole file only if it is small \u2014 and stopping as soon as it can answer. \"Not found\" is a valid answer, and it is told to report absence rather than widen the search until it finds something.",
+      },
+      {
+        label: "Four tiers, and no subagent on Opus",
+        body: "The orchestrator is the one place Opus earns its price; judgment work runs on Sonnet at high effort, craft at medium, and the hands on Haiku. If a subagent seems to need Opus the brief was too vague \u2014 tighten the brief, not the tier. Effort is left unset on Haiku agents deliberately, because the alias has pointed at models that reject the parameter outright and a rejected spawn costs more than the effort setting saves.",
+      },
+      {
+        label: "Savings in order of effect",
+        body: "Isolation first and by far the largest, then the PreToolUse hook that rewrites a noisy command before it runs so a 10,000-line log never becomes context, then bounded starts, then retrieval discipline \u2014 and only then model routing, because a Haiku agent carrying 150k tokens costs more than a Sonnet agent carrying 8k.",
+      },
+      {
+        label: "Measured, not assumed",
+        body: "A context report totals the always-on load and a bench script reads the usage already written to the session logs, deduplicated by request id because Claude Code writes several lines per reply. Comparisons are per-turn rather than total, since a harder task honestly costs more. Cache read share below ~80% means something is mutating the prompt prefix, and model routing is irrelevant until that is fixed.",
+      },
+      {
+        label: "Diagnosis that reports rather than fixes",
+        body: "`/penny-doctor` runs its checks in severity order, and the first section is the one that matters: the failures that make the kit look installed while doing nothing \u2014 an effort override that flattens four tiers into one, a hook on disk that settings.json never references, an unset `$AGENT_KIT` that breaks every script path, a half-pinned agent inheriting an expensive value. It ends with one highest-value fix, not a list.",
       },
     ],
     highlights: [
-      "Each concern \u2014 tests, review, verification \u2014 is a hard checkpoint with its own agent, not an optional step",
-      "The orchestrator never edits feature code, so its context stays small enough to run the whole loop",
-      "Phases communicate only through BUILD_STATE.md, so any phase can be re-run alone",
-      "Tests that fail for the wrong reason bounce back to TEST instead of being counted as red",
-      "A test that would be edited to force a pass sends the run back rather than going green",
-      "Four iterations without a clean verify stops the loop and hands back to the operator",
+      "Routing reads the prompt alone \u2014 no file reads, no tool calls \u2014 so picking the lane is effectively free",
+      "A subagent's context is thrown away when it finishes, so a 40k-token exploration returns as a three-line report",
+      "The expensive guarantees are enforced by the harness, not requested in prose: model, tool allowlist, turn cap, spawn depth",
+      "IMPLEMENT cannot edit a test to go green, and REVIEW and VERIFY cannot touch code at all",
+      "Every council member must state the strongest case against its own position, and exactly one rebuttal round is allowed",
+      "Filtered commands keep the real exit status, so a suppressed failure can never read as a pass",
+      "No subagent runs on Opus \u2014 two failed Sonnet attempts still cost less than one Opus subagent on a cold context",
+      "Anything expensive to get wrong \u2014 schema migrations, auth, money movement, data deletion \u2014 is explicitly not delegated to a cheap tier",
+      "Honest about its own cost: 18 skills advertise roughly 1.8k tokens every session, and a council spends more than deciding alone",
+      "One repo drives both Claude Code and Codex: 14 agents mirrored as Codex TOML, with both model and effort pinned so neither half inherits an expensive default",
+      "A maintainer audit script checks tier agreement, agent bounds, Codex pin pairing and dangling reference paths before a commit",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/agentic-app-loop", label: "View repo \u2197" }],
+    links: [
+      { url: "https://github.com/Srinivasan-78/pennywright", label: "View repo \u2197" },
+      { url: "https://github.com/Srinivasan-78/tokenmiser", label: "tokenmiser (vendored) \u2197" },
+    ],
   },
   {
     slug: "authormark-watch",

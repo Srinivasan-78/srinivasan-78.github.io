@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​​​​​‌​‌​​‌​​‌​​​‌​‌​‌‌‌‌​​​​‌​‌​​​​​​‌‌​​‌‌​‌​‌​​‌‌​‌​​​‌‌​​‌‌​‌‌​‌​‌‌‌​​‌‌​‌​‌​‌​​​​‌‌‌​​​​​‌‌‌​​‌​‌​​​​​‌​‌​​‌​‌​​​‌‌​‌​‌​​‌​‌‌​‌​‌​​​​​‌​‌‌​​‌​​​‌‌​​‌​‌​‌​​‌​‌​​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​‌​​​​‌‌​​‌​​‌‌​​​‌‌​​‌‌​‌​​​‌‌​‌​​​​‌​‌​‌‌​​‌‌​‌‌​‌​‌​‌​‌​​​‌‌​​‌‌​​​‌‌​‌​​​‌‌‌‌​‌​​​‌‌​​​‌​​‌‌​​‌​​‌​‌‌​​‌​​‌‌‌​​​​‌​​​‌‌‌​‌​‌​​‌‌​‌‌‌​‌‌‌​‌‌​​‌‌‌​‌‌​‌‌‌‌​‌​‌​‌‌​​‌​‌​​‌‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.0RExP3SFmsT89AJ5-AdeJP
+ * Fingerprint: AMK1.t2c4hVmTf4z12Y8GSwgoVS
  */
 
 /* The skills loadout, as data. Domain icons are tokens, not components. */
@@ -84,11 +84,11 @@ export const SKILL_DOMAINS: DomainCluster[] = [
         category: "AI, LLM & MCP",
         role: "Multi-Agent Orchestration",
         productionContext:
-          "Built a seven-phase build loop — plan, test, implement, review, verify, remember, improve — where each phase is its own bounded subagent with a written contract, communicating only through a single shared state file.",
+          "Built a router that classifies a request from the prompt alone and sends it to a seven-phase build loop, a five-member council or a bounded read-only scout — each phase its own subagent with a written contract, communicating only through a single shared state file.",
         highlight:
-          "Hard gates between phases: a run cannot skip its own tests, and four iterations without a clean verify hands back to the operator.",
+          "The expensive guarantees are enforced by the harness rather than asked for in prose: pinned model, tool allowlist, turn cap, and gates a run cannot skip.",
         tenure: "Active focus",
-        project: { slug: "agentic-app-loop", title: "Agentic App Loop" },
+        project: { slug: "pennywright", title: "Pennywright" },
       },
       {
         name: "Multi-Provider LLM Routing",
