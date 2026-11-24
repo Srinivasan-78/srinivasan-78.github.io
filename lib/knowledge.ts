@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌​‌​​‌‌​​‌‌‌​​‌​​‌‌​​‌‌​‌​‌‌​‌​​‌​‌​‌​‌​‌‌​​‌‌‌​​‌‌​​‌​​‌​​​​‌​​‌‌​​‌‌‌​‌‌​‌​​​​‌‌​‌‌​​​​‌‌​‌​‌​‌‌​‌‌‌‌​‌​‌​‌​‌​​‌‌​​​​​‌​​‌‌‌‌​‌​​​​​‌​‌‌‌​​‌‌​‌‌‌​​‌​​‌​‌‌​​​​‌​‌​​​​⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌‌​‌​‌‌​‌‌​‌​‌‌​​​‌‌​‌​​‌​​​​‌​‌​‌‌​​‌‌​​​‌​​‌‌​​​‌​​‌‌‌​​‌​​‌‌​​​‌‌​‌‌‌‌​​​​​‌‌​​‌‌​‌‌‌​​​​​‌‌‌​‌‌​​​‌‌​​​​​‌‌‌​‌‌‌​‌‌​​​‌‌​‌‌‌‌​‌​​‌‌‌​​​‌​‌‌​‌‌‌​​‌‌‌​‌​​​‌‌​‌​​‌​​‌‌​​​‌⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.iS93ZUg2Bghl5oU0OAsrXP
+ * Fingerprint: AMK1.mmcHVbbrcx3pv0wczqnti1
  */
 import { PROJECTS } from "./projects";
 import { CERTS } from "./certs";
@@ -266,7 +266,7 @@ const KNOWLEDGE_BASE: KnowledgeEntry[] = [
       /agentic/i,
     ],
     answer:
-      "Srinivasan builds AI infrastructure, not AI demos. repo2graph is his flagship here: a GraphRAG engine that parses a codebase with tree-sitter into a graph of files, functions, calls and inheritance, then serves retrieval over it to AI agents as an MCP server — five read-only tools over stdio or authenticated HTTP (bearer token or OIDC), installable in Claude Code, Claude Desktop or Cursor with one command, and published to PyPI, the GitHub Marketplace and the MCP Registry. Token budgets are enforced rather than requested: a 12,000-token ceiling re-measured after rendering, capped neighbour rows, and every retrieved block stamped with its file and line range. Alongside it sit tokenmiser (context and token-cost reduction for Claude Code), Agentic App Loop (a seven-phase build loop of bounded subagents), and Multi-AI Toolkit (parallel subtask routing with failover across five LLM providers).",
+      "Srinivasan builds AI infrastructure, not AI demos. repo2graph is his flagship here: a GraphRAG engine that parses a codebase with tree-sitter into a graph of files, functions, calls and inheritance, then serves retrieval over it to AI agents as an MCP server — five read-only tools over stdio or authenticated HTTP (bearer token or OIDC), installable in Claude Code, Claude Desktop or Cursor with one command, and published to PyPI, the GitHub Marketplace and the MCP Registry. Token budgets are enforced rather than requested: a 12,000-token ceiling re-measured after rendering, capped neighbour rows, and every retrieved block stamped with its file and line range. Alongside it sit Pennywright (a router that sends a request to a seven-phase build loop, a five-member council or a bounded scout, each a subagent whose context is discarded), tokenmiser (context and token-cost reduction for Claude Code, now vendored into Pennywright), and Multi-AI Toolkit (parallel subtask routing with failover across five LLM providers).",
     followUps: [
       "Tell me about repo2graph",
       "How does he reduce LLM token costs?",

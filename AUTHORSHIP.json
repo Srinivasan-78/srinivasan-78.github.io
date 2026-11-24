@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-11-01T16:19:35.941Z",
+  "sealedAt": "2026-11-24T13:13:04.917Z",
   "fileCount": 94,
-  "digest": "fff522fb8b10b02d43fd0a270ec13ed4b6b0ee6b33280a9e1df39769c76fd9d2",
-  "proof": "b5981f60368285f3e2cfa38d5f8af5e7e043d6ac1aae7f9361784659bf5e2ef0",
+  "digest": "ed109065c2aa50a2a4c5c3e960d1b5fe43631b9c553252b8ad7b56e18ed379c6",
+  "proof": "de0e078093bd141d19e771b588f9d9b8aebd73157a91c603754891057b364185",
   "files": [
     {
       "path": "AGENTS.md",
@@ -401,8 +401,8 @@
     },
     {
       "path": "lib\\data\\skills.ts",
-      "sha256": "7fc5743e1279cd700cfe81ff1327fed65f8b5da2f51c453e533334b55679843d",
-      "bytes": 31921
+      "sha256": "35c3de123574d2ca4acd5d2ecae6f59ed64cf26afc9a14858cc23017fdcc913e",
+      "bytes": 31981
     },
     {
       "path": "lib\\haptics.ts",
@@ -411,8 +411,8 @@
     },
     {
       "path": "lib\\knowledge.ts",
-      "sha256": "ec92ada54e482bfa59bb347d4a14c02187c56cfb783b43d4c4957aa3ecf9e289",
-      "bytes": 32655
+      "sha256": "b0732bfe45b053e78313977f3471f96040c6d602db7d933062dd4dff2ce92f15",
+      "bytes": 32779
     },
     {
       "path": "lib\\nav.ts",
@@ -421,8 +421,8 @@
     },
     {
       "path": "lib\\projects.ts",
-      "sha256": "9b07d33f94bad44386cf279b14ab61459a6069e91482c049a66274d0d582360c",
-      "bytes": 79079
+      "sha256": "ca3bd8564d306b8573f2dc11f1bdd1f01fe97ee30730cb6a05aff3f4a76b3dcf",
+      "bytes": 84328
     },
     {
       "path": "lib\\seo.ts",
@@ -461,8 +461,8 @@
     },
     {
       "path": "public\\sw.js",
-      "sha256": "53bedca188556812f19e13ee4bf7a46ed8c78172d99f2081c23c0e62a83ccae9",
-      "bytes": 3030
+      "sha256": "5449c60301d622dc3921510468c384fbb2575f5686fc455dfd8fe01d66d72219",
+      "bytes": 5446
     },
     {
       "path": "scripts\\gen-brand-paths.mjs",
