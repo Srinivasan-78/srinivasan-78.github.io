@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-11-24T13:13:04.917Z",
+  "sealedAt": "2026-11-24T13:27:04.356Z",
   "fileCount": 94,
-  "digest": "ed109065c2aa50a2a4c5c3e960d1b5fe43631b9c553252b8ad7b56e18ed379c6",
-  "proof": "de0e078093bd141d19e771b588f9d9b8aebd73157a91c603754891057b364185",
+  "digest": "9249ac4a8c94ee19798584c66e1e3778790214bf6ffd714af1f84b838e50eaa7",
+  "proof": "7471a726abe0a6b72942321ddf36803de5f2ec6f5e1534a8050dd0ed48bf2bae",
   "files": [
     {
       "path": "AGENTS.md",
@@ -441,8 +441,8 @@
     },
     {
       "path": "next.config.mjs",
-      "sha256": "d7babb950eadda0ab4b292033f1fbb822824ca4a29cb82e10fb39ca1c4653f4d",
-      "bytes": 1232
+      "sha256": "b644a6ab9ded47e741ebdf2e66a41474cc36e8f1f80368f325f4bf9499c4d9d5",
+      "bytes": 1462
     },
     {
       "path": "postcss.config.js",
