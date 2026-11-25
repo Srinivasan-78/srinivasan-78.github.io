@@ -4,10 +4,10 @@
   "author": "Srinivasan Vijayaraghavan",
   "email": "srinivasan.shyam2000@gmail.com",
   "github": "https://github.com/Srinivasan-78",
-  "sealedAt": "2026-11-24T13:27:04.356Z",
-  "fileCount": 94,
-  "digest": "9249ac4a8c94ee19798584c66e1e3778790214bf6ffd714af1f84b838e50eaa7",
-  "proof": "7471a726abe0a6b72942321ddf36803de5f2ec6f5e1534a8050dd0ed48bf2bae",
+  "sealedAt": "2026-11-25T19:44:35.820Z",
+  "fileCount": 92,
+  "digest": "d5eeca35357a3e1d7d77fa4e73d44464fb2037ed30260efb4670e5ef792cbce9",
+  "proof": "84520c7d189702e6afe4b1d9ab5706f88965e16a546604a55bec79699b51948d",
   "files": [
     {
       "path": "AGENTS.md",
@@ -21,8 +21,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "7502cec08d4c1150e2f9eb4fa4b8a2fcee36b4df6293854a742c2860e8e25a24",
-      "bytes": 19678
+      "sha256": "35da69b8d2fe8f98fd43ad26ac3c8fff0004a3a0b8a2af585b9403605b260a3d",
+      "bytes": 24182
     },
     {
       "path": "app\\certifications\\page.tsx",
@@ -365,11 +365,6 @@
       "bytes": 6896
     },
     {
-      "path": "lib\\chat.ts",
-      "sha256": "a23e24fe08340f37df1b9d4b2d69a3eddd9ca7b659d30f0d1c5f9f4fb36dc7e7",
-      "bytes": 1269
-    },
-    {
       "path": "lib\\data\\authorization.ts",
       "sha256": "63fbfc15fd4e89063468f702139ecf0f66f3a56b859844036cc3c707461ed5b5",
       "bytes": 5346
@@ -408,11 +403,6 @@
       "path": "lib\\haptics.ts",
       "sha256": "093f4e79077b9b27d2876f538181d4aac4355cb264f5a69188cc7cf0c531e799",
       "bytes": 2604
-    },
-    {
-      "path": "lib\\knowledge.ts",
-      "sha256": "b0732bfe45b053e78313977f3471f96040c6d602db7d933062dd4dff2ce92f15",
-      "bytes": 32779
     },
     {
       "path": "lib\\nav.ts",
