@@ -6,7 +6,14 @@
 name: Deploy
 
 # One clean pipeline to build and publish the static portfolio to GitHub Pages.
+#
+# `push` makes a merge to main the deploy trigger; workflow_dispatch stays so a
+# publish can still be forced without a commit (a secret rotation, a re-run of a
+# failed deploy). Both land in the same concurrency group, so a manual run and a
+# push cannot race each other onto Pages.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -27,6 +34,13 @@ jobs:
           node-version: 22
 
       - run: npm ci
+
+      # `next build` runs tsc itself, so a type error already fails the build.
+      # Lint did not run anywhere before this, which is the gap: it is the only
+      # check that catches the accessibility and hook rules in
+      # eslint-config-next, and nothing was enforcing them on the way to Pages.
+      - run: npm run lint
+
       - run: npm run build
 
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3

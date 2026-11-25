@@ -167,6 +167,13 @@ should be deleted. The data already supplies these lines; they are not invented.
 `lib/knowledge.ts`, `lib/nav.ts`, all metadata and JSON-LD in `app/layout.tsx`,
 `public/*`, the authormark headers, the CI workflows.
 
+> **Later correction.** `lib/knowledge.ts` and `lib/chat.ts` were kept as this
+> brief instructed, but the `ChatWidget` that read them was dropped — see
+> **Drop**, below — so nothing imported them from that point on. They sat as
+> ~680 lines of orphaned code until they were deleted. Keeping the data for a
+> feature the same document removes was the error; the brief should have moved
+> them to **Drop** too.
+
 **Extract then rebuild:** data currently welded into presentation components
 (`AppleEnterpriseExperience`, `AppleSkillsExperience`, `AppleWorkAuthorization`,
 the home page's `STATS` and `RELEASE_FLOW`) moves to `lib/data/*.ts` as pure data
