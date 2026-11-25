@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​‌​​​‌‌​‌​​​‌​​​‌‌​​​‌‌​‌‌​​‌​​‌​‌‌​​‌‌​​​‌​‌‌​​​​‌​‌‌‌‌​​​​‌‌‌​‌​‌​​‌‌​​‌‌​​‌‌‌​​‌​​‌‌​‌​​​‌‌​​​​‌​‌​‌​‌​‌​‌‌‌‌​‌​​‌‌‌‌​​​​‌​​‌​‌​​‌‌‌​​‌‌​‌‌​​​‌​​‌‌​‌​​​​‌‌​‌‌‌‌​​‌‌‌​​‌⁠
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌​​​​​​‌‌​‌​​​‌​‌‌​​‌​​‌​‌‌​‌​‌‌​‌​​‌​‌​‌‌‌‌‌​‌‌​‌‌‌‌​‌‌​​​​‌​‌​​‌‌‌​​‌‌‌​​​​​‌‌‌​​‌‌​​‌‌‌​​‌​‌​​‌​​‌​‌‌​‌‌‌​​​‌‌​‌​​​‌‌​​‌‌‌​‌‌​‌‌‌​​‌‌​​‌‌‌​‌‌‌​‌‌‌​‌‌​‌‌​​​‌‌​‌‌‌‌​​‌‌‌​​​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Z4F6K1axu394aUzxJsbho9
+ * Fingerprint: AMK1.p4Y-i_oaNps9In4gngwlo8
  */
 
 /* ============================================================
@@ -1637,10 +1637,20 @@ html.js .ticker-track {
   align-items: center;
   gap: 0.5rem;
   padding-inline: 0.5rem;
-  color: var(--c-faint);
+  /* --c-mute, NOT --c-faint, and the token comments are the reason.
+     `--c-faint` is declared "decorative only — never carries text", and
+     this rule was the one place breaking that promise: the glyph
+     overrides to --c-mute and SkillTicker's title span carries
+     `text-mute`, so the inherited colour here reached exactly one thing
+     — the wordmark span in BrandMark, which has no colour class of its
+     own and is text. Measured in a browser at 10px: 3.24:1 on the light
+     ground and 2.84:1 on the dark one, against the 4.5:1 that
+     design-contingency.md says this redesign cannot fail again.
+     --c-mute is 7.3:1 and 6.1:1. */
+  color: var(--c-mute);
 }
 
-/* The marks sit at the faint value at rest and come up to full on
+/* The marks sit at the muted value at rest and come up to full on
    hover of their own row — a logo wall at full contrast would out-shout
    every headline on the page it sits above. */
 .ticker-glyph {

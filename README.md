@@ -1,9 +1,9 @@
 <!--
-  @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​​‌​‌​‌​​​‌‌‌​‌‌​​​‌‌​‌‌​‌​​​​​‌‌​‌‌​​‌‌‌​‌‌‌​‌‌​‌‌‌‌​‌​‌‌‌‌‌​‌​‌​​‌​​‌​​‌‌​‌​‌​​‌‌‌‌​‌​‌​‌‌​​‌​​‌​‌​​‌‌‌‌​​​​‌​‌​‌‌‌​‌‌​‌‌​‌​‌​‌​​​​​‌​​​‌​‌​‌‌​‌​‌​​‌​​​‌‌​​‌‌​​​‌‌​‌‌‌​​​‌⁠
+  @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌‌​​‌​‌​‌‌​​‌‌​​​​‌​‌​‌​‌‌​​‌​‌​‌​​​‌​​​​‌​​‌​​​‌​‌​‌​​​​‌‌​‌‌‌​​‌‌​‌‌​​‌‌​​‌‌​​‌​‌​‌​‌​‌​‌​‌​​‌​​​​​‌‌‌​​​​‌​​​​​‌​‌‌​​‌‌‌​‌​‌​​‌‌​‌‌‌​‌​‌​‌​‌​‌‌‌​‌​​​​‌‌​‌‌​​​‌​​‌‌‌​​‌‌⁠
   Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
   Author: https://github.com/Srinivasan-78
   SPDX-License-Identifier: MIT
-  Fingerprint: AMK1.eGch6wo_RMOVJxWmPEjFcq
+  Fingerprint: AMK1.6VaVTBECsfeUH8AgSuWCbs
 -->
 # srinidevops.com — the whole site, explained
 
@@ -81,25 +81,35 @@ Three things follow from that, and they explain most of this repository:
   web server does. A thousand visitors at once is not a problem to solve.
 - **It costs nothing.** GitHub Pages hosts it free with global edge distribution.
 - **It cannot keep a secret.** Anything shipped to the browser can be read by anyone
-  who looks. So this site holds no secret at all — there is no API key, no server-side
-  code and no third-party service it calls on your behalf. The two outbound
-  connections it can make are both yours to trigger: the contact form, when you
-  submit it, and analytics, only after you accept the cookie notice.
+  who looks. So this site holds no secret at all — there is no API key and no
+  server-side code. It contacts exactly two third parties: Plausible, for a
+  cookieless page count, and Formspree, but only at the moment you submit the
+  contact form.
 
-Here is the whole thing in one picture — four boxes, and two of them are optional:
+Here is the whole thing in one picture — four boxes, and one of them is optional:
 
 ```mermaid
 flowchart LR
     V["🧑 A visitor<br/><i>any browser</i>"]
     GH["☁️ GitHub Pages<br/>Holds the finished files and<br/>hands them over as they are.<br/><b>www.srinidevops.com</b>"]
+    PL["📊 Plausible<br/>Cookieless, aggregate page<br/>counts. Loads on every visit."]
     FS["✉️ Formspree<br/>Emails the contact<br/>form on. Only on submit."]
-    PL["📊 Plausible<br/>Counts visits. Only after<br/>the notice is accepted."]
 
     V -->|"asks for a page"| GH
     GH -->|"sends the files"| V
+    V -->|"page view"| PL
     V -.->|"you click Send"| FS
-    V -.->|"you click Accept"| PL
 ```
+
+**On the privacy notice, precisely.** The band at the bottom of the page is a
+**disclosure, not a consent gate** — and that is a deliberate decision, recorded in
+`components/CookieNotice.tsx`. Its button says "Got it", not "Accept". Nothing is
+withheld until you dismiss it and dismissing it grants nothing: Plausible loads on
+every visit either way. That is defensible *because* of what Plausible is here —
+cookieless, aggregate-only, setting no identifier — and the only thing this site
+writes to your browser is the flag recording that you closed the notice (plus your
+theme choice, if you pick one). If a cookie-setting tool is ever added, the notice has
+to become a real opt-in gate that blocks the script until accepted.
 
 ---
 
@@ -117,7 +127,7 @@ once in `app/layout.tsx`:
 | **Interaction layer** | A click spark and a targeting reticle for a cursor. Renders its children straight through until it has checked pointer type and motion preference. | `components/primitives/InteractionFx.tsx` |
 | **Perf guard** | Samples the framerate the page actually gets, then lowers the effects tier if the boot guess was wrong. Renders nothing; runs for six seconds and disconnects. | `components/primitives/PerfGuard.tsx` |
 | **Footer** | Set as a technical drawing's title block: links, legal, copyright. | `components/Footer.tsx` |
-| **Cookie notice** | A quiet ruled panel. Analytics does not load until it is answered. | `components/CookieNotice.tsx` |
+| **Privacy notice** | A quiet ruled band. A disclosure, not a consent gate — see §2. | `components/CookieNotice.tsx` |
 
 The home page is then six numbered **cases**:
 
@@ -195,7 +205,7 @@ sequenceDiagram
     B->>GH: the styles, the fonts, the code
     GH-->>B: here they are
     B-->>You: the page appears
-    Note over B: Sections reveal as you reach them.<br/>The cookie notice arrives last;<br/>analytics only if you accept it.
+    Note over B: Sections reveal as you reach them.<br/>The privacy notice arrives last.<br/>It discloses; it does not gate.
 ```
 
 The fonts are self-hosted — downloaded from GitHub Pages with everything else, never

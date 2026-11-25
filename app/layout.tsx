@@ -1,9 +1,9 @@
 /*!
- * @authormark v1 -- do not remove (authorship watermark)
+ * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌‌‌​‌​​‌‌​‌​​‌​‌‌​​​​‌​‌​​‌​‌​​‌‌‌​​‌‌​​‌‌​​‌​​‌​​‌‌​​​‌‌​‌​‌​​‌‌​​​‌​​‌​​​‌​‌​‌‌​​​​‌​​‌‌‌​​‌​‌​‌​​​‌​​‌‌​‌‌‌​‌​‌‌​​‌​‌​​‌‌‌‌​‌‌‌‌​​‌​‌‌​​​‌‌​‌‌​‌‌‌‌​‌​​‌​​​​​‌‌‌​​‌​‌‌​​‌‌​⁠
  * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
  * Author: https://github.com/Srinivasan-78
  * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.zIcse4GTuZaDwekD10wIjV
+ * Fingerprint: AMK1.ziaJs2LjbEa9Q7YOycoH9f
  */
 import type { Metadata, Viewport } from "next";
 import {
@@ -344,10 +344,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           stated values in its chrome is not a portfolio, it is a
           template with his name on it.
 
-          The cookie notice stays, because consent before counting is a
-          value rather than a nuisance, and analytics must not load
-          until it is answered. It is restyled as a quiet ruled panel
+          The cookie notice stays, restyled as a quiet ruled panel
           rather than a floating card.
+
+          CORRECTION. This note used to end "and analytics must not
+          load until it is answered". That was never true of the code
+          and is now removed rather than softened: Analytics.tsx has
+          always rendered the Plausible script unconditionally, and
+          CookieNotice.tsx states in its own header that it is a
+          disclosure and not a consent gate — nothing is withheld until
+          it is dismissed, and dismissing it grants nothing. The
+          justification is what Plausible is here: cookieless,
+          aggregate-only, no identifier. Verified in a browser against
+          the live site, which requests the script before the notice is
+          touched. Left uncorrected, this comment is what a reader
+          trusts over the components, and it had already propagated a
+          false claim into the README.
 
           Earlier ambient chrome — a WebGL background field, a cursor
           lens, a scroll-velocity skew driver, a corner clock, an
