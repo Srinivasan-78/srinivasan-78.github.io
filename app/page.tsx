@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​‌​‌‌‌‌​​‌​​‌‌​‌‌‌​‌​‌​​‌​​​‌‌​​‌​​‌‌​‌‌​​​​‌​‌‌​‌​‌‌​‌​‌​​‌‌​​​‌​​‌‌‌‌​​​​‌​​​‌‌​​‌​​‌‌‌‌​‌​​‌​‌‌​‌‌‌​‌​​​​‌‌​‌‌​​‌​​‌​‌​​​‌‌​‌​​​‌‌​‌‌‌‌​‌‌​​​‌​​‌​‌‌‌‌‌​‌​​​‌‌‌​‌​​​‌‌‌⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.iy7R2l-jbxFOKt6J4ob_GG
- */
 import Hero from "@/components/home/Hero";
 import Figures from "@/components/home/Figures";
 import ReleasePath from "@/components/home/ReleasePath";

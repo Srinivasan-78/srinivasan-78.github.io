@@ -1,11 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌​‌​​​‌​‌​​‌‌​‌​​‌‌​​​‌​​‌​‌​​​‌‌​‌​​​​‌‌​​​‌​​‌‌​​​‌​‌​‌‌‌‌‌​‌‌‌‌​​‌​‌​​​​‌‌​​‌‌​​‌‌​‌‌‌​‌‌​​​‌‌​‌​​​‌​‌​‌​‌​‌​‌​​‌​​​‌‌​‌​‌​‌​​‌​​​​‌‌‌​​​​​​‌​‌‌​‌​​‌‌​‌​​​‌‌​​‌‌​​‌‌‌​‌‌​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.TSLJ411_yC3v4UR5Hp-4fv
- */
-
 /* Identity, the numbers, and every page's copy — as data.
 
    The counts are read from the already-clean data modules rather than

@@ -1,11 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌‌​‌​​​​‌‌‌​‌‌​​‌‌​​​​‌​‌​‌​​‌​​‌​‌​​​​​​‌‌​‌‌​​‌​​​‌​‌​‌‌‌​​​​​‌​‌​​‌‌​‌‌​‌‌‌​​‌​​​‌​​​‌​​‌‌​​​​‌‌​‌​​​‌‌‌‌​​​​‌‌‌​‌​​​‌​​​​​‌​‌‌‌‌​​‌​‌​​‌‌​‌​‌​​‌‌‌​​‌​‌​​‌‌​‌​‌​​​​​‌‌​‌​‌​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.hvaRP6EpSnDL4xtAyMNSPj
- */
-
 /* The decorative layers, as components so they are always applied the
    same way: absolutely positioned, pointer-events off, and hidden from
    the accessibility tree.

@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​​​​‌‌‌​​‌​‌​‌​‌​‌​‌​‌​​‌​​‌‌‌​​‌‌​​‌‌​‌‌‌​‌‌‌‌​​​​‌​‌‌​​​​​‌‌‌​​‌​‌​‌‌​‌​​‌‌​​​​‌​‌‌‌‌​​​​‌‌‌​‌​‌​‌‌‌‌​‌​​‌‌‌‌​​​​‌‌‌​​​​​‌‌​​‌‌​​​‌​‌‌​‌​‌​‌​​‌‌​‌‌​‌​​‌​‌​‌​‌​​​‌‌‌​​​‌⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.49URs7xX9Zaxuzxpf-SiTq
- */
 import BatGlyph from "@/components/primitives/BatGlyph";
 import FxBackdrop from "@/components/primitives/FxBackdrop";
 import GlitchHeading from "@/components/primitives/GlitchHeading";

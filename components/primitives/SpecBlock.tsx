@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​‌‌​​‌​​‌‌​‌‌‌​‌​‌​​‌​​‌‌​‌‌​‌​‌​‌‌​‌​​​‌‌‌​​‌​‌​​​​‌​​‌‌‌​‌‌​​‌​​‌‌​​​‌​‌​​‌​​‌​​​​‌​​‌​‌​​‌​​‌​​​‌​‌​‌‌‌‌​‌​​​‌​‌‌​‌​‌​​‌‌‌​​​‌‌​‌‌​​‌​​​​‌‌​‌​​‌‌‌‌​‌‌​‌​​​​‌​​​‌‌​​‌​​‌‌‌​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.Y7RmZ9BvLRBREz-N6COhFN
- */
 /* The spec block — the games register, handled properly.
 
    What a well-designed game actually does is tell you the rules, the

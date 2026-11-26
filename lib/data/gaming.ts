@@ -1,11 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌​‌​‌​‌​​‌​​‌​​‌‌​​‌​​‌​​‌​​​​​‌‌​‌​‌​​‌​‌‌​‌​‌​​​​‌​​‌‌​​‌‌‌​‌‌‌​​‌‌​‌​​​‌‌​​​‌‌​​‌‌​‌​​​‌​​​‌‌‌​​‌​​​‌‌​‌​‌​​‌‌​‌​​​‌‌​​‌​‌​‌​​‌​​​​‌‌​‌​​​​​‌‌​​‌​​‌‌​‌‌‌‌​​‌‌​​​​​​‌‌‌​​​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.5I2H5-BgsF3Dr54eHh2o08
- */
-
 /* The hobby page, as data.
  *
  * REVISION 7 rebuilt this from the ground up on instruction, and what

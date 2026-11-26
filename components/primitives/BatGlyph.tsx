@@ -1,11 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​‌​​‌‌‌​​​‌‌​‌‌‌​​‌‌​‌‌‌​​‌‌​‌​​​‌‌‌​​‌‌​‌‌‌​​‌‌​‌​‌​‌​‌​‌​​​‌​​​‌​‌​​‌‌​‌‌‌‌​​‌​‌‌​​​‌‌​‌‌‌​‌​‌​‌‌‌​​‌‌​​‌‌​​​​​‌‌‌​‌​​​‌​‌‌​​​​​‌‌​​‌‌​‌​‌​‌​​​‌‌​‌​​​​‌​​‌‌‌​​‌‌​​‌​​​‌​​​‌‌​⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.N774ssUDSycus0tX3ThNdF
- */
-
 /* The bat, drawn once.
  *
  * Shared by the route-transition swarm and the skills ticker, so the

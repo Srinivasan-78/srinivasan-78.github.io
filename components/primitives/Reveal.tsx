@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​‌​‌​​​‌​​​​‌‌‌​​​​‌‌​​​‌​​‌‌​​‌‌​​‌‌‌​‌​​​‌‌‌​‌‌‌​‌‌​‌​‌‌​‌‌‌​​‌​​‌‌‌​​​‌​‌‌​​‌​​​‌‌​‌‌‌‌​‌‌​‌‌‌​​‌​‌‌​​​​‌‌‌​​‌​​‌​​‌‌‌‌​​‌‌​​​​​‌‌‌‌​‌​​​‌‌​​‌‌​‌‌‌​​‌‌​‌‌​​​‌​​‌​‌​‌​‌⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.9D8bftwkrqdonXrO0z3sbU
- */
 "use client";
 
 import { useEffect, useRef, type ElementType, type ReactNode } from "react";

@@ -1,10 +1,3 @@
-/*!
- * @authormark v1 -- do not remove (authorship watermark)⁠​​‌‌‌​​​​‌‌​‌‌‌‌​‌‌‌​​‌​​​‌‌​​​​​‌‌‌‌​​​​‌​​​‌​‌​‌​​​‌​​​​‌‌​​‌​​‌‌‌​‌‌‌​‌‌‌‌​​‌​​‌‌‌​​‌​‌‌​‌​‌​​‌​​‌‌​​​‌​​‌​‌‌​‌​​‌​‌​​‌‌‌​‌‌​​‌‌​‌‌‌‌​‌​‌‌​​​​​‌‌​‌‌​​‌‌​​‌​​​‌‌​​‌​​​‌​‌​​‌‌⁠
- * Copyright (c) 2026 Srinivasan Vijayaraghavan <srinivasan.shyam2000@gmail.com>
- * Author: https://github.com/Srinivasan-78
- * SPDX-License-Identifier: MIT
- * Fingerprint: AMK1.8or0xED2wy9jLKJvoX6ddS
- */
 /* Generate lib/data/brandPaths.ts — the ticker's glyph geometry.
  *
  * WHY A GENERATOR RATHER THAN RUNTIME EXTRACTION. react-icons exposes
