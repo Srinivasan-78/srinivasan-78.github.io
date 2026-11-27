@@ -1,6 +1,5 @@
 import CountUp from "@/components/primitives/CountUp";
 import Reveal from "@/components/primitives/Reveal";
-import Spotlight from "@/components/primitives/Spotlight";
 import CaseHead from "./CaseHead";
 import { STATS } from "@/lib/data/profile";
 
