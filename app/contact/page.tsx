@@ -1,7 +1,6 @@
 import ContactForm from "@/components/ContactForm";
 import CopyEmailCard from "@/components/CopyEmailCard";
 import Icon from "@/components/primitives/Icon";
-import Reveal from "@/components/primitives/Reveal";
 import SectionHead from "@/components/primitives/SectionHead";
 import FxBackdrop from "@/components/primitives/FxBackdrop";
 import { SignalBeam } from "@/components/primitives/Texture";
