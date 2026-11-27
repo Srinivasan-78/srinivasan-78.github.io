@@ -51,49 +51,53 @@ import {
 export default function GameBoard() {
   return (
     <section className="relative">
-      {/* The one overtly retro-game field in the set, held low and
-          masked so it reads as tooth on the surface rather than as a
-          panel — see rule five in FxBackdrop. */}
-      <FxBackdrop
-        kind="dither"
-        opacity={0.22}
-        props={{
-          waveSpeed: 0.018,
-          waveFrequency: 2.6,
-          waveAmplitude: 0.26,
-          colorNum: 3,
-          pixelSize: 3,
-          enableMouseInteraction: true,
-          mouseRadius: 0.35,
-          backgroundColor: "transparent",
-        }}
-        lightProps={{ waveColor: "#bfbfbb" }}
-        darkProps={{ waveColor: "#3d3d3b" }}
-      />
-      <Halftone />
-
       <div className="relative mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
-        <header className="mb-7 sm:mb-9">
-          <div className="mb-5 flex items-center gap-4">
-            <span className="t-anno-sm shrink-0 text-mute">04 / 05</span>
-            <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-            <span className="t-anno shrink-0 text-mute">
-              {GAMING_COPY.eyebrow}
-            </span>
-          </div>
-
-          {/* Glitch rather than the x-ray the other page heads use:
-              this is the games page, and RGB-split is the native idiom
-              of the medium it is about. */}
-          <GlitchHeading
-            as="h1"
-            text={GAMING_COPY.heading}
-            className="t-display-xl max-w-[20ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[4rem]"
+        <header className="relative mb-7 overflow-hidden sm:mb-9">
+          {/* Keep the WebGL dither field and halftone scoped to the header,
+              so scrolling through 219 games doesn't keep a 3000px-tall
+              shader canvas + masked compositor layers alive. */}
+          <Halftone className="shard" />
+          <FxBackdrop
+            kind="dither"
+            opacity={0.22}
+            props={{
+              waveSpeed: 0.018,
+              waveFrequency: 2.6,
+              waveAmplitude: 0.26,
+              colorNum: 3,
+              pixelSize: 3,
+              enableMouseInteraction: false,
+              clickRipple: false,
+              trail: 0,
+              intro: false,
+              backgroundColor: "transparent",
+            }}
+            lightProps={{ waveColor: "#bfbfbb" }}
+            darkProps={{ waveColor: "#3d3d3b" }}
           />
 
-          <p className="t-prose mt-6 text-[0.9375rem] leading-relaxed text-mute sm:text-base">
-            {GAMING_COPY.body}
-          </p>
+          <div className="relative">
+            <div className="mb-5 flex items-center gap-4">
+              <span className="t-anno-sm shrink-0 text-mute">04 / 05</span>
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span className="t-anno shrink-0 text-mute">
+                {GAMING_COPY.eyebrow}
+              </span>
+            </div>
+
+            {/* Glitch rather than the x-ray the other page heads use:
+                this is the games page, and RGB-split is the native idiom
+                of the medium it is about. */}
+            <GlitchHeading
+              as="h1"
+              text={GAMING_COPY.heading}
+              className="t-display-xl max-w-[20ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[4rem]"
+            />
+
+            <p className="t-prose mt-6 text-[0.9375rem] leading-relaxed text-mute sm:text-base">
+              {GAMING_COPY.body}
+            </p>
+          </div>
         </header>
 
         {/* Favourites, above both the pursuits and the library: this
@@ -183,38 +187,32 @@ export default function GameBoard() {
         </div>
 
         <ul className="divide-y divide-rule border-y border-rule">
-          {BY_GENRE.map((segment, i) => (
-            <li key={segment.id} id={segment.id}>
-              <Reveal
-                effect="wipe"
-                delay={Math.min(i, 8) * 35}
-                className="py-6"
-              >
-                <div className="mb-3 flex items-baseline gap-3">
-                  <h3 className="t-poster text-[1.375rem] leading-none text-body">
-                    {segment.genre}
-                  </h3>
-                  <span className="t-anno-sm shrink-0 text-mute">
-                    {segment.titles.length}
-                  </span>
-                </div>
+          {BY_GENRE.map((segment) => (
+            <li key={segment.id} id={segment.id} className="hobby-segment py-6">
+              <div className="mb-3 flex items-baseline gap-3">
+                <h3 className="t-poster text-[1.375rem] leading-none text-body">
+                  {segment.genre}
+                </h3>
+                <span className="t-anno-sm shrink-0 text-mute">
+                  {segment.titles.length}
+                </span>
+              </div>
 
-                {/* A credit block. One run of names with a hairline
-                    between them rather than a grid — a grid would
-                    impose a reading order on games that have none. */}
-                <ul className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                  {segment.titles.map((title, t) => (
-                    <li key={title} className="flex items-center gap-3">
-                      {t > 0 && (
-                        <span aria-hidden="true" className="h-3 w-px bg-rule" />
-                      )}
-                      <span className="t-poster text-[1.0625rem] leading-none text-mute">
-                        {title}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
+              {/* A credit block. One run of names with a hairline
+                  between them rather than a grid — a grid would
+                  impose a reading order on games that have none. */}
+              <ul className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                {segment.titles.map((title, t) => (
+                  <li key={title} className="flex items-center gap-3">
+                    {t > 0 && (
+                      <span aria-hidden="true" className="h-3 w-px bg-rule" />
+                    )}
+                    <span className="t-poster text-[1.0625rem] leading-none text-mute">
+                      {title}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </li>
           ))}
         </ul>

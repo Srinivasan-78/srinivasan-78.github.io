@@ -472,10 +472,10 @@ export const SKILL_DOMAINS: DomainCluster[] = [
         name: "S/MIME Commit Signing",
         category: "Security & Compliance",
         role: "Provenance",
-        productionContext: "Signs commits with S/MIME so authorship is verifiable at the repository level, alongside keyed authorship watermarking enforced in CI across his own repositories.",
-        highlight: "Provenance that holds up to inspection rather than resting on a username.",
+        productionContext: "Signs commits with S/MIME so authorship is verifiable at the repository level, alongside automated cross-repo security, secret, and DevSecOps auditing via authormark-watch.",
+        highlight: "Provenance and security gates that hold up to inspection rather than resting on a username.",
         tenure: "Active practice",
-        project: { slug: "authormark-watch", title: "Master Bot & Repository Supervisor" },
+        project: { slug: "authormark-watch", title: "authormark-watch" },
       },
       {
         name: "Vulnerability Scanning",

@@ -419,9 +419,15 @@ export default function FxBackdrop({
 
     const measure = () => {
       frame = 0;
-      /* The long edge, not the width: a tall narrow viewport still has
-         a backing store as large as the side it is long on. */
-      const edge = Math.max(window.innerWidth, window.innerHeight);
+      /* The long edge of either the viewport or the host container, so
+         a tall section cannot blow past the pixel budget. */
+      const el = host.current;
+      const edge = Math.max(
+        window.innerWidth,
+        window.innerHeight,
+        el?.clientWidth ?? 0,
+        el?.clientHeight ?? 0
+      );
       const device = window.devicePixelRatio || 1;
       /* Never UP. On a small window `PIXEL_BUDGET / edge` exceeds 1 and
          would ask for a backing store larger than the device can show,

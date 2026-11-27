@@ -91,8 +91,8 @@ export default function CookieNotice() {
         <div className="min-w-0 flex-1">
           <div className="t-anno text-mute">Privacy</div>
           <p className="t-prose mt-1.5 text-[0.875rem] leading-relaxed text-mute">
-            Your privacy is safe here. Analytics is cookieless and aggregate, and the only thing
-            kept in your browser is the fact that you closed this notice.{" "}
+            Your privacy is safe here. Analytics is cookieless and aggregate, and only local UI
+            preferences are kept in your browser.{" "}
             <Link className="link" href="/privacy">
               Read the privacy policy
             </Link>

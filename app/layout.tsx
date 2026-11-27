@@ -249,6 +249,8 @@ const jsonLd = {
         "Red Hat Enterprise Linux",
         "Ubuntu",
         "Python",
+        "Rust",
+        "AdonisJS",
         "Bash",
         "PowerShell",
         "C#",

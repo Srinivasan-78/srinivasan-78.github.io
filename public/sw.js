@@ -7,7 +7,7 @@
  * 3. Works offline and survives terrible/in-flight Wi-Fi gracefully.
  */
 
-const CACHE_NAME = 'sv-swr-v1';
+const CACHE_NAME = 'sv-swr-v2';
 const PRECACHE_URLS = [
   '/',
   '/projects',
@@ -77,6 +77,7 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname === '/devshed' || url.pathname.startsWith('/devshed/')) return;
 
   // Stale-While-Revalidate for HTML page navigations
   if (req.mode === 'navigate') {

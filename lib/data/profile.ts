@@ -268,7 +268,7 @@ export const CERTIFICATIONS_COPY = {
   metaDescription: `${CERTS.length} verified credentials across cloud platforms, automation, infrastructure as code and observability.`,
   eyebrow: "Continuous Learning & Verification",
   heading: "Certifications & verified skills.",
-  body: "24 verified industry credentials covering cloud platforms (AWS & Azure), automation (Ansible & IaC), Linux systems, and observability. Every credential links to its official permanent verification ID.",
+  body: `${CERTS.length} verified industry credentials covering cloud platforms (AWS & Azure), automation (Ansible & IaC), Linux systems, and observability. Every credential links to its official permanent verification ID.`,
   /* The years the timeline strip counts, in the order it reads them. */
   timelineYears: ["2026", "2025", "2023", "2021"],
   verifiedStrip: "100% Issuer Verified",
@@ -284,7 +284,7 @@ export const CERTIFICATIONS_COPY = {
   emptyBody: "Try searching for “Azure”, “Ansible”, “Chef”, or “Puppet”.",
   emptyReset: "Reset Filters",
   footerNote:
-    "All 24 certifications are official credentials issued by LinkedIn Learning and verified with permanent certificate IDs.",
+    `All ${CERTS.length} certifications are official credentials issued by LinkedIn Learning and verified with permanent certificate IDs.`,
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -555,13 +555,21 @@ export const PRIVACY_COPY = {
     {
       heading: "What the site stores in your browser",
       paragraphs: [
-        "The site sets no tracking cookies and no advertising cookies. It uses one entry of browser localStorage:",
-        "Your browser keeps it locally, and you can clear it any time through its site-data settings. It stays on your own device.",
+        "The site sets no tracking cookies and no advertising cookies. It keeps only lightweight UI preferences and tab state on your own device:",
+        "Your browser keeps these locally, and you can clear them any time through its site-data settings. Nothing here identifies you or leaves your device.",
       ],
       bullets: [
         {
-          label: "Notice dismissal",
+          label: "Notice dismissal (localStorage)",
           text: "remembers that you closed the privacy notice, so it is not shown on every page.",
+        },
+        {
+          label: "Theme & effects tier (localStorage)",
+          text: "remembers your light/dark palette choice and, for seven days, any automatic frame-rate step-down.",
+        },
+        {
+          label: "Search & form draft (sessionStorage)",
+          text: "keeps your active project filter and unsent contact message for the current tab session.",
         },
       ],
     },

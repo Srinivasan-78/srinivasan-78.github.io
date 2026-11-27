@@ -2387,6 +2387,11 @@ html.js .reveal[data-shown="true"] {
   border-radius: 4px;
 }
 
+.hobby-segment {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 140px;
+}
+
 @media print {
   .no-print {
     display: none !important;

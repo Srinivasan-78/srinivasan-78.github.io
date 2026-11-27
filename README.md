@@ -115,7 +115,7 @@ once in `app/layout.tsx`:
 | --- | --- | --- |
 | **Boot script** | A few lines that run before the first pixel is drawn: sets the theme and guesses an effects tier from platform hints. | `components/BootScript.tsx` |
 | **Header** | The site name, five numbered destinations, and the light/dark switch. Sticks to the top as you scroll. | `components/Nav.tsx` |
-| **Skills ticker** | Thirty-nine tool marks in continuous rotation, directly under the header. Deliberately *not* links. | `components/SkillTicker.tsx` |
+| **Skills ticker** | Forty tool marks in continuous rotation, directly under the header. Deliberately *not* links. | `components/SkillTicker.tsx` |
 | **Bat ground** | One large mark, fixed behind every page, furthest back in the stack. | `components/primitives/BatGround.tsx` |
 | **Interaction layer** | A click spark and a targeting reticle for a cursor. Renders its children straight through until it has checked pointer type and motion preference. | `components/primitives/InteractionFx.tsx` |
 | **Perf guard** | Samples the framerate the page actually gets, then lowers the effects tier if the boot guess was wrong. Renders nothing; runs for six seconds and disconnects. | `components/primitives/PerfGuard.tsx` |
@@ -129,8 +129,8 @@ The home page is then six numbered **cases**:
 | — | **Hero** | The name, the role, and one sentence. `components/home/Hero.tsx` |
 | 01 | **Figures** | Six counted figures, set as a scoreboard. None of them is typed by hand. `components/home/Figures.tsx` |
 | 02 | **Release path** | The release flow and its rollback path, drawn from real deployment data. `components/home/ReleasePath.tsx` |
-| 03 | **Loadout** | Seven engineering domains, 47 skills, selectable. `components/home/Loadout.tsx` |
-| 04 | **Initiatives** | Twenty enterprise initiatives across Thomson Reuters and Granite River Labs. `components/home/Initiatives.tsx` |
+| 03 | **Loadout** | Seven engineering domains, 48 skills, selectable. `components/home/Loadout.tsx` |
+| 04 | **Initiatives** | Twenty-one enterprise initiatives across Thomson Reuters and Granite River Labs. `components/home/Initiatives.tsx` |
 | 05 | **Clearance** | Work authorization, with live synchronized clocks for EST, IST and UTC. `components/home/Clearance.tsx` |
 
 Two things deserve a note:
@@ -211,8 +211,7 @@ fetched from an external font service. There are four, each with one job:
 - **Inter Tight** — the prose, because the prose here is genuinely long.
 - **JetBrains Mono** — annotation only: labels, case numbers, the contingency line.
 
-The stylesheet is also inlined into each page at build time
-(`experimental.inlineCss`), so the first paint needs no second request.
+The compiled stylesheet is emitted as a single shared static asset and cached across every route.
 
 ---
 
@@ -244,8 +243,8 @@ data, no JSX, no icon imports:
 - `lib/certs.ts` — 24 verified credentials, plus the rows they group into.
 - `lib/nav.ts` — the canonical routes, shared by the desktop header and the mobile panel.
 - `lib/data/profile.ts` — identity, page copy, the six figures, contact channels, legal.
-- `lib/data/experience.ts` — 20 initiatives, tenure, companies.
-- `lib/data/skills.ts` — 7 domains / 47 skills, and the tooling strip.
+- `lib/data/experience.ts` — 21 initiatives, tenure, companies.
+- `lib/data/skills.ts` — 7 domains / 48 skills, and the tooling strip.
 - `lib/data/authorization.ts` — 3 regions, their clocks, the notice.
 - `lib/data/pipeline.ts` — the release flow and the rollback path.
 - `lib/data/gaming.ts` — the games shelf, by genre.
@@ -412,9 +411,8 @@ lib/                        Datasets and shared utilities — no JSX, no icon im
 public/                     Icons, résumé PDF, OG image, bat sprites, CNAME,
                             sw.js (service worker), _headers (edge headers)
 scripts/                    gen-brand-paths · make-brand-assets  (asset generators)
-.authormark/                Authorship watermark tooling — see AGENTS.md
 docs/                       deployment-headers · design-contingency · redesign-todo
-.github/workflows/          deploy · authormark · dependency-review · provenance
+.github/workflows/          deploy · dependency-review · provenance · secret-scan
                             dependabot-automerge
 ```
 
@@ -461,14 +459,8 @@ npm run typecheck    # tsc --noEmit, strict
 npm run build        # static export into out/
 ```
 
-Two things to know before you edit:
+One thing to know before you edit:
 
-- **Every source file starts with an `@authormark` block.** It is a watermark, not
-  boilerplate, and it must never be deleted or moved. Editing a file makes its
-  fingerprint stale, which is expected — refresh the tree with
-  `node .authormark/authormark.mjs stamp . --zw` and re-seal with
-  `node .authormark/authormark.mjs seal` before committing. CI fails on a missing
-  watermark. See `AGENTS.md`.
 - **This Next.js has breaking changes from what you may remember.** Read the relevant
   guide in `node_modules/next/dist/docs/` before writing code against it.
 

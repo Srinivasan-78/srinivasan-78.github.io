@@ -21,9 +21,9 @@ export type Project = {
   overview: string;
   architecture: { label: string; body: string }[];
   highlights: string[];
-  /* The live, running build, when there is one. Every deployed project is
-     served from the same domain as this site under its repository name
-     (srinidevops.com/<Repo>/), so the index can offer a one-click route to
+  /* The live, running build, when there is one. Deployed tools live
+     under the DevShed GitHub Pages suite (srinidevops.com/devshed/...)
+     or on their own domain, so the index can offer a one-click route to
      the real thing instead of making a visitor read the write-up first to
      find it. Only URLs verified to answer 200 belong here. */
   demo?: string;
@@ -76,10 +76,10 @@ export const PROJECTS: Project[] = [
       "A failed build never becomes an outage, because nothing is torn down before the swap",
       "Every tunable lives in one group_vars file, with secrets kept separate",
     ],
-    demo: "https://www.srinidevops.com/self-healing-deployment/",
+    demo: "https://srinidevops.com/devshed/self-healing-deployment/dashboard/",
     links: [
-      { url: "https://www.srinidevops.com/self-healing-deployment/", label: "Open demo ↗" },
-      { url: "https://github.com/Srinivasan-78/self-healing-deployment", label: "Source ↗" },
+      { url: "https://srinidevops.com/devshed/self-healing-deployment/dashboard/", label: "Open demo ↗" },
+      { url: "https://github.com/Srinivasan-78/devshed/tree/main/self-healing-deployment", label: "Source ↗" },
     ],
   },
   {
@@ -127,10 +127,10 @@ export const PROJECTS: Project[] = [
       "Click position is flipped and unscaled from screen pixels to PDF points",
       "The one tool that needs a server says so, rather than quietly uploading your file",
     ],
-    demo: "https://www.srinidevops.com/browser-pdf-tools/",
+    demo: "https://srinidevops.com/devshed/browser-pdf-tools/",
     links: [
-      { url: "https://www.srinidevops.com/browser-pdf-tools/", label: "Open tool ↗" },
-      { url: "https://github.com/Srinivasan-78/browser-pdf-tools", label: "Source ↗" },
+      { url: "https://srinidevops.com/devshed/browser-pdf-tools/", label: "Open tool ↗" },
+      { url: "https://github.com/Srinivasan-78/devshed/tree/main/browser-pdf-tools", label: "Source ↗" },
     ],
   },
   {
@@ -230,7 +230,10 @@ export const PROJECTS: Project[] = [
       "Cloud credentials encrypted at rest with Fernet and never exposed",
       "Honest about its edges: Azure and Oracle modules are stubs, and state locking is local",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/multicloud-free-tier", label: "View repo ↗" }],
+    links: [
+      { url: "https://srinidevops.com/devshed/panels/multicloud.html", label: "Open panel ↗" },
+      { url: "https://github.com/Srinivasan-78/devshed/tree/main/multicloud-free-tier", label: "View repo ↗" },
+    ],
   },
   {
     slug: "multi-ai-toolkit",
@@ -291,7 +294,7 @@ export const PROJECTS: Project[] = [
       "A GraphRAG engine and MCP server that hands an AI agent the right code — cited, budget-capped, and nothing else.",
     tags: ["MCP server", "GraphRAG", "Token budget"],
     stack: [
-      "Python 3.10+",
+      "Python 3.11+",
       "MCP (stdio + HTTP)",
       "LLM / GraphRAG",
       "tree-sitter",
@@ -419,7 +422,7 @@ export const PROJECTS: Project[] = [
       "Fourteen of the fifteen skills are now vendored into Pennywright, where a router decides which one fires",
     ],
     links: [
-      { url: "https://github.com/Srinivasan-78/tokenmiser", label: "View repo \u2197" },
+      { url: "https://github.com/Srinivasan-78/pennywright/tree/main/tokenmiser", label: "View vendored source \u2197" },
       { url: "https://github.com/Srinivasan-78/pennywright", label: "Pennywright \u2197" },
     ],
   },
@@ -432,7 +435,7 @@ export const PROJECTS: Project[] = [
     teaser:
       "One front door for a coding agent: it reads what you asked for, works out what kind of work it is, and hands it to the right tool on the belt.",
     tags: ["Claude Code", "Subagents", "Token cost"],
-    stack: ["Claude Code skills", "Codex agents", "Node.js", "Python", "Bash", "Markdown", "TOML"],
+    stack: ["Claude Code skills", "Codex agents", "Rust", "Node.js", "Python", "Bash", "Markdown", "TOML"],
     overview:
       "A utility belt for coding agents, grown out of the seven-phase build loop that started it. `/penny` is the only command you need day to day: it classifies a request from the prompt alone \u2014 no file reads, so routing is effectively free \u2014 and sends it down one of seven lanes, to a build loop, a five-member council, a bounded scout, or just does it when the request is smaller than the ceremony. Underneath sits one principle: an expensive brain plans, cheap hands do the work, and the verbose middle never reaches your context. Work is handed to a subagent whose context is discarded when it finishes, so a phase that burned 40k tokens exploring a codebase costs the main session about fifty. The same repo drives Claude Code and Codex.",
     architecture: [
@@ -478,7 +481,7 @@ export const PROJECTS: Project[] = [
       },
       {
         label: "Measured, not assumed",
-        body: "A context report totals the always-on load and a bench script reads the usage already written to the session logs, deduplicated by request id because Claude Code writes several lines per reply. Comparisons are per-turn rather than total, since a harder task honestly costs more. Cache read share below ~80% means something is mutating the prompt prefix, and model routing is irrelevant until that is fixed.",
+        body: "A compiled Rust CLI (`pennywright-context` in `rust-cli/`) totals the always-on session load, and a bench script reads usage already written to the session logs, deduplicated by request id because Claude Code writes several lines per reply. Comparisons are per-turn rather than total, since a harder task honestly costs more. Cache read share below ~80% means something is mutating the prompt prefix, and model routing is irrelevant until that is fixed.",
       },
       {
         label: "Diagnosis that reports rather than fixes",
@@ -494,64 +497,59 @@ export const PROJECTS: Project[] = [
       "Filtered commands keep the real exit status, so a suppressed failure can never read as a pass",
       "No subagent runs on Opus \u2014 two failed Sonnet attempts still cost less than one Opus subagent on a cold context",
       "Anything expensive to get wrong \u2014 schema migrations, auth, money movement, data deletion \u2014 is explicitly not delegated to a cheap tier",
-      "Honest about its own cost: 18 skills advertise roughly 1.8k tokens every session, and a council spends more than deciding alone",
+      "Honest about its own cost: 31 skills (router, build loop, tokenmiser, Ponytail, Anti-Slop, Playwright) advertise always-on frontmatter tokens measured by pennywright-context, and a council spends more than deciding alone",
       "One repo drives both Claude Code and Codex: 14 agents mirrored as Codex TOML, with both model and effort pinned so neither half inherits an expensive default",
       "A maintainer audit script checks tier agreement, agent bounds, Codex pin pairing and dangling reference paths before a commit",
     ],
     links: [
       { url: "https://github.com/Srinivasan-78/pennywright", label: "View repo \u2197" },
-      { url: "https://github.com/Srinivasan-78/tokenmiser", label: "tokenmiser (vendored) \u2197" },
     ],
   },
   {
     slug: "authormark-watch",
-    title: "Master Bot & Repository Supervisor",
+    title: "authormark-watch",
     client: "Platform engineering",
-    category: "Provenance & Automation",
+    category: "DevSecOps & Automation",
     status: "Active",
     teaser:
-      "A centralized Master Bot that supervises, secures, watermarks, and auto-triages every repository across the GitHub account.",
-    tags: ["Supervisor Bot", "Provenance", "Actions"],
-    stack: ["Node.js", "GitHub Actions", "REST API", "HMAC SHA-256", "Bash", "GitHub CLI"],
+      "Cross-repo Rust security scanner, 15-category DevSecOps auditor, SHA-pinned PR transformer, and HMAC-SHA256 webhook server.",
+    tags: ["Rust", "DevSecOps", "OSV / Secrets"],
+    stack: ["Rust", "GitHub Actions", "OSV API", "REST API", "HMAC SHA-256", "reqwest", "clap"],
     overview:
-      "A centralized Master Bot and supervisor that continuously audits, maintains, and enforces repository standards across every repo in the account. Beyond checking for valid @authormark watermarks and tamper-evident HMAC fingerprints, it acts as an autonomous repo maintainer: auto-fixing unmarked files via isolated pull requests, scanning for exposed tokens and secrets, detecting dirty pycache/build artifacts, validating licensing and manifest hygiene, automatically calculating PR size tags (XS through XL), and triaging incoming issues. Operating as an external supervisor, it can never be bypassed or tampered with from inside the repository under test.",
+      "A compiled Rust v3.0.0 CLI and supervisor that continuously audits, secures, and standardizes every repository across the GitHub account. It combines static lockfile CVE scanning against OSV, secret and git-history leak detection, GitHub Actions workflow security auditing, a 15-category engineering scorecard, and a stack-aware PR transformer that opens pull requests with SHA-pinned CI workflows, CodeQL, Dependabot, and governance files. It also ships CI-gated Dependabot auto-merge, snapshot diffing, and an HMAC-SHA256 verified webhook listener.",
     architecture: [
       {
-        label: "Checked from outside",
-        body: "Runs standalone supervisor logic outside target repositories, ensuring a tampered workflow or compromised repository configuration cannot falsely declare itself clean.",
+        label: "External cross-repo supervisor",
+        body: "Runs standalone outside target repositories (`cargo run` / `watch.sh`), auditing every active repo from the outside so a misconfigured workflow inside a repo can never suppress its own findings.",
       },
       {
-        label: "Automated Fix PRs",
-        body: "In fix mode, checks out an isolated authormark branch, stamps unmarked or drifted source files with keyed HMAC signatures, and opens a clean, automated pull request without touching the default branch.",
+        label: "Static dependency CVE checks via OSV",
+        body: "Parses `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `requirements*.txt`, `poetry.lock`, `uv.lock`, `go.mod`, and `Cargo.lock`, then batch-queries `api.osv.dev` for known advisories without running untrusted build scripts.",
       },
       {
-        label: "Secret & hygiene scanning",
-        body: "Scans commits and trees for leaked PATs, cloud API keys, AWS credentials, JWT tokens, committed .env files, and tracked metadata artifacts before they become liabilities.",
+        label: "Secret, history & workflow scanning",
+        body: "Walks tracked files, `.env*` files, and `git log` history for exposed PATs, cloud API keys, private keys, webhooks, and JWTs, while flagging `pull_request_target` head checkouts, unpinned action refs, `write-all` permissions, and script injection.",
       },
       {
-        label: "Automated PR tagging",
-        body: "Calculates line-change deltas to assign size badges (size/XS to size/XL), detects language footprints, and classifies pull request types (type/feat, type/fix, type/ci) with pre-provisioned label palettes.",
+        label: "15-category DevSecOps auditor & PR transformer",
+        body: "Detects each repo's stack and scores 15 engineering categories (CI/CD, CodeQL, SAST, Secret Scanning, Dependency & Supply-Chain Security, Testing, Governance). In transform mode it opens/updates `chore/authormark-engineering-standards` PRs with SHA-pinned templates and optional Gemini AI insights.",
       },
       {
-        label: "Issue classification & triage",
-        body: "Analyzes issue context, keywords, and priority signals to assign severity and category labels automatically, ensuring new issues are categorized on arrival.",
+        label: "CI-gated Dependabot automation",
+        body: "Evaluates open Dependabot PRs against CI check status and repository rules, auto-merging clean updates via configurable merge methods while leaving failing or unverified bumps untouched.",
       },
       {
-        label: "Consolidated status dashboard",
-        body: "All account-wide findings are consolidated into a single GitHub issue that updates in place each day and closes automatically once every repo passes, preventing alert fatigue.",
-      },
-      {
-        label: "Reusable Composite Action",
-        body: "Provides Srinivasan-78/authormark-watch@main, a reusable GitHub Action that external workflows invoke with zero setup to verify watermarks or enforce repository security gates on CI.",
+        label: "Consolidated dashboard & HMAC webhook server",
+        body: "Writes central `reports/PORTFOLIO_REPORT.md` snapshots with diff tracking, updates a single persistent GitHub dashboard issue in place to avoid alert fatigue, and provides an HMAC-SHA256 verified webhook subcommand (`authormark-watch webhook`).",
       },
     ],
     highlights: [
-      "Autonomous fix mode opens ready-to-merge pull requests with intact watermarks",
-      "Full secret scanner catches exposed tokens and private keys across all branches",
-      "Automated PR size and category labeler maintains clean review queues across repos",
-      "Reusable composite action enables one-line integration across any repository",
-      "Single persistent status issue prevents alert fatigue by updating in place",
-      "Zero third-party dependencies: built with pure Node.js standard libraries and GitHub APIs",
+      "Compiled Rust binary (v3.0.0) with zero runtime dependencies and static CVE checks via OSV",
+      "Full secret scanner catches exposed tokens, JWTs, and private keys across tracked trees and git history",
+      "15-category DevSecOps scorecard generates stack-aware PRs with SHA-pinned GitHub Actions",
+      "Audits workflows for unpinned actions, pull_request_target risks, write-all permissions, and script injection",
+      "Single persistent status issue and central Markdown report prevent alert fatigue across repos",
+      "Includes CI-gated Dependabot auto-merge, optional Gemini insights, and an HMAC-SHA256 webhook listener",
     ],
     links: [
       { url: "https://github.com/Srinivasan-78/authormark-watch", label: "View repo ↗" },
@@ -566,9 +564,9 @@ export const PROJECTS: Project[] = [
     teaser:
       "An offline-first knowledge and education server: Wikipedia, courses, maps, local AI and RAG, with the internet unplugged.",
     tags: ["Offline-first", "Docker", "Self-hosted"],
-    stack: ["Docker", "Kiwix", "Ollama", "Qdrant", "Kolibri", "ProtoMaps", "Node.js"],
+    stack: ["TypeScript", "AdonisJS", "React", "Rust", "Docker", "Kiwix", "Ollama", "Qdrant"],
     overview:
-      "A self-contained knowledge and education server, built as a derivative of Crosstalk Solutions' Project NOMAD under Apache-2.0 and rebranded so none of the upstream marks are reused. A management UI called the Command Center installs, configures and updates a set of containerised tools — offline Wikipedia and reference libraries through Kiwix, Khan Academy courses through Kolibri, regional maps through ProtoMaps, a data workbench through CyberChef, local notes, and a local AI chat with document upload and semantic search over Ollama and Qdrant. An internet connection is needed only during install and when you choose to pull new content; after that there is zero telemetry and nothing leaves the box.",
+      "A self-contained knowledge and education server, built as a derivative of Crosstalk Solutions' Project NOMAD under Apache-2.0 and rebranded so none of the upstream marks are reused. A TypeScript AdonisJS/Inertia/React Command Center — backed by a static Rust `cairn-disk-collector` sidecar — installs, configures and updates a set of containerised tools: offline Wikipedia and reference libraries through Kiwix, Khan Academy courses through Kolibri, regional maps through ProtoMaps, a data workbench through CyberChef, local notes, and a local AI chat with document upload and semantic search over Ollama and Qdrant. An internet connection is needed only during install and when you choose to pull new content; after that there is zero telemetry and nothing leaves the box.",
     architecture: [
       {
         label: "Command Center over Docker",
@@ -642,7 +640,7 @@ export const PROJECTS: Project[] = [
       "Runs on ordinary homelab hardware",
       "One command starts the whole stack",
     ],
-    /* No public link — https://github.com/Srinivasan-78/kiwix-homelab is private. */
+    /* No public link — consolidated inside the private personal-tools repository. */
     links: [],
   },
   {
@@ -680,7 +678,7 @@ export const PROJECTS: Project[] = [
       "Windows and Linux packaging in one set of templates",
       "Artifact cleanup is part of the pipeline itself",
     ],
-    /* No public link — https://github.com/Srinivasan-78/github-actions-snippets is private. */
+    /* No public link — consolidated inside the private devops-toolkit repository. */
     links: [],
   },
   {
@@ -728,10 +726,10 @@ export const PROJECTS: Project[] = [
       "One merged file when you want to paste a whole document set into a model",
       "A header on every output and a manifest, so any sentence traces back to its source",
     ],
-    demo: "https://www.srinidevops.com/doc2md-action/",
+    demo: "https://srinidevops.com/devshed/doc2md-action/site/",
     links: [
-      { url: "https://www.srinidevops.com/doc2md-action/", label: "Convert a file \u2197" },
-      { url: "https://github.com/Srinivasan-78/doc2md-action", label: "View repo \u2197" },
+      { url: "https://srinidevops.com/devshed/doc2md-action/site/", label: "Convert a file \u2197" },
+      { url: "https://github.com/Srinivasan-78/devshed/tree/main/doc2md-action", label: "View repo \u2197" },
     ],
   },
   {
@@ -764,7 +762,7 @@ export const PROJECTS: Project[] = [
       "Upgrade path is right from the first release",
       "Drops into any MSBuild desktop project",
     ],
-    /* No public link — https://github.com/Srinivasan-78/wix-installer-template is private. */
+    /* No public link — consolidated inside the private devops-toolkit repository. */
     links: [],
   },
   {
@@ -811,7 +809,10 @@ export const PROJECTS: Project[] = [
       "Caption timing pays for the silences, so it stays locked to the voice",
       "Typed workflow input never reaches the shell: passed as an environment variable and pattern-checked",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/study-brainrot-generator", label: "View repo ↗" }],
+    links: [
+      { url: "https://srinidevops.com/devshed/panels/brainrot.html", label: "Open panel ↗" },
+      { url: "https://github.com/Srinivasan-78/devshed/tree/main/study-brainrot-generator", label: "View repo ↗" },
+    ],
   },
   {
     slug: "minecraft-server-setup",
@@ -862,7 +863,10 @@ export const PROJECTS: Project[] = [
       "Nothing GitHub-specific is installed on the host: any Debian-family box you can SSH into works",
       "Honest about the trade: port 22 must stay open to the internet because runners have no fixed IPs, and push access to main is effectively root",
     ],
-    links: [{ url: "https://github.com/Srinivasan-78/minecraft-server-gitops", label: "View repo ↗" }],
+    links: [
+      { url: "https://srinidevops.com/devshed/panels/minecraft.html", label: "Open panel ↗" },
+      { url: "https://github.com/Srinivasan-78/devshed/tree/main/minecraft-server-gitops", label: "View repo ↗" },
+    ],
   },
   {
     slug: "pi-image-tools",
@@ -943,7 +947,7 @@ export const PROJECTS: Project[] = [
       "PiShrink keeps the image a sane size",
       "Integrated as the matter-image/ provisioning module in the unified pi-image-tools suite",
     ],
-    /* No public link — https://github.com/Srinivasan-78/matter-th-pi-image is private. */
+    /* No public link — consolidated inside the private personal-tools repository. */
     links: [],
   },
   {
@@ -977,7 +981,7 @@ export const PROJECTS: Project[] = [
       "Clean handoff to the image builder",
       "Integrated as the automation/ unattended bootstrap engine in the unified pi-image-tools suite",
     ],
-    /* No public link — https://github.com/Srinivasan-78/pi-image-build-automation is private. */
+    /* No public link — consolidated inside the private personal-tools repository. */
     links: [],
   },
   {
@@ -1025,7 +1029,7 @@ export const PROJECTS: Project[] = [
       "Secrets travel through env, never through string interpolation into a shell",
       "Honest about the cost: polling keeps a runner alive for the whole deployment",
     ],
-    /* No public link — https://github.com/Srinivasan-78/azure-pipeline-trigger is private. */
+    /* No public link — consolidated inside the private devops-toolkit repository. */
     links: [],
   },
   {
@@ -1065,7 +1069,7 @@ export const PROJECTS: Project[] = [
       "Distinct exit codes per failure, so a build script can tell what went wrong",
       "Integrated as the shrink/ compaction engine in the unified pi-image-tools suite",
     ],
-    /* No public link — https://github.com/Srinivasan-78/pi-image-shrink is private. */
+    /* No public link — consolidated inside the private personal-tools repository. */
     links: [],
   },
   {
@@ -1148,7 +1152,7 @@ export const PROJECTS: Project[] = [
       "Run it once before a long imaging job",
       "Integrated as the bench/ throughput benchmark module in the unified pi-image-tools suite",
     ],
-    /* No public link — https://github.com/Srinivasan-78/dd-blocksize-benchmark is private. */
+    /* No public link — consolidated inside the private personal-tools repository. */
     links: [],
   },
 ];
@@ -1170,7 +1174,7 @@ export type Contribution = {
   pr: {
     title: string;
     number: number;
-    state: "open" | "merged";
+    state: "open" | "merged" | "closed";
     summary: string;
   };
   url?: string;
@@ -1186,7 +1190,7 @@ export const CONTRIBUTIONS: Contribution[] = [
     pr: {
       title: "fix(net): honor movement lock for vehicle movement",
       number: 3145,
-      state: "open",
+      state: "closed",
       summary:
         "The server enforced the per-player movement lock — used to hold a player still during dialogues and cutscenes — in the on-foot position handlers, but applied client-sent vehicle positions unconditionally, so a locked player could still drive a boat, minecart or horse anywhere. The patch rejects the packet and teleports the client back to the server-side position, mirroring what the on-foot handlers already do.",
     },
@@ -1201,7 +1205,7 @@ export const CONTRIBUTIONS: Contribution[] = [
     pr: {
       title: "Free near-real-time price overlay for market data",
       number: 15,
-      state: "open",
+      state: "closed",
       summary:
         "Reworked the market-data cache to source from the live-price feed and cut the intraday TTL from 60s to 15s, so scanners act on fresher quotes. Live exit-price lookups now try the real-time price first and fall back to the one-minute bar only when it is unavailable.",
     },
