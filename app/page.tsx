@@ -1,58 +1,44 @@
 import Hero from "@/components/home/Hero";
-import Figures from "@/components/home/Figures";
-import ReleasePath from "@/components/home/ReleasePath";
+import Stats from "@/components/home/Stats";
+import Reliability from "@/components/home/Reliability";
 import Loadout from "@/components/home/Loadout";
 import Initiatives from "@/components/home/Initiatives";
 import Clearance from "@/components/home/Clearance";
+import SideProjects from "@/components/home/SideProjects";
+import Closing from "@/components/home/Closing";
 
-/* The home page is the dossier's table of contents and its five cases,
-   in reading order.
+/* The home page, in reading order.
 
-   REVISION 6 — three sections removed and one promoted, on
-   instruction. Worth recording what went and why it is not a loss:
+   REBRAND PASS 1. The page was a dossier: a cover, five numbered
+   cases, hairline rules between sections, and a case index on every
+   heading. The visual identity is now Apple-adjacent — warm light,
+   soft elevation, liquid glass — and this file is the running order
+   that came out of it.
 
-     Builds   "Things I've built on the side" + "Patches sent to other
-              people's projects". Both were a preview of /projects
-              rendered on the home page — the same twenty builds, the
-              same two contributions, one level of detail down. A home
-              page that summarises a page one click away is a page
-              asking to be scrolled past twice.
+   What changed here:
 
-     Close    "Let's build something dependable together". A closing
-              CTA, which duplicated the hero's own Contact control and
-              the whole of /contact. The nav is sticky now, so the
-              contact destination is on screen at every scroll
-              position; a terminal call to action is what you need when
-              it is NOT.
+     Figures      → Stats. Same six numbers from STATS, as cards.
+     ReleasePath  → Reliability. Same six stages, the same caption and
+                    the same rollback paragraph, without the drawn SVG
+                    rail and the graph-paper ground.
+     SideProjects   restored. Its copy has sat unrendered in
+                    HOME_COPY.sideProjects since revision 6.
+     Closing        restored, for the same reason, and because the nav
+                    is a small capsule now rather than a full bar with
+                    five labelled destinations — so "Contact" is no
+                    longer on screen at every scroll position, which is
+                    the argument that removed it.
 
-     Tooling  "Tooling I work with day to day". Not deleted — promoted.
-              It is the ticker in the sticky header now, so the
-              toolchain is visible from every page and every scroll
-              position rather than once, in case 07, on one page. That
-              is a straight upgrade in reach for the same content.
+   Loadout, Initiatives and Clearance are unchanged files. They pick
+   up the new palette, type and surfaces through the tokens, and they
+   get their own pass with the routes they share components with.
 
-   The three components are deleted rather than commented out. Their
-   copy survives in lib/data/profile.ts (`sideProjects`, `closing`) and
-   the contributions data is still rendered on /projects, so nothing
-   here is unrecoverable.
+   Every fact the previous version of this page rendered is still
+   rendered. Nothing in lib/data was edited.
 
-   Section indices renumbered 01–05. They are the page's real ordinals,
-   not decoration — a dossier whose contents jump from 04 to 06 is a
-   dossier with a page missing.
-
-   No metadata export, deliberately: the root layout's title, description
-   and social card already describe this page, and declaring them again
-   here is how the two drift apart.
-
-   Every section owns its own <section>, its own container and its own
-   top rule, so the page is a list of cases rather than a layout with
-   nine special cases in it. Nothing here is a client component — the
-   three stateful leaves (domain selection, the initiative filter, the
-   operations clocks) are imported by the sections that need them, and
-   the rest of this page is HTML by the time it reaches a browser.
-
-   Section rhythm and the container width are fixed by the build
-   contract in docs/design-contingency.md §4, not chosen per section. */
+   No metadata export, deliberately: the root layout's title,
+   description and social card already describe this page, and
+   declaring them again here is how the two drift apart. */
 export default function Home() {
   return (
     /* tabIndex={-1} is what makes the skip link actually work. Without
@@ -61,11 +47,13 @@ export default function Home() {
        asked to skip. */
     <main id="content" tabIndex={-1}>
       <Hero />
-      <Figures />
-      <ReleasePath />
+      <Stats />
+      <Reliability />
       <Loadout />
       <Initiatives />
       <Clearance />
+      <SideProjects />
+      <Closing />
     </main>
   );
 }

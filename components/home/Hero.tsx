@@ -1,244 +1,78 @@
 import Link from "next/link";
-import DecryptText from "@/components/primitives/DecryptText";
 import Reveal from "@/components/primitives/Reveal";
-import FxBackdrop from "@/components/primitives/FxBackdrop";
-import SpecBlock from "@/components/primitives/SpecBlock";
-import Spotlight from "@/components/primitives/Spotlight";
-import { Halftone } from "@/components/primitives/Texture";
 import { HOME_COPY, PROFILE } from "@/lib/data/profile";
 import { AUTHORIZATION_COPY } from "@/lib/data/authorization";
 
-/* The cover of the dossier, and the only part of this page that is not a
-   numbered case.
+/* The cover.
 
-   The composition is 7/4 with the ninth column left empty. That gap is
-   the point: a case file opens on a mostly-blank sheet with the subject
-   on one side and the front matter on the other, and the emptiness
-   between them is what makes the two read as separate registers rather
-   than as one crowded header.
+   WHAT THIS REPLACED, because the trade is the whole point of the
+   rebrand: a full-bleed WebGL CRT field with a mutating glyph grid and
+   a click glitch, a plasma wash on a 24-second transform, a Ben-Day
+   halftone screen cut on a diagonal, a pointer-tracking spotlight and
+   reticle, a headline printed off-register in two plates, and a status
+   line that unscrambled itself after mount. All of it is gone. What
+   carries the composition now is type, space, one soft wash of light
+   (`.hero-wash` in globals.css §4, three static gradients) and one
+   floating glass card.
 
-   The texture layers sit behind the content as siblings rather than as
-   classes on the container, for a reason that is easy to get wrong:
-   `.halftone` carries its own `opacity`, and opacity applies to a whole
-   subtree. Put that class on the grid and the headline, the bio and the
-   buttons all fade with it. As a sibling it stays behind the type
-   instead of over it. The halftone is cut on a `shard` — one of only
-   two hard diagonals on the page, so the cover ends on the same angle
-   the closing poster begins on.
+   Everything the old cover stated, this one still states: the eyebrow,
+   the availability line, the headline, both bio paragraphs with the
+   repo2graph link intact, the three controls, and the role, employer
+   and alma mater in the card. Nothing factual was dropped to make it
+   quieter.
 
-   The wash escapes that constraint, which is how it became one element
-   instead of two: its strengths are baked into `color-mix` stops rather
-   than carried on an element `opacity`, so nothing about it has to be
-   its own node any more.
+   The grid is 7/5 rather than the old 7/4-with-a-gap. A deliberately
+   empty ninth column is a case-file convention — the mostly-blank
+   opening sheet — and the new language fills the measure and lets the
+   air sit above and below the block instead.
 
-   The plasma field and the beam were always deliberately counted as
-   ONE accent — both are the same fact, light arriving from off-page,
-   and read as two separate marks they would blow the §1b budget. As of
-   revision 13 they are also one element, which is the arrangement
-   finally matching the reading: four gradients stacked on a single
-   unmasked layer. The viewport still spends amber exactly twice — this,
-   and the one filled control.
-
-   What went with the merge is the drift. It was a 24-second transform
-   on the largest element of the page, overlapping the window in which
-   the document parses and the shader compiles, and the thing it moved
-   was a wash at 8% colour strength under a headline. See the §5b note
-   on `.plasma` for the full accounting.
-
-   The status tick is `probe`, not signal, and it pulses three times and
-   stops — a status light that throbs forever is an alarm, and alarm
-   means one thing on this site.
-
-   The ready badge is the one label on the page that resolves out of
-   noise. It is the right sentence for it: a status line settling under
-   scrutiny is the detective-mode convention, and the real string is
-   what sits in the HTML — the scramble only happens after mount, so a
-   crawler and a reader with scripting off get the words. Nothing else
-   on the page gets this, because a page where every label unscrambles
-   is a page that cannot be read.
-
-   `.t-depth` is on the h1 and was checked at 360px before it stayed:
-   the offsets are 2px and 4px against a 36px heavy uppercase glyph, so
-   the second plate reads as off-register printing rather than as a
-   drop shadow, and the letterforms keep their counters.
-
-   The front matter deliberately does not restate anything the page
-   already says. Revision 1 listed a Status row carrying the same string
-   as the status line two inches above it, and a Clouds row carrying the
-   same figure and the same sentence as case 01. Both are gone; the
-   station is already in the eyebrow. What is left — role, employer and
-   the author's alma mater — appears nowhere else on the page.
-
-   REVISION 3. The scan field goes in behind everything else, and the
-   cover is the one place on the site that gets the WebGL version —
-   the detective overlay switching on is a thing that happens once, on
-   arrival, and a site where every section runs a shader is a site
-   with a framerate problem instead of an opening.
-
-   It is a texture sibling rather than a class, for the same
-   subtree-opacity reason the comment above gives for the halftone, and
-   it is listed first so it sits furthest back: the wash is warm light
-   arriving from off-page, and the scan is a cold grid laid over the
-   sheet. The order is what keeps them reading as two different kinds
-   of light rather than one muddle.
-
-   The pointer reticle needs the hero to be a spotlight host, so the
-   content is wrapped in `Spotlight`. That wrapper is also what writes
-   --mx/--my, and the reticle inherits them — one listener for the
-   whole cover. Both are pointer-only; there is nothing to mark
-   without a pointer, and the keyboard path gets the HUD brackets on
-   the front matter instead. */
+   The availability line is plain text. It was the one label on the
+   page that resolved out of noise, which was the correct detective
+   -mode device and is the wrong one here: a product page states what
+   is true and trusts the reader to read it. */
 export default function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* Siblings, absolutely positioned, aria-hidden and pointer-events
-          off. None of them ends on a straight line where the section
-          clips — the halftone and the detect grid because they carry a
-          mask, the wash because its gradients reach zero alpha on their
-          own, which is the cheaper way to satisfy the same §5b rule. */}
-      {/* REVISION 4 — the cover's field is the Arkham CRT now.
-          `ScanField` (the hand-written ogl shader) was correct and far
-          too quiet; the owner's reading of the whole revision was
-          "I don't see motion graphics". FaultyTerminal is the loudest
-          thing in the vendored set — curvature, scanlines, chromatic
-          aberration, a mutating glyph field and a glitch on click — and
-          the cover is the one place on the site that should be loud,
-          because arriving is a thing that happens once.
-
-          Tinted to the detect cyan rather than its own palette, so the
-          field belongs to the detective register in §1b instead of
-          introducing a third colour. `mouseReact` is on: the overlay
-          responding to where you point is the entire Arkham
-          convention — for the first twenty seconds. After that
-          HALT_PROPS in FxBackdrop takes it off along with the clock,
-          because this is the one field in the set that can go idle
-          and the pointer was the only thing stopping it. */}
-      <FxBackdrop
-        kind="terminal"
-        /* Held low and masked — see rule five in FxBackdrop. The CRT
-           is the loudest field in the set and the only reason it can
-           sit behind a headline at all is that it is composited as a
-           texture rather than as a background. */
-        opacity={0.34}
-        props={{
-          scale: 1.6,
-          gridMul: [2, 1],
-          digitSize: 1.2,
-          timeScale: 0.4,
-          scanlineIntensity: 0.4,
-          glitchAmount: 1,
-          flickerAmount: 0.5,
-          noiseAmp: 0.7,
-          /* ZERO, and this is the single largest per-frame saving
-             available on the cover.
-
-             It does not look like a cost knob, but it is the most
-             expensive one in the component. The main pass's `getLight`
-             calls `digit()` ten times — once for the glyph and nine
-             more for the soft sum around it — and a non-zero
-             aberration runs `getLight` three times instead of once,
-             for the red and blue fringes. That is thirty texture-fetch
-             glyph evaluations per fragment, every frame, over a
-             full-bleed canvas, instead of ten.
-
-             What it buys at 1.5 is a sub-pixel fringe: the offset is
-             1.5 / viewport width in UV, which on a 1080p display is
-             under a thousandth of the frame, held at `opacity: 0.34`
-             behind a feathered mask and under a headline. The LITE_PROPS
-             table in FxBackdrop already zeroed it on slow machines with
-             exactly that reasoning; the reasoning was never actually
-             about the machine. A fringe nobody can see does not become
-             visible on a fast GPU, it only becomes affordable, and
-             spending two thirds of the cover's frame budget on it is
-             not a trade worth making at any tier.
-
-             Clicks are unaffected: `clickSplit` adds to the same
-             `split` term in the shader, so the glitch still throws a
-             real aberration while it decays, which is the one moment
-             the effect is large enough to read. */
-          chromaticAberration: 0,
-          curvature: 0.08,
-          vignette: 0.6,
-          mouseReact: true,
-          mouseStrength: 0.3,
-          glow: 0.5,
-          clickEffect: true,
-          pageLoadAnimation: true,
-          /* SUPERSEDED by rule seven in FxBackdrop, which now computes
-             the ratio from a pixel budget and overrides whatever is
-             set here. Kept as the documented intent — and as the value
-             a caller would get if the budget were ever removed —
-             because the reasoning below is still the reasoning, and it
-             is the argument the budget generalises.
-
-             ONE, not 1.5, and this is free rather than a concession.
-             Fragment cost scales with the square of this: 1.5 means
-             2.25× the shader invocations per frame of a full-bleed
-             canvas on the largest element of the page. What it buys is
-             finer detail in the glyph field and the scanlines — behind
-             `opacity: 0.34` and a feathered mask, under a headline.
-             There is nothing there to see at the higher rate, and the
-             cover is the one place on the site that cannot afford to
-             be the thing that drops frames. */
-          dpr: 1,
-        }}
-        /* Yellow on the slab, graphite on paper.
-           The tint has to change with the palette and the reasoning
-           inverts between them: against black the field IS the signal,
-           so it takes the yellow; against white a yellow wash turns to
-           weak tea and the only honest reading is a grey screen on a
-           white sheet. Same translation §1 makes for the accent. */
-        lightProps={{ tint: "#8f8f8c", brightness: 0.9 }}
-        darkProps={{ tint: "#f5c518", brightness: 0.5 }}
-      />
-      {/* REVISION 13 — one wash, not two. `.plasma` now carries the
-          searchlight and the two drifting fields as four gradients on
-          a single unmasked element, so the cover holds one compositor
-          buffer here instead of four. The `<SignalBeam />` sibling is
-          gone because its two gradients are the first two in that
-          list; the component itself stays, for /contact and the project
-          pages that render it alone. The full accounting is in the
-          §5b note on `.plasma`. */}
+      {/* Decorative, so it is hidden from the accessibility tree and
+          cannot be clicked through to. */}
       <div
         aria-hidden="true"
-        className="plasma pointer-events-none absolute inset-0"
+        className="hero-wash pointer-events-none absolute inset-0"
       />
-      <Halftone className="shard" />
 
-      <Spotlight className="relative">
-      <div aria-hidden="true" className="reticle" />
-      <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-20 sm:px-8 sm:pt-20 sm:pb-28">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
-          {/* The subject */}
+      <div className="relative mx-auto max-w-6xl px-5 pt-16 pb-20 sm:px-8 sm:pt-24 sm:pb-28">
+        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
-            <div className="t-anno-sm text-mute">{HOME_COPY.eyebrow}</div>
+            <Reveal className="t-anno-sm text-mute">{HOME_COPY.eyebrow}</Reveal>
 
-            <div className="mt-3 flex items-center gap-2">
+            <Reveal
+              delay={60}
+              className="mt-4 inline-flex items-center gap-2 rounded-[var(--r-pill)] border border-rule bg-panel px-3 py-1.5"
+            >
               <span
                 aria-hidden="true"
-                className="tick-pulse h-1.5 w-1.5 rounded-full bg-probe"
+                className="h-1.5 w-1.5 rounded-full bg-probe"
               />
-              <DecryptText
-                text={AUTHORIZATION_COPY.readyBadge}
-                className="t-anno-sm text-mute"
-              />
-            </div>
+              <span className="text-[0.75rem] font-medium text-mute">
+                {AUTHORIZATION_COPY.readyBadge}
+              </span>
+            </Reveal>
 
-            {/* The page's one h1. Archivo Black is heavy and set
-                uppercase here, so it takes a smaller size and fewer
-                words per line than the serif it replaced — capped at
-                about sixteen characters a line and allowed to run to
-                three, which is how a poster sets a headline rather than
-                shrinking it to fit one. */}
+            {/* The page's one h1. Reveal renders the heading element
+                itself rather than wrapping it, so nothing non-semantic
+                sits between the landmark and the outline. */}
             <Reveal
               as="h1"
-              effect="wipe"
-              className="t-display-xl t-depth mt-6 max-w-[16ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[4rem]"
+              delay={100}
+              className="t-display-xl t-h1 mt-7 max-w-[19ch] text-body"
             >
               {HOME_COPY.headline}
             </Reveal>
 
-            <div className="t-prose mt-8 text-[0.9375rem] leading-relaxed text-mute sm:text-base">
+            <Reveal
+              delay={160}
+              className="t-prose t-lead mt-7 text-mute"
+            >
               <p>{HOME_COPY.bio}</p>
               <p>
                 {HOME_COPY.bioSecondary.before}
@@ -247,59 +81,59 @@ export default function Hero() {
                 </Link>
                 {HOME_COPY.bioSecondary.after}
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              {/* The electric border goes on the one filled control and
-                  nowhere else. It is an edge, not a surface: a conic
-                  gradient rotating behind a one-pixel inset, three turns
-                  and done. A second one on the page would turn the
-                  primary action into a row of equals. */}
-              <Link href="/contact" className="btn btn-signal electric">
+            <Reveal
+              delay={220}
+              className="mt-9 flex flex-wrap items-center gap-3"
+            >
+              <Link href="/contact" className="btn btn-signal">
                 {HOME_COPY.ctaContact}
               </Link>
               {/* A real file request, not a gated one — see the privacy
-                  page: nothing is tracked per person for this download. */}
+                  page: nothing is tracked per person for this. */}
               <a href={PROFILE.resumePath} download className="btn">
                 {HOME_COPY.ctaResume}
               </a>
               <Link href="/projects" className="btn">
                 {HOME_COPY.ctaProjects}
               </Link>
-            </div>
-          </div>
-
-          {/* The front matter. Column nine is deliberately skipped. */}
-          <div className="lg:col-span-4 lg:col-start-9">
-            {/* `hud` adds the four transient cyan brackets over the
-                panel's own static amber corner ticks — a scan of a
-                drawing, laid on the drawing. `sweep` crosses it once
-                on arrival. Both are on the panel rather than the grid
-                so neither can catch the headline. */}
-            <Reveal effect="sweep" className="panel ticks hud p-5 sm:p-6">
-              <SpecBlock
-                caption="Front matter"
-                rows={[
-                  { label: "Role", value: PROFILE.roleShort },
-                  { label: "Employer", value: PROFILE.currentEmployer },
-                ]}
-              />
-
-              {/* Not a spec row: a forty-six character institution name
-                  in a right-aligned tabular cell overflows a four-column
-                  panel. A value that has to wrap is prose with a label,
-                  not a figure. */}
-              <div className="mt-5 border-t border-rule pt-4">
-                <div className="t-anno-sm text-mute">Alumni</div>
-                <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-body">
-                  {PROFILE.alumniOf}
-                </p>
-              </div>
             </Reveal>
           </div>
+
+          {/* The front matter, as the one piece of glass on the cover.
+              It states only what appears nowhere else on the page —
+              role, employer, alma mater. The station is already in the
+              eyebrow and the availability is already in the badge. */}
+          <Reveal
+            delay={260}
+            className="lg:col-span-5 lg:col-start-8 lg:mt-2"
+          >
+            <div className="glass glass-card glass-spec overflow-hidden p-6 sm:p-7">
+              <dl className="relative space-y-5">
+                <div>
+                  <dt className="t-anno-sm text-mute">Role</dt>
+                  <dd className="mt-1.5 text-[0.9375rem] font-medium text-body">
+                    {PROFILE.roleShort}
+                  </dd>
+                </div>
+                <div className="border-t border-rule pt-5">
+                  <dt className="t-anno-sm text-mute">Employer</dt>
+                  <dd className="mt-1.5 text-[0.9375rem] font-medium text-body">
+                    {PROFILE.currentEmployer}
+                  </dd>
+                </div>
+                <div className="border-t border-rule pt-5">
+                  <dt className="t-anno-sm text-mute">Alumni</dt>
+                  <dd className="mt-1.5 text-[0.9375rem] leading-relaxed text-body">
+                    {PROFILE.alumniOf}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </Reveal>
         </div>
       </div>
-      </Spotlight>
     </section>
   );
 }

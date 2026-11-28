@@ -10,9 +10,10 @@ import "./globals.css";
 
    What that means concretely, rather than optimistically:
 
-   · The three typefaces are loaded by next/font in the layout, which
-     publishes them as --font-display-face / --font-sans-face /
-     --font-mono-face on <html>. Those custom properties do not exist
+   · The two typefaces are loaded by next/font in the layout, which
+     publishes them as --font-sans-face / --font-mono-face on <html>.
+     (It was three before the rebrand dropped the two display faces
+     for one family.) Those custom properties do not exist
      here, so every `font-family` built on them resolves to an invalid
      value and the element silently falls back to the browser default.
      That is why this page does not use `t-display`, `t-anno` or
@@ -22,7 +23,7 @@ import "./globals.css";
    · The theme attribute is written by BootScript before first paint,
      also in the layout. With no attribute, the `:root` block in
      globals.css applies, which is the light palette. A visitor who
-     prefers dark will get drafting-paper here. That is a real
+     prefers dark will get the warm light sheet here. That is a real
      regression in this one state and it is not worth a second copy of
      the palette or an inline script inside an error boundary to fix —
      so it is stated here rather than papered over.

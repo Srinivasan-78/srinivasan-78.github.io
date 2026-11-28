@@ -1,4 +1,4 @@
-import BatGlyph from "@/components/primitives/BatGlyph";
+import BatGlyph, { BatSprite } from "@/components/primitives/BatGlyph";
 import FxBackdrop from "@/components/primitives/FxBackdrop";
 import GlitchHeading from "@/components/primitives/GlitchHeading";
 import Icon from "@/components/primitives/Icon";
@@ -51,6 +51,13 @@ import {
 export default function GameBoard() {
   return (
     <section className="relative">
+      {/* The <symbol> the two BatGlyph calls below point at. It used to
+          be mounted once in the root layout, for the layout's own bat
+          ground and the route transition's swarm as well as for this
+          page. The rebrand unmounted both of those, and this is the
+          last consumer — so the definition moves to the one route that
+          still needs it rather than shipping on all nine. */}
+      <BatSprite />
       <div className="relative mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <header className="relative mb-7 overflow-hidden sm:mb-9">
           {/* Keep the WebGL dither field and halftone scoped to the header,

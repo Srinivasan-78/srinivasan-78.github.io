@@ -52,7 +52,7 @@ export default function ThemeToggle() {
   }
 
   if (theme === null) {
-    return <span aria-hidden="true" className="block h-[30px] w-[86px]" />;
+    return <span aria-hidden="true" className="block h-9 w-9" />;
   }
 
   const next: Theme = theme === "dark" ? "light" : "dark";
@@ -61,19 +61,22 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={() => apply(next)}
-      className="t-anno-sm flex items-center gap-2 border border-rule px-2.5 py-1.5 text-mute transition-colors duration-150 hover:border-rule-strong hover:text-body"
+      aria-label={`Switch to the ${next} theme`}
+      title={`Switch to the ${next} theme`}
+      className="flex h-9 w-9 items-center justify-center rounded-[var(--r-pill)] border border-rule text-mute transition-colors duration-200 hover:bg-panel-2 hover:text-body"
     >
-      {/* A filled/hollow pair rather than a sun and a moon. The design
-          is about figure and ground, so the glyph is figure and ground:
-          the square is solid when you are heading for dark. */}
+      {/* A filled/hollow disc rather than a sun and a moon. It is one
+          shape in two states, which is the smallest honest glyph for a
+          two-state control — and it needs no second icon set to stay
+          legible at 10px.
+
+          The square became a circle with the rest of the geometry. */}
       <span
         aria-hidden="true"
-        className={`h-2.5 w-2.5 border border-current ${
+        className={`h-3 w-3 rounded-full border-[1.5px] border-current ${
           next === "dark" ? "bg-current" : "bg-transparent"
         }`}
       />
-      {next === "dark" ? "Dark" : "Light"}
-      <span className="sr-only"> — switch to the {next} palette</span>
     </button>
   );
 }

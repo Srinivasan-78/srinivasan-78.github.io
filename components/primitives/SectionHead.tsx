@@ -33,14 +33,25 @@ import Reveal from "./Reveal";
    the type, the fewer characters belong on a line. */
 export type SectionHeadSize = "md" | "lg" | "xl";
 
+/* The sizes are fluid clamps now rather than three breakpoint steps —
+   see `.t-h1`/`.t-h2`/`.t-h3` in globals.css §3. The measure caps stay,
+   and they still get tighter as the size grows: the bigger the type,
+   the fewer characters belong on a line. */
 const TITLE_CLASS: Record<SectionHeadSize, string> = {
-  md: "t-display max-w-2xl text-[1.5rem] leading-[1.1] sm:text-[2rem] lg:text-[2.25rem]",
-  lg: "t-display-xl max-w-[22ch] text-[1.75rem] sm:text-[2.375rem] lg:text-[2.875rem]",
-  xl: "t-display-xl max-w-[20ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[4rem]",
+  md: "t-display t-h3 max-w-2xl",
+  lg: "t-display t-h2 max-w-[26ch]",
+  xl: "t-display-xl t-h1 max-w-[22ch]",
 };
 
 type SectionHeadProps = {
-  index: string;
+  /* `index` and `total` are no longer rendered.
+     They drew a case number on a hairline rule above every heading —
+     "03 / 05" — which was the dossier identity stating itself once per
+     section. The props stay in the type because eight call sites across
+     five routes pass them and those routes are redesigned in later
+     passes; removing the numbering is one edit here instead of eight
+     there. They go when the last caller stops passing them. */
+  index?: string;
   total?: string;
   kicker: string;
   title: string;
@@ -72,8 +83,6 @@ type SectionHeadProps = {
 };
 
 export default function SectionHead({
-  index,
-  total,
   kicker,
   title,
   lede,
@@ -87,21 +96,16 @@ export default function SectionHead({
 }: SectionHeadProps) {
   return (
     <header className={`mb-7 sm:mb-9 ${className}`}>
-      {/* The index sits on its own rule, which is what makes the page
-          read as a numbered dossier rather than as a stack of sections.
-          The rule runs to the full width; the label interrupts it. */}
-      <div className="mb-5 flex items-center gap-4">
-        <span className="t-anno-sm shrink-0 text-mute">
-          {total ? `${index} / ${total}` : index}
-        </span>
-        <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-        <span
-          className={`t-anno shrink-0 ${
-            kickerTone === "signal" ? "text-signal" : "text-mute"
-          }`}
-        >
-          {kicker}
-        </span>
+      {/* The eyebrow. A short label directly above the headline, which
+          is where a product page puts the category of what it is about
+          to tell you — rather than a numbered rule running the width of
+          the page, which is where a case file puts the file number. */}
+      <div
+        className={`t-anno-sm mb-3 ${
+          kickerTone === "signal" ? "text-signal" : "text-mute"
+        }`}
+      >
+        {kicker}
       </div>
 
       <div

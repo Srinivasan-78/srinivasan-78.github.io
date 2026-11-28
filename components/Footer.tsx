@@ -3,89 +3,95 @@ import { FOOTER_LINKS, FOOTER_COPY, PROFILE } from "@/lib/data/profile";
 
 /* The colophon.
 
-   Set as a drawing's title block: the ruled strip at the corner of a
-   technical drawing that records who drew it, when, and under what
-   revision. That is a real convention rather than a borrowed look, and
-   it is the correct form for a footer on a site whose subject is
-   provenance — this is a repository where every source file carries a
-   keyed authorship watermark and a bot audits the account nightly to
-   check they are all still there.
+   It used to be set as a drawing's title block: three ruled cells
+   labelled "Drawn by", "Station" and "Revision", sharing hairlines, at
+   the corner of the sheet. That is a real engineering-drawing
+   convention rather than a borrowed look, and it belonged to the
+   identity this pass replaced.
 
-   The year is computed, not written. A footer that says 2026 in 2027 is
-   the smallest possible broken promise, and this one is rendered on the
-   server at build time — the site is statically exported — so it is the
-   build date rather than the visitor's clock. For a site that rebuilds
-   on every push that is the more honest of the two. */
+   What survives is the content, in three plain columns on a surface
+   that matches the rest of the new language. The labels are now what
+   they describe rather than drawing vocabulary, and the provenance
+   claim ("Watermarked at source") stays, because it is true: every
+   source file in this repository carries a keyed authorship watermark
+   and a bot audits them nightly.
+
+   FOOTER_LINKS is untouched, including its order and its two external
+   entries.
+
+   The year is computed, not written. A footer that says 2026 in 2027
+   is the smallest possible broken promise, and this one is rendered on
+   the server at build time — the site is statically exported — so it is
+   the build date rather than the visitor's clock. For a site that
+   rebuilds on every push that is the more honest of the two. */
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    /* No top rule — see the matching note in components/Nav.tsx. The
-       header's bottom border and this one were the two sides of a frame
-       around the whole document. The title block below keeps its own
-       rules, because a drawing's title block genuinely is a bordered
-       box; what it does not need is a second border enclosing the
-       sheet it sits on. */
-    <footer className="mt-16">
-      <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
-        {/* The title block. Three ruled cells on a wide screen, stacked
-            on a narrow one, each labelled in the annotation register. */}
-        <div className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
-          <div className="bg-ground p-4">
-            <div className="t-anno-sm mb-1.5 text-mute">Drawn by</div>
-            <div className="t-display text-base text-body">{PROFILE.name}</div>
-            <div className="t-anno-sm mt-1 text-mute">{PROFILE.role}</div>
+    <footer className="mt-8">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div aria-hidden="true" className="rule-soft" />
+
+        <div className="grid gap-8 py-12 sm:grid-cols-3">
+          <div>
+            <div className="t-anno-sm mb-2 text-mute">Built by</div>
+            <div className="t-display text-[1.0625rem] text-body">
+              {PROFILE.name}
+            </div>
+            <div className="mt-1 text-[0.875rem] text-mute">{PROFILE.role}</div>
           </div>
 
-          <div className="bg-ground p-4">
-            <div className="t-anno-sm mb-1.5 text-mute">Station</div>
-            <div className="t-metric text-[0.8125rem] text-body">
-              {PROFILE.location}
+          <div>
+            <div className="t-anno-sm mb-2 text-mute">Based in</div>
+            <div className="text-[0.9375rem] text-body">{PROFILE.location}</div>
+            <div className="mt-1 text-[0.875rem] text-mute">
+              {PROFILE.website.host}
             </div>
-            <div className="t-anno-sm mt-1 text-mute">{PROFILE.website.host}</div>
           </div>
 
-          <div className="bg-ground p-4">
-            <div className="t-anno-sm mb-1.5 text-mute">Revision</div>
-            <div className="t-metric text-[0.8125rem] text-body">
-              © {year} · MIT
-            </div>
-            <div className="t-anno-sm mt-1 text-mute">
+          <div>
+            <div className="t-anno-sm mb-2 text-mute">Licence</div>
+            <div className="text-[0.9375rem] text-body">© {year} · MIT</div>
+            <div className="mt-1 text-[0.875rem] text-mute">
               Watermarked at source
             </div>
           </div>
         </div>
 
-        <nav
-          aria-label="Footer"
-          className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2.5"
-        >
-          {FOOTER_LINKS.map((link) =>
-            link.external ? (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
-              >
-                {link.label}
-              </Link>
-            )
-          )}
-        </nav>
+        <div aria-hidden="true" className="rule-soft" />
 
-        <p className="t-anno-sm mt-5 text-mute">
-          © {year} {FOOTER_COPY.copyrightSuffix}
-        </p>
+        <div className="flex flex-col gap-5 py-8 sm:flex-row sm:items-center sm:justify-between">
+          <nav
+            aria-label="Footer"
+            className="flex flex-wrap items-center gap-x-5 gap-y-2.5"
+          >
+            {FOOTER_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[0.875rem] text-mute transition-colors duration-200 hover:text-body"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-[0.875rem] text-mute transition-colors duration-200 hover:text-body"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
+          </nav>
+
+          <p className="text-[0.8125rem] text-mute">
+            © {year} {FOOTER_COPY.copyrightSuffix}
+          </p>
+        </div>
       </div>
     </footer>
   );
