@@ -1,9 +1,5 @@
-import BatGlyph, { BatSprite } from "@/components/primitives/BatGlyph";
-import FxBackdrop from "@/components/primitives/FxBackdrop";
-import GlitchHeading from "@/components/primitives/GlitchHeading";
 import Icon from "@/components/primitives/Icon";
 import Reveal from "@/components/primitives/Reveal";
-import { Halftone } from "@/components/primitives/Texture";
 import {
   BY_GENRE,
   FAVOURITES,
@@ -47,63 +43,42 @@ import {
  *
  * The three pursuits above the list are why the page is called Hobby
  * and not Games. A page listing 219 games under that title while never
- * mentioning that its author paints is a page with the wrong name. */
+ * mentioning that its author paints is a page with the wrong name.
+ *
+ * THE BAT IS GONE, and that is a deliberate removal rather than a
+ * repair. A bat silhouette beside every favourite and every pursuit was
+ * the last of the ops/case-file identity still being drawn anywhere on
+ * the site — costume, by its own design brief's test — and it had no
+ * reading in a warm, lit, glass language. The glyph, the fixed ground
+ * mark, the route-transition swarm and their paint all went together,
+ * rather than one of them being re-tinted to survive. */
 export default function GameBoard() {
   return (
     <section className="relative">
-      {/* The <symbol> the two BatGlyph calls below point at. It used to
-          be mounted once in the root layout, for the layout's own bat
-          ground and the route transition's swarm as well as for this
-          page. The rebrand unmounted both of those, and this is the
-          last consumer — so the definition moves to the one route that
-          still needs it rather than shipping on all nine. */}
-      <BatSprite />
       <div className="relative mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
-        <header className="relative mb-7 overflow-hidden sm:mb-9">
-          {/* Keep the WebGL dither field and halftone scoped to the header,
-              so scrolling through 219 games doesn't keep a 3000px-tall
-              shader canvas + masked compositor layers alive. */}
-          <Halftone className="shard" />
-          <FxBackdrop
-            kind="dither"
-            opacity={0.22}
-            props={{
-              waveSpeed: 0.018,
-              waveFrequency: 2.6,
-              waveAmplitude: 0.26,
-              colorNum: 3,
-              pixelSize: 3,
-              enableMouseInteraction: false,
-              clickRipple: false,
-              trail: 0,
-              intro: false,
-              backgroundColor: "transparent",
-            }}
-            lightProps={{ waveColor: "#bfbfbb" }}
-            darkProps={{ waveColor: "#3d3d3b" }}
+        <header className="relative mb-10 sm:mb-12">
+          {/* The WebGL dither field and the halftone screen that used to
+              sit behind this head are gone; the ambient wash is what
+              lights it, same as every other page. */}
+          <div
+            aria-hidden="true"
+            className="head-wash pointer-events-none absolute -inset-x-8 -top-28 -z-10 h-[40rem]"
           />
 
           <div className="relative">
-            <div className="mb-5 flex items-center gap-4">
-              <span className="t-anno-sm shrink-0 text-mute">04 / 05</span>
-              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
-              <span className="t-anno shrink-0 text-mute">
-                {GAMING_COPY.eyebrow}
-              </span>
+            <div className="t-anno-sm mb-3 text-signal">
+              {GAMING_COPY.eyebrow}
             </div>
 
-            {/* Glitch rather than the x-ray the other page heads use:
-                this is the games page, and RGB-split is the native idiom
-                of the medium it is about. */}
-            <GlitchHeading
+            <Reveal
               as="h1"
-              text={GAMING_COPY.heading}
-              className="t-display-xl max-w-[20ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[4rem]"
-            />
+              effect="wipe"
+              className="t-display-xl t-h1 max-w-[20ch]"
+            >
+              {GAMING_COPY.heading}
+            </Reveal>
 
-            <p className="t-prose mt-6 text-[0.9375rem] leading-relaxed text-mute sm:text-base">
-              {GAMING_COPY.body}
-            </p>
+            <p className="t-prose t-lead mt-6 text-mute">{GAMING_COPY.body}</p>
           </div>
         </header>
 
@@ -120,16 +95,11 @@ export default function GameBoard() {
             <span aria-hidden="true" className="h-px flex-1 bg-rule" />
           </div>
 
-          <ul className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
+          <ul className="grid gap-3 sm:grid-cols-3">
             {FAVOURITES.map((game, i) => (
-              <li key={game.id}>
-                <Reveal
-                  effect="sweep"
-                  delay={i * 60}
-                  className="flex h-full items-center gap-4 bg-ground p-5 sm:p-6"
-                >
-                  <BatGlyph className="h-5 w-10 shrink-0 text-signal-dim" />
-                  <div className="min-w-0">
+              <li key={game.id} className="h-full">
+                <Reveal delay={i * 60} className="h-full">
+                  <div className="glass glass-card glass-spec h-full p-5 sm:p-6">
                     <div className="t-poster text-[1.375rem] leading-none text-body">
                       {game.title}
                     </div>
@@ -150,32 +120,24 @@ export default function GameBoard() {
             <span aria-hidden="true" className="h-px flex-1 bg-rule" />
           </div>
 
-          <ul className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
+          <ul className="grid gap-3 sm:grid-cols-3">
             {PURSUITS.map((p, i) => (
-              <li key={p.id}>
-                {/* No `.scan` and no `.hud`. Nothing in these is
-                    clickable, and a hover affordance on a surface that
-                    cannot be used is a promise the page does not keep —
-                    the rule components/home/Clearance.tsx states for
-                    its own cells, which an earlier version of this
-                    page broke. */}
-                <Reveal
-                  effect="sweep"
-                  delay={i * 60}
-                  className="flex h-full flex-col bg-ground p-5 sm:p-6"
-                >
-                  <div className="flex items-center justify-between gap-3">
+              <li key={p.id} className="h-full">
+                {/* No hover affordance. Nothing in these is clickable,
+                    and a hover state on a surface that cannot be used
+                    is a promise the page does not keep. */}
+                <Reveal delay={i * 60} className="h-full">
+                  <div className="panel h-full p-5 sm:p-6">
                     <span className="flex items-center gap-2.5 text-mute">
                       <Icon name={p.icon} className="h-4 w-4" />
                       <span className="t-poster text-[1.25rem] leading-none text-body">
                         {p.title}
                       </span>
                     </span>
-                    <BatGlyph className="h-3 w-6 shrink-0 text-rule-strong" />
+                    <p className="mt-3 text-[0.875rem] leading-relaxed text-mute">
+                      {p.body}
+                    </p>
                   </div>
-                  <p className="mt-3 text-[0.8125rem] leading-relaxed text-mute">
-                    {p.body}
-                  </p>
                 </Reveal>
               </li>
             ))}

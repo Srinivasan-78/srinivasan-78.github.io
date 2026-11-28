@@ -2,8 +2,6 @@ import ContactForm from "@/components/ContactForm";
 import CopyEmailCard from "@/components/CopyEmailCard";
 import Icon from "@/components/primitives/Icon";
 import SectionHead from "@/components/primitives/SectionHead";
-import FxBackdrop from "@/components/primitives/FxBackdrop";
-import { SignalBeam } from "@/components/primitives/Texture";
 import { CONTACT_COPY, CONTACT_METHODS } from "@/lib/data/profile";
 import { pageMetadata } from "@/lib/seo";
 
@@ -43,57 +41,25 @@ export default function Contact() {
   return (
     <main id="content" tabIndex={-1}>
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
-        {/* This comment used to say the header was written out here
-            rather than taken from SectionHead, because the primitive's
-            title size was hard-coded below the xl page register. That
-            stopped being true when the register became a prop and all
-            three hand-rolled copies were migrated back — the call is
-            right there. Correcting it rather than deleting it, because
-            a comment that describes code that no longer exists is how
-            the drift started.
-
-            The beam is the warm graphic on the page: a cone of light
-            thrown up from the lower left, where a searchlight would be.
-            The detective grid is the cold one over it. Both are sibling
-            layers, aria-hidden and pointer-events off, because each
-            carries its own opacity and would otherwise fade the
-            headline sitting on top of it. */}
-        <div className="relative mb-10 overflow-hidden sm:mb-14">
-          <SignalBeam />
-          {/* The searchlight, moving. The static cone in §5b is
-              exactly this shape; the page asking someone to step into
-              the light gets the animated version. */}
-          <FxBackdrop
-            kind="rays"
-            opacity={0.34}
-            props={{
-              raysOrigin: "top-center",
-              raysSpeed: 0.7,
-              lightSpread: 0.9,
-              rayLength: 1.6,
-              rayDensity: 1.4,
-              glow: 0.45,
-              haze: 0.25,
-              followMouse: true,
-              mouseInfluence: 0.12,
-              intro: true,
-              maxDevicePixelRatio: 1.5,
-            }}
-            lightProps={{ raysColor: "#bfbfbb", intensity: 0.45 }}
-            darkProps={{ raysColor: "#f5c518", intensity: 0.5 }}
+        {/* The page head. A moving WebGL light-ray field used to sit
+            behind it over a static searchlight gradient — the page that
+            asks someone to step into the light getting the animated
+            version of the cone. Both are replaced by the ambient wash
+            the rest of the site is lit by. */}
+        <div className="relative mb-10 sm:mb-14">
+          <div
+            aria-hidden="true"
+            className="head-wash pointer-events-none absolute -inset-x-8 -top-28 -z-10 h-[40rem]"
           />
 
           <div className="relative">
             <SectionHead
-              index="05"
-              total="05"
               kicker={CONTACT_COPY.eyebrow}
               title={CONTACT_COPY.heading}
               titleAs="h1"
               lede={CONTACT_COPY.body}
               size="xl"
               titleReveal
-              titleEffect="xray"
               className="mb-0"
             />
           </div>
@@ -108,11 +74,9 @@ export default function Contact() {
             email was on the page three times once the mailto was
             counted. A fact appears once per page, so the strip was the
             copy that had to go rather than the row that can be used. */}
-        <div className="grid gap-12 border-t border-rule pt-12 lg:grid-cols-12 lg:gap-10">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
-            <h2 className="t-display text-[1.5rem] sm:text-[1.75rem]">
-              {CONTACT_COPY.formHeading}
-            </h2>
+            <h2 className="t-display t-h3">{CONTACT_COPY.formHeading}</h2>
             <p className="t-prose mt-3 text-[0.9375rem] leading-relaxed text-mute">
               {CONTACT_COPY.formBody}
             </p>
@@ -123,10 +87,13 @@ export default function Contact() {
           </div>
 
           <div className="lg:col-span-5">
-            {/* Six channels as one ruled column. No heading: the data
-                carries no label for this block, and a list of six
-                labelled links needs no second label to introduce it. */}
-            <ul className="divide-y divide-rule border-y border-rule">
+            {/* Six channels as one column on a single card. No heading:
+                the data carries no label for this block, and a list of
+                six labelled links needs no second label to introduce
+                it. One card rather than six — six identical cards would
+                say the six routes are interchangeable, and they are
+                not. */}
+            <ul className="panel divide-y divide-rule overflow-hidden">
               {CONTACT_METHODS.map((method) =>
                 method.copyable ? (
                   <li key={method.id}>
@@ -162,12 +129,14 @@ export default function Contact() {
               )}
             </ul>
 
-            <div className="mt-8 border-t border-rule pt-6">
-              <h2 className="t-anno-sm text-mute">{CONTACT_COPY.responseLabel}</h2>
+            <div className="glass glass-card glass-spec mt-4 p-6">
+              <h2 className="t-anno-sm text-mute">
+                {CONTACT_COPY.responseLabel}
+              </h2>
               <p className="t-display mt-2 text-[1.25rem]">
                 {CONTACT_COPY.responseHeadline}
               </p>
-              <p className="mt-3 text-[0.875rem] leading-relaxed text-mute">
+              <p className="mt-3 text-[0.9375rem] leading-relaxed text-mute">
                 {CONTACT_COPY.responseBody}
               </p>
             </div>

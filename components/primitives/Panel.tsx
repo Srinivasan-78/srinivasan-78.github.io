@@ -53,6 +53,10 @@ type PanelProps = {
   state?: PanelState;
   /** Drop the panel fill and keep only the rule — for panels on a panel. */
   flat?: boolean;
+  /** Translucent sheet instead of the opaque card. One tier of a grid
+      may take it to read as lifted above the rest; a grid where every
+      cell is glass has no glass. */
+  glass?: boolean;
   /** Corner ticks are on by default; off for panels in a dense grid,
       where thirty-two tick marks stop reading as cropping and start
       reading as noise. */
@@ -70,6 +74,7 @@ export default function Panel({
   contingency,
   state,
   flat = false,
+  glass = false,
   ticks = true,
   className = "",
   children,
@@ -79,7 +84,7 @@ export default function Panel({
   return (
     <div
       className={[
-        flat ? "panel-flat" : "panel",
+        flat ? "panel-flat" : glass ? "glass glass-card glass-spec" : "panel",
         ticks ? "ticks" : "",
         "p-5 sm:p-6",
         className,
@@ -129,7 +134,7 @@ export default function Panel({
           {kicker && <div className="t-anno mb-1.5 text-mute">{kicker}</div>}
 
           {title && (
-            <Title className="t-display text-xl sm:text-[1.4rem]">{title}</Title>
+            <Title className="t-display t-h3">{title}</Title>
           )}
         </div>
       )}

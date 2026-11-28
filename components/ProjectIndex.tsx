@@ -9,8 +9,6 @@ import SectionHead from "@/components/primitives/SectionHead";
 import TagRow from "@/components/primitives/TagRow";
 import Reveal from "@/components/primitives/Reveal";
 import CountUp from "@/components/primitives/CountUp";
-import FxBackdrop from "@/components/primitives/FxBackdrop";
-import { Halftone } from "@/components/primitives/Texture";
 
 /* The roster.
 
@@ -20,10 +18,10 @@ import { Halftone } from "@/components/primitives/Texture";
    exactly the right shape for twenty builds, and it is what the
    previous design's twenty identical cards were not.
 
-   `index="02" total="05"` is not decoration either — it is this page's
-   position in the header's numbered destinations. The nav counts 01
-   through 04, so a page that opens with its own number reads as part of
-   one indexed document rather than as a separate site. */
+   The page used to open with its own case number — "02 / 05", its
+   position among the header's numbered destinations. That numbering was
+   the dossier identity stating itself once per page and it is gone with
+   the rest of it. */
 
 /* The data's `status` is prose written for a reader — "Work in
    progress" — and PanelState is a closed union written for the design.
@@ -163,78 +161,31 @@ export default function ProjectIndex() {
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         {/* The header is `SectionHead` at the page register.
 
-            It was written out inline here while the primitive's title
-            size was hard-coded, which left three hand-rolled copies of
-            the same anatomy across the site — the exact drift that
-            component's own comment warns about. The register is a prop
-            now, so this is the shared header again and the wrapper only
-            supplies what is genuinely local: the texture layer.
-
-            Halftone is a sibling rather than a class on the wrapper,
-            because `.halftone` carries its own opacity and opacity
-            applies to a whole subtree — on the wrapper it would fade the
-            headline with it. `overflow-hidden` is what lets the screen
-            be cut on the diagonal by `shard`. */}
-        <div className="relative mb-10 overflow-hidden sm:mb-14">
-          <Halftone className="shard" />
-          {/* A field of mutating glyphs. This is the roster of
-              deployment work, and streaming characters read as the
-              subject here rather than as decoration. */}
-          <FxBackdrop
-            kind="letters"
-            opacity={0.26}
-            props={{
-              glitchAmount: 0.5,
-              speed: 42,
-              fontSize: 14,
-              spacing: 1.1,
-              density: 0.7,
-              baseOpacity: 0.14,
-              smooth: true,
-              interactive: true,
-              cursorRadius: 120,
-              edgeFade: 0.6,
-              centerFade: 0.35,
-              intro: true,
-              /* One, for the reason given at the same prop in
-                 components/home/Hero.tsx: fragment cost is quadratic
-                 in this, and the extra detail lands under a mask at a
-                 fraction of full opacity where there is nothing to
-                 see. */
-              dpr: 1,
-              /* NO backgroundColor, and that is the fix rather than an
-                 omission.
-
-                 This used to pass the string "transparent", which did
-                 the exact opposite of what it says. LetterGlitch guards
-                 with `if (s.backgroundColor)`, and "transparent" is a
-                 truthy string, so it took the painting branch: the
-                 value goes through a probe-canvas colour parser, which
-                 fills a pixel with "transparent" — painting nothing —
-                 and reads back [0,0,0,0], giving rgb black. The shader
-                 is then handed `uniform4f(uBackground, 0, 0, 0, 1)` —
-                 opaque black. That was the weird box on this page.
-
-                 Leaving the prop off takes the else branch, which sets
-                 alpha 0 and is genuinely transparent. Dither is the
-                 opposite case and does special-case the literal
-                 string, which is why the hobby page still passes it. */
-            }}
-            lightProps={{ glitchColors: ["#866900", "#bfbfbb", "#8f8f8c"] }}
-            darkProps={{ glitchColors: ["#f5c518", "#8a6d1a", "#3d3d3b"] }}
+            The graphic layer that used to sit behind it — a halftone
+            screen cut on the diagonal, over a WebGL glyph field — is
+            gone with the rest of that identity. What lights the top of
+            the page now is the same ambient wash the home cover uses:
+            three static gradients the compositor paints once, no
+            shader, no mask, nothing to reduce. */}
+        <div className="relative mb-10 sm:mb-14">
+          <div
+            aria-hidden="true"
+            /* Taller and wider than the head it lights. `.head-wash`
+               feathers inside whatever box it is given, but it can only
+               do that if the box is bigger than the thing being lit —
+               otherwise the falloff lands on top of the heading instead
+               of around it. */
+            className="head-wash pointer-events-none absolute -inset-x-8 -top-28 -z-10 h-[40rem]"
           />
 
           <div className="relative">
             <SectionHead
-              index="02"
-              total="05"
               kicker={PROJECTS_COPY.eyebrow}
               title={PROJECTS_COPY.heading}
               titleAs="h1"
               lede={PROJECTS_COPY.body}
               size="xl"
               titleReveal
-              titleEffect="xray"
               className="mb-0"
               aside={
                 /* The coverage register.
@@ -290,9 +241,10 @@ export default function ProjectIndex() {
         </div>
 
         {/* Controls. The search field and the category chips are one
-            group, so they share a ruled strip rather than floating as
-            two unrelated widgets. */}
-        <div className="border-y border-rule py-4">
+            group, so they share one surface rather than floating as two
+            unrelated widgets — a glass sheet now, where it used to be a
+            strip between two hairlines. */}
+        <div className="glass glass-card glass-spec p-5 sm:p-6">
           {/* STACKED, not side by side, and this is a bug fix rather
               than a preference.
 
@@ -411,8 +363,8 @@ export default function ProjectIndex() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="panel ticks mt-8 p-8 text-center">
-            <h2 className="t-display text-2xl">
+          <div className="panel mt-8 p-8 text-center">
+            <h2 className="t-display t-h3">
               {PROJECTS_COPY.emptyHeadingPrefix} &ldquo;{query}&rdquo;
             </h2>
             <p className="mt-3 text-mute">{PROJECTS_COPY.emptyBody}</p>
@@ -431,25 +383,23 @@ export default function ProjectIndex() {
           <>
             {deployed.length > 0 && (
               <section className="mt-12">
-                {/* Not in the accent. The header above already spends
-                    both of this viewport's two permitted amber marks —
-                    the kicker and the coverage figure — so the two tier
-                    labels are separated by weight instead, and the
-                    deployed tier carries its notch to say the rest. */}
+                {/* The two tiers used to be told apart by width and by a
+                    cut corner on the lead one. They are told apart by
+                    MATERIAL now: the builds you can open are glass and
+                    sit forward, everything else is an opaque card. That
+                    is the same claim made with the new vocabulary. */}
                 <h2 className="t-anno mb-5 text-body">
                   Deployed &amp; openable
                 </h2>
 
-                {/* A wipe per cell, staggered — a comic panel is read
-                    one edge at a time, and a grid that arrives all at
-                    once has no reading order. The stagger is capped at
+                {/* A rise per cell, staggered. The stagger is capped at
                     four steps: past about 120ms in total it stops
                     reading as sequence and starts reading as lag. */}
-                <div className="grid gap-5 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2">
                   {deployed.map((p, i) => (
                     <Reveal
                       key={p.slug}
-                      effect={interacted ? "none" : "wipe"}
+                      effect={interacted ? "none" : "rise"}
                       delay={interacted ? 0 : Math.min(i, 3) * 40}
                       className="h-full"
                     >
@@ -464,11 +414,11 @@ export default function ProjectIndex() {
               <section className="mt-10">
                 <h2 className="t-anno mb-5 text-mute">Everything else</h2>
 
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {rest.map((p, i) => (
                     <Reveal
                       key={p.slug}
-                      effect={interacted ? "none" : "wipe"}
+                      effect={interacted ? "none" : "rise"}
                       delay={interacted ? 0 : Math.min(i % 3, 3) * 40}
                       className="h-full"
                     >
@@ -501,7 +451,7 @@ export default function ProjectIndex() {
             <Reveal
               as="h2"
               effect="wipe"
-              className="t-display-xl max-w-[24ch] text-[1.75rem] sm:text-[2.25rem]"
+              className="t-display-xl t-h2 max-w-[24ch]"
             >
               {PROJECTS_COPY.contributions.heading}
             </Reveal>
@@ -511,11 +461,10 @@ export default function ProjectIndex() {
             </p>
           </header>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             {CONTRIBUTIONS.map((c, i) => (
               <Reveal
                 key={`${c.repo}-${c.pr.number}`}
-                effect="wipe"
                 delay={Math.min(i, 3) * 40}
                 className="h-full"
               >
@@ -523,9 +472,8 @@ export default function ProjectIndex() {
                 kicker={c.repo}
                 title={c.pr.title}
                 state={c.pr.state === "merged" ? "live" : "wip"}
-                /* Interactive in the same way the roster cells are — it
-                   carries a link out — so it gets the same scan edge. */
-                className="scan hud h-full"
+                ticks={false}
+                className="h-full"
               >
                 <p className="text-[0.9375rem] leading-relaxed text-mute">
                   {c.description}
@@ -595,20 +543,13 @@ function ProjectCell({
       kicker={project.client}
       state={stateFor(project)}
       contingency={contingency}
-      ticks={wide}
-      /* `scan` is the Arkham convention of a surface resolving under
-         scrutiny, and it is allowed here because the cell is already
-         interactive — it is a hover affordance on a link, never the
-         only signal that a thing can be used.
-
-         `notch` cuts one corner off the deployed tier, so those panels
-         read as plates rather than boxes. It is the structural
-         difference the two tiers were missing: before this they were
-         distinguished only by being wider, which is invisible once a
-         visitor has scrolled past the first row. */
-      className={`scan hud flex h-full flex-col ${wide ? "notch" : ""}`}
+      ticks={false}
+      /* The deployed tier is glass; the rest are opaque cards. See the
+         note at the tier heading for why that is the difference. */
+      glass={wide}
+      className="flex h-full flex-col"
     >
-      <h3 className="t-display text-xl sm:text-[1.4rem]">
+      <h3 className="t-display t-h3">
         <Link
           href={`/projects/${project.slug}`}
           className="transition-colors duration-150 hover:text-detect"

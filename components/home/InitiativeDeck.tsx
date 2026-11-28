@@ -41,12 +41,12 @@ import { iconToken } from "./icon-token";
    the same four facts set a second time as a table, and the job title
    is in the hero's front matter besides.
 
-   The panels carry `.scan`: one bright edge and a faint diagonal sheen
-   under the pointer, which is the Arkham convention of a surface
-   resolving under scrutiny. It is behind `@media (hover: hover)` in CSS
-   and it is on panels that are already interactive — every one of these
-   opens — so it is an affordance rather than the only signal that a
-   thing can be used. */
+   The panels used to carry `.scan` and `.hud` — a bright edge, a
+   diagonal sheen and corner brackets under the pointer. That paint went
+   with the detective-mode layer it belonged to, so the classes are off
+   the markup too rather than left pointing at nothing. Every one of
+   these panels opens, and the disclosure control inside it is what says
+   so; the hover sheen was never the signal. */
 
 const VISIBLE_CAP = 6;
 
@@ -99,7 +99,7 @@ export default function InitiativeDeck() {
             className={i === 0 ? "lg:col-span-12" : "lg:col-span-6"}
           >
             <Panel
-              className="scan hud h-full"
+              className="h-full"
               index={String(caseIndex).padStart(2, "0")}
               total={String(INITIATIVES.length)}
               kicker={item.category}

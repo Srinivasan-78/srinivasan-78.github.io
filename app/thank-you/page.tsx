@@ -31,14 +31,15 @@ export default function ThankYou() {
     <main id="content" tabIndex={-1}>
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <SectionHead
-          index="01"
           kicker={THANK_YOU_COPY.eyebrow}
           title={THANK_YOU_COPY.heading}
           titleAs="h1"
           lede={THANK_YOU_COPY.body}
+          size="xl"
+          titleReveal
         />
 
-        <div className="grid gap-px border border-rule bg-rule sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           {THANK_YOU_NEXT.map((card) => {
             const inner = (
               <>
@@ -61,7 +62,7 @@ export default function ThankYou() {
             );
 
             const cellClass =
-              "flex h-full flex-col justify-between bg-ground p-5 transition-colors duration-150 hover:text-detect sm:p-6";
+              "panel flex h-full flex-col justify-between p-6 transition-colors duration-150 hover:text-detect";
 
             /* A file rather than a route, so a plain anchor: <Link>
                would have the router try to navigate to a PDF. */

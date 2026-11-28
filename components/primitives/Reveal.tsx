@@ -22,36 +22,21 @@ import { useEffect, useRef, type ElementType, type ReactNode } from "react";
    rather than here, so there is no window in which the JS has not yet
    read the media query. */
 
-/* Which entrance to use. All four are driven by the same observer and
+/* Which entrance to use. All three are driven by the same observer and
    the same `data-shown` flag — only the CSS differs, which is why this
-   is one component with a prop rather than four near-identical ones.
+   is one component with a prop rather than three near-identical ones.
 
-   rise  — opacity and 10px of travel. For body copy, where a
-           directional wipe would be fussy.
-   wipe  — a hard edge travelling across the element. For panels and
-           headlines: a comic panel is read one edge at a time, and a
-           fade has no direction while this does.
-   draw  — stroke-dashoffset on a child SVG, so the real geometry inks
-           itself. For the schematic rules and the pipeline.
+   rise  — opacity and a short rise. The default, and what almost
+           everything takes.
+   wipe  — a hard edge travelling across the element. For a headline,
+           where a fade has no direction and this does.
    none  — no entrance; just sets `data-shown`, for a caller that wants
            to drive something else off it.
 
-   Revision 3 adds three more for detective mode (globals.css §5e).
-   They are effects on this component rather than a second
-   observer-driven component, for the reason recorded in the
-   SectionHead note in docs/redesign-todo.md: the moment two components
-   own the same anatomy they drift, and an entrance is an anatomy.
-
-   sweep — a bright line crosses the element once. Unlike `wipe` this
-           does not hide the content first, so it composes with the
-           others: a panel can be `wipe` on the outside and `sweep` on
-           the inside and read as one gesture.
-   xray  — display type arrives as a cyan outline and fills in.
-
-   There was a `chain` effect here too, for the games board's traced
-   spine. Revision 7 replaced that board with genre segments and the
-   effect went with the thing it drew — see the note where its CSS
-   used to be in globals.css §5e. */
+   There were three more — `draw`, `sweep` and `xray` — belonging to the
+   schematic and detective-mode layers. Those layers are gone and the
+   effects went with the paint that drew them, rather than being kept as
+   names pointing at nothing. */
 /* ONE OBSERVER FOR THE WHOLE PAGE, shared by every instance.
  *
  * Revision 12. This component used to construct its own
@@ -141,20 +126,11 @@ function unobserve(el: HTMLElement) {
   }
 }
 
-export type RevealEffect =
-  | "rise"
-  | "wipe"
-  | "draw"
-  | "sweep"
-  | "xray"
-  | "none";
+export type RevealEffect = "rise" | "wipe" | "none";
 
 const EFFECT_CLASS: Record<RevealEffect, string> = {
   rise: "reveal",
   wipe: "wipe",
-  draw: "drawn",
-  sweep: "sweep",
-  xray: "xray",
   none: "",
 };
 
@@ -165,10 +141,6 @@ type RevealProps = {
   /** Stagger within a group, in ms. Keep under ~120ms total across a
       row: a stagger long enough to notice is a stagger that delays. */
   delay?: number;
-  /** For `draw`: the dash length to animate. It only has to be at
-      least as long as the longest path — an overshoot just means the
-      line starts further off-stage, which is invisible. */
-  drawLength?: number;
   className?: string;
 };
 
@@ -177,7 +149,6 @@ export default function Reveal({
   as: Tag = "div",
   effect = "rise",
   delay = 0,
-  drawLength = 1200,
   className = "",
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -199,8 +170,7 @@ export default function Reveal({
 
     /* The safety net.
      *
-     * `wipe` and `xray` both START by hiding their content — one clips
-     * it away, the other makes the fill transparent. That is fine while
+     * `wipe` STARTS by clipping its content away. That is fine while
      * the observer is guaranteed to fire, and the no-script case is
      * already covered by the `html.js` gate. But it leaves one failure
      * mode with no floor: if the observer somehow never fires for an
@@ -232,9 +202,6 @@ export default function Reveal({
     <Tag
       ref={ref}
       className={[EFFECT_CLASS[effect], className].filter(Boolean).join(" ")}
-      /* Passed as a custom property rather than a class so a caller can
-         tune it per instance without a new utility for every length. */
-      style={effect === "draw" ? { ["--draw-len" as string]: drawLength } : undefined}
     >
       {children}
     </Tag>

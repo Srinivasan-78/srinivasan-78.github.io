@@ -29,10 +29,11 @@ export default function NotFound() {
     <main id="content" tabIndex={-1}>
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <SectionHead
-          index="404"
           kicker={NOT_FOUND_COPY.eyebrow}
           title={NOT_FOUND_COPY.heading}
           titleAs="h1"
+          size="xl"
+          titleReveal
         />
 
         <p className="contingency mb-10 max-w-2xl">
@@ -40,12 +41,12 @@ export default function NotFound() {
           <span>{NOT_FOUND_COPY.body}</span>
         </p>
 
-        <div className="grid gap-px border border-rule bg-rule sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           {NOT_FOUND_ROUTES.map((route) => (
             <Link
               key={route.href}
               href={route.href}
-              className="flex h-full flex-col justify-between bg-ground p-5 transition-colors duration-150 hover:text-detect sm:p-6"
+              className="panel flex h-full flex-col justify-between p-6 transition-colors duration-150 hover:text-detect"
             >
               <div>
                 <div className="flex items-center gap-2.5 text-mute">

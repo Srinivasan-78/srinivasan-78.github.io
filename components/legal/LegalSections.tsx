@@ -75,15 +75,13 @@ export default function LegalSections({ sections }: LegalSectionsProps) {
         return (
           <section
             key={section.heading}
-            className="grid gap-5 py-10 lg:grid-cols-12 lg:gap-8"
+            className="grid gap-5 py-12 lg:grid-cols-12 lg:gap-8"
           >
             <div className="lg:col-span-4">
               <div className="t-anno-sm text-mute">
                 {String(i + 1).padStart(2, "0")} / {total}
               </div>
-              <h2 className="t-display mt-2 text-[1.375rem] sm:text-[1.5rem]">
-                {section.heading}
-              </h2>
+              <h2 className="t-display t-h3 mt-2">{section.heading}</h2>
             </div>
 
             <div className="t-prose lg:col-span-8">

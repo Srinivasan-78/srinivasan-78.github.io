@@ -37,10 +37,10 @@ export default function AppError({
     <main id="content" tabIndex={-1}>
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <SectionHead
-          index="500"
           kicker="Application Error"
           title="Let’s try that again."
           titleAs="h1"
+          size="xl"
         />
 
         <p className="contingency max-w-2xl">
@@ -69,12 +69,12 @@ export default function AppError({
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-px border border-rule bg-rule sm:grid-cols-2">
+        <div className="mt-10 grid gap-3 sm:grid-cols-2">
           {NOT_FOUND_ROUTES.map((route) => (
             <Link
               key={route.href}
               href={route.href}
-              className="flex h-full flex-col justify-between bg-ground p-5 transition-colors duration-150 hover:text-detect sm:p-6"
+              className="panel flex h-full flex-col justify-between p-6 transition-colors duration-150 hover:text-detect"
             >
               <div>
                 <div className="flex items-center gap-2.5 text-mute">

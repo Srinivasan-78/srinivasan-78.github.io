@@ -103,7 +103,7 @@ export default function CopyEmailCard({ method }: CopyEmailCardProps) {
   }
 
   return (
-    <div className="flex items-start justify-between gap-4 bg-ground p-5">
+    <div className="flex items-start justify-between gap-4 p-5">
       <a
         href={method.href}
         title={COPY_EMAIL_COPY.linkTitle}

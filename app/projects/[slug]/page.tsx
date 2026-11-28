@@ -5,8 +5,6 @@ import { PROJECTS, projectBySlug } from "@/lib/projects";
 import { PROJECT_DETAIL_COPY } from "@/lib/data/profile";
 import TagRow from "@/components/primitives/TagRow";
 import Reveal from "@/components/primitives/Reveal";
-import ScanField from "@/components/primitives/ScanField";
-import { Chiaroscuro, SignalBeam } from "@/components/primitives/Texture";
 
 /* The dossier.
 
@@ -85,91 +83,59 @@ export default async function ProjectDetail({
         </Link>
 
         {/* Cover.
-            The standfirst stays in Inter Tight. It was set in the
-            display face when that face was a high-contrast serif, where
-            a sentence at 1.5rem reads as an editorial opening; the
-            display face is now a heavy uppercase grotesque, and a
-            two-line teaser in Archivo Black is a brick. So the display
-            register is spent on the title alone and the standfirst goes
-            up a size in the body face instead, which is the pairing a
-            poster uses: one shout, then prose.
+            One shout, then prose: the display register is spent on the
+            title alone and the standfirst goes up a size in the same
+            face.
 
-            Chiaroscuro and the beam sit behind it as sibling layers —
-            corners in shade so the middle of the sheet comes forward,
-            and a cone of light from the lower left where a searchlight
-            would be. Both are gradients. An outline would make the
-            second one a logo, and the brief forbids that. */}
-        <header className="relative mt-10 overflow-hidden border-b border-rule pb-10">
-          <SignalBeam />
-          <Chiaroscuro />
-          {/* The hand-written ogl scan field, which revision 4 moved
-              here off the home cover. The cover took the much louder
-              FaultyTerminal, and this is the right home for the quiet
-              one: a dossier is the page someone actually READS, across
-              twenty-three routes, and a glyph storm behind three
-              thousand words of prose would be unreadable. A slow cyan
-              grid with a scan band passing over it is a field you can
-              read on top of.
-
-              It carries its own reduced-motion, no-WebGL and
-              context-lost fallbacks internally — see the header of the
-              component — so it needs no gate here. */}
-          <ScanField />
+            The three sibling texture layers that used to sit behind
+            this — a chiaroscuro vignette, a searchlight gradient and a
+            WebGL scan field — are replaced by the ambient wash the rest
+            of the site uses. It is three gradients painted once, so
+            there is no shader to compile and nothing to reduce. */}
+        <header className="relative mt-10 border-b border-rule pb-12">
+          <div
+            aria-hidden="true"
+            className="head-wash pointer-events-none absolute -inset-x-8 -top-28 -z-10 h-[40rem]"
+          />
 
           <div className="relative">
             <div className="t-anno mb-4 text-signal">
               {p.client} · {p.category}
             </div>
 
-            {/* Uppercase and tracked in hard, so it takes a smaller size
-                and fewer words per line than the serif it replaced, and
-                is allowed to wrap to three lines rather than being shrunk
-                to fit one.
-
-                `xray` rather than `wipe` from revision 3: this is the
-                page's own h1, and a dossier resolving out of a wireframe
-                is the detective-mode arrival. One per page — the
-                sections below keep the wipe, because a document where
-                every heading unscrambles cannot be skimmed. */}
-            <Reveal
-              as="h1"
-              effect="xray"
-              className="t-display-xl max-w-[22ch] text-[2.25rem] sm:text-[3.25rem] lg:text-[3.75rem]"
-            >
+            <Reveal as="h1" effect="wipe" className="t-display-xl t-h1 max-w-[22ch]">
               {p.title}
             </Reveal>
 
-            <p className="mt-6 max-w-3xl text-lg leading-snug text-mute sm:text-[1.375rem]">
-              {p.teaser}
-            </p>
+            <p className="t-lead mt-6 max-w-3xl text-mute">{p.teaser}</p>
 
-            {/* The title block's three figures. Each cell used to carry
-                its label twice over — "Stack" above "6 technologies in
-                stack", "Notes" above "7 architecture entries" — which is
-                a column header repeated inside its own column. The label
-                is the term; the cell is the figure, set in the poster
-                register because that is what a figure is for. */}
-            <dl className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-3">
-              <div className="bg-ground p-3.5">
-                <dt className="t-anno-sm mb-1 text-mute">
+            {/* The title block's three figures. The label is the term;
+                the cell is the figure. Three cards on a grid rather than
+                three cells sharing hairlines — the gap IS the divider
+                now, which is what lets them read as objects. */}
+            <dl className="mt-9 grid gap-3 sm:grid-cols-3">
+              <div className="panel p-5">
+                <dt className="t-anno-sm mb-1.5 text-mute">
                   {PROJECT_DETAIL_COPY.statusPrefix}
                 </dt>
-                <dd className="t-poster text-xl text-body">{p.status}</dd>
+                <dd className="t-poster text-[1.375rem] text-body">{p.status}</dd>
               </div>
-              <div className="bg-ground p-3.5">
-                <dt className="t-anno-sm mb-1 text-mute">Stack</dt>
-                <dd className="t-poster text-xl text-body">{p.stack.length}</dd>
+              <div className="panel p-5">
+                <dt className="t-anno-sm mb-1.5 text-mute">Stack</dt>
+                <dd className="t-poster text-[1.375rem] text-body">
+                  {p.stack.length}
+                </dd>
               </div>
-              <div className="bg-ground p-3.5">
-                <dt className="t-anno-sm mb-1 text-mute">Architecture notes</dt>
-                <dd className="t-poster text-xl text-body">
+              <div className="panel p-5">
+                <dt className="t-anno-sm mb-1.5 text-mute">Architecture notes</dt>
+                <dd className="t-poster text-[1.375rem] text-body">
                   {p.architecture.length}
                 </dd>
               </div>
             </dl>
 
             {actions.length > 0 ? (
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-9 flex flex-wrap gap-3">
                 {actions.map((link, i) => (
                   <a
                     key={link.url}
@@ -189,7 +155,7 @@ export default async function ProjectDetail({
                  is private or internal. The data file's rule is that a
                  button going nowhere is worse than no button, so this
                  says why and offers the one route that does work. */
-              <div className="panel-flat ticks mt-8 p-5">
+              <div className="glass glass-card glass-spec mt-9 p-6">
                 <p className="t-anno-sm text-mute">
                   {PROJECT_DETAIL_COPY.noLinksNote}
                 </p>
@@ -215,11 +181,7 @@ export default async function ProjectDetail({
             <h2 className="t-anno mb-3 text-signal">
               {PROJECT_DETAIL_COPY.breakdownEyebrow}
             </h2>
-            <Reveal
-              as="p"
-              effect="wipe"
-              className="t-display-xl text-[1.75rem] sm:text-[2.25rem]"
-            >
+            <Reveal as="p" effect="wipe" className="t-display-xl t-h2">
               {PROJECT_DETAIL_COPY.breakdownHeading}
             </Reveal>
             <p className="t-prose mt-3 text-mute">
@@ -227,69 +189,30 @@ export default async function ProjectDetail({
             </p>
           </header>
 
-          {/* The leader line of the drawing, and the one place on the
-              site where the real geometry animates rather than a box
-              being revealed: an SVG rule that inks itself from the top
-              once the schedule comes into view, the way a blueprint is
-              drawn or an overlay resolves.
-
-              `preserveAspectRatio="none"` lets one 100-unit line stretch
-              to whatever height eleven entries need, which is why the
-              dash length passed to Reveal is 100 — the line's own length
-              in user units, before the stretch. `non-scaling-stroke`
-              keeps it a hairline at any height.
-
-              Hidden below `sm`, where the grid collapses to one column
-              and there is no gutter for it to run down. */}
-          <div className="relative">
-            <Reveal
-              effect="draw"
-              drawLength={100}
-              className="pointer-events-none absolute inset-y-0 left-[4.75rem] hidden w-px sm:block"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 1 100"
-                preserveAspectRatio="none"
-                className="h-full w-full"
+          {/* The schedule. An SVG leader line used to ink itself down
+              the gutter; it was the measured-drawing identity and it is
+              gone. The number still sits in its own column so the prose
+              keeps one left edge all the way down — that part was never
+              decoration, it is what makes eleven entries readable. */}
+          <ol className="divide-y divide-rule border-y border-rule">
+            {p.architecture.map((entry, i) => (
+              <li
+                key={entry.label}
+                className="grid gap-x-6 gap-y-2 py-6 sm:grid-cols-[4rem_1fr]"
               >
-                <line
-                  x1="0.5"
-                  y1="0"
-                  x2="0.5"
-                  y2="100"
-                  strokeWidth="1"
-                  vectorEffect="non-scaling-stroke"
-                  className="stroke-rule-strong"
-                />
-              </svg>
-            </Reveal>
+                <div className="t-anno-sm pt-1 text-mute">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
 
-            <ol className="divide-y divide-rule border-y border-rule">
-              {p.architecture.map((entry, i) => (
-                <li
-                  key={entry.label}
-                  className="grid gap-x-6 gap-y-2 py-6 sm:grid-cols-[4rem_1fr]"
-                >
-                  {/* The number is the drawing's callout tag. It sits in
-                      its own column so the prose keeps a single left edge
-                      all the way down the page — a list that indents its
-                      body under a number loses that, and the measure is
-                      the only thing making eleven entries readable. */}
-                  <div className="t-anno-sm pt-1 text-mute">
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-
-                  <div className="min-w-0">
-                    <h3 className="t-anno mb-2 text-body">{entry.label}</h3>
-                    <p className="max-w-[62ch] leading-relaxed text-mute">
-                      {entry.body}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+                <div className="min-w-0">
+                  <h3 className="t-anno mb-2 text-body">{entry.label}</h3>
+                  <p className="max-w-[62ch] leading-relaxed text-mute">
+                    {entry.body}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
 
         {/* Highlights, with the admission given its own weight. */}
@@ -297,11 +220,7 @@ export default async function ProjectDetail({
           <h2 className="t-anno mb-3 text-signal">
             {PROJECT_DETAIL_COPY.highlightsEyebrow}
           </h2>
-          <Reveal
-            as="p"
-            effect="wipe"
-            className="t-display-xl mb-8 text-[1.75rem] sm:text-[2.25rem]"
-          >
+          <Reveal as="p" effect="wipe" className="t-display-xl t-h2 mb-8">
             {PROJECT_DETAIL_COPY.highlightsHeading}
           </Reveal>
 
@@ -340,13 +259,16 @@ export default async function ProjectDetail({
           <TagRow items={p.stack} wrap />
         </section>
 
-        {/* Prev / next, so the set reads as a set. */}
-        <nav
-          aria-label="Other projects"
-          className="grid gap-px border border-rule bg-rule sm:grid-cols-2"
-        >
-          {prev ? (
-            <Link href={`/projects/${prev.slug}`} className="group scan hud bg-ground p-5">
+        {/* Prev / next, so the set reads as a set. Two cards on a gap
+            rather than two cells sharing a hairline grid, so a missing
+            neighbour is simply absent instead of being an empty cell
+            holding its half of the frame open. */}
+        <nav aria-label="Other projects" className="grid gap-3 sm:grid-cols-2">
+          {prev && (
+            <Link
+              href={`/projects/${prev.slug}`}
+              className="group panel p-6 transition-colors duration-150"
+            >
               <span className="t-anno-sm block text-mute">
                 ← {PROJECT_DETAIL_COPY.prevLabel}
               </span>
@@ -354,14 +276,12 @@ export default async function ProjectDetail({
                 {prev.title}
               </span>
             </Link>
-          ) : (
-            <span className="bg-ground p-5" />
           )}
 
-          {next ? (
+          {next && (
             <Link
               href={`/projects/${next.slug}`}
-              className="group scan hud bg-ground p-5 sm:text-right"
+              className="group panel p-6 transition-colors duration-150 sm:col-start-2 sm:text-right"
             >
               <span className="t-anno-sm block text-mute">
                 {PROJECT_DETAIL_COPY.nextLabel} →
@@ -370,8 +290,6 @@ export default async function ProjectDetail({
                 {next.title}
               </span>
             </Link>
-          ) : (
-            <span className="bg-ground p-5" />
           )}
         </nav>
       </article>

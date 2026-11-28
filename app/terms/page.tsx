@@ -23,11 +23,12 @@ export default function Terms() {
     <main id="content" tabIndex={-1}>
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <SectionHead
-          index="01"
           kicker={TERMS_COPY.eyebrow}
           title={TERMS_COPY.heading}
           titleAs="h1"
           lede={TERMS_COPY.lead}
+          size="xl"
+          titleReveal
           aside={
             <div className="text-left md:text-right">
               <div className="t-anno-sm text-mute">

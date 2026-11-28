@@ -63,16 +63,6 @@ type SectionHeadProps = {
      entrance in the system with a direction. Off by default so a
      reference table does not animate its own heading. */
   titleReveal?: boolean;
-  /* Which entrance, when titleReveal is on. `wipe` stays the default
-     so no existing call site changes behaviour.
-
-     `xray` is the detective-mode one: the heading arrives as a cyan
-     outline and fills in. It is reserved for a page's own h1 and used
-     at most once per page — a document where every heading resolves
-     out of a wireframe is a document that cannot be skimmed, which is
-     the same reason DecryptText is only ever on the one status line
-     in the hero. */
-  titleEffect?: "wipe" | "xray";
   /* The kicker is the one accent the header spends. A section that
      already has a filled control or a bold screen in the same viewport
      asks for `mute` instead, so the budget of two per viewport holds. */
@@ -89,7 +79,6 @@ export default function SectionHead({
   titleAs: Title = "h2",
   size = "md",
   titleReveal = false,
-  titleEffect = "wipe",
   kickerTone = "signal",
   aside,
   className = "",
@@ -119,11 +108,7 @@ export default function SectionHead({
                passed to it rather than nested inside — wrapping a
                heading in an animated div would put a non-heading between
                the landmark and the outline. */
-            <Reveal
-              as={Title}
-              effect={titleEffect}
-              className={TITLE_CLASS[size]}
-            >
+            <Reveal as={Title} effect="wipe" className={TITLE_CLASS[size]}>
               {title}
             </Reveal>
           ) : (

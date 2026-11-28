@@ -4,8 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import SectionHead from "@/components/primitives/SectionHead";
 import TagRow from "@/components/primitives/TagRow";
 import Reveal from "@/components/primitives/Reveal";
-import FxBackdrop from "@/components/primitives/FxBackdrop";
-import { Halftone } from "@/components/primitives/Texture";
 import { CERTS, ROWS, forRow, type Cert } from "@/lib/certs";
 import { CERTIFICATIONS_COPY } from "@/lib/data/profile";
 
@@ -87,51 +85,26 @@ export default function CertIndex() {
   return (
     <main id="content" tabIndex={-1}>
       <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
-        {/* The page header, written out here rather than taken from
-            SectionHead for one reason: the display register a page
-            headline needs is the xl one, and SectionHead is a shared
-            primitive serving every section on the site at the smaller
-            size. The anatomy is the same — index on its own rule, the
-            kicker interrupting it, then the subject.
-
-            One halftone screen, cut on the diagonal, and nothing else.
-            This page is a reference table; a graphic layer running all
-            the way down twenty-four rows would be wallpaper. */}
-        <div className="relative mb-10 overflow-hidden sm:mb-14">
-          <Halftone className="shard" />
-          {/* Shafts of light across a dark plane — deco, and the
-              right register for a wall of credentials. */}
-          <FxBackdrop
-            kind="beams"
-            opacity={0.3}
-            props={{
-              beamWidth: 2.4,
-              rotation: 28,
-              speed: 0.7,
-              waveLength: 1.6,
-              sharpness: 0.4,
-              glow: 0.45,
-              /* Left undefined on purpose: supplying it makes the
-                 component paint `background` on its own wrapper div,
-                 which is the straight-edged panel this layer exists to
-                 avoid. */
-              backgroundColor: undefined,
-            }}
-            lightProps={{ color: "#bfbfbb", brightness: 0.9 }}
-            darkProps={{ color: "#f5c518", brightness: 0.4 }}
+        {/* The page header. The halftone screen cut on the diagonal and
+            the WebGL beam field behind it are both gone; what lights the
+            top of the page is the site's ambient wash, which is three
+            static gradients and no shader. This page is a reference
+            table, and a graphic layer running all the way down
+            twenty-four rows would be wallpaper either way. */}
+        <div className="relative mb-10 sm:mb-14">
+          <div
+            aria-hidden="true"
+            className="head-wash pointer-events-none absolute -inset-x-8 -top-28 -z-10 h-[40rem]"
           />
 
           <div className="relative">
             <SectionHead
-              index="03"
-              total="05"
               kicker={CERTIFICATIONS_COPY.eyebrow}
               title={CERTIFICATIONS_COPY.heading}
               titleAs="h1"
               lede={CERTIFICATIONS_COPY.body}
               size="xl"
               titleReveal
-              titleEffect="xray"
               className="mb-0"
               aside={
                 /* The count is announced once, not printed twice. It
@@ -169,46 +142,46 @@ export default function CertIndex() {
         </div>
 
         {/* The filter. Six groupings, each labelled with what it holds —
-            the count is the whole reason a chip is worth pressing. */}
-        <div className="flex flex-wrap gap-2" role="group" aria-label={CERTIFICATIONS_COPY.eyebrow}>
-          {ROWS.map((row) => (
-            <button
-              key={row.id}
-              type="button"
-              className="chip"
-              aria-pressed={row.id === rowId}
-              onClick={() => setRowId(row.id)}
-            >
-              {row.label}
-              <span aria-hidden="true" className="ml-2 text-mute">
-                {counts[row.id]}
-              </span>
-            </button>
-          ))}
+            the count is the whole reason a chip is worth pressing. The
+            chips share one glass sheet so they read as a control group
+            rather than six loose pills on the page. */}
+        <div className="glass glass-card glass-spec p-4 sm:p-5">
+          <div
+            className="flex flex-wrap gap-2"
+            role="group"
+            aria-label={CERTIFICATIONS_COPY.eyebrow}
+          >
+            {ROWS.map((row) => (
+              <button
+                key={row.id}
+                type="button"
+                className="chip"
+                aria-pressed={row.id === rowId}
+                onClick={() => setRowId(row.id)}
+              >
+                {row.label}
+                <span aria-hidden="true" className="ml-2 opacity-70">
+                  {counts[row.id]}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="mt-12 space-y-14">
-          {/* One wipe per year group rather than one per row. Twenty-four
-              rows arriving one at a time would be a page animating
-              itself while it is being read; four groups is the rhythm
-              the content already has. */}
+          {/* One entrance per year group rather than one per row.
+              Twenty-four rows arriving one at a time would be a page
+              animating itself while it is being read; four groups is the
+              rhythm the content already has. */}
           {groups.map((group, i) => (
-            <Reveal
-              key={group.year}
-              as="section"
-              effect="wipe"
-              delay={Math.min(i, 3) * 40}
-            >
-              {/* The year on its own rule, the way the section heads
-                  carry their index: the label interrupts the line
+            <Reveal key={group.year} as="section" delay={Math.min(i, 3) * 40}>
+              {/* The year on its own rule: the label interrupts the line
                   rather than sitting above it. Set in the poster
-                  register — condensed, tall, tabular — because a year
-                  is a figure, and four of them down the page are the
-                  only rhythm a reference table needs. */}
+                  register — tabular figures — because a year is a
+                  figure, and four of them down the page are the only
+                  rhythm a reference table needs. */}
               <div className="flex items-baseline gap-4">
-                <h2 className="t-poster shrink-0 text-[2rem] sm:text-[2.5rem]">
-                  {group.year}
-                </h2>
+                <h2 className="t-poster t-h2 shrink-0">{group.year}</h2>
                 <span aria-hidden="true" className="h-px flex-1 bg-rule" />
                 <span className="t-anno-sm shrink-0 text-mute">
                   {group.certs.length}
@@ -267,9 +240,11 @@ export default function CertIndex() {
         {/* The provenance statement, in the author's words. It is the
             claim the whole page rests on, so it is typeset rather than
             tucked into a tooltip. */}
-        <div className="mt-10 border-t border-rule pt-6">
-          <div className="t-anno text-signal">{CERTIFICATIONS_COPY.verifiedStrip}</div>
-          <p className="t-prose mt-3 text-[0.875rem] leading-relaxed text-mute">
+        <div className="glass glass-card glass-spec mt-12 p-6 sm:p-7">
+          <div className="t-anno text-signal">
+            {CERTIFICATIONS_COPY.verifiedStrip}
+          </div>
+          <p className="t-prose mt-3 text-[0.9375rem] leading-relaxed text-mute">
             {CERTIFICATIONS_COPY.footerNote}
           </p>
         </div>
