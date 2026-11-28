@@ -86,6 +86,18 @@ html[data-theme="light"] {
     0 2px 4px rgb(28 27 25 / 0.05),
     0 24px 60px -20px rgb(28 27 25 / 0.2);
   --glass-spec: rgb(255 255 255 / 0.55);
+
+  /* The scrolled header. Denser and blurrier than a `.glass` card
+     because it is the only surface that has to stay readable with
+     arbitrary page content sliding underneath it. */
+  --nav-bg: color-mix(in oklab, #ffffff 93%, transparent);
+  --nav-blur: 28px;
+  --nav-sat: 200%;
+  --nav-edge: rgb(28 27 25 / 0.14);
+  --nav-shadow:
+    0 1px 2px rgb(28 27 25 / 0.06),
+    0 10px 24px -8px rgb(28 27 25 / 0.14),
+    0 28px 64px -24px rgb(28 27 25 / 0.26);
 }
 
 html[data-theme="dark"] {
@@ -156,6 +168,15 @@ html[data-theme="dark"] {
     0 2px 6px rgb(0 0 0 / 0.55),
     0 28px 64px -24px rgb(0 0 0 / 0.85);
   --glass-spec: rgb(255 255 255 / 0.16);
+
+  --nav-bg: color-mix(in oklab, #26262d 92%, transparent);
+  --nav-blur: 30px;
+  --nav-sat: 150%;
+  --nav-edge: rgb(255 255 255 / 0.16);
+  --nav-shadow:
+    0 1px 2px rgb(0 0 0 / 0.6),
+    0 12px 28px -10px rgb(0 0 0 / 0.7),
+    0 32px 72px -28px rgb(0 0 0 / 0.9);
 }
 
 /* ------------------------------------------------------------
@@ -275,6 +296,12 @@ html[data-theme="dark"] {
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* The body clip below stops <body> from scrolling, but the root still
+     counts a descendant's ink as scrollable area: `.head-wash` at
+     `-inset-x-8` put 12px of horizontal scroll on every route with a
+     page header at 375/390px. `clip` here creates no scroll container,
+     so the sticky nav is unaffected — verified. */
+  overflow-x: clip;
   /* Anchored headings have to land below the floating nav. One row
      now, not two: the ticker is off the header. */
   scroll-padding-top: 6rem;
@@ -566,8 +593,10 @@ body {
    So without backdrop-filter the glass is simply opaque. Nothing is
    lost but the effect; the contrast is the same or better. */
 @supports not (backdrop-filter: blur(1px)) {
-  .glass,
-  .site-header-glass {
+  .glass {
+    background: var(--glass-bg-solid);
+  }
+  .site-header-glass[data-scrolled] {
     background: var(--glass-bg-solid);
   }
 }
@@ -851,17 +880,50 @@ html.js .route-enter {
 /* The capsule itself. The blur lives here rather than on
    `.site-header` so the filter root is the element that is actually
    translucent. */
+/* TWO STATES. At the very top of the page the capsule is barely
+   there — the hero owns that screen and a glass bar floating over its
+   own empty margin is just furniture. Once the page has moved, the
+   capsule is over content, and that is when it has to read as a
+   separate plane: more blur, a denser ground, a defined edge and a
+   shadow with real reach.
+
+   The old single state was the problem the owner reported. At 68%
+   white over a blur of 20px the hero headline stayed legible straight
+   through the bar, so the nav read as part of the page rather than
+   above it. `--nav-bg` is a dedicated token rather than a change to
+   `--glass-bg`, because `.glass` cards sit on the page and are
+   supposed to let it through; the header is the one surface that must
+   not.
+
+   `data-scrolled` is set on this element and not on `.site-header`,
+   which keeps the selector at the same specificity as the effects
+   budget override in §5c — so a machine on the `lite` tier still gets
+   the opaque bar rather than this. */
 .site-header-glass {
   margin: 0 auto;
   max-width: 72rem;
-  border: 1px solid var(--glass-edge);
+  border: 1px solid transparent;
   border-radius: var(--r-lg);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  background: transparent;
+  box-shadow: none;
+  /* The blur is deliberately NOT in this list. Transitioning
+     `backdrop-filter` re-runs the gather every frame for the length of
+     the transition, which is the one thing §5c exists to avoid; the
+     ground, edge and shadow fading is what the eye reads anyway, so
+     the blur simply arrives with them. */
+  transition:
+    background var(--dur-2) var(--ease-cx),
+    border-color var(--dur-2) var(--ease-cx),
+    box-shadow var(--dur-2) var(--ease-cx);
+}
+.site-header-glass[data-scrolled] {
+  border-color: var(--nav-edge);
+  background: var(--nav-bg);
+  backdrop-filter: blur(var(--nav-blur)) saturate(var(--nav-sat));
+  -webkit-backdrop-filter: blur(var(--nav-blur)) saturate(var(--nav-sat));
   box-shadow:
     inset 0 1px 0 0 var(--glass-rim),
-    var(--glass-shadow-lg);
+    var(--nav-shadow);
 }
 
 /* The sliding pill behind the active destination. One element for the
@@ -898,14 +960,14 @@ html[data-theme="dark"] .nav-pill {
   margin: 0.5rem auto 0;
   max-width: 72rem;
   overflow: hidden;
-  border: 1px solid var(--glass-edge);
+  border: 1px solid var(--nav-edge);
   border-radius: var(--r-lg);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  background: var(--nav-bg);
+  backdrop-filter: blur(var(--nav-blur)) saturate(var(--nav-sat));
+  -webkit-backdrop-filter: blur(var(--nav-blur)) saturate(var(--nav-sat));
   box-shadow:
     inset 0 1px 0 0 var(--glass-rim),
-    var(--glass-shadow-lg);
+    var(--nav-shadow);
   transform-origin: top center;
   animation: nav-drawer-in var(--dur-2) var(--ease-cx);
 }
@@ -974,8 +1036,8 @@ html[data-theme="dark"] .nav-pill {
 
    The glass becomes opaque instead. What is lost is the sense of
    depth, on the tier that cannot pay for it. */
-html[data-fx="lite"] .site-header-glass,
-html[data-fx="off"] .site-header-glass {
+html[data-fx="lite"] .site-header-glass[data-scrolled],
+html[data-fx="off"] .site-header-glass[data-scrolled] {
   background: var(--c-ground);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;

@@ -91,6 +91,22 @@ export default function Nav() {
     };
   }, [pathname]);
 
+  /* Two surfaces, not one. At the very top the capsule is invisible and
+     the hero reads uninterrupted; past the first scroll it becomes the
+     dense glass plane in globals.css §5b. The threshold is small on
+     purpose — the shift should read as the page moving under a fixed
+     object, not as a thing that happens later on.
+
+     No rAF loop and no measurement: the handler compares one boolean
+     and React drops the update when it has not changed. */
+  const [raised, setRaised] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setRaised(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   /* Escape closes it. A drawer that can only be dismissed by hitting
      the same small button again is a trap on a phone. */
   useEffect(() => {
@@ -104,7 +120,13 @@ export default function Nav() {
 
   return (
     <header className="site-header">
-      <div className="site-header-glass flex items-center justify-between gap-4 px-4 py-2.5 sm:px-5">
+      <div
+        /* The open drawer hangs off the capsule, so a transparent
+           capsule above a dense sheet would read as two unrelated
+           objects. */
+        data-scrolled={raised || open ? "" : undefined}
+        className="site-header-glass flex items-center justify-between gap-4 px-4 py-2.5 sm:px-5"
+      >
         {/* Identity. The full name at the weight the display register
             carries, with the role beneath it on wide screens only —
             at 390px the two lines plus five destinations is a capsule

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FiMoon, FiSun } from "react-icons/fi";
 
 type Theme = "light" | "dark";
 
@@ -63,20 +64,22 @@ export default function ThemeToggle() {
       onClick={() => apply(next)}
       aria-label={`Switch to the ${next} theme`}
       title={`Switch to the ${next} theme`}
-      className="flex h-10 w-10 items-center justify-center rounded-[var(--r-pill)] border border-rule text-mute transition-colors duration-200 hover:bg-panel-2 hover:text-body"
+      className="flex h-10 w-10 items-center justify-center rounded-[var(--r-pill)] border border-rule bg-panel-2 text-body transition-colors duration-200 hover:border-signal hover:text-signal"
     >
-      {/* A filled/hollow disc rather than a sun and a moon. It is one
-          shape in two states, which is the smallest honest glyph for a
-          two-state control — and it needs no second icon set to stay
-          legible at 10px.
+      {/* A sun and a moon, not the filled/hollow disc this used to be.
+          The disc was the smaller idea and it failed the only test that
+          matters: the owner could not find the control on the live page.
+          Two states of one shape is only legible to someone who already
+          knows there are two states — at 10px, with no label and nothing
+          beside it to compare against, it read as a dot.
 
-          The square became a circle with the rest of the geometry. */}
-      <span
-        aria-hidden="true"
-        className={`h-3 w-3 rounded-full border-[1.5px] border-current ${
-          next === "dark" ? "bg-current" : "bg-transparent"
-        }`}
-      />
+          The glyph shows the destination, like the label does: a sun
+          means "switch to light". */}
+      {next === "dark" ? (
+        <FiMoon aria-hidden="true" className="h-[1.125rem] w-[1.125rem]" />
+      ) : (
+        <FiSun aria-hidden="true" className="h-[1.125rem] w-[1.125rem]" />
+      )}
     </button>
   );
 }
