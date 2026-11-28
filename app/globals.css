@@ -123,13 +123,32 @@ html[data-theme="dark"] {
      Less transparent (a dark glass over dark content loses its edge
      entirely), less saturated, and the edge is carried by a rim light
      along the top rather than by a shadow underneath. The shadows are
-     deeper and tighter because there is no ambient light to spread. */
-  --glass-bg: color-mix(in oklab, #22222a 58%, transparent);
-  --glass-bg-solid: color-mix(in oklab, #1a1a1f 94%, transparent);
+     deeper and tighter because there is no ambient light to spread.
+
+     THE TINT IS LIGHTER THAN IT LOOKS IT SHOULD BE, and that is the fix
+     for the one thing this theme got wrong. `.glass` and `.panel` are
+     the two materials /projects uses to tell a deployed build from the
+     rest, and in the light theme the difference is carried by the cast
+     shadow and the near-white rim — neither of which exists here. A
+     shadow has nothing to darken on a near-black ground and a 10%-white
+     rim catches almost nothing, so the two tiers were separated by
+     their fills alone: #22222a at 58% composites to rgb(26 26 31)
+     against this ground, and --c-panel is rgb(23 23 26). Three points
+     of value. They read as the same card.
+
+     So the dark glass is lifted until the fill ITSELF carries the
+     distinction — it composites to about rgb(39 39 46) now, a clear
+     step above the panel rather than a rounding error — and the rim and
+     edge come up with it so the top edge actually catches. It is still
+     a dark surface: the step is to the panel, not to the body text, so
+     every ratio in this block stays clear of AA — the tightest is
+     --c-mute on the new glass at 5.4:1. */
+  --glass-bg: color-mix(in oklab, #35353f 64%, transparent);
+  --glass-bg-solid: color-mix(in oklab, #27272e 94%, transparent);
   --glass-blur: 26px;
   --glass-sat: 130%;
-  --glass-rim: rgb(255 255 255 / 0.1);
-  --glass-edge: rgb(255 255 255 / 0.08);
+  --glass-rim: rgb(255 255 255 / 0.14);
+  --glass-edge: rgb(255 255 255 / 0.12);
   --glass-shadow:
     0 1px 2px rgb(0 0 0 / 0.5),
     0 12px 32px -14px rgb(0 0 0 / 0.75);
@@ -264,6 +283,17 @@ html {
 body {
   background: var(--c-ground);
   color: var(--c-body);
+  /* `clip`, never `hidden`. The ambient washes are deliberately wider
+     than the column they light — `.head-wash` is placed at `-inset-x-8`
+     so its falloff lands outside the text measure — and below about
+     400px those 32px reach past the viewport and the page gains a
+     horizontal scrollbar. Clipping the overflow is right: the part
+     being cut is the transparent tail of a gradient.
+
+     `hidden` would do the same thing and also make <body> a scroll
+     container, which silently kills `position: sticky` on the nav.
+     `clip` creates no scroll container, so the nav keeps working. */
+  overflow-x: clip;
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.65;
@@ -1015,7 +1045,17 @@ html[data-fx="off"] .site-header-glass {
    White text on the accent in both themes, which is why the dark
    accent had to be chosen rather than derived: #74a9ff carries white
    at 2.6:1, so the dark variant below darkens the fill instead of
-   taking the token straight. */
+   taking the token straight.
+
+   THE DARK MIX IS 66%, NOT 74%, and the eight points are the whole
+   point: at 74% the fill composites to rgb(84 128 195), which carries
+   white at 4.00:1 and fails AA for a 15px label by half a point. 66%
+   lands on rgb(75 115 178) — white at 4.78:1, and still 4.04:1 against
+   the ground, so the pill reads as an object as well as a label.
+
+   Hover DARKENS here, as it does in the light theme, rather than
+   lightening as it used to. A lighter hover on a white label walks
+   back toward the failure the base value just cleared. */
 .btn-signal {
   background: var(--c-signal);
   border-color: transparent;
@@ -1030,10 +1070,10 @@ html[data-fx="off"] .site-header-glass {
   color: #fff;
 }
 html[data-theme="dark"] .btn-signal {
-  background: color-mix(in oklab, var(--c-signal) 74%, #06182e);
+  background: color-mix(in oklab, var(--c-signal) 66%, #06182e);
 }
 html[data-theme="dark"] .btn-signal:hover {
-  background: color-mix(in oklab, var(--c-signal) 86%, #06182e);
+  background: color-mix(in oklab, var(--c-signal) 58%, #06182e);
 }
 
 /* Filter chips. Same pill geometry as the buttons at a smaller
@@ -1063,8 +1103,11 @@ html[data-theme="dark"] .btn-signal:hover {
   background: var(--c-signal);
   border-color: transparent;
 }
+/* Same 66% as `.btn-signal`, and for the same reason: the pressed chip
+   is a 13px white label on the accent, so it is held to the same 4.5:1
+   that the button is. */
 html[data-theme="dark"] .chip[aria-pressed="true"] {
-  background: color-mix(in oklab, var(--c-signal) 74%, #06182e);
+  background: color-mix(in oklab, var(--c-signal) 66%, #06182e);
 }
 
 /* Inline links in prose. Underlined from the start — an
@@ -1095,8 +1138,18 @@ html[data-theme="dark"] .chip[aria-pressed="true"] {
   font-size: 0.9375rem;
   transition: border-color 160ms var(--ease-cx);
 }
+/* `--c-mute`, not `--c-faint`. The faint token's own definition in §1
+   says "decorative only — never carries text", and a placeholder is
+   text: the roster's names four example technologies, which is the
+   only place the search says what it will match. On faint it ran
+   2.6:1 against the field and failed AA outright. On mute it is 5.6:1
+   in the light theme and 6.5:1 in the dark one.
+
+   Mistaking it for a typed value is the usual argument for keeping a
+   placeholder pale, and it does not apply here: the field carries a
+   visible "Search" label beside it. */
 .field::placeholder {
-  color: var(--c-faint);
+  color: var(--c-mute);
 }
 .field:hover {
   border-color: var(--c-signal-dim);

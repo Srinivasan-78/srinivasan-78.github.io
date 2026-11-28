@@ -72,7 +72,7 @@ export default function Footer() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[0.875rem] text-mute transition-colors duration-200 hover:text-body"
+                  className="inline-flex min-h-6 items-center py-1 text-[0.875rem] text-mute transition-colors duration-200 hover:text-body"
                 >
                   {link.label}
                 </a>
@@ -80,7 +80,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[0.875rem] text-mute transition-colors duration-200 hover:text-body"
+                  className="inline-flex min-h-6 items-center py-1 text-[0.875rem] text-mute transition-colors duration-200 hover:text-body"
                 >
                   {link.label}
                 </Link>

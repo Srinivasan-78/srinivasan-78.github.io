@@ -219,7 +219,7 @@ export default function CertIndex() {
                         href={cert.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="link t-anno-sm"
+                        className="link t-anno-sm inline-flex min-h-6 items-center py-1"
                         /* The visible label is two words, which is
                            ample next to the name on screen and useless
                            read out of context in a list of twenty-four

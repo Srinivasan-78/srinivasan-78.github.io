@@ -52,7 +52,7 @@ export default function ThemeToggle() {
   }
 
   if (theme === null) {
-    return <span aria-hidden="true" className="block h-9 w-9" />;
+    return <span aria-hidden="true" className="block h-10 w-10" />;
   }
 
   const next: Theme = theme === "dark" ? "light" : "dark";
@@ -63,7 +63,7 @@ export default function ThemeToggle() {
       onClick={() => apply(next)}
       aria-label={`Switch to the ${next} theme`}
       title={`Switch to the ${next} theme`}
-      className="flex h-9 w-9 items-center justify-center rounded-[var(--r-pill)] border border-rule text-mute transition-colors duration-200 hover:bg-panel-2 hover:text-body"
+      className="flex h-10 w-10 items-center justify-center rounded-[var(--r-pill)] border border-rule text-mute transition-colors duration-200 hover:bg-panel-2 hover:text-body"
     >
       {/* A filled/hollow disc rather than a sun and a moon. It is one
           shape in two states, which is the smallest honest glyph for a

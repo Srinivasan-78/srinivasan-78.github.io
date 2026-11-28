@@ -273,7 +273,13 @@ export default function ProjectIndex() {
               description from a reviewer, completely different
               cause. */}
           <div className="flex flex-col gap-4">
-            <label className="flex items-center gap-3 lg:max-w-md">
+            {/* The cap was `lg:max-w-md`, which left the input about
+                380px wide and cut the placeholder mid-word at every
+                desktop size — it names four example technologies and
+                needs roughly 500px to finish the sentence. The sheet it
+                sits on is ~1050px at 1440, so the room was always there;
+                the cap was just set to the wrong number. */}
+            <label className="flex items-center gap-3 lg:max-w-2xl">
               <span className="t-anno-sm shrink-0 text-mute">Search</span>
               <input
                 type="search"
@@ -356,7 +362,7 @@ export default function ProjectIndex() {
               coda at the foot of this page; the coda is /hobby. */}
           <Link
             href="/hobby"
-            className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
+            className="t-anno-sm inline-flex min-h-6 items-center py-1 text-mute transition-colors duration-150 hover:text-detect"
           >
             Hobby →
           </Link>
@@ -593,7 +599,7 @@ function ProjectCell({
                  five amber labels would spend the viewport's whole
                  budget on a repeated link. The arrow already marks it
                  as outbound. */
-              className="t-anno-sm text-body transition-colors duration-150 hover:text-detect"
+              className="t-anno-sm inline-flex min-h-6 items-center py-1 text-body transition-colors duration-150 hover:text-detect"
               /* The visible label is the same four words on every
                  deployed card, which is correct typographically and
                  wrong for anyone listing the page's links out of

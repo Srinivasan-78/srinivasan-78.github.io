@@ -77,7 +77,7 @@ export default async function ProjectDetail({
       <article className="mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-10">
         <Link
           href="/projects"
-          className="t-anno-sm text-mute transition-colors duration-150 hover:text-detect"
+          className="t-anno-sm inline-flex min-h-6 items-center py-1 text-mute transition-colors duration-150 hover:text-detect"
         >
           ← {PROJECT_DETAIL_COPY.back}
         </Link>

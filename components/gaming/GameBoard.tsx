@@ -145,7 +145,12 @@ export default function GameBoard() {
         </div>
 
         {/* The library, by genre. */}
-        <div className="mb-4 flex items-baseline gap-4">
+        {/* Wraps, unlike the two rows above it, because this one has a
+            count on the right as well as a subhead on the left and both
+            are `shrink-0`. Two unshrinkable labels plus a rule between
+            them do not fit a 375px column, and with nothing able to give
+            the row simply ran past the viewport edge. */}
+        <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <h2 className="t-anno-sm shrink-0 text-mute">
             {GAMING_COPY.librarySubhead}
           </h2>

@@ -33,8 +33,8 @@ import {
    sentence on the page twice — and replacing it with a bare coloured
    tick would have been status by colour alone. The hero owns that line.
 
-   The cells arrive on a wipe with a short stagger but they do not get
-   `.scan`: nothing in them is clickable, and a hover affordance on a
+   The cells arrive on a wipe with a short stagger and carry no hover
+   state: nothing in them is clickable, and a hover affordance on a
    surface that cannot be used is a promise the page does not keep.
 
    The flag emoji come from the data and stay: they are content a

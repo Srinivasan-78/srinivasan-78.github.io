@@ -184,7 +184,7 @@ export default function Nav() {
             aria-expanded={open}
             aria-controls="nav-panel"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex h-9 w-9 items-center justify-center rounded-[var(--r-pill)] border border-rule text-body transition-colors duration-200 hover:bg-panel-2 md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-[var(--r-pill)] border border-rule text-body transition-colors duration-200 hover:bg-panel-2 md:hidden"
           >
             <span aria-hidden="true" className="relative block h-3 w-4">
               <span
