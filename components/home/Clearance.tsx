@@ -176,11 +176,13 @@ export default function Clearance() {
 
                 <TagRow
                   className="mt-5"
+                  wrap
                   label="01"
                   items={region.deploymentRegions}
                 />
                 <TagRow
                   className="mt-4"
+                  wrap
                   label="02"
                   items={region.engagementModels}
                 />

@@ -46,14 +46,27 @@ export default function Home() {
        link, so the next Tab goes back into the header the visitor just
        asked to skip. */
     <main id="content" tabIndex={-1}>
+      {/* Alternating ground — see `.band` in globals.css §5b2. The
+          wrapper is here rather than inside each section so the three
+          sections this pass does not otherwise touch join the rhythm
+          without being edited, and so a section stays one component
+          that knows nothing about where it sits in the running order. */}
       <Hero />
-      <Stats />
+      <div className="band">
+        <Stats />
+      </div>
       <Reliability />
-      <Loadout />
+      <div className="band">
+        <Loadout />
+      </div>
       <Initiatives />
-      <Clearance />
+      <div className="band">
+        <Clearance />
+      </div>
       <SideProjects />
-      <Closing />
+      <div className="band">
+        <Closing />
+      </div>
     </main>
   );
 }

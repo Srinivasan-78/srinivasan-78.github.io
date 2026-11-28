@@ -23,46 +23,45 @@ export default function SideProjects() {
       id="side-projects"
       className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20"
     >
-      <div className="grid gap-10 lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-7">
-          <SectionHead
-            size="lg"
-            kicker={HOME_COPY.sideProjects.eyebrow}
-            title={HOME_COPY.sideProjects.heading}
-            lede={HOME_COPY.sideProjects.body}
-            titleReveal
-            className="mb-0"
-          />
-        </div>
+      {/* One column, not a 7/5 split. The four claims were a bullet
+          list crammed into the narrow half of the grid beside the copy
+          that introduced them — a sidebar to a paragraph. They are the
+          only thing this section has to show, so they get the full
+          measure as four cards and the prose sits above them. */}
+      <SectionHead
+        size="lg"
+        kicker={HOME_COPY.sideProjects.eyebrow}
+        title={HOME_COPY.sideProjects.heading}
+        lede={HOME_COPY.sideProjects.body}
+        titleReveal
+      />
 
-        <Reveal delay={80} className="lg:col-span-5 lg:col-start-8">
-          <div className="glass glass-card glass-spec overflow-hidden p-6 sm:p-7">
-            <ul className="relative space-y-3">
-              {HOME_COPY.sideProjects.bullets.map((bullet) => (
-                <li
-                  key={bullet}
-                  className="flex items-baseline gap-3 text-[0.9375rem] text-body"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="mt-[0.4rem] h-1.5 w-1.5 shrink-0 rounded-full bg-signal"
-                  />
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {HOME_COPY.sideProjects.bullets.map((bullet, i) => (
+          <li key={bullet} className="h-full">
+            <Reveal delay={i * 40} className="h-full">
+              <div className="glass glass-spec h-full overflow-hidden p-6">
+                <span
+                  aria-hidden="true"
+                  className="relative block h-1.5 w-1.5 rounded-full bg-signal"
+                />
+                <p className="relative mt-4 text-[1.0625rem] leading-snug font-medium text-body">
                   {bullet}
-                </li>
-              ))}
-            </ul>
+                </p>
+              </div>
+            </Reveal>
+          </li>
+        ))}
+      </ul>
 
-            <div className="relative mt-7">
-              <Link href="/projects" className="btn w-full">
-                {HOME_COPY.sideProjects.cta}
-              </Link>
-              <p className="mt-3 text-center text-[0.8125rem] text-mute">
-                {HOME_COPY.sideProjects.ctaNote}
-              </p>
-            </div>
-          </div>
-        </Reveal>
-      </div>
+      <Reveal delay={80} className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2">
+        <Link href="/projects" className="link text-[0.9375rem] font-medium">
+          {HOME_COPY.sideProjects.cta}
+        </Link>
+        <p className="text-[0.8125rem] text-mute">
+          {HOME_COPY.sideProjects.ctaNote}
+        </p>
+      </Reveal>
     </section>
   );
 }

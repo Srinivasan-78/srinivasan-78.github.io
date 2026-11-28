@@ -980,6 +980,27 @@ html[data-theme="dark"] .nav-pill {
 
 
 /* ------------------------------------------------------------
+   5b2. SECTION RHYTHM
+
+   Alternating ground, so a long page reads as a sequence of screens
+   rather than one column of scrolling text. The band is a full-bleed
+   wrapper around a section in app/page.tsx; the section keeps its own
+   measure and padding, so this adds a surface and nothing else.
+
+   `--c-panel-2` in both themes, which is the one token that is a
+   clearly visible step from the ground in BOTH directions — down from
+   the bone light ground, up from the near-black dark one. `--c-panel`
+   is three points off the light ground and identical to the dark
+   section cards, so it would have read as no band at all in light and
+   as invisible cards in dark.
+   ------------------------------------------------------------ */
+
+.band {
+  background: var(--c-panel-2);
+  border-block: 1px solid var(--c-rule);
+}
+
+/* ------------------------------------------------------------
    5c. THE EFFECTS BUDGET
 
    `html[data-fx]` is written before the first paint by
@@ -1007,8 +1028,10 @@ html[data-theme="dark"] .nav-pill {
  * drawing, the retained buffers too.
  *
  * THIS IS A HOME-PAGE RULE. Checked against the built HTML: the home
- * page is the only route that renders a flat list of `<section>`
- * children of `#content`. Widening it to a descendant selector was
+ * page is the only route that renders a flat list of one-section
+ * children of `#content` — some of them now wrapped in a `.band`, which
+ * is why this matches any child rather than `section` specifically.
+ * Widening it to a descendant selector was
  * tried and reverted — it reaches the nested groups ProjectIndex and
  * CertIndex use, where the 1200px estimate is sized for a full case and
  * being wrong by 800px per section is worse than not applying.
@@ -1022,7 +1045,7 @@ html[data-theme="dark"] .nav-pill {
  * so the guess is wrong only on the first pass down the page. 1200px is
  * a deliberate overestimate, because a scrollbar that shrinks as you
  * scroll reads as the page loading and one that grows reads as a bug. */
-#content > section:nth-of-type(n + 4) {
+#content > :nth-child(n + 4) {
   content-visibility: auto;
   contain-intrinsic-size: auto 1200px;
 }

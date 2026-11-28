@@ -27,15 +27,21 @@ export default function Stats() {
   return (
     <section id="figures" className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {/* The lead figure is the section's headline, so it is set like
+            one: centred, on its own line, at roughly twice the register
+            of the five that follow, with its label underneath as the
+            subhead. It used to sit in a flex row opposite its own label
+            at the same size as a paragraph of lede, which made the
+            biggest fact on the page read as a table row. */}
         <Reveal className="sm:col-span-2 lg:col-span-3">
-          <div className="panel flex h-full flex-col gap-4 p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
-            <div className="t-poster t-figure text-body">
+          <div className="panel flex h-full flex-col items-center gap-5 px-7 py-14 text-center sm:px-9 sm:py-20">
+            <div className="t-poster text-[clamp(4.5rem,2.2rem+9.5vw,10rem)] text-body">
               <CountUp value={lead.value} />
               {lead.suffix && (
-                <span className="text-[0.34em] text-mute">{lead.suffix}</span>
+                <span className="text-[0.28em] text-mute">{lead.suffix}</span>
               )}
             </div>
-            <p className="t-lead max-w-sm text-mute">{lead.label}</p>
+            <p className="t-lead max-w-md text-mute">{lead.label}</p>
           </div>
         </Reveal>
 

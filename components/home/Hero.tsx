@@ -83,21 +83,30 @@ export default function Hero() {
               </p>
             </Reveal>
 
+            {/* Two, not three. `ctaProjects` left with the third
+                control: "Explore all N builds" is the same sentence and
+                the same destination as the side-projects section's own
+                CTA further down, so the cover was spending a control on
+                a link the page makes again. The remaining pair is one
+                filled primary and one text link rather than two equal
+                slabs — three filled buttons in a row read as a toolbar,
+                and a cover should ask for one thing. */}
             <Reveal
               delay={220}
-              className="mt-9 flex flex-wrap items-center gap-3"
+              className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4"
             >
               <Link href="/contact" className="btn btn-signal">
                 {HOME_COPY.ctaContact}
               </Link>
               {/* A real file request, not a gated one — see the privacy
                   page: nothing is tracked per person for this. */}
-              <a href={PROFILE.resumePath} download className="btn">
+              <a
+                href={PROFILE.resumePath}
+                download
+                className="link text-[0.9375rem] font-medium"
+              >
                 {HOME_COPY.ctaResume}
               </a>
-              <Link href="/projects" className="btn">
-                {HOME_COPY.ctaProjects}
-              </Link>
             </Reveal>
           </div>
 
